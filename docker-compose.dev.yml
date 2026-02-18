@@ -1,0 +1,29 @@
+services:
+  web-app:
+    build:
+      context: ./app/web-app
+      dockerfile: Dockerfile
+      target: dev # Stop at the 'dev' stage
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./web-app:/app
+      - /app/node_modules # Prevent local node_modules from overwriting container
+      - /app/.next # Prevent local build cache from overwriting container
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8080
+      - WATCHPACK_POLLING=true # Essential for HMR to work reliably in Docker
+  server:
+    build:
+      context: ./app/server
+      target: dev # Tells Docker to stop at the 'dev' stage
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./server:/app # Mounts your local code into the container
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=user
+      - DB_PASSWORD=password
+      - DB_NAME=hostel_db
