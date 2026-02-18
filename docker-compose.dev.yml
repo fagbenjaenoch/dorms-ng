@@ -7,7 +7,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./web-app:/app
+      - ./app/web-app:/app
       - /app/node_modules # Prevent local node_modules from overwriting container
       - /app/.next # Prevent local build cache from overwriting container
     environment:
@@ -20,7 +20,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./server:/app # Mounts your local code into the container
+      - ./app/server:/app # Mounts your local code into the container
     environment:
       - DB_HOST=db
       - DB_PORT=5432
