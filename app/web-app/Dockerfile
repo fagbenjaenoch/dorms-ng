@@ -14,12 +14,12 @@ COPY package.json bun.lock* ./
 RUN bun install --no-save --frozen-lockfile
 
 # Development image, copy all the files and run bun dev
-FROM base as dev
+FROM base AS dev
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 # Bun dev server supports hot reloading
-CMD ["bun", "run", "dev"]
+CMD ["bun", "dev"]
 
 # Rebuild the source code only when needed
 FROM base AS builder

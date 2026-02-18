@@ -1,5 +1,5 @@
 # STAGE 1: Build the binary
-FROM golang:1.26-alpine AS builder
+FROM golang:1.26-alpine AS base
 
 # Install git and certificates (needed for downloading modules and HTTPS)
 RUN apk add --no-cache git ca-certificates
@@ -32,10 +32,10 @@ RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o main .
 FROM scratch
 
 # Import certificates from the builder stage (for HTTPS requests)
-COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=base /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
 # Copy the binary from the builder
-COPY --from=builder /app/main /main
+COPY --from=base /app/main /main
 
 # Set environment variables (optional)
 ENV PORT=8080
