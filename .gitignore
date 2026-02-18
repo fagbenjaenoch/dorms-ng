@@ -1,0 +1,27 @@
+# --- General / OS ---
+.DS_Store
+.idea/
+.vscode/
+.zed/
+*.log
+.env*
+
+# --- Docker & Environment ---
+.env
+.env.local
+.env.*.local
+node_modules/
+
+# --- Global Service Patterns (Go & Node) ---
+# This matches any node_modules or build folders inside any subdirectory of /app
+app/*/node_modules/
+app/*/.next/
+app/*/out/
+app/*/build/
+app/*/dist/
+
+# --- Go Specific Globs ---
+# Matches the 'tmp' folder created by Air and compiled binaries in any app subfolder
+**/tmp/
+**/main
+**/build-errors.log
