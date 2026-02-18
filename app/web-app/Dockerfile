@@ -13,6 +13,14 @@ FROM base AS deps
 COPY package.json bun.lock* ./
 RUN bun install --no-save --frozen-lockfile
 
+# Development image, copy all the files and run bun dev
+FROM base as dev
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+# Bun dev server supports hot reloading
+CMD ["bun", "run", "dev"]
+
 # Rebuild the source code only when needed
 FROM base AS builder
 WORKDIR /app
@@ -34,11 +42,11 @@ WORKDIR /app
 # ENV NEXT_TELEMETRY_DISABLED=1
 
 ENV NODE_ENV=production \
-    PORT=3000 \
-    HOSTNAME="0.0.0.0"
+  PORT=3000 \
+  HOSTNAME="0.0.0.0"
 
 RUN groupadd --system --gid 1001 nodejs && \
-    useradd --system --uid 1001 --no-log-init -g nodejs nextjs
+  useradd --system --uid 1001 --no-log-init -g nodejs nextjs
 
 COPY --from=builder /app/public ./public
 
