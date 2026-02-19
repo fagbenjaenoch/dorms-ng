@@ -23,7 +23,7 @@ func main() {
 		helloMessage := Response{
 			Success: true,
 			Status:  200,
-			Message: "hello from server",
+			Message: "hello from go server",
 		}
 
 		ReturnJSONReponse(w, helloMessage)
