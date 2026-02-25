@@ -1,8 +1,8 @@
 "use client";
 
-import { FaSearch } from "react-icons/fa";
 import MobileNav from "@/app/components/MobileNav";
 import DesktopNav from "@/app/components/DesktopNav";
+import LandingSearch from "@/app/components/LandingSearch";
 
 export default function Home() {
   return (
@@ -17,9 +17,7 @@ export default function Home() {
           Find <span className="underline">hostels</span> on any <br />
           university campus in Nigeria
         </h1>
-        <div className="text-xl flex gap-4">
-          <FaSearch /> Start searching
-        </div>
+        <LandingSearch />
       </main>
     </div>
   );
