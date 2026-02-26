@@ -39,7 +39,7 @@ export default function Home() {
           <LandingSearch />
         </div>
       </main>
-      <section>
+      <section className="font-inter">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi, quis
         incidunt? Facilis iusto dignissimos libero debitis vero ullam ipsum maxime
         quo blanditiis. Exercitationem adipisci eos aliquam voluptates ea rem sit vel
