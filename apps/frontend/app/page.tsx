@@ -3,6 +3,7 @@
 import MobileNav from "@/app/components/MobileNav";
 import DesktopNav from "@/app/components/DesktopNav";
 import LandingSearch from "@/app/components/LandingSearch";
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -15,7 +16,14 @@ export default function Home() {
       <main className="relative min-h-screen  flex flex-col items-center gap-10 py-32 px-8">
         <h1 className="text-5xl font-extrabold text-center">
           Find <span className="underline">hostels</span> on any <br />
-          university campus in Nigeria
+          university campus in Nigeria{" "}
+          <Image
+            src="/nigerian-flag.webp"
+            width={40}
+            height={30}
+            alt="Nigerian Flag"
+            className="inline-block"
+          />
         </h1>
         <LandingSearch />
         <div className="w-[50%] h-[50%] z-0 absolute bottom-0 left-0 bg-linear-to-t from-[rgba(0,101,235,0.5)]"></div>
