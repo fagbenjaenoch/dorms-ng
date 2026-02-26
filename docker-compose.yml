@@ -19,9 +19,9 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   # 2. Golang Backend
-  server:
-    build: ./app/server
-    container_name: server
+  backend:
+    build: ./backend
+    container_name: backend
     restart: always
     ports:
       - "8080:8080"
@@ -36,17 +36,17 @@ services:
         condition: service_healthy
 
   # 3. Next.js Frontend
-  web-app:
-    build: ./app/web-app
-    container_name: web-app
+  frontend:
+    build: ./frontend
+    container_name: frontend
     restart: always
     ports:
       - "3000:3000"
     environment:
       - NEXT_PUBLIC_API_URL=http://localhost:8080
-      - BACKEND_URL=http://server:8080
+      - BACKEND_URL=http://backend:8080
     depends_on:
-      - server
+      - backend
 
 volumes:
   postgres_data:
