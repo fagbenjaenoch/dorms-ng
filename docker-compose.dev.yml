@@ -1,13 +1,13 @@
 services:
   frontend:
     build:
-      context: ./frontend
+      context: ./apps/frontend
       dockerfile: Dockerfile
       target: dev # Stop at the 'dev' stage
     ports:
       - "3000:3000"
     volumes:
-      - ./frontend:/app
+      - ./apps/frontend:/app
       - /app/node_modules # Prevent local node_modules from overwriting container
       - /app/.next # Prevent local build cache from overwriting container
     environment:
@@ -15,12 +15,12 @@ services:
       - WATCHPACK_POLLING=true # Essential for HMR to work reliably in Docker
   backend:
     build:
-      context: ./backend
+      context: ./apps/backend
       target: dev # Tells Docker to stop at the 'dev' stage
     ports:
       - "8080:8080"
     volumes:
-      - ./backend:/app # Mounts your local code into the container
+      - ./apps/backend:/app # Mounts your local code into the container
     environment:
       - DB_HOST=db
       - DB_PORT=5432

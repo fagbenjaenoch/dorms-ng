@@ -20,7 +20,7 @@ services:
 
   # 2. Golang Backend
   backend:
-    build: ./backend
+    build: ./apps/backend
     container_name: backend
     restart: always
     ports:
@@ -37,7 +37,7 @@ services:
 
   # 3. Next.js Frontend
   frontend:
-    build: ./frontend
+    build: ./apps/frontend
     container_name: frontend
     restart: always
     ports:
