@@ -1,0 +1,20 @@
+import UniversityCard from "./ui/UniversityCard";
+
+export default function PopularUniversities() {
+  return (
+    <section>
+      <div className="container">
+        <h2>Popular Universities</h2>
+        <div className="flex flex-wrap gap-4">
+          <UniversityCard name="University of Ilorin" imageUrl="/unilorin.webp" />
+          <UniversityCard name="University of Ibadan" imageUrl="/ui.webp" />
+          <UniversityCard name="University of Lagos" imageUrl="/unilag.webp" />
+          <UniversityCard
+            name="Federal University of Technology, Akure"
+            imageUrl="/futa.webp"
+          />
+        </div>
+      </div>
+    </section>
+  );
+}

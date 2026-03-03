@@ -4,7 +4,8 @@ import MobileNav from "@/app/components/MobileNav";
 import DesktopNav from "@/app/components/DesktopNav";
 import LandingSearch from "@/app/components/LandingSearch";
 import Image from "next/image";
-import FeaturesSection from "./components/ui/FeaturesSection";
+import FeatureSection from "./components/ui/FeatureSection";
+import PopularUniversities from "./components/PopularUniversities";
 
 export default function Home() {
   return (
@@ -40,7 +41,8 @@ export default function Home() {
           <LandingSearch />
         </div>
       </main>
-      <FeaturesSection />
+      <PopularUniversities />
+      <FeatureSection />
     </div>
   );
 }

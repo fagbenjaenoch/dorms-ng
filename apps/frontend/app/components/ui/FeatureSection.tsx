@@ -1,12 +1,10 @@
 import { FaBolt } from "react-icons/fa6";
 
-export default function FeaturesSection() {
+export default function FeatureSection() {
   return (
     <section>
       <div className="container">
-        <h2 className="font-sans text-2xl font-bold mb-4">
-          Book your perfect accomodation
-        </h2>
+        <h2>Book your perfect accomodation</h2>
         <div className="flex flex-col gap-8 lg:flex-row lg:gap-4">
           <div className="bg-fuchsia-500/20 px-4 py-8 rounded-3xl">
             <FaBolt size={15} className="mb-4" />
