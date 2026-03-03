@@ -1,3 +1,3 @@
 export default function BrandIcon() {
-  return <span>🏠 Logo name</span>;
+  return <span className="font-sans">🏠 Logo name</span>;
 }
