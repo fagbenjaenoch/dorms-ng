@@ -17,13 +17,11 @@ import (
 func main() {
 	router := mux.NewRouter()
 
-	// v1Router := router.PathPrefix("/api/v1")
-
-	router.HandleFunc("/api/v1", func(w http.ResponseWriter, r *http.Request) {
+	router.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		helloMessage := Response{
 			Success: true,
 			Status:  200,
-			Message: "hello from go server",
+			Message: "server is up and running",
 		}
 
 		ReturnJSONReponse(w, helloMessage)
