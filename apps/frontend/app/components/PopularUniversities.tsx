@@ -3,7 +3,7 @@ import UniversityCard from "./ui/UniversityCard";
 export default function PopularUniversities() {
   return (
     <section>
-      <div className="container">
+      <div className="container px-32">
         <h2>Popular Universities</h2>
         <div className="flex flex-wrap gap-4">
           <UniversityCard name="University of Ilorin" imageUrl="/unilorin.webp" />
