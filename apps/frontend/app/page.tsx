@@ -6,6 +6,7 @@ import LandingSearch from "@/app/components/LandingSearch";
 import Image from "next/image";
 import FeatureSection from "./components/ui/FeatureSection";
 import PopularUniversities from "./components/PopularUniversities";
+import CtaSection from "./components/CtaSection";
 
 export default function Home() {
   return (
@@ -43,16 +44,7 @@ export default function Home() {
       </main>
       <PopularUniversities />
       <FeatureSection />
-      <section>
-        <div className="container">
-          <div className="py-32 text-center">
-            <h2>Ready to secure your space?</h2>
-            <button className="bg-blue-500 text-white p-4 rounded-2xl cursor-pointer hover:bg-blue-600 transition-all">
-              Get started for free
-            </button>
-          </div>
-        </div>
-      </section>
+      <CtaSection />
     </div>
   );
 }
