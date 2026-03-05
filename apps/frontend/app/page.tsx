@@ -33,8 +33,15 @@ export default function Home() {
             src="/verified.webp"
             width={100}
             height={200}
-            alt="Verified"
+            alt="Verified icon"
             className="absolute top-10 -right-10 lg:right-20"
+          />
+          <Image
+            src="/handshake_black.webp"
+            width={120}
+            height={200}
+            alt="Handshake icon"
+            className="absolute bottom-50 left-10 lg:left-80"
           />
         </div>
         <div className="relative flex flex-col items-center gap-10 py-32 px-8">
