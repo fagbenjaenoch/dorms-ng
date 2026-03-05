@@ -11,7 +11,7 @@ import Footer from "./components/ui/Footer";
 
 export default function Home() {
   return (
-    <div className="bg-zinc-50 text-gray-900">
+    <div className="bg-zinc-50 text-gray-900 overflow-hidden">
       <nav>
         <DesktopNav />
         <MobileNav />
