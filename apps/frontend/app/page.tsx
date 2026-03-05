@@ -28,6 +28,15 @@ export default function Home() {
             backgroundSize: "100% 100%",
           }}
         />
+        <div className="absolute inset-0">
+          <Image
+            src="/verified.webp"
+            width={100}
+            height={200}
+            alt="Verified"
+            className="absolute top-10 -right-10 lg:right-20"
+          />
+        </div>
         <div className="relative flex flex-col items-center gap-10 py-32 px-8">
           <h1 className="font-sans text-5xl font-extrabold text-center">
             Find <span className="underline">hostels</span> on any <br />
