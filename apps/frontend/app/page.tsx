@@ -7,6 +7,7 @@ import Image from "next/image";
 import FeatureSection from "./components/ui/FeatureSection";
 import PopularUniversities from "./components/PopularUniversities";
 import CtaSection from "./components/CtaSection";
+import Footer from "./components/ui/Footer";
 
 export default function Home() {
   return (
@@ -45,6 +46,7 @@ export default function Home() {
       <PopularUniversities />
       <FeatureSection />
       <CtaSection />
+      <Footer />
     </div>
   );
 }
