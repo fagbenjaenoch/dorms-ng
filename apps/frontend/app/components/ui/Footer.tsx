@@ -28,7 +28,7 @@ export default function Footer() {
                 cum eius maxime tenetur a laboriosam itaque aut nemo ipsum!
               </p>
             </div>
-            <div className="flex justify-center gap-4 text-gray-500/60 lg:justify-between">
+            <div className="flex gap-4 text-gray-500/60 justify-between">
               <p>
                 Made by <span className="text-gray-500">Enoch</span>
               </p>
