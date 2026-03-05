@@ -11,7 +11,7 @@ export default function UniversityCard({ name, imageUrl }: UniversityCardProps) 
       <Image
         src={imageUrl}
         alt={name}
-        width={200}
+        width={500}
         height={200}
         className="relative group-hover:scale-110 transition-transform duration-300"
         loading="lazy"
