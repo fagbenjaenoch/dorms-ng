@@ -2,7 +2,7 @@ import { FaSearch } from "react-icons/fa";
 
 export default function LandingSearch() {
   return (
-    <div className="relative text-xl px-8 py-4 w-160 flex items-center gap-4 ring ring-gray-900/40 rounded-full text-gray-900/40">
+    <div className="relative text-xl px-8 py-4 w-120 lg:w-160 flex items-center gap-4 ring ring-gray-900/40 rounded-full text-gray-900/40">
       <input
         type="text"
         className="w-full mr-8"
