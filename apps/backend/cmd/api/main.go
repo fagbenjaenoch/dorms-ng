@@ -54,7 +54,7 @@ func main() {
 
 	go func() {
 		if err := server.Run(); err != nil && !errors.Is(err, http.ErrServerClosed) {
-			fmt.Printf("Failed to start server: %v\n", err)
+			logger.Err(err).Msg("Failed to start server")
 		}
 	}()
 
@@ -66,12 +66,12 @@ func main() {
 	// Doesn't block if no connections, but will otherwise wait until the timeout deadline
 	ctx, cancel := context.WithTimeout(context.Background(), DefaultContextTimeout*time.Second)
 	if err := server.Shutdown(ctx); err != nil {
-		fmt.Printf("Server forced to shutdown: %v\n", err)
+		logger.Err(err).Msg("Failed to shutdown server")
 	}
 	stop()
 	cancel()
 
-	fmt.Println("Server exited properly")
+	logger.Info().Msg("Server exited properly")
 }
 
 type Response struct {
