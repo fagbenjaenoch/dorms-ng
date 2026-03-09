@@ -3,17 +3,21 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"os"
 	"os/signal"
-	"syscall"
 	"time"
 
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/config"
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/logger"
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/server"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 )
+
+const DefaultContextTimeout = 10
 
 func main() {
 	cfg, err := config.LoadConfig()
@@ -21,6 +25,8 @@ func main() {
 		fmt.Printf("Error loading config: %v\n", err)
 		os.Exit(1)
 	}
+
+	logger := logger.New(cfg)
 
 	router := mux.NewRouter()
 
@@ -42,38 +48,30 @@ func main() {
 		MaxAge:           300,
 	})
 
-	server := &http.Server{
-		Addr:    ":" + cfg.Server.Port,
-		Handler: corsMiddleware.Handler(router),
-	}
+	server, err := server.New(cfg, &logger)
+
+	server.SetupHttpServer(corsMiddleware.Handler(router))
 
 	go func() {
-		if err := server.ListenAndServe(); err != nil {
-			if err != http.ErrServerClosed {
-				fmt.Printf("HTTP server error: %v\n", err)
-			}
+		if err := server.Run(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			fmt.Printf("Failed to start server: %v\n", err)
 		}
 	}()
 
-	fmt.Println("Server started on port ", cfg.Server.Port)
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
+	<-ctx.Done()
 
-	quit := make(chan os.Signal, 1)
-	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
-	<-quit
 	fmt.Println("Server shutting down...")
 
-	// Create a deadline to wait for
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
 	// Doesn't block if no connections, but will otherwise wait until the timeout deadline
+	ctx, cancel := context.WithTimeout(context.Background(), DefaultContextTimeout*time.Second)
 	if err := server.Shutdown(ctx); err != nil {
 		fmt.Printf("Server forced to shutdown: %v\n", err)
 	}
+	stop()
+	cancel()
 
 	fmt.Println("Server exited properly")
-
-	http.ListenAndServe("8080", router)
 }
 
 type Response struct {

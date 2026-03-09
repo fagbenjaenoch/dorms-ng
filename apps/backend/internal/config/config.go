@@ -14,10 +14,12 @@ import (
 type Config struct {
 	Primary Primary `koanf:"primary" validate:"required"`
 	Server  Server  `koanf:"server" validate:"required"`
+	Logging Logging `koanf:"logging" validate:"required"`
 }
 
 type Primary struct {
-	Env string `koanf:"env" validate:"required"`
+	Env         string `koanf:"env" validate:"required"`
+	ServiceName string `koanf:"env" validate:"required"`
 }
 
 type Server struct {
@@ -28,7 +30,11 @@ type Server struct {
 	CORSAllowedOrigins []string `koanf:"cors_allowed_origins" validate:"required"`
 }
 
-func LoadConfig() (Config, error) {
+type Logging struct {
+	Format string `koanf:"format" validate:"required"`
+}
+
+func LoadConfig() (*Config, error) {
 	logger := zerolog.New(zerolog.ConsoleWriter{Out: os.Stdout}).With().Timestamp().Logger()
 
 	k := koanf.New(".")
@@ -50,5 +56,5 @@ func LoadConfig() (Config, error) {
 		logger.Fatal().Err(err).Msg("failed to validate config")
 	}
 
-	return cfg, nil
+	return &cfg, nil
 }
