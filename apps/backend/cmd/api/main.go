@@ -10,11 +10,18 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/config"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 )
 
 func main() {
+	cfg, err := config.LoadConfig()
+	if err != nil {
+		fmt.Printf("Error loading config: %v\n", err)
+		os.Exit(1)
+	}
+
 	router := mux.NewRouter()
 
 	router.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
@@ -36,7 +43,7 @@ func main() {
 	})
 
 	server := &http.Server{
-		Addr:    ":8080",
+		Addr:    ":" + cfg.Server.Port,
 		Handler: corsMiddleware.Handler(router),
 	}
 
@@ -48,7 +55,7 @@ func main() {
 		}
 	}()
 
-	fmt.Println("Server started on port " + "8080")
+	fmt.Println("Server started on port ", cfg.Server.Port)
 
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
