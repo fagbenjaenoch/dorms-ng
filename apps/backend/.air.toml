@@ -5,10 +5,12 @@ tmp_dir = "tmp"
 
 [build]
 # Just plain old shell command. You could use `make` as well.
-cmd = "go build -o ./tmp/main ."
+cmd = "go build -o ./tmp/main ./cmd/api/main.go"
 # Binary file yields from `cmd`.
 bin = "tmp/main"
 # Watch these filename extensions.
 include_ext = ["go", "tpl", "tmpl", "html"]
 # Exclude files.
 exclude_dir = ["assets", "tmp", "vendor", "testdata"]
+
+include_dir = ["cmd", "internal"]

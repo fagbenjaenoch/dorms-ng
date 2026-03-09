@@ -21,7 +21,7 @@ func main() {
 		helloMessage := Response{
 			Success: true,
 			Status:  200,
-			Message: "server is up and running",
+			Message: "server is healthy",
 		}
 
 		ReturnJSONReponse(w, helloMessage)
