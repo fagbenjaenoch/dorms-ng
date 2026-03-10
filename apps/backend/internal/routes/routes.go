@@ -3,6 +3,7 @@ package routes
 import (
 	"net/http"
 
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/handlers"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 )
@@ -10,7 +11,7 @@ import (
 func New() *mux.Router {
 	router := mux.NewRouter()
 
-	router.HandleFunc("/health").Methods(http.MethodGet)
+	router.HandleFunc("/health", handlers.HealthHandler).Methods(http.MethodGet)
 
 	corsMiddleware := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
