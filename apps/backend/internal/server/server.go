@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"database/sql"
 	"errors"
 	"net/http"
 	"time"
@@ -14,12 +15,14 @@ type Server struct {
 	Config     *config.Config
 	httpServer *http.Server
 	Logger     *zerolog.Logger
+	Db         *sql.DB
 }
 
-func New(config *config.Config, logger *zerolog.Logger) (*Server, error) {
+func New(config *config.Config, db *sql.DB, logger *zerolog.Logger) (*Server, error) {
 	return &Server{
 		Config: config,
 		Logger: logger,
+		Db:     db,
 	}, nil
 }
 
@@ -47,5 +50,15 @@ func (s *Server) Run() error {
 }
 
 func (s *Server) Shutdown(ctx context.Context) error {
-	return s.httpServer.Shutdown(ctx)
+	if err := s.httpServer.Shutdown(ctx); err != nil {
+		s.Logger.Err(err).Msg("failed to shutdown HTTP server")
+		return err
+	}
+
+	if err := s.Db.Close(); err != nil {
+		s.Logger.Err(err).Msg("failed to close database")
+		return err
+	}
+
+	return nil
 }

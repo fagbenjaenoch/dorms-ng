@@ -8,6 +8,7 @@ require (
 	github.com/joho/godotenv v1.5.1
 	github.com/knadh/koanf/providers/env v1.1.0
 	github.com/knadh/koanf/v2 v2.3.3
+	github.com/mattn/go-sqlite3 v1.14.34
 	github.com/rs/cors v1.11.1
 	github.com/rs/zerolog v1.34.0
 )
