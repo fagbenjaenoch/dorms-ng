@@ -25,3 +25,11 @@ node_modules/
 **/tmp/
 **/main
 **/build-errors.log
+
+# --- Database Files ---
+*.sqlite
+*.sqlite3
+*.db
+*.db3
+/*.sqlite-journal
+/*.sqlite3-journal
