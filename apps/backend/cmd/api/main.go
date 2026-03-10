@@ -24,6 +24,7 @@ func main() {
 	}
 
 	logger := logger.New(cfg)
+
 	db, err := database.New(&logger)
 	if err != nil {
 		logger.Err(err).Msg("failed to connect to database")
@@ -32,7 +33,7 @@ func main() {
 
 	srv, err := server.New(cfg, db, &logger)
 
-	srv.SetupHttpServer(routes.New())
+	srv.SetupHttpServer(routes.New(srv))
 
 	go func() {
 		if err := srv.Run(); err != nil && !errors.Is(err, http.ErrServerClosed) {

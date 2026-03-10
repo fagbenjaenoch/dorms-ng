@@ -15,14 +15,14 @@ type Server struct {
 	Config     *config.Config
 	httpServer *http.Server
 	Logger     *zerolog.Logger
-	Db         *sql.DB
+	DB         *sql.DB
 }
 
 func New(config *config.Config, db *sql.DB, logger *zerolog.Logger) (*Server, error) {
 	return &Server{
 		Config: config,
 		Logger: logger,
-		Db:     db,
+		DB:     db,
 	}, nil
 }
 
@@ -54,7 +54,7 @@ func (s *Server) Shutdown(ctx context.Context) error {
 		return err
 	}
 
-	if err := s.Db.Close(); err != nil {
+	if err := s.DB.Close(); err != nil {
 		s.Logger.Err(err).Msg("failed to close database")
 		return err
 	}

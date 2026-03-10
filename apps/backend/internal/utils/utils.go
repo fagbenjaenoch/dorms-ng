@@ -7,7 +7,7 @@ import (
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
 )
 
-func ReturnJSONReponse(w http.ResponseWriter, response dto.HttpResponse) {
+func SendJSONReponse(w http.ResponseWriter, response dto.HttpResponse) {
 	responseJSON, err := json.Marshal(response)
 
 	if err != nil {

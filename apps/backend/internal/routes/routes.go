@@ -4,14 +4,16 @@ import (
 	"net/http"
 
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/handlers"
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/server"
 	"github.com/gorilla/mux"
 	"github.com/rs/cors"
 )
 
-func New() *mux.Router {
+func New(s *server.Server) *mux.Router {
 	router := mux.NewRouter()
 
-	router.HandleFunc("/health", handlers.HealthHandler).Methods(http.MethodGet)
+	healthHandler := handlers.NewHealthHandler(s)
+	router.HandleFunc("/health", healthHandler.CheckHealth).Methods(http.MethodGet)
 
 	corsMiddleware := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
