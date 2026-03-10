@@ -61,7 +61,7 @@ func main() {
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
 	<-ctx.Done()
 
-	fmt.Println("Server shutting down...")
+	logger.Info().Msg("Server shutting down...")
 
 	// Doesn't block if no connections, but will otherwise wait until the timeout deadline
 	ctx, cancel := context.WithTimeout(context.Background(), DefaultContextTimeout*time.Second)

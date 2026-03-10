@@ -19,7 +19,7 @@ type Config struct {
 
 type Primary struct {
 	Env         string `koanf:"env" validate:"required"`
-	ServiceName string `koanf:"env" validate:"required"`
+	ServiceName string `koanf:"servicename" validate:"required"`
 }
 
 type Server struct {
