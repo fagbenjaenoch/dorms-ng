@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/config"
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/logger"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/server"
 	"github.com/gorilla/mux"
@@ -31,7 +32,7 @@ func main() {
 	router := mux.NewRouter()
 
 	router.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
-		helloMessage := Response{
+		helloMessage := dto.HttpResponse{
 			Success: true,
 			Status:  200,
 			Message: "server is healthy",
@@ -48,12 +49,12 @@ func main() {
 		MaxAge:           300,
 	})
 
-	server, err := server.New(cfg, &logger)
+	srv, err := server.New(cfg, &logger)
 
-	server.SetupHttpServer(corsMiddleware.Handler(router))
+	srv.SetupHttpServer(corsMiddleware.Handler(router))
 
 	go func() {
-		if err := server.Run(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+		if err := srv.Run(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			logger.Err(err).Msg("Failed to start server")
 		}
 	}()
@@ -65,7 +66,7 @@ func main() {
 
 	// Doesn't block if no connections, but will otherwise wait until the timeout deadline
 	ctx, cancel := context.WithTimeout(context.Background(), DefaultContextTimeout*time.Second)
-	if err := server.Shutdown(ctx); err != nil {
+	if err := srv.Shutdown(ctx); err != nil {
 		logger.Err(err).Msg("Failed to shutdown server")
 	}
 	stop()
@@ -74,14 +75,7 @@ func main() {
 	logger.Info().Msg("Server exited properly")
 }
 
-type Response struct {
-	Success bool   `json:"success"`
-	Status  int    `json:"status"`
-	Message string `json:"message"`
-	Payload any    `json:"payload"`
-}
-
-func ReturnJSONReponse(w http.ResponseWriter, response Response) {
+func ReturnJSONReponse(w http.ResponseWriter, response dto.HttpResponse) {
 	responseJSON, err := json.Marshal(response)
 
 	if err != nil {
