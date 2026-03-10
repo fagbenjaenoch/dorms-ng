@@ -43,7 +43,6 @@ func (s *Server) Run() error {
 
 	s.Logger.Info().
 		Str("port", s.Config.Server.Port).
-		Str("env", s.Config.Primary.Env).
 		Msg("starting server")
 
 	return s.httpServer.ListenAndServe()
