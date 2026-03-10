@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -11,11 +10,9 @@ import (
 	"time"
 
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/config"
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/logger"
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/routes"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/server"
-	"github.com/gorilla/mux"
-	"github.com/rs/cors"
 )
 
 const DefaultContextTimeout = 10
@@ -29,29 +26,9 @@ func main() {
 
 	logger := logger.New(cfg)
 
-	router := mux.NewRouter()
-
-	router.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
-		helloMessage := dto.HttpResponse{
-			Success: true,
-			Status:  200,
-			Message: "server is healthy",
-		}
-
-		ReturnJSONReponse(w, helloMessage)
-	}).Methods(http.MethodGet)
-
-	corsMiddleware := cors.New(cors.Options{
-		AllowedOrigins:   []string{"*"},
-		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowedHeaders:   []string{"*"},
-		AllowCredentials: true,
-		MaxAge:           300,
-	})
-
 	srv, err := server.New(cfg, &logger)
 
-	srv.SetupHttpServer(corsMiddleware.Handler(router))
+	srv.SetupHttpServer(routes.New())
 
 	go func() {
 		if err := srv.Run(); err != nil && !errors.Is(err, http.ErrServerClosed) {
@@ -73,18 +50,4 @@ func main() {
 	cancel()
 
 	logger.Info().Msg("Server exited properly")
-}
-
-func ReturnJSONReponse(w http.ResponseWriter, response dto.HttpResponse) {
-	responseJSON, err := json.Marshal(response)
-
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("Internal Server Error"))
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(response.Status)
-	w.Write(responseJSON)
 }
