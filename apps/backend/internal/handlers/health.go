@@ -6,16 +6,17 @@ import (
 
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/server"
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/utils"
 )
 
 type HealthHandler struct {
-	Handler
+	BaseHandler
 }
 
 func NewHealthHandler(s *server.Server) *HealthHandler {
 	return &HealthHandler{
-		Handler: NewHandler(s),
+		BaseHandler: BaseHandler{
+			server: s,
+		},
 	}
 }
 
@@ -36,7 +37,7 @@ func (h *HealthHandler) CheckHealth(w http.ResponseWriter, r *http.Request) {
 		checks["database"] = "ok"
 	}
 
-	response := dto.HttpResponse{
+	response := dto.StructuredResponse{
 		Success: true,
 		Status:  200,
 		Message: "server is healthy",
@@ -47,5 +48,5 @@ func (h *HealthHandler) CheckHealth(w http.ResponseWriter, r *http.Request) {
 		},
 	}
 
-	utils.SendJSONReponse(w, response)
+	h.ReturnJSONResponse(w, response)
 }
