@@ -20,13 +20,33 @@ func NewUserRepository(db *sql.DB, logger *zerolog.Logger) UserRepository {
 	}
 }
 
-func (ur *UserRepository) GetAllUsers(ctx context.Context) {
+type User struct {
+	ID          int    `json:"id"`
+	FullName    string `json:"full_name"`
+	Institution string `json:"institution"`
+	CreatedAt   string `json:"created_at"`
+	UpdatedAt   string `json:"updated_at"`
+}
+
+func (ur *UserRepository) GetAllUsers(ctx context.Context) []User {
 	db := ur.DB
 
-	r, err := db.ExecContext(ctx, "select * from users u left join users_profile up on u.id = up.user_id")
+	r, err := db.QueryContext(ctx, "select * from users ")
 	if err != nil {
 		ur.Logger.Err(err).Msg("could not execute query")
 	}
+	defer r.Close()
 
-	ur.Logger.Debug().Msgf("query result: %v", r)
+	var users []User
+	for r.Next() {
+		var user User
+		if err := r.Scan(&user.ID,
+			&user.FullName, &user.Institution,
+			&user.CreatedAt, &user.UpdatedAt); err != nil {
+			ur.Logger.Err(err).Msg("could not scan row")
+		}
+		users = append(users, user)
+	}
+
+	return users
 }
