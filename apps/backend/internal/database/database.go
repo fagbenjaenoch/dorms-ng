@@ -8,7 +8,7 @@ import (
 )
 
 func New(logger *zerolog.Logger) (*sql.DB, error) {
-	db, err := sql.Open("sqlite3", "./data.db")
+	db, err := sql.Open("sqlite3", "./internal/database/data.db")
 	if err != nil {
 		return nil, err
 	}

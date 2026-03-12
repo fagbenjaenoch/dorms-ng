@@ -26,12 +26,12 @@ type HealthCheckPayload struct {
 	Checks      map[string]string `json:"checks"`
 }
 
-func (h *HealthHandler) CheckHealth(w http.ResponseWriter, r *http.Request) {
-	h.server.Logger.Info().Msg("health check")
+func (hh *HealthHandler) CheckHealth(w http.ResponseWriter, r *http.Request) {
+	hh.server.Logger.Info().Msg("health check")
 
 	checks := make(map[string]string)
 
-	if err := h.server.DB.Ping(); err != nil {
+	if err := hh.server.DB.Ping(); err != nil {
 		checks["database"] = "unhealthy"
 	} else {
 		checks["database"] = "ok"
@@ -43,10 +43,10 @@ func (h *HealthHandler) CheckHealth(w http.ResponseWriter, r *http.Request) {
 		Message: "server is healthy",
 		Payload: HealthCheckPayload{
 			Timestamp:   time.Now().UTC().String(),
-			Environment: h.server.Config.Primary.Env,
+			Environment: hh.server.Config.Primary.Env,
 			Checks:      checks,
 		},
 	}
 
-	h.ReturnJSONResponse(w, response)
+	hh.ReturnJSONResponse(w, response)
 }
