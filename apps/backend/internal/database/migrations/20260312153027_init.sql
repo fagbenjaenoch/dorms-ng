@@ -58,8 +58,7 @@ CREATE TABLE hostels (
   distance_to_gate_km REAL,
   eta_walking_mins INTEGER,
 
-  -- Media & Status
-  is_verified_by_admin BOOLEAN DEFAULT 0,
+  is_verified_by_admin BOOLEAN DEFAULT FALSE,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
