@@ -22,16 +22,15 @@ func NewUserService(db *sql.DB, logger *zerolog.Logger) UserService {
 	}
 }
 
-func (us *UserService) CreateUser(ctx context.Context, u dto.CreateUserDto) dto.StructuredResponse {
+func (us *UserService) CreateUser(ctx context.Context, u dto.CreateUserDto) (dto.StructuredResponse, error) {
 	user, err := us.userRepo.CreateUser(ctx, u)
 	if err != nil {
-		us.Logger.Err(err).Msg("could not create user")
 		return dto.StructuredResponse{
 			Success: false,
 			Status:  http.StatusInternalServerError,
 			Message: "could not create user",
 			Payload: nil,
-		}
+		}, err
 	}
 	return dto.StructuredResponse{
 		Success: true,
@@ -44,7 +43,7 @@ func (us *UserService) CreateUser(ctx context.Context, u dto.CreateUserDto) dto.
 			FullName: user.FullName,
 			Email:    user.Email,
 		},
-	}
+	}, nil
 }
 
 func (us *UserService) GetUserByEmail(ctx context.Context, email string) dto.StructuredResponse {

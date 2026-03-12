@@ -27,7 +27,17 @@ func (uh *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	uh.DecodeJSONBody(w, r, &u)
 
 	uh.server.Logger.Debug().Str("email", u.Email)
-	res := uh.UserService.CreateUser(r.Context(), u)
+	res, err := uh.UserService.CreateUser(r.Context(), u)
+	if err != nil {
+		uh.server.Logger.Err(err).Msg("could not create user")
+		uh.ReturnJSONResponse(w, dto.StructuredResponse{
+			Success: false,
+			Status:  http.StatusInternalServerError,
+			Message: "could not create user",
+			Payload: nil,
+		})
+		return
+	}
 
 	uh.server.Logger.Info().Msg("successfully created user")
 	uh.ReturnJSONResponse(w, res)
