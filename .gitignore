@@ -34,3 +34,4 @@ node_modules/
 *.sqlite-journal
 *.sqlite3-journal
 *.db-journal
+*.sqbpro
