@@ -31,6 +31,6 @@ node_modules/
 *.sqlite3
 *.db
 *.db3
-/*.sqlite-journal
-/*.sqlite3-journal
-/*.db-journal
+*.sqlite-journal
+*.sqlite3-journal
+*.db-journal
