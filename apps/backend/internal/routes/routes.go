@@ -26,6 +26,7 @@ func New(s *server.Server) *mux.Router {
 	router.Use(corsMiddleware.Handler)
 
 	userHandler := handlers.NewUserHandler(s)
-	router.HandleFunc("/api/v1/users", userHandler.GetAllUsers).Methods(http.MethodGet)
+	router.HandleFunc("/api/v1/users", userHandler.GetUser).Methods(http.MethodGet)
+	router.HandleFunc("/api/v1/users", userHandler.CreateUser).Methods(http.MethodPost)
 	return router
 }

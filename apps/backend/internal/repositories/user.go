@@ -4,6 +4,9 @@ import (
 	"context"
 	"database/sql"
 
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/database/models"
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
+	"github.com/google/uuid"
 	"github.com/rs/zerolog"
 )
 
@@ -14,8 +17,8 @@ type UserRepository struct {
 func NewUserRepository(db *sql.DB, logger *zerolog.Logger) UserRepository {
 	return UserRepository{
 		BaseRepository: BaseRepository{
-			DB:     db,
-			Logger: logger,
+			Queries: models.New(db),
+			Logger:  logger,
 		},
 	}
 }
@@ -28,25 +31,27 @@ type User struct {
 	UpdatedAt   string `json:"updated_at"`
 }
 
-func (ur *UserRepository) GetAllUsers(ctx context.Context) []User {
-	db := ur.DB
+func (ur *UserRepository) CreateUser(ctx context.Context, user dto.CreateUserDto) (*models.User, error) {
+	var u models.CreateUserParams
+	u.ID = uuid.New().String()
+	u.FullName = user.FullName
+	u.Email = user.Email
+	u.Role = user.Role
 
-	r, err := db.QueryContext(ctx, "select * from users ")
+	cu, err := ur.Queries.CreateUser(ctx, u)
+	if err != nil {
+		return nil, err
+	}
+
+	return &cu, nil
+}
+
+func (ur *UserRepository) GetUserByEmail(ctx context.Context, email string) (*models.User, error) {
+	u, err := ur.Queries.GetUserByEmail(ctx, email)
 	if err != nil {
 		ur.Logger.Err(err).Msg("could not execute query")
-	}
-	defer r.Close()
-
-	var users []User
-	for r.Next() {
-		var user User
-		if err := r.Scan(&user.ID,
-			&user.FullName, &user.Institution,
-			&user.CreatedAt, &user.UpdatedAt); err != nil {
-			ur.Logger.Err(err).Msg("could not scan row")
-		}
-		users = append(users, user)
+		return nil, err
 	}
 
-	return users
+	return &u, nil
 }

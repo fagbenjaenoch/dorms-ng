@@ -1,12 +1,11 @@
 package repositories
 
 import (
-	"database/sql"
-
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/database/models"
 	"github.com/rs/zerolog"
 )
 
 type BaseRepository struct {
-	DB     *sql.DB
-	Logger *zerolog.Logger
+	Queries *models.Queries
+	Logger  *zerolog.Logger
 }
