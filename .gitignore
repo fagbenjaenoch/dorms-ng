@@ -33,3 +33,4 @@ node_modules/
 *.db3
 /*.sqlite-journal
 /*.sqlite3-journal
+/*.db-journal
