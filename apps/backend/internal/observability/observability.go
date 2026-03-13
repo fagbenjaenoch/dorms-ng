@@ -29,7 +29,7 @@ func (o *Observability) InitTracer() (func(context.Context) error, error) {
 	exporter, err := otlptracehttp.New(
 		ctx,
 		otlptracehttp.WithEndpoint(o.s.Config.Observability.Endpoint),
-		// otlptracehttp.WithInsecure(), // for development
+		otlptracehttp.WithCompression(gzip.CompressLevelDefault),
 	)
 	if err != nil {
 		return nil, err
