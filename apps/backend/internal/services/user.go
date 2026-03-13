@@ -8,7 +8,11 @@ import (
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/repositories"
 	"github.com/rs/zerolog"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/attribute"
 )
+
+var tracer = otel.Tracer("user-service")
 
 type UserService struct {
 	userRepo repositories.UserRepository
@@ -23,8 +27,14 @@ func NewUserService(db *sql.DB, logger *zerolog.Logger) UserService {
 }
 
 func (us *UserService) CreateUser(ctx context.Context, u dto.CreateUserDto) (dto.StructuredResponse, error) {
-	user, err := us.userRepo.CreateUser(ctx, u)
+	tracerCtx, span := tracer.Start(ctx, "UserService.CreateUser")
+	defer span.End()
+
+	user, err := us.userRepo.CreateUser(tracerCtx, u)
 	if err != nil {
+		span.RecordError(err)
+		span.SetStatus(http.StatusInternalServerError, "create user db error")
+
 		return dto.StructuredResponse{
 			Success: false,
 			Status:  http.StatusInternalServerError,
@@ -32,14 +42,20 @@ func (us *UserService) CreateUser(ctx context.Context, u dto.CreateUserDto) (dto
 			Payload: nil,
 		}, err
 	}
+
+	span.SetAttributes(attribute.String("user_id", user.ID))
+	span.SetStatus(http.StatusCreated, "successfully created user")
+
 	return dto.StructuredResponse{
 		Success: true,
 		Status:  201,
 		Message: "created user",
 		Payload: struct {
+			ID       string `json:"id"`
 			FullName string `json:"full_name"`
 			Email    string `json:"email"`
 		}{
+			ID:       user.ID,
 			FullName: user.FullName,
 			Email:    user.Email,
 		},

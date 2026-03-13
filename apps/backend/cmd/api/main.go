@@ -35,6 +35,15 @@ func main() {
 
 	srv, err := server.New(cfg, db, &logger)
 
+	obs := observability.NewObservability(srv)
+
+	shutdown, err := obs.InitTracer()
+	if err != nil {
+		logger.Err(err).Msg("failed to initialize observability")
+		os.Exit(1)
+	}
+	defer shutdown(context.Background())
+
 	srv.SetupHttpServer(routes.New(srv))
 
 	go func() {

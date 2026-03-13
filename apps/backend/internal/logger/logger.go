@@ -31,7 +31,7 @@ func New(cfg *config.Config) zerolog.Logger {
 	logger := zerolog.New(writer).
 		With().
 		Timestamp().
-		Str("service", cfg.Primary.ServiceName).
+		Str("service", cfg.Observability.ServiceName).
 		Str("environment", cfg.Primary.Env).
 		Logger()
 	return logger

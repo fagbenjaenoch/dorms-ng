@@ -10,6 +10,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	chiMiddleware "github.com/go-chi/chi/v5/middleware"
 	"github.com/rs/cors"
+	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 )
 
 func New(s *server.Server) *chi.Mux {
@@ -24,16 +25,27 @@ func New(s *server.Server) *chi.Mux {
 	})
 
 	// global middleware
+	r.Use(chiMiddleware.RequestID)
 	r.Use(chiMiddleware.RealIP)
 	r.Use(middleware.RequestLogger(s.Logger))
 	r.Use(corsMiddleware.Handler)
 	r.Use(chiMiddleware.Recoverer)
 
+	// initialize observability
+	r.Use(func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if r.URL.Path == "/health" || r.URL.Path == "/metrics" { // skip /health and /metrics to prevent unnecessary overhead
+				next.ServeHTTP(w, r)
+				return
+			}
+			otelhttp.NewHandler(next, s.Config.Observability.ServiceName).ServeHTTP(w, r)
+		})
+	})
+
 	healthHandler := handlers.NewHealthHandler(s)
 	r.Get("/health", healthHandler.CheckHealth)
 
 	v1Router := RegisterV1Routes(s)
-
 	r.Mount("/api/v1", v1Router)
 
 	// Walk the router to log all routes
