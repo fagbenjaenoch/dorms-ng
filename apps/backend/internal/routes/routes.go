@@ -2,8 +2,10 @@ package routes
 
 import (
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/handlers"
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/middleware"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/server"
 	"github.com/go-chi/chi/v5"
+	chiMiddleware "github.com/go-chi/chi/v5/middleware"
 	"github.com/rs/cors"
 )
 
@@ -18,7 +20,11 @@ func New(s *server.Server) *chi.Mux {
 		MaxAge:           300,
 	})
 
+	// global middleware
+	r.Use(chiMiddleware.RealIP)
+	r.Use(middleware.RequestLogger(s.Logger))
 	r.Use(corsMiddleware.Handler)
+	r.Use(chiMiddleware.Recoverer)
 
 	healthHandler := handlers.NewHealthHandler(s)
 	r.Get("/health", healthHandler.CheckHealth)

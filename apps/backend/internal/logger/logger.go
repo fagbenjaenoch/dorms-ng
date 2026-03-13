@@ -14,7 +14,18 @@ func New(cfg *config.Config) zerolog.Logger {
 
 	logFormat := cfg.Logging.Format
 	if logFormat == "console" {
-		writer = zerolog.ConsoleWriter{Out: os.Stdout, TimeFormat: "2006-01-02 15:04:05"}
+		writer = zerolog.ConsoleWriter{
+			Out:        os.Stdout,
+			TimeFormat: "2006-01-02 15:04:05",
+			FieldsOrder: []string{ // for request logging
+				"remote_addr",
+				"method",
+				"path",
+				"duration",
+				"environment",
+				"service",
+			},
+		}
 	}
 
 	logger := zerolog.New(writer).
