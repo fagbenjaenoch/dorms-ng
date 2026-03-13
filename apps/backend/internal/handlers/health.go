@@ -27,8 +27,6 @@ type HealthCheckPayload struct {
 }
 
 func (hh *HealthHandler) CheckHealth(w http.ResponseWriter, r *http.Request) {
-	hh.server.Logger.Info().Msg("health check")
-
 	checks := make(map[string]string)
 
 	if err := hh.server.DB.Ping(); err != nil {
