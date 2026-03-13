@@ -6,6 +6,7 @@ import (
 
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/config"
 	"github.com/rs/zerolog"
+	"go.opentelemetry.io/contrib/bridges/otelzerolog"
 )
 
 func New(cfg *config.Config) zerolog.Logger {
@@ -28,11 +29,15 @@ func New(cfg *config.Config) zerolog.Logger {
 		}
 	}
 
+	// otel hook
+	otelHook := otelzerolog.NewHook(cfg.Observability.ServiceName)
+
 	logger := zerolog.New(writer).
 		With().
 		Timestamp().
-		Str("service", cfg.Primary.ServiceName).
+		Str("service", cfg.Observability.ServiceName).
 		Str("environment", cfg.Primary.Env).
-		Logger()
+		Logger().
+		Hook(otelHook)
 	return logger
 }

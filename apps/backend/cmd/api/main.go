@@ -11,6 +11,7 @@ import (
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/config"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/database"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/logger"
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/observability"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/routes"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/server"
 )
@@ -25,13 +26,37 @@ func main() {
 
 	logger := logger.New(cfg)
 
-	db, err := database.New(&logger)
+	db, reg, err := database.New(&logger)
 	if err != nil {
 		logger.Err(err).Msg("failed to connect to database")
 		os.Exit(1)
 	}
+	defer reg.Unregister() // unregister observability at the db level
 
 	srv, err := server.New(cfg, db, &logger)
+
+	obs := observability.NewObservability(srv)
+
+	// setup log, metrics and trace telemetry
+	shutdownFns, err := obs.SetupObservability()
+	if err != nil {
+		logger.Err(err).Msg("failed to initialize observability")
+		os.Exit(1)
+	}
+	defer func() {
+		shutdownCtx := context.Background()
+
+		var shutdownErr error
+		for _, fn := range shutdownFns {
+			if err := fn(shutdownCtx); err != nil {
+				shutdownErr = errors.Join(shutdownErr, err)
+			}
+		}
+
+		if shutdownErr != nil {
+			logger.Err(shutdownErr).Msg("failed to shutdown observability")
+		}
+	}()
 
 	srv.SetupHttpServer(routes.New(srv))
 
@@ -41,6 +66,7 @@ func main() {
 		}
 	}()
 
+	// shutdown sequence
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
 	<-ctx.Done()
 
