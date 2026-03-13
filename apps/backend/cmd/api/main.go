@@ -11,6 +11,7 @@ import (
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/config"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/database"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/logger"
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/observability"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/routes"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/server"
 )
@@ -25,11 +26,12 @@ func main() {
 
 	logger := logger.New(cfg)
 
-	db, err := database.New(&logger)
+	db, reg, err := database.New(&logger)
 	if err != nil {
 		logger.Err(err).Msg("failed to connect to database")
 		os.Exit(1)
 	}
+	defer reg.Unregister()
 
 	srv, err := server.New(cfg, db, &logger)
 
