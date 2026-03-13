@@ -3,6 +3,7 @@ package routes
 import (
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/handlers"
@@ -13,7 +14,6 @@ import (
 	"github.com/go-chi/httprate"
 	"github.com/riandyrn/otelchi"
 	"github.com/rs/cors"
-	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 )
 
 func New(s *server.Server) *chi.Mux {
@@ -35,19 +35,27 @@ func New(s *server.Server) *chi.Mux {
 	r.Use(httprate.LimitByIP(100, 1*time.Minute))
 	r.Use(chiMiddleware.Recoverer)
 
+	skipTelemetry := func(r *http.Request) bool {
+		if r.URL.Path == "/health" || r.URL.Path == "/metrics" {
+			return false
+		}
+
+		if strings.HasPrefix(r.URL.Path, "/docs/") {
+			return false
+		}
+
+		return true
+	}
+
 	// initialize observability middleware
-	r.Use(func(next http.Handler) http.Handler {
-		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			if r.URL.Path == "/health" || r.URL.Path == "/metrics" { // skip /health and /metrics to prevent unnecessary overhead
-				next.ServeHTTP(w, r)
-				return
-			}
-			otelhttp.NewHandler(next, s.Config.Observability.ServiceName).ServeHTTP(w, r)
-		})
-	})
+	r.Use(otelchi.Middleware(
+		s.Config.Observability.ServiceName,
+		otelchi.WithChiRoutes(r),
+		otelchi.WithFilter(skipTelemetry),
+	),
+	)
 
-	r.Use(otelchi.Middleware(s.Config.Observability.ServiceName, otelchi.WithChiRoutes(r)))
-
+	// main business
 	healthHandler := handlers.NewHealthHandler(s)
 	r.Get("/health", healthHandler.CheckHealth)
 
