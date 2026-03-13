@@ -9,6 +9,7 @@ import (
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/server"
 	"github.com/go-chi/chi/v5"
 	chiMiddleware "github.com/go-chi/chi/v5/middleware"
+	"github.com/riandyrn/otelchi"
 	"github.com/rs/cors"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 )
@@ -31,7 +32,7 @@ func New(s *server.Server) *chi.Mux {
 	r.Use(corsMiddleware.Handler)
 	r.Use(chiMiddleware.Recoverer)
 
-	// initialize observability
+	// initialize observability middleware
 	r.Use(func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			if r.URL.Path == "/health" || r.URL.Path == "/metrics" { // skip /health and /metrics to prevent unnecessary overhead
@@ -41,6 +42,8 @@ func New(s *server.Server) *chi.Mux {
 			otelhttp.NewHandler(next, s.Config.Observability.ServiceName).ServeHTTP(w, r)
 		})
 	})
+
+	r.Use(otelchi.Middleware(s.Config.Observability.ServiceName, otelchi.WithChiRoutes(r)))
 
 	healthHandler := handlers.NewHealthHandler(s)
 	r.Get("/health", healthHandler.CheckHealth)

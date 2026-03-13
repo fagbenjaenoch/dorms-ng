@@ -31,18 +31,31 @@ func main() {
 		logger.Err(err).Msg("failed to connect to database")
 		os.Exit(1)
 	}
-	defer reg.Unregister()
+	defer reg.Unregister() // unregister observability at the db level
 
 	srv, err := server.New(cfg, db, &logger)
 
 	obs := observability.NewObservability(srv)
 
-	shutdown, err := obs.InitTracer()
+	shutdownFns, err := obs.SetupObservability()
 	if err != nil {
 		logger.Err(err).Msg("failed to initialize observability")
 		os.Exit(1)
 	}
-	defer shutdown(context.Background())
+	defer func() {
+		shutdownCtx := context.Background()
+
+		var shutdownErr error
+		for _, fn := range shutdownFns {
+			if err := fn(shutdownCtx); err != nil {
+				shutdownErr = errors.Join(shutdownErr, err)
+			}
+		}
+
+		if shutdownErr != nil {
+			logger.Err(shutdownErr).Msg("failed to shutdown observability")
+		}
+	}()
 
 	srv.SetupHttpServer(routes.New(srv))
 
@@ -52,6 +65,7 @@ func main() {
 		}
 	}()
 
+	// shutdown sequence
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
 	<-ctx.Done()
 

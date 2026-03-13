@@ -35,9 +35,10 @@ type Logging struct {
 }
 
 type Observability struct {
-	ServiceName string `koanf:"service_name" validate:"required"`
-	Environment string `koanf:"environment" validate:"required"`
-	Endpoint    string `koanf:"endpoint" validate:"required"`
+	ServiceName     string `koanf:"service_name" validate:"required"`
+	Environment     string `koanf:"environment" validate:"required"`
+	Endpoint        string `koanf:"endpoint" validate:"required"`
+	LoggingEndpoint string `koanf:"logging_endpoint" validate:"required"`
 }
 
 func LoadConfig() (*Config, error) {
