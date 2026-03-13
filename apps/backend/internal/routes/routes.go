@@ -1,6 +1,9 @@
 package routes
 
 import (
+	"fmt"
+	"net/http"
+
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/handlers"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/middleware"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/server"
@@ -29,13 +32,23 @@ func New(s *server.Server) *chi.Mux {
 	healthHandler := handlers.NewHealthHandler(s)
 	r.Get("/health", healthHandler.CheckHealth)
 
-	v1Router := chi.NewRouter()
-
-	userHandler := handlers.NewUserHandler(s)
-
-	v1Router.Get("/users", userHandler.GetUser)
-	v1Router.Post("/users", userHandler.CreateUser)
+	v1Router := RegisterV1Routes()
 
 	r.Mount("/api/v1", v1Router)
+
+	// Walk the router to log all routes
+	PrintRoutes(r)
+
 	return r
+}
+
+func PrintRoutes(r *chi.Mux) {
+	walkFunc := func(method string, route string, handler http.Handler, middlewares ...func(http.Handler) http.Handler) error {
+		fmt.Printf("Method: %-7s Route: %s\n", method, route)
+		return nil
+	}
+
+	if err := chi.Walk(r, walkFunc); err != nil {
+		fmt.Printf("Logging err: %s\n", err.Error())
+	}
 }
