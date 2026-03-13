@@ -1,19 +1,14 @@
 package routes
 
 import (
-	"net/http"
-
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/handlers"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/server"
-	"github.com/gorilla/mux"
+	"github.com/go-chi/chi/v5"
 	"github.com/rs/cors"
 )
 
-func New(s *server.Server) *mux.Router {
-	router := mux.NewRouter()
-
-	healthHandler := handlers.NewHealthHandler(s)
-	router.HandleFunc("/health", healthHandler.CheckHealth).Methods(http.MethodGet)
+func New(s *server.Server) *chi.Mux {
+	r := chi.NewRouter()
 
 	corsMiddleware := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
@@ -23,10 +18,18 @@ func New(s *server.Server) *mux.Router {
 		MaxAge:           300,
 	})
 
-	router.Use(corsMiddleware.Handler)
+	r.Use(corsMiddleware.Handler)
+
+	healthHandler := handlers.NewHealthHandler(s)
+	r.Get("/health", healthHandler.CheckHealth)
+
+	v1Router := chi.NewRouter()
 
 	userHandler := handlers.NewUserHandler(s)
-	router.HandleFunc("/api/v1/users", userHandler.GetUser).Methods(http.MethodGet)
-	router.HandleFunc("/api/v1/users", userHandler.CreateUser).Methods(http.MethodPost)
-	return router
+
+	v1Router.Get("/users", userHandler.GetUser)
+	v1Router.Post("/users", userHandler.CreateUser)
+
+	r.Mount("/api/v1", v1Router)
+	return r
 }
