@@ -37,6 +37,7 @@ func main() {
 
 	obs := observability.NewObservability(srv)
 
+	// setup log, metrics and trace telemetry
 	shutdownFns, err := obs.SetupObservability()
 	if err != nil {
 		logger.Err(err).Msg("failed to initialize observability")
