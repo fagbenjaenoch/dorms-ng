@@ -32,7 +32,7 @@ func New(s *server.Server) *chi.Mux {
 	healthHandler := handlers.NewHealthHandler(s)
 	r.Get("/health", healthHandler.CheckHealth)
 
-	v1Router := RegisterV1Routes()
+	v1Router := RegisterV1Routes(s)
 
 	r.Mount("/api/v1", v1Router)
 
