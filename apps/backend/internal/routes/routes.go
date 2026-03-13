@@ -3,12 +3,14 @@ package routes
 import (
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/handlers"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/middleware"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/server"
 	"github.com/go-chi/chi/v5"
 	chiMiddleware "github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/httprate"
 	"github.com/riandyrn/otelchi"
 	"github.com/rs/cors"
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
@@ -30,6 +32,7 @@ func New(s *server.Server) *chi.Mux {
 	r.Use(chiMiddleware.RealIP)
 	r.Use(middleware.RequestLogger(s.Logger))
 	r.Use(corsMiddleware.Handler)
+	r.Use(httprate.LimitByIP(100, 1*time.Minute))
 	r.Use(chiMiddleware.Recoverer)
 
 	// initialize observability middleware
