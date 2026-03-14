@@ -8,8 +8,8 @@ type StructuredResponse struct {
 }
 
 type CreateUserDto struct {
-	Email    string `json:"email"`
-	FullName string `json:"full_name"`
+	Email    string `json:"email" validate:"required,email"`
+	FullName string `json:"full_name" validate:"required"`
 	Role     string `json:"role"`
 }
 
