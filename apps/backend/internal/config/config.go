@@ -19,11 +19,11 @@ type Config struct {
 }
 
 type Primary struct {
-	Env string `koanf:"env" validate:"required"`
+	Env string `koanf:"env" validate:"required,oneof=dev development staging prod production"`
 }
 
 type Server struct {
-	Port               string   `koanf:"port" validate:"required, port"`
+	Port               string   `koanf:"port" validate:"required"` // TODO: Implement port validation
 	ReadTimeout        int      `koanf:"read_timeout" validate:"required"`
 	WriteTimeout       int      `koanf:"write_timeout" validate:"required"`
 	IdleTimeout        int      `koanf:"idle_timeout" validate:"required"`
@@ -36,9 +36,9 @@ type Logging struct {
 
 type Observability struct {
 	ServiceName     string `koanf:"service_name" validate:"required"`
-	Environment     string `koanf:"environment" validate:"required, oneof=dev development staging prod production"`
-	Endpoint        string `koanf:"endpoint" validate:"required, url"`
-	LoggingEndpoint string `koanf:"logging_endpoint" validate:"required, url"`
+	Environment     string `koanf:"environment" validate:"required,oneof=dev development staging prod production"`
+	Endpoint        string `koanf:"endpoint" validate:"required,url"`
+	LoggingEndpoint string `koanf:"logging_endpoint" validate:"required,url"`
 }
 
 func LoadConfig() (*Config, error) {
