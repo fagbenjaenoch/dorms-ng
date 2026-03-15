@@ -6,6 +6,7 @@ import (
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/server"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/services"
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/utils"
 )
 
 type UserHandler struct {
@@ -23,17 +24,17 @@ func NewUserHandler(s *server.Server) UserHandler {
 }
 
 func (uh *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
-	var u dto.CreateUserDto
-	uh.DecodeJSONBody(w, r, &u)
+	u := utils.GetValidatedPayloadFromRequest[dto.CreateUserDto](r.Context())
 
 	uh.server.Logger.Debug().Str("email", u.Email)
 	res, err := uh.UserService.CreateUser(r.Context(), u)
 	if err != nil {
-		uh.server.Logger.Err(err).Msg("could not create user")
+		msg := "failed to create user"
+		uh.server.Logger.Err(err).Msg(msg)
 		uh.ReturnJSONResponse(w, dto.StructuredResponse{
 			Success: false,
 			Status:  http.StatusInternalServerError,
-			Message: "could not create user",
+			Message: msg,
 			Payload: nil,
 		})
 		return

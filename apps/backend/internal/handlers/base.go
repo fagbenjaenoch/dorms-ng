@@ -26,14 +26,10 @@ func (h *BaseHandler) ReturnJSONResponse(w http.ResponseWriter, response dto.Str
 	w.Write(responseJSON)
 }
 
-func (h *BaseHandler) DecodeJSONBody(w http.ResponseWriter, r *http.Request, body any) {
+func (h *BaseHandler) DecodeJSONBody(w http.ResponseWriter, r *http.Request, body any) error {
 	if err := json.NewDecoder(r.Body).Decode(body); err != nil {
-		h.server.Logger.Err(err).Msg("failed to decode request body")
-		h.ReturnJSONResponse(w, dto.StructuredResponse{
-			Success: false,
-			Status:  http.StatusBadRequest,
-			Message: err.Error(),
-		})
+		return err
 	}
-	defer r.Body.Close()
+
+	return nil
 }
