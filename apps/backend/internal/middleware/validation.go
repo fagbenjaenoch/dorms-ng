@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
@@ -20,11 +21,12 @@ func ValidateRequestPayload[T any](next http.Handler) http.Handler {
 		}
 
 		if err := validate.Struct(payload); err != nil {
+			fmt.Println("Validation error", err)
 			utils.ReturnJSONResponse(w, dto.StructuredResponse{
 				Success: false,
 				Status:  http.StatusUnprocessableEntity,
 				Message: "Invalid request payload",
-				Payload: err,
+				Payload: utils.FormatValidationErrors(err),
 			})
 			return
 		}
