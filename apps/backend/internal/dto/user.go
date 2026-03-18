@@ -6,6 +6,12 @@ type CreateUserDto struct {
 	Role     string `json:"role" validate:"omitempty,oneof=admin user"`
 }
 
+type CreateUserWithPasswordDto struct {
+	CreateUserDto
+	Provider string `json:"provider" validate:"required,oneof=password"`
+	Password string `json:"password" validate:"required,min=8,max=100"`
+}
+
 type GetUserDto struct {
 	Email string `json:"email"`
 }

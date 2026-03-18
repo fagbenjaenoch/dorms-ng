@@ -3,6 +3,7 @@ package utils
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	pkgError "errors"
 	"fmt"
 	"net/http"
@@ -51,8 +52,12 @@ func DecodeJSONBody(w http.ResponseWriter, r *http.Request, body any) error {
 	return nil
 }
 
-func GetValidatedPayloadFromRequest[T any](ctx context.Context) T {
-	return ctx.Value(ValidatedPayloadKey).(T)
+func GetValidatedPayloadFromRequest[T any](ctx context.Context) (T, error) {
+	payload, ok := ctx.Value(ValidatedPayloadKey).(T)
+	if !ok {
+		return payload, errors.New("invalid payload")
+	}
+	return payload, nil
 }
 
 type ValidationError struct {
