@@ -22,6 +22,7 @@ type Querier interface {
 	ListHostelsByNeighborhood(ctx context.Context, neighborhoodID sql.NullString) ([]Hostel, error)
 	ListNeighborhoodsByInstitution(ctx context.Context, universityID string) ([]Neighborhood, error)
 	Listuniversities(ctx context.Context) ([]University, error)
+	UserExists(ctx context.Context, email string) (int64, error)
 }
 
 var _ Querier = (*Queries)(nil)

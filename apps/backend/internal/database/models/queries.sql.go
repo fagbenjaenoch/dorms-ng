@@ -418,3 +418,14 @@ func (q *Queries) Listuniversities(ctx context.Context) ([]University, error) {
 	}
 	return items, nil
 }
+
+const userExists = `-- name: UserExists :one
+SELECT EXISTS(SELECT 1 FROM users WHERE email = ? LIMIT 1)
+`
+
+func (q *Queries) UserExists(ctx context.Context, email string) (int64, error) {
+	row := q.db.QueryRowContext(ctx, userExists, email)
+	var column_1 int64
+	err := row.Scan(&column_1)
+	return column_1, err
+}
