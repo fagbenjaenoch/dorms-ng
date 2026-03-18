@@ -23,14 +23,6 @@ func NewUserRepository(db *sql.DB, logger *zerolog.Logger) UserRepository {
 	}
 }
 
-type User struct {
-	ID          int    `json:"id"`
-	FullName    string `json:"full_name"`
-	Institution string `json:"institution"`
-	CreatedAt   string `json:"created_at"`
-	UpdatedAt   string `json:"updated_at"`
-}
-
 func (ur *UserRepository) UserExists(ctx context.Context, email string) (bool, error) {
 	exists, err := ur.Queries.UserExists(ctx, email)
 	if err != nil {
