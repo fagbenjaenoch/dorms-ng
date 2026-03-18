@@ -11,6 +11,8 @@ import (
 	"github.com/rs/zerolog"
 )
 
+var globalConfig *Config
+
 type Config struct {
 	Primary       Primary       `koanf:"primary" validate:"required"`
 	Server        Server        `koanf:"server" validate:"required"`
@@ -63,5 +65,11 @@ func LoadConfig() (*Config, error) {
 		logger.Fatal().Err(err).Msg("failed to validate config")
 	}
 
+	globalConfig = &cfg
+
 	return &cfg, nil
+}
+
+func GetGlobalConfig() *Config {
+	return globalConfig
 }
