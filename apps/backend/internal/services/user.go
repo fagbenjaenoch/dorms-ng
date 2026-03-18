@@ -26,7 +26,7 @@ func NewUserService(db *sql.DB, logger *zerolog.Logger) UserService {
 	}
 }
 
-func (us *UserService) CreateUser(ctx context.Context, u dto.CreateUserDto) (dto.StructuredResponse, error) {
+func (us *UserService) CreateUserWithPassword(ctx context.Context, u dto.CreateUserWithPasswordDto) (dto.StructuredResponse, error) {
 	tracerCtx, span := tracer.Start(ctx, "UserService.CreateUser")
 	defer span.End()
 
@@ -34,7 +34,6 @@ func (us *UserService) CreateUser(ctx context.Context, u dto.CreateUserDto) (dto
 	if err != nil {
 		span.RecordError(err)
 		span.SetStatus(http.StatusInternalServerError, "check user exists error")
-
 		return dto.StructuredResponse{
 			Success: false,
 			Status:  http.StatusInternalServerError,
@@ -54,7 +53,7 @@ func (us *UserService) CreateUser(ctx context.Context, u dto.CreateUserDto) (dto
 		}, err
 	}
 
-	user, err := us.userRepo.CreateUser(tracerCtx, u)
+	user, err := us.userRepo.CreateUserWithPassword(tracerCtx, u)
 	if err != nil {
 		span.RecordError(err)
 		span.SetStatus(http.StatusInternalServerError, "create user db error")

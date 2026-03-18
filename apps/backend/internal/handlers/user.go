@@ -24,10 +24,21 @@ func NewUserHandler(s *server.Server) UserHandler {
 }
 
 func (uh *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
-	u := utils.GetValidatedPayloadFromRequest[dto.CreateUserDto](r.Context())
+	u, err := utils.GetValidatedPayloadFromRequest[dto.CreateUserWithPasswordDto](r.Context())
+	if err != nil {
+		msg := "failed to process request body"
+		uh.server.Logger.Err(err).Msg(msg)
+		uh.ReturnJSONResponse(w, dto.StructuredResponse{
+			Success: false,
+			Status:  http.StatusInternalServerError,
+			Message: msg,
+			Payload: nil,
+		})
+		return
+	}
 
 	uh.server.Logger.Debug().Str("email", u.Email)
-	res, err := uh.UserService.CreateUser(r.Context(), u)
+	res, err := uh.UserService.CreateUserWithPassword(r.Context(), u)
 	if err != nil {
 		msg := "failed to create user"
 		uh.server.Logger.Err(err).Msg(msg)

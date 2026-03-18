@@ -14,7 +14,7 @@ func RegisterV1Routes(s *server.Server) *chi.Mux {
 	userHandler := handlers.NewUserHandler(s)
 
 	v1Router.Get("/users", userHandler.GetUser)
-	v1Router.With(middleware.ValidateRequestPayload[dto.CreateUserDto]).Post("/users", userHandler.CreateUser)
+	v1Router.With(middleware.ValidateRequestPayload[dto.CreateUserWithPasswordDto]).Post("/users", userHandler.CreateUser)
 
 	return v1Router
 }

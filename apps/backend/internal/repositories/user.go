@@ -6,6 +6,7 @@ import (
 
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/database/models"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/utils"
 	"github.com/google/uuid"
 	"github.com/rs/zerolog"
 )
@@ -41,6 +42,34 @@ func (ur *UserRepository) CreateUser(ctx context.Context, user dto.CreateUserDto
 	u.Role = user.Role
 
 	cu, err := ur.Queries.CreateUser(ctx, u)
+	if err != nil {
+		return nil, err
+	}
+
+	return &cu, nil
+}
+
+func (ur *UserRepository) CreateUserWithPassword(ctx context.Context, user dto.CreateUserWithPasswordDto) (*models.User, error) {
+	var u models.CreateUserParams
+	u.ID = uuid.New().String()
+	u.FullName = user.FullName
+	u.Email = user.Email
+	u.Role = user.Role
+
+	cu, err := ur.Queries.CreateUser(ctx, u)
+	if err != nil {
+		return nil, err
+	}
+
+	var i models.CreateUserIdentityParams
+	i.ID = uuid.New().String()
+	i.UserID = cu.ID
+	i.Provider = user.Provider
+
+	passwordHash := utils.CreatePasswordHash(user.Password)
+	i.PasswordHash = sql.NullString{String: passwordHash, Valid: true}
+
+	_, err = ur.Queries.CreateUserIdentity(ctx, i)
 	if err != nil {
 		return nil, err
 	}
