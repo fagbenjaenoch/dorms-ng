@@ -63,8 +63,8 @@ SELECT * FROM users WHERE email = ? LIMIT 1;
 
 -- name: CreateUserIdentity :one
 INSERT INTO user_identities (
-    id, user_id, provider, provider_id
+    id, user_id, provider, provider_id, password_hash
 ) VALUES (
-    ?, ?, ?, ?
+    ?, ?, ?, ?, ?
 )
 RETURNING *;

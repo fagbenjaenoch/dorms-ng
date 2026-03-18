@@ -190,18 +190,19 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 
 const createUserIdentity = `-- name: CreateUserIdentity :one
 INSERT INTO user_identities (
-    id, user_id, provider, provider_id
+    id, user_id, provider, provider_id, password_hash
 ) VALUES (
-    ?, ?, ?, ?
+    ?, ?, ?, ?, ?
 )
-RETURNING id, user_id, provider, provider_id, created_at, updated_at
+RETURNING id, user_id, provider, provider_id, password_hash, created_at, updated_at
 `
 
 type CreateUserIdentityParams struct {
-	ID         string `json:"id"`
-	UserID     string `json:"user_id"`
-	Provider   string `json:"provider"`
-	ProviderID string `json:"provider_id"`
+	ID           string         `json:"id"`
+	UserID       string         `json:"user_id"`
+	Provider     string         `json:"provider"`
+	ProviderID   sql.NullString `json:"provider_id"`
+	PasswordHash sql.NullString `json:"password_hash"`
 }
 
 func (q *Queries) CreateUserIdentity(ctx context.Context, arg CreateUserIdentityParams) (UserIdentity, error) {
@@ -210,6 +211,7 @@ func (q *Queries) CreateUserIdentity(ctx context.Context, arg CreateUserIdentity
 		arg.UserID,
 		arg.Provider,
 		arg.ProviderID,
+		arg.PasswordHash,
 	)
 	var i UserIdentity
 	err := row.Scan(
@@ -217,6 +219,7 @@ func (q *Queries) CreateUserIdentity(ctx context.Context, arg CreateUserIdentity
 		&i.UserID,
 		&i.Provider,
 		&i.ProviderID,
+		&i.PasswordHash,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 	)
