@@ -30,6 +30,30 @@ func (us *UserService) CreateUser(ctx context.Context, u dto.CreateUserDto) (dto
 	tracerCtx, span := tracer.Start(ctx, "UserService.CreateUser")
 	defer span.End()
 
+	userExists, err := us.userRepo.UserExists(tracerCtx, u.Email)
+	if err != nil {
+		span.RecordError(err)
+		span.SetStatus(http.StatusInternalServerError, "check user exists error")
+
+		return dto.StructuredResponse{
+			Success: false,
+			Status:  http.StatusInternalServerError,
+			Message: "could not check user exists",
+			Payload: nil,
+		}, err
+	}
+
+	if userExists {
+		span.SetStatus(http.StatusConflict, "user already exists")
+
+		return dto.StructuredResponse{
+			Success: false,
+			Status:  http.StatusConflict,
+			Message: "user already exists",
+			Payload: nil,
+		}, err
+	}
+
 	user, err := us.userRepo.CreateUser(tracerCtx, u)
 	if err != nil {
 		span.RecordError(err)

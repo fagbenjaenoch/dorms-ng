@@ -31,6 +31,16 @@ type User struct {
 	UpdatedAt   string `json:"updated_at"`
 }
 
+func (ur *UserRepository) UserExists(ctx context.Context, email string) (bool, error) {
+	exists, err := ur.Queries.UserExists(ctx, email)
+	if err != nil {
+		ur.Logger.Err(err).Msg("could not execute query")
+		return false, err
+	}
+
+	return exists != 0, nil
+}
+
 func (ur *UserRepository) CreateUser(ctx context.Context, user dto.CreateUserDto) (*models.User, error) {
 	var u models.CreateUserParams
 	u.ID = uuid.New().String()
