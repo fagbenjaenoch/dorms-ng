@@ -74,7 +74,7 @@ func (us *UserService) CreateUserWithPassword(ctx context.Context, u dto.CreateU
 	return dto.StructuredResponse{
 		Success: true,
 		Status:  201,
-		Message: "created user",
+		Message: "user signed up successfully",
 		Payload: struct {
 			ID       string `json:"id"`
 			FullName string `json:"full_name"`

@@ -23,7 +23,7 @@ func NewUserHandler(s *server.Server) UserHandler {
 	}
 }
 
-func (uh *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
+func (uh *UserHandler) Signup(w http.ResponseWriter, r *http.Request) {
 	u, err := utils.GetValidatedPayloadFromRequest[dto.CreateUserWithPasswordDto](r.Context())
 	if err != nil {
 		msg := "failed to process request body"
