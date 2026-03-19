@@ -188,7 +188,7 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 	return i, err
 }
 
-const createUserIdentity = `-- name: CreateUserIdentity :one
+const createUserCredentials = `-- name: CreateUserCredentials :one
 INSERT INTO user_credentials (
     id, user_id, provider, provider_id, password_hash
 ) VALUES (
@@ -197,7 +197,7 @@ INSERT INTO user_credentials (
 RETURNING id, user_id, provider, provider_id, password_hash, created_at, updated_at
 `
 
-type CreateUserIdentityParams struct {
+type CreateUserCredentialsParams struct {
 	ID           string         `json:"id"`
 	UserID       string         `json:"user_id"`
 	Provider     string         `json:"provider"`
@@ -205,8 +205,8 @@ type CreateUserIdentityParams struct {
 	PasswordHash sql.NullString `json:"password_hash"`
 }
 
-func (q *Queries) CreateUserIdentity(ctx context.Context, arg CreateUserIdentityParams) (UserCredential, error) {
-	row := q.db.QueryRowContext(ctx, createUserIdentity,
+func (q *Queries) CreateUserCredentials(ctx context.Context, arg CreateUserCredentialsParams) (UserCredential, error) {
+	row := q.db.QueryRowContext(ctx, createUserCredentials,
 		arg.ID,
 		arg.UserID,
 		arg.Provider,
@@ -307,12 +307,12 @@ func (q *Queries) GetUserByEmail(ctx context.Context, email string) (User, error
 	return i, err
 }
 
-const getUserCredentialByUserId = `-- name: GetUserCredentialByUserId :one
-SELECT id, user_id, provider, provider_id, password_hash, created_at, updated_at FROM user_credentials WHERE user_id = ? LIMIT 1
+const getUserCredentialByProviderId = `-- name: GetUserCredentialByProviderId :one
+SELECT id, user_id, provider, provider_id, password_hash, created_at, updated_at FROM user_credentials WHERE provider_id = ? LIMIT 1
 `
 
-func (q *Queries) GetUserCredentialByUserId(ctx context.Context, userID string) (UserCredential, error) {
-	row := q.db.QueryRowContext(ctx, getUserCredentialByUserId, userID)
+func (q *Queries) GetUserCredentialByProviderId(ctx context.Context, providerID string) (UserCredential, error) {
+	row := q.db.QueryRowContext(ctx, getUserCredentialByProviderId, providerID)
 	var i UserCredential
 	err := row.Scan(
 		&i.ID,

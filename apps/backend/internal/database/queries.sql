@@ -61,10 +61,10 @@ RETURNING *;
 -- name: GetUserByEmail :one
 SELECT * FROM users WHERE email = ? LIMIT 1;
 
--- name: GetUserCredentialByUserId :one
-SELECT * FROM user_credentials WHERE user_id = ? LIMIT 1;
+-- name: GetUserCredentialByProviderId :one
+SELECT * FROM user_credentials WHERE provider_id = ? LIMIT 1;
 
--- name: CreateUserIdentity :one
+-- name: CreateUserCredentials :one
 INSERT INTO user_credentials (
     id, user_id, provider, provider_id, password_hash
 ) VALUES (
