@@ -54,7 +54,7 @@ type User struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
-type UserIdentity struct {
+type UserCredential struct {
 	ID           string         `json:"id"`
 	UserID       string         `json:"user_id"`
 	Provider     string         `json:"provider"`

@@ -10,7 +10,7 @@ CREATE TABLE users (
 	updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE user_identities (
+CREATE TABLE user_credentials (
   id TEXT NOT NULL PRIMARY KEY,
   user_id TEXT NOT NULL REFERENCES users ON DELETE CASCADE,
   provider TEXT NOT NULL CHECK (provider IN ('google', 'password')),
@@ -18,7 +18,7 @@ CREATE TABLE user_identities (
   password_hash TEXT,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE(provider, provider_id)
+  UNIQUE(user_id, provider)
 );
 
 CREATE TABLE universities (

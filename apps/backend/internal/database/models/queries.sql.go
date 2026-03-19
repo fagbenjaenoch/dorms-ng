@@ -189,7 +189,7 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 }
 
 const createUserIdentity = `-- name: CreateUserIdentity :one
-INSERT INTO user_identities (
+INSERT INTO user_credentials (
     id, user_id, provider, provider_id, password_hash
 ) VALUES (
     ?, ?, ?, ?, ?
@@ -205,7 +205,7 @@ type CreateUserIdentityParams struct {
 	PasswordHash sql.NullString `json:"password_hash"`
 }
 
-func (q *Queries) CreateUserIdentity(ctx context.Context, arg CreateUserIdentityParams) (UserIdentity, error) {
+func (q *Queries) CreateUserIdentity(ctx context.Context, arg CreateUserIdentityParams) (UserCredential, error) {
 	row := q.db.QueryRowContext(ctx, createUserIdentity,
 		arg.ID,
 		arg.UserID,
@@ -213,7 +213,7 @@ func (q *Queries) CreateUserIdentity(ctx context.Context, arg CreateUserIdentity
 		arg.ProviderID,
 		arg.PasswordHash,
 	)
-	var i UserIdentity
+	var i UserCredential
 	err := row.Scan(
 		&i.ID,
 		&i.UserID,
@@ -301,6 +301,25 @@ func (q *Queries) GetUserByEmail(ctx context.Context, email string) (User, error
 		&i.Email,
 		&i.FullName,
 		&i.Role,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
+}
+
+const getUserCredentialByUserId = `-- name: GetUserCredentialByUserId :one
+SELECT id, user_id, provider, provider_id, password_hash, created_at, updated_at FROM user_credentials WHERE user_id = ? LIMIT 1
+`
+
+func (q *Queries) GetUserCredentialByUserId(ctx context.Context, userID string) (UserCredential, error) {
+	row := q.db.QueryRowContext(ctx, getUserCredentialByUserId, userID)
+	var i UserCredential
+	err := row.Scan(
+		&i.ID,
+		&i.UserID,
+		&i.Provider,
+		&i.ProviderID,
+		&i.PasswordHash,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 	)
