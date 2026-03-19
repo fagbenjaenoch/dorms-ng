@@ -3,10 +3,12 @@ package services
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"net/http"
 
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/repositories"
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/utils"
 	"github.com/rs/zerolog"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
@@ -73,6 +75,62 @@ func (us *UserService) CreateUserWithPassword(ctx context.Context, u dto.CreateU
 		Success: true,
 		Status:  201,
 		Message: "created user",
+		Payload: struct {
+			ID       string `json:"id"`
+			FullName string `json:"full_name"`
+			Email    string `json:"email"`
+		}{
+			ID:       user.ID,
+			FullName: user.FullName,
+			Email:    user.Email,
+		},
+	}, nil
+}
+
+func (us *UserService) LoginUser(ctx context.Context, u dto.LoginUserDto) (dto.StructuredResponse, error) {
+	tracerCtx, span := tracer.Start(ctx, "UserService.LoginUser")
+	defer span.End()
+
+	user, err := us.userRepo.GetUserByEmail(tracerCtx, u.Email)
+	if err != nil {
+		span.RecordError(err)
+		return dto.StructuredResponse{
+			Success: false,
+			Status:  http.StatusNotFound,
+			Message: "could not find user",
+			Payload: nil,
+		}, err
+	}
+
+	uc, err := us.userRepo.GetUserCredentialById(tracerCtx, user.ID)
+	if err != nil {
+		span.RecordError(err)
+		return dto.StructuredResponse{
+			Success: false,
+			Status:  http.StatusNotFound,
+			Message: "could not find user",
+			Payload: nil,
+		}, err
+	}
+
+	us.Logger.Info().Str("pass", u.Password).Str("hash", uc.PasswordHash.String).Msg("checking password")
+	if match := utils.ComparePassword(u.Password, uc.PasswordHash.String); !match {
+		span.RecordError(errors.New("invalid password"))
+		return dto.StructuredResponse{
+			Success: false,
+			Status:  http.StatusUnauthorized,
+			Message: "invalid credentials",
+			Payload: nil,
+		}, errors.New("invalid credentials")
+	}
+
+	span.SetAttributes(attribute.String("user_id", user.ID))
+	span.SetStatus(http.StatusOK, "successfully logged in user")
+
+	return dto.StructuredResponse{
+		Success: true,
+		Status:  200,
+		Message: "logged in user successfully",
 		Payload: struct {
 			ID       string `json:"id"`
 			FullName string `json:"full_name"`

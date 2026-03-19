@@ -9,6 +9,8 @@ import (
 	"go.opentelemetry.io/contrib/bridges/otelzerolog"
 )
 
+var globalLogger zerolog.Logger
+
 func New(cfg *config.Config) zerolog.Logger {
 	var writer io.Writer
 	writer = os.Stdout //default writer
@@ -39,5 +41,12 @@ func New(cfg *config.Config) zerolog.Logger {
 		Str("environment", cfg.Primary.Env).
 		Logger().
 		Hook(otelHook)
+
+	globalLogger = logger
+
 	return logger
+}
+
+func GetGlobalLogger() *zerolog.Logger {
+	return &globalLogger
 }

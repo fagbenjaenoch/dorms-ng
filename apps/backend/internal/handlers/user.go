@@ -42,16 +42,37 @@ func (uh *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		msg := "failed to create user"
 		uh.server.Logger.Err(err).Msg(msg)
+		uh.ReturnJSONResponse(w, res)
+		return
+	}
+
+	uh.server.Logger.Info().Msg("successfully created user")
+	uh.ReturnJSONResponse(w, res)
+}
+
+func (uh *UserHandler) LoginUser(w http.ResponseWriter, r *http.Request) {
+	u, err := utils.GetValidatedPayloadFromRequest[dto.LoginUserDto](r.Context())
+	if err != nil {
+		msg := "failed to process request body"
+		uh.server.Logger.Err(err).Msg(msg)
 		uh.ReturnJSONResponse(w, dto.StructuredResponse{
 			Success: false,
-			Status:  http.StatusInternalServerError,
+			Status:  http.StatusUnprocessableEntity,
 			Message: msg,
 			Payload: nil,
 		})
 		return
 	}
 
-	uh.server.Logger.Info().Msg("successfully created user")
+	res, err := uh.UserService.LoginUser(r.Context(), u)
+	if err != nil {
+		msg := "failed to login user"
+		uh.server.Logger.Err(err).Msg(msg)
+		uh.ReturnJSONResponse(w, res)
+		return
+	}
+
+	uh.server.Logger.Info().Msg("successfully logged in user")
 	uh.ReturnJSONResponse(w, res)
 }
 

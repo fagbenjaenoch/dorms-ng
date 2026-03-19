@@ -86,3 +86,13 @@ func (ur *UserRepository) GetUserByEmail(ctx context.Context, email string) (*mo
 
 	return &u, nil
 }
+
+func (ur *UserRepository) GetUserCredentialById(ctx context.Context, id string) (*models.UserCredential, error) {
+	u, err := ur.Queries.GetUserCredentialByUserId(ctx, id)
+	if err != nil {
+		ur.Logger.Err(err).Msg("could not execute query")
+		return nil, err
+	}
+
+	return &u, nil
+}
