@@ -38,7 +38,7 @@ func (uh *UserHandler) Signup(w http.ResponseWriter, r *http.Request) {
 	}
 
 	uh.server.Logger.Debug().Str("email", u.Email)
-	res, err := uh.UserService.CreateUserWithPassword(r.Context(), u)
+	res, err := uh.UserService.Signup(r.Context(), u)
 	if err != nil {
 		msg := "failed to create user"
 		uh.server.Logger.Err(err).Msg(msg)
@@ -64,7 +64,7 @@ func (uh *UserHandler) LoginUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res, err := uh.UserService.LoginUser(r.Context(), u)
+	res, err := uh.UserService.Login(r.Context(), u)
 	if err != nil {
 		msg := "failed to login user"
 		uh.server.Logger.Err(err).Msg(msg)

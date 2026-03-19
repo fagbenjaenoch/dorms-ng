@@ -28,8 +28,8 @@ func NewUserService(db *sql.DB, logger *zerolog.Logger) UserService {
 	}
 }
 
-func (us *UserService) CreateUserWithPassword(ctx context.Context, u dto.CreateUserWithPasswordDto) (dto.StructuredResponse, error) {
-	tracerCtx, span := tracer.Start(ctx, "UserService.CreateUser")
+func (us *UserService) Signup(ctx context.Context, u dto.CreateUserWithPasswordDto) (dto.StructuredResponse, error) {
+	tracerCtx, span := tracer.Start(ctx, "UserService.Signup")
 	defer span.End()
 
 	userExists, err := us.userRepo.UserExists(tracerCtx, u.Email)
@@ -68,7 +68,6 @@ func (us *UserService) CreateUserWithPassword(ctx context.Context, u dto.CreateU
 		}, err
 	}
 
-	span.SetAttributes(attribute.String("user_id", user.ID))
 	span.SetStatus(http.StatusCreated, "successfully created user")
 
 	return dto.StructuredResponse{
@@ -87,22 +86,11 @@ func (us *UserService) CreateUserWithPassword(ctx context.Context, u dto.CreateU
 	}, nil
 }
 
-func (us *UserService) LoginUser(ctx context.Context, u dto.LoginUserDto) (dto.StructuredResponse, error) {
-	tracerCtx, span := tracer.Start(ctx, "UserService.LoginUser")
+func (us *UserService) Login(ctx context.Context, u dto.LoginUserDto) (dto.StructuredResponse, error) {
+	tracerCtx, span := tracer.Start(ctx, "UserService.Login")
 	defer span.End()
 
-	user, err := us.userRepo.GetUserByEmail(tracerCtx, u.Email)
-	if err != nil {
-		span.RecordError(err)
-		return dto.StructuredResponse{
-			Success: false,
-			Status:  http.StatusNotFound,
-			Message: "could not find user",
-			Payload: nil,
-		}, err
-	}
-
-	uc, err := us.userRepo.GetUserCredentialById(tracerCtx, user.ID)
+	uc, err := us.userRepo.GetUserCredentialByProviderId(tracerCtx, u.Email)
 	if err != nil {
 		span.RecordError(err)
 		return dto.StructuredResponse{
@@ -123,7 +111,18 @@ func (us *UserService) LoginUser(ctx context.Context, u dto.LoginUserDto) (dto.S
 		}, errors.New("invalid credentials")
 	}
 
-	span.SetAttributes(attribute.String("user_id", user.ID))
+	user, err := us.userRepo.GetUserByEmail(tracerCtx, u.Email)
+	if err != nil {
+		span.RecordError(err)
+		return dto.StructuredResponse{
+			Success: false,
+			Status:  http.StatusNotFound,
+			Message: "could not find user",
+			Payload: nil,
+		}, err
+	}
+
+	span.SetAttributes(attribute.String("user_id", u.Email))
 	span.SetStatus(http.StatusOK, "successfully logged in user")
 
 	return dto.StructuredResponse{
@@ -134,10 +133,12 @@ func (us *UserService) LoginUser(ctx context.Context, u dto.LoginUserDto) (dto.S
 			ID       string `json:"id"`
 			FullName string `json:"full_name"`
 			Email    string `json:"email"`
+			Provider string `json:"provider"`
 		}{
 			ID:       user.ID,
 			FullName: user.FullName,
 			Email:    user.Email,
+			Provider: uc.Provider,
 		},
 	}, nil
 }
