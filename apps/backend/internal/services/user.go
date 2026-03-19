@@ -96,7 +96,7 @@ func (us *UserService) Login(ctx context.Context, u dto.LoginUserDto) (dto.Struc
 		return dto.StructuredResponse{
 			Success: false,
 			Status:  http.StatusNotFound,
-			Message: "could not find user",
+			Message: "user does not exist",
 			Payload: nil,
 		}, err
 	}
