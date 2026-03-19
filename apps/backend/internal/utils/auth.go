@@ -39,8 +39,8 @@ func generateRandomSalt() []byte {
 
 // encode hash in base64 and return encoded string
 func encodeHash(salt, hashedPassword []byte) string {
-	saltBase64 := base64.StdEncoding.EncodeToString(salt)
-	passwordBase64 := base64.StdEncoding.EncodeToString(hashedPassword)
+	saltBase64 := base64.RawStdEncoding.EncodeToString(salt)
+	passwordBase64 := base64.RawStdEncoding.EncodeToString(hashedPassword)
 	return fmt.Sprintf("$argon2id$v=%d$m=%d,t=%d,p=%d$%s$%s", argon2.Version, memory, iterations, parallelism, saltBase64, passwordBase64)
 }
 
