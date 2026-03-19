@@ -113,7 +113,6 @@ func (us *UserService) LoginUser(ctx context.Context, u dto.LoginUserDto) (dto.S
 		}, err
 	}
 
-	us.Logger.Info().Str("pass", u.Password).Str("hash", uc.PasswordHash.String).Msg("checking password")
 	if match := utils.ComparePassword(u.Password, uc.PasswordHash.String); !match {
 		span.RecordError(errors.New("invalid password"))
 		return dto.StructuredResponse{
