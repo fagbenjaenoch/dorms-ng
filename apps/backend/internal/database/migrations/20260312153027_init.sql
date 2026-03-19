@@ -13,12 +13,12 @@ CREATE TABLE users (
 CREATE TABLE user_credentials (
   id TEXT NOT NULL PRIMARY KEY,
   user_id TEXT NOT NULL REFERENCES users ON DELETE CASCADE,
-  provider TEXT NOT NULL CHECK (provider IN ('google', 'password')),
-  provider_id TEXT,
+  provider TEXT NOT NULL CHECK (provider IN ('google', 'password')), -- could be enums but sqlite doesn't support them
+  provider_id TEXT NOT NULL,
   password_hash TEXT,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE(user_id, provider)
+  UNIQUE(provider, provider_id)
 );
 
 CREATE TABLE universities (
@@ -65,7 +65,7 @@ CREATE TABLE hostels (
 );
 
 -- +goose Down
-DROP TABLE user_identities;
+DROP TABLE user_credentials;
 DROP TABLE users;
 DROP TABLE universities;
 DROP TABLE neighborhoods;
