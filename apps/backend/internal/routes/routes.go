@@ -49,7 +49,7 @@ func New(s *server.Server) *chi.Mux {
 
 	// initialize observability middleware
 	r.Use(otelchi.Middleware(
-		s.Config.Observability.ServiceName,
+		s.Config.Observability.AppName,
 		otelchi.WithChiRoutes(r),
 		otelchi.WithFilter(skipTelemetry),
 	),
