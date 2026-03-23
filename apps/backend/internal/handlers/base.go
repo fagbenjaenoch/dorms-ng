@@ -12,7 +12,7 @@ type BaseHandler struct {
 	server *server.Server
 }
 
-func (h *BaseHandler) ReturnJSONResponse(w http.ResponseWriter, response dto.StructuredResponse) {
+func (h *BaseHandler) WriteJSON(w http.ResponseWriter, response dto.StructuredResponse) {
 	responseJSON, err := json.Marshal(response)
 
 	if err != nil {

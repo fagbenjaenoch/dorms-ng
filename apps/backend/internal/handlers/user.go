@@ -28,7 +28,7 @@ func (uh *UserHandler) Signup(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		msg := "failed to process request body"
 		uh.server.Logger.Err(err).Msg(msg)
-		uh.ReturnJSONResponse(w, dto.StructuredResponse{
+		uh.WriteJSON(w, dto.StructuredResponse{
 			Success: false,
 			Status:  http.StatusInternalServerError,
 			Message: msg,
@@ -42,12 +42,12 @@ func (uh *UserHandler) Signup(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		msg := "failed to create user"
 		uh.server.Logger.Err(err).Msg(msg)
-		uh.ReturnJSONResponse(w, res)
+		uh.WriteJSON(w, res)
 		return
 	}
 
 	uh.server.Logger.Info().Msg("successfully created user")
-	uh.ReturnJSONResponse(w, res)
+	uh.WriteJSON(w, res)
 }
 
 func (uh *UserHandler) LoginUser(w http.ResponseWriter, r *http.Request) {
@@ -55,7 +55,7 @@ func (uh *UserHandler) LoginUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		msg := "failed to process request body"
 		uh.server.Logger.Err(err).Msg(msg)
-		uh.ReturnJSONResponse(w, dto.StructuredResponse{
+		uh.WriteJSON(w, dto.StructuredResponse{
 			Success: false,
 			Status:  http.StatusUnprocessableEntity,
 			Message: msg,
@@ -68,12 +68,12 @@ func (uh *UserHandler) LoginUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		msg := "failed to login user"
 		uh.server.Logger.Err(err).Msg(msg)
-		uh.ReturnJSONResponse(w, res)
+		uh.WriteJSON(w, res)
 		return
 	}
 
 	uh.server.Logger.Info().Msg("successfully logged in user")
-	uh.ReturnJSONResponse(w, res)
+	uh.WriteJSON(w, res)
 }
 
 func (uh *UserHandler) GetUser(w http.ResponseWriter, r *http.Request) {
@@ -84,5 +84,5 @@ func (uh *UserHandler) GetUser(w http.ResponseWriter, r *http.Request) {
 	res := uh.UserService.GetUserByEmail(r.Context(), u.Email)
 
 	uh.server.Logger.Info().Msg("successfully fetched all users")
-	uh.ReturnJSONResponse(w, res)
+	uh.WriteJSON(w, res)
 }

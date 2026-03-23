@@ -46,5 +46,5 @@ func (hh *HealthHandler) CheckHealth(w http.ResponseWriter, r *http.Request) {
 		},
 	}
 
-	hh.ReturnJSONResponse(w, response)
+	hh.WriteJSON(w, response)
 }
