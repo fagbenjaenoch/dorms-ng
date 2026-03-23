@@ -73,7 +73,7 @@ func (us *UserService) Signup(ctx context.Context, u dto.CreateUserWithPasswordD
 	span.SetStatus(http.StatusCreated, "successfully created user")
 
 	params := utils.GenerateJWTParams{
-		UserId:     user.ID,
+		Email:      user.Email,
 		FullName:   user.FullName,
 		AppName:    config.GetGlobalConfig().Observability.AppName,
 		Expiration: time.Duration(time.Hour * 100), // arbitrary for now
@@ -148,7 +148,7 @@ func (us *UserService) Login(ctx context.Context, u dto.LoginUserDto) (dto.Struc
 	span.SetStatus(http.StatusOK, "successfully logged in user")
 
 	params := utils.GenerateJWTParams{
-		UserId:     user.ID,
+		Email:      user.Email,
 		FullName:   user.FullName,
 		AppName:    config.GetGlobalConfig().Observability.AppName,
 		Expiration: time.Duration(time.Hour * 100), // arbitrary for now

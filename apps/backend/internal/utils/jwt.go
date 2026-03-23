@@ -13,7 +13,7 @@ type JWTClaims struct {
 }
 
 type GenerateJWTParams struct {
-	UserId     string
+	Email      string
 	FullName   string
 	Secret     string
 	AppName    string
@@ -23,7 +23,7 @@ type GenerateJWTParams struct {
 func GenerateJWT(params GenerateJWTParams) (string, error) {
 	claims := &JWTClaims{
 		RegisteredClaims: jwt.RegisteredClaims{
-			Subject:   params.UserId,
+			Subject:   params.Email,
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(params.Expiration)),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 			Issuer:    params.AppName,

@@ -80,7 +80,7 @@ func (uh *UserHandler) GetUserProfile(w http.ResponseWriter, r *http.Request) {
 	claims := r.Context().Value(utils.JWTClaimsKey).(*utils.JWTClaims)
 	email := claims.Subject
 
-	uh.server.Logger.Debug().Str("email", email)
+	uh.server.Logger.Debug().Str("email", email).Send()
 	res, err := uh.UserService.GetUserByEmail(r.Context(), email)
 	if err != nil {
 		uh.WriteJSON(w, res)
