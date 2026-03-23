@@ -16,7 +16,7 @@ import (
 	"go.opentelemetry.io/otel/attribute"
 )
 
-var tracer = otel.Tracer("user-service")
+var tracer = otel.Tracer("user_service")
 
 type UserService struct {
 	userRepo repositories.UserRepository
@@ -31,7 +31,7 @@ func NewUserService(db *sql.DB, logger *zerolog.Logger) UserService {
 }
 
 func (us *UserService) Signup(ctx context.Context, u dto.CreateUserWithPasswordDto) (dto.StructuredResponse, error) {
-	tracerCtx, span := tracer.Start(ctx, "UserService.Signup")
+	tracerCtx, span := tracer.Start(ctx, "user_service.signup")
 	defer span.End()
 
 	userExists, err := us.userRepo.UserExists(tracerCtx, u.Email)
@@ -109,7 +109,7 @@ func (us *UserService) Signup(ctx context.Context, u dto.CreateUserWithPasswordD
 }
 
 func (us *UserService) Login(ctx context.Context, u dto.LoginUserDto) (dto.StructuredResponse, error) {
-	tracerCtx, span := tracer.Start(ctx, "UserService.Login")
+	tracerCtx, span := tracer.Start(ctx, "user_service.login")
 	defer span.End()
 
 	uc, err := us.userRepo.GetUserCredentialByProviderId(tracerCtx, u.Email)

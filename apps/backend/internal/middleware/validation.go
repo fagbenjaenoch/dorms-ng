@@ -17,7 +17,7 @@ var tracer = otel.Tracer("validation")
 
 func ValidateRequestPayload[T any](next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		tracerCtx, span := tracer.Start(r.Context(), "ValidateRequestPayload")
+		tracerCtx, span := tracer.Start(r.Context(), "validation.validate_request_payload")
 		defer span.End()
 
 		var payload T
