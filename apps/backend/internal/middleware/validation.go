@@ -38,8 +38,6 @@ func ValidateRequestPayload[T any](next http.Handler) http.Handler {
 		span.SetAttributes(attribute.Bool("validated", true))
 
 		ctx := context.WithValue(tracerCtx, utils.ValidatedPayloadKey, payload)
-		r = r.WithContext(ctx)
-
-		next.ServeHTTP(w, r)
+		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }
