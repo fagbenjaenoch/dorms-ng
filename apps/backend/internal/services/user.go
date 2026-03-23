@@ -5,7 +5,9 @@ import (
 	"database/sql"
 	"errors"
 	"net/http"
+	"time"
 
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/config"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/repositories"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/utils"
@@ -70,6 +72,24 @@ func (us *UserService) Signup(ctx context.Context, u dto.CreateUserWithPasswordD
 
 	span.SetStatus(http.StatusCreated, "successfully created user")
 
+	params := utils.GenerateJWTParams{
+		UserId:     user.ID,
+		FullName:   user.FullName,
+		AppName:    config.GetGlobalConfig().Observability.AppName,
+		Expiration: time.Duration(time.Hour * 100), // arbitrary for now
+		Secret:     config.GetGlobalConfig().Auth.JWTSecret,
+	}
+	tokenString, err := utils.GenerateJWT(params)
+	if err != nil {
+		span.RecordError(err)
+		return dto.StructuredResponse{
+			Success: false,
+			Status:  http.StatusInternalServerError,
+			Message: "could not generate token",
+			Payload: nil,
+		}, err
+	}
+
 	return dto.StructuredResponse{
 		Success: true,
 		Status:  201,
@@ -78,10 +98,12 @@ func (us *UserService) Signup(ctx context.Context, u dto.CreateUserWithPasswordD
 			ID       string `json:"id"`
 			FullName string `json:"full_name"`
 			Email    string `json:"email"`
+			Token    string `json:"token"`
 		}{
 			ID:       user.ID,
 			FullName: user.FullName,
 			Email:    user.Email,
+			Token:    tokenString,
 		},
 	}, nil
 }
@@ -125,6 +147,24 @@ func (us *UserService) Login(ctx context.Context, u dto.LoginUserDto) (dto.Struc
 	span.SetAttributes(attribute.String("user_id", u.Email))
 	span.SetStatus(http.StatusOK, "successfully logged in user")
 
+	params := utils.GenerateJWTParams{
+		UserId:     user.ID,
+		FullName:   user.FullName,
+		AppName:    config.GetGlobalConfig().Observability.AppName,
+		Expiration: time.Duration(time.Hour * 100), // arbitrary for now
+		Secret:     config.GetGlobalConfig().Auth.JWTSecret,
+	}
+	tokenString, err := utils.GenerateJWT(params)
+	if err != nil {
+		span.RecordError(err)
+		return dto.StructuredResponse{
+			Success: false,
+			Status:  http.StatusInternalServerError,
+			Message: "could not generate token",
+			Payload: nil,
+		}, err
+	}
+
 	return dto.StructuredResponse{
 		Success: true,
 		Status:  200,
@@ -134,11 +174,13 @@ func (us *UserService) Login(ctx context.Context, u dto.LoginUserDto) (dto.Struc
 			FullName string `json:"full_name"`
 			Email    string `json:"email"`
 			Provider string `json:"provider"`
+			Token    string `json:"token"`
 		}{
 			ID:       user.ID,
 			FullName: user.FullName,
 			Email:    user.Email,
 			Provider: uc.Provider,
+			Token:    tokenString,
 		},
 	}, nil
 }
