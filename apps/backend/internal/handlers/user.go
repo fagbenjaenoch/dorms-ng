@@ -76,13 +76,17 @@ func (uh *UserHandler) LoginUser(w http.ResponseWriter, r *http.Request) {
 	uh.WriteJSON(w, res)
 }
 
-func (uh *UserHandler) GetUser(w http.ResponseWriter, r *http.Request) {
-	var u dto.GetUserDto
-	uh.DecodeJSONBody(w, r, &u)
+func (uh *UserHandler) GetUserProfile(w http.ResponseWriter, r *http.Request) {
+	claims := r.Context().Value(utils.JWTClaimsKey).(*utils.JWTClaims)
+	email := claims.Subject
 
-	uh.server.Logger.Debug().Str("email", u.Email)
-	res := uh.UserService.GetUserByEmail(r.Context(), u.Email)
+	uh.server.Logger.Debug().Str("email", email)
+	res, err := uh.UserService.GetUserByEmail(r.Context(), email)
+	if err != nil {
+		uh.WriteJSON(w, res)
+		return
+	}
 
-	uh.server.Logger.Info().Msg("successfully fetched all users")
+	uh.server.Logger.Info().Msg("successfully fetched user profile")
 	uh.WriteJSON(w, res)
 }

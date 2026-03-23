@@ -185,21 +185,23 @@ func (us *UserService) Login(ctx context.Context, u dto.LoginUserDto) (dto.Struc
 	}, nil
 }
 
-func (us *UserService) GetUserByEmail(ctx context.Context, email string) dto.StructuredResponse {
+func (us *UserService) GetUserByEmail(ctx context.Context, email string) (dto.StructuredResponse, error) {
 	user, err := us.userRepo.GetUserByEmail(ctx, email)
 	if err != nil {
-		us.Logger.Err(err).Msg("could not fetch user")
+		msg := "could not fetch user"
+		us.Logger.Err(err).Msg(msg)
 		return dto.StructuredResponse{
 			Success: false,
 			Status:  http.StatusNotFound,
-			Message: "could not fetch user",
+			Message: msg,
 			Payload: nil,
-		}
+		}, errors.New(msg)
 	}
+
 	return dto.StructuredResponse{
 		Success: true,
 		Status:  200,
-		Message: "found all users",
+		Message: "found user",
 		Payload: user,
-	}
+	}, nil
 }
