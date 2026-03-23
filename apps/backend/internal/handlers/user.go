@@ -37,7 +37,7 @@ func (uh *UserHandler) Signup(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	uh.server.Logger.Debug().Str("email", u.Email)
+	uh.server.Logger.Debug().Str("email", u.Email).Send()
 	res, err := uh.UserService.Signup(r.Context(), u)
 	if err != nil {
 		msg := "failed to create user"
