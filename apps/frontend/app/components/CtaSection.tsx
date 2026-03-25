@@ -4,7 +4,7 @@ export default function CtaSection() {
       <div className="container">
         <div className="bg-primary text-[#cbffda] p-20 text-center space-y-8 rounded-4xl">
           <p className="font-bold text-3xl lg:text-4xl">
-            Ready to secure your dream space?
+            Ready to Secure Your Dream Space?
           </p>
 
           <div className="flex gap-4 drop-shadow-xl justify-center">

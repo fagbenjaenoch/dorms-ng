@@ -5,7 +5,7 @@ export default function Footer() {
   return (
     <footer className="bg-[#cbffda]/30 text-primary">
       <div className="container">
-        <div className="flex flex-col gap-5 lg:flex-col-reverse tect-center lg:text-left">
+        <div className="flex flex-col pt-20 gap-5 lg:flex-col-reverse tect-center lg:text-left">
           <ul className="text-primary/60 flex flex-col gap-2 lg:flex-row lg:gap-4 lg:justify-end">
             <li>
               <a href="#">Privacy Policy</a>

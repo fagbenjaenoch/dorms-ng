@@ -3,7 +3,7 @@ import NavLink from "./ui/NavLink";
 
 export default function DesktopNav() {
   return (
-    <div className="hidden lg:flex justify-between px-8 py-4 item-center">
+    <div className="hidden lg:flex mx-auto max-w-7xl justify-between px-4 py-4 items-center">
       <BrandIcon />
       <div className="flex gap-4">
         <NavLink href="#" label="Find Hostels" />
