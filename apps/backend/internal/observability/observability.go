@@ -61,7 +61,7 @@ func (o *Observability) InitResources(ctx context.Context) (*resource.Resource, 
 	res, err := resource.New(
 		ctx,
 		resource.WithAttributes(
-			semconv.ServiceNameKey.String(o.s.Config.Observability.ServiceName),
+			semconv.ServiceNameKey.String(o.s.Config.Observability.AppName),
 			semconv.DeploymentEnvironmentName(o.s.Config.Observability.Environment),
 		),
 		resource.WithHost(),

@@ -3,6 +3,7 @@ package handlers
 import (
 	"net/http"
 
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/auth"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/server"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/services"
@@ -28,7 +29,7 @@ func (uh *UserHandler) Signup(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		msg := "failed to process request body"
 		uh.server.Logger.Err(err).Msg(msg)
-		uh.ReturnJSONResponse(w, dto.StructuredResponse{
+		uh.WriteJSON(w, dto.StructuredResponse{
 			Success: false,
 			Status:  http.StatusInternalServerError,
 			Message: msg,
@@ -37,17 +38,17 @@ func (uh *UserHandler) Signup(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	uh.server.Logger.Debug().Str("email", u.Email)
-	res, err := uh.UserService.CreateUserWithPassword(r.Context(), u)
+	uh.server.Logger.Debug().Str("email", u.Email).Send()
+	res, err := uh.UserService.Signup(r.Context(), u)
 	if err != nil {
 		msg := "failed to create user"
 		uh.server.Logger.Err(err).Msg(msg)
-		uh.ReturnJSONResponse(w, res)
+		uh.WriteJSON(w, res)
 		return
 	}
 
 	uh.server.Logger.Info().Msg("successfully created user")
-	uh.ReturnJSONResponse(w, res)
+	uh.WriteJSON(w, res)
 }
 
 func (uh *UserHandler) LoginUser(w http.ResponseWriter, r *http.Request) {
@@ -55,7 +56,7 @@ func (uh *UserHandler) LoginUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		msg := "failed to process request body"
 		uh.server.Logger.Err(err).Msg(msg)
-		uh.ReturnJSONResponse(w, dto.StructuredResponse{
+		uh.WriteJSON(w, dto.StructuredResponse{
 			Success: false,
 			Status:  http.StatusUnprocessableEntity,
 			Message: msg,
@@ -64,25 +65,29 @@ func (uh *UserHandler) LoginUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	res, err := uh.UserService.LoginUser(r.Context(), u)
+	res, err := uh.UserService.Login(r.Context(), u)
 	if err != nil {
 		msg := "failed to login user"
 		uh.server.Logger.Err(err).Msg(msg)
-		uh.ReturnJSONResponse(w, res)
+		uh.WriteJSON(w, res)
 		return
 	}
 
 	uh.server.Logger.Info().Msg("successfully logged in user")
-	uh.ReturnJSONResponse(w, res)
+	uh.WriteJSON(w, res)
 }
 
-func (uh *UserHandler) GetUser(w http.ResponseWriter, r *http.Request) {
-	var u dto.GetUserDto
-	uh.DecodeJSONBody(w, r, &u)
+func (uh *UserHandler) GetUserProfile(w http.ResponseWriter, r *http.Request) {
+	claims := r.Context().Value(utils.JWTClaimsKey).(*auth.JWTClaims)
+	email := claims.Subject
 
-	uh.server.Logger.Debug().Str("email", u.Email)
-	res := uh.UserService.GetUserByEmail(r.Context(), u.Email)
+	uh.server.Logger.Debug().Str("email", email).Send()
+	res, err := uh.UserService.GetUserByEmail(r.Context(), email)
+	if err != nil {
+		uh.WriteJSON(w, res)
+		return
+	}
 
-	uh.server.Logger.Info().Msg("successfully fetched all users")
-	uh.ReturnJSONResponse(w, res)
+	uh.server.Logger.Info().Msg("successfully fetched user profile")
+	uh.WriteJSON(w, res)
 }

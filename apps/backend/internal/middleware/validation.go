@@ -7,17 +7,14 @@ import (
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/utils"
 	"github.com/go-playground/validator/v10"
-	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 )
 
 var validate = validator.New()
 
-var tracer = otel.Tracer("validation")
-
 func ValidateRequestPayload[T any](next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		tracerCtx, span := tracer.Start(r.Context(), "ValidateRequestPayload")
+		tracerCtx, span := tracer.Start(r.Context(), "validation.validate_request_payload")
 		defer span.End()
 
 		var payload T
@@ -29,7 +26,7 @@ func ValidateRequestPayload[T any](next http.Handler) http.Handler {
 			errors := utils.FormatValidationErrors(err)
 			span.RecordError(err.(validator.ValidationErrors))
 
-			utils.ReturnJSONResponse(w, dto.StructuredResponse{
+			utils.WriteJSON(w, dto.StructuredResponse{
 				Success: false,
 				Status:  http.StatusUnprocessableEntity,
 				Message: "Invalid request payload",
@@ -41,8 +38,6 @@ func ValidateRequestPayload[T any](next http.Handler) http.Handler {
 		span.SetAttributes(attribute.Bool("validated", true))
 
 		ctx := context.WithValue(tracerCtx, utils.ValidatedPayloadKey, payload)
-		r = r.WithContext(ctx)
-
-		next.ServeHTTP(w, r)
+		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }

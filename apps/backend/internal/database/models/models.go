@@ -58,7 +58,7 @@ type UserCredential struct {
 	ID           string         `json:"id"`
 	UserID       string         `json:"user_id"`
 	Provider     string         `json:"provider"`
-	ProviderID   sql.NullString `json:"provider_id"`
+	ProviderID   string         `json:"provider_id"`
 	PasswordHash sql.NullString `json:"password_hash"`
 	CreatedAt    time.Time      `json:"created_at"`
 	UpdatedAt    time.Time      `json:"updated_at"`

@@ -34,21 +34,6 @@ func (ur *UserRepository) UserExists(ctx context.Context, email string) (bool, e
 	return exists != 0, nil
 }
 
-func (ur *UserRepository) CreateUser(ctx context.Context, user dto.CreateUserDto) (*models.User, error) {
-	var u models.CreateUserParams
-	u.ID = uuid.New().String()
-	u.FullName = user.FullName
-	u.Email = user.Email
-	u.Role = user.Role
-
-	cu, err := ur.Queries.CreateUser(ctx, u)
-	if err != nil {
-		return nil, err
-	}
-
-	return &cu, nil
-}
-
 func (ur *UserRepository) CreateUserWithPassword(ctx context.Context, user dto.CreateUserWithPasswordDto) (*models.User, error) {
 	var u models.CreateUserParams
 	u.ID = uuid.New().String()
@@ -61,15 +46,16 @@ func (ur *UserRepository) CreateUserWithPassword(ctx context.Context, user dto.C
 		return nil, err
 	}
 
-	var i models.CreateUserIdentityParams
+	var i models.CreateUserCredentialsParams
 	i.ID = uuid.New().String()
 	i.UserID = cu.ID
 	i.Provider = user.Provider
+	i.ProviderID = user.Email
 
 	passwordHash := utils.CreatePasswordHash(user.Password)
 	i.PasswordHash = sql.NullString{String: passwordHash, Valid: true}
 
-	_, err = ur.Queries.CreateUserIdentity(ctx, i)
+	_, err = ur.Queries.CreateUserCredentials(ctx, i)
 	if err != nil {
 		return nil, err
 	}
@@ -87,8 +73,8 @@ func (ur *UserRepository) GetUserByEmail(ctx context.Context, email string) (*mo
 	return &u, nil
 }
 
-func (ur *UserRepository) GetUserCredentialById(ctx context.Context, id string) (*models.UserCredential, error) {
-	u, err := ur.Queries.GetUserCredentialByUserId(ctx, id)
+func (ur *UserRepository) GetUserCredentialByProviderId(ctx context.Context, id string) (*models.UserCredential, error) {
+	u, err := ur.Queries.GetUserCredentialByProviderId(ctx, id)
 	if err != nil {
 		ur.Logger.Err(err).Msg("could not execute query")
 		return nil, err

@@ -5,7 +5,10 @@ import (
 	"database/sql"
 	"errors"
 	"net/http"
+	"time"
 
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/auth"
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/config"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/repositories"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/utils"
@@ -14,7 +17,7 @@ import (
 	"go.opentelemetry.io/otel/attribute"
 )
 
-var tracer = otel.Tracer("user-service")
+var tracer = otel.Tracer("user_service")
 
 type UserService struct {
 	userRepo repositories.UserRepository
@@ -28,8 +31,8 @@ func NewUserService(db *sql.DB, logger *zerolog.Logger) UserService {
 	}
 }
 
-func (us *UserService) CreateUserWithPassword(ctx context.Context, u dto.CreateUserWithPasswordDto) (dto.StructuredResponse, error) {
-	tracerCtx, span := tracer.Start(ctx, "UserService.CreateUser")
+func (us *UserService) Signup(ctx context.Context, u dto.CreateUserWithPasswordDto) (dto.StructuredResponse, error) {
+	tracerCtx, span := tracer.Start(ctx, "user_service.signup")
 	defer span.End()
 
 	userExists, err := us.userRepo.UserExists(tracerCtx, u.Email)
@@ -68,8 +71,25 @@ func (us *UserService) CreateUserWithPassword(ctx context.Context, u dto.CreateU
 		}, err
 	}
 
-	span.SetAttributes(attribute.String("user_id", user.ID))
 	span.SetStatus(http.StatusCreated, "successfully created user")
+
+	params := auth.GenerateJWTParams{
+		Email:      user.Email,
+		FullName:   user.FullName,
+		AppName:    config.GetGlobalConfig().Observability.AppName,
+		Expiration: time.Duration(time.Hour * 100), // arbitrary for now
+		Secret:     config.GetGlobalConfig().Auth.JWTSecret,
+	}
+	tokenString, err := auth.GenerateJWT(params)
+	if err != nil {
+		span.RecordError(err)
+		return dto.StructuredResponse{
+			Success: false,
+			Status:  http.StatusInternalServerError,
+			Message: "could not generate token",
+			Payload: nil,
+		}, err
+	}
 
 	return dto.StructuredResponse{
 		Success: true,
@@ -79,36 +99,27 @@ func (us *UserService) CreateUserWithPassword(ctx context.Context, u dto.CreateU
 			ID       string `json:"id"`
 			FullName string `json:"full_name"`
 			Email    string `json:"email"`
+			Token    string `json:"token"`
 		}{
 			ID:       user.ID,
 			FullName: user.FullName,
 			Email:    user.Email,
+			Token:    tokenString,
 		},
 	}, nil
 }
 
-func (us *UserService) LoginUser(ctx context.Context, u dto.LoginUserDto) (dto.StructuredResponse, error) {
-	tracerCtx, span := tracer.Start(ctx, "UserService.LoginUser")
+func (us *UserService) Login(ctx context.Context, u dto.LoginUserDto) (dto.StructuredResponse, error) {
+	tracerCtx, span := tracer.Start(ctx, "user_service.login")
 	defer span.End()
 
-	user, err := us.userRepo.GetUserByEmail(tracerCtx, u.Email)
+	uc, err := us.userRepo.GetUserCredentialByProviderId(tracerCtx, u.Email)
 	if err != nil {
 		span.RecordError(err)
 		return dto.StructuredResponse{
 			Success: false,
 			Status:  http.StatusNotFound,
-			Message: "could not find user",
-			Payload: nil,
-		}, err
-	}
-
-	uc, err := us.userRepo.GetUserCredentialById(tracerCtx, user.ID)
-	if err != nil {
-		span.RecordError(err)
-		return dto.StructuredResponse{
-			Success: false,
-			Status:  http.StatusNotFound,
-			Message: "could not find user",
+			Message: "user does not exist",
 			Payload: nil,
 		}, err
 	}
@@ -123,8 +134,37 @@ func (us *UserService) LoginUser(ctx context.Context, u dto.LoginUserDto) (dto.S
 		}, errors.New("invalid credentials")
 	}
 
-	span.SetAttributes(attribute.String("user_id", user.ID))
+	user, err := us.userRepo.GetUserByEmail(tracerCtx, u.Email)
+	if err != nil {
+		span.RecordError(err)
+		return dto.StructuredResponse{
+			Success: false,
+			Status:  http.StatusNotFound,
+			Message: "could not find user",
+			Payload: nil,
+		}, err
+	}
+
+	span.SetAttributes(attribute.String("user_id", u.Email))
 	span.SetStatus(http.StatusOK, "successfully logged in user")
+
+	params := auth.GenerateJWTParams{
+		Email:      user.Email,
+		FullName:   user.FullName,
+		AppName:    config.GetGlobalConfig().Observability.AppName,
+		Expiration: time.Duration(time.Hour * 100), // arbitrary for now
+		Secret:     config.GetGlobalConfig().Auth.JWTSecret,
+	}
+	tokenString, err := auth.GenerateJWT(params)
+	if err != nil {
+		span.RecordError(err)
+		return dto.StructuredResponse{
+			Success: false,
+			Status:  http.StatusInternalServerError,
+			Message: "could not generate token",
+			Payload: nil,
+		}, err
+	}
 
 	return dto.StructuredResponse{
 		Success: true,
@@ -134,29 +174,35 @@ func (us *UserService) LoginUser(ctx context.Context, u dto.LoginUserDto) (dto.S
 			ID       string `json:"id"`
 			FullName string `json:"full_name"`
 			Email    string `json:"email"`
+			Provider string `json:"provider"`
+			Token    string `json:"token"`
 		}{
 			ID:       user.ID,
 			FullName: user.FullName,
 			Email:    user.Email,
+			Provider: uc.Provider,
+			Token:    tokenString,
 		},
 	}, nil
 }
 
-func (us *UserService) GetUserByEmail(ctx context.Context, email string) dto.StructuredResponse {
+func (us *UserService) GetUserByEmail(ctx context.Context, email string) (dto.StructuredResponse, error) {
 	user, err := us.userRepo.GetUserByEmail(ctx, email)
 	if err != nil {
-		us.Logger.Err(err).Msg("could not fetch user")
+		msg := "could not fetch user"
+		us.Logger.Err(err).Msg(msg)
 		return dto.StructuredResponse{
 			Success: false,
 			Status:  http.StatusNotFound,
-			Message: "could not fetch user",
+			Message: msg,
 			Payload: nil,
-		}
+		}, errors.New(msg)
 	}
+
 	return dto.StructuredResponse{
 		Success: true,
 		Status:  200,
-		Message: "found all users",
+		Message: "found user",
 		Payload: user,
-	}
+	}, nil
 }

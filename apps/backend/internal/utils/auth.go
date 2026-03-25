@@ -11,10 +11,12 @@ import (
 )
 
 const (
-	iterations  = 3
-	memory      = 64 * 1024
-	parallelism = 4
-	keyLen      = 32
+	iterations           = 3
+	memory               = 64 * 1024
+	parallelism          = 4
+	keyLen               = 32
+	PasswordAuthProvider = "password"
+	GoogleAuthProvider   = "google"
 )
 
 var (

@@ -32,12 +32,12 @@ func New(cfg *config.Config) zerolog.Logger {
 	}
 
 	// otel hook
-	otelHook := otelzerolog.NewHook(cfg.Observability.ServiceName)
+	otelHook := otelzerolog.NewHook(cfg.Observability.AppName)
 
 	logger := zerolog.New(writer).
 		With().
 		Timestamp().
-		Str("service", cfg.Observability.ServiceName).
+		Str("service", cfg.Observability.AppName).
 		Str("environment", cfg.Primary.Env).
 		Logger().
 		Hook(otelHook)

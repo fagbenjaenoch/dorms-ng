@@ -18,13 +18,14 @@ type contextKey string
 
 const (
 	ValidatedPayloadKey contextKey = "validated_payload"
+	JWTClaimsKey        contextKey = "jwt_claims"
 )
 
 func IsProduction() bool {
 	return os.Getenv("ENV") == "production"
 }
 
-func ReturnJSONResponse(w http.ResponseWriter, response dto.StructuredResponse) {
+func WriteJSON(w http.ResponseWriter, response dto.StructuredResponse) {
 	responseJSON, err := json.Marshal(response)
 
 	if err != nil {
@@ -40,7 +41,7 @@ func ReturnJSONResponse(w http.ResponseWriter, response dto.StructuredResponse) 
 
 func DecodeJSONBody(w http.ResponseWriter, r *http.Request, body any) error {
 	if err := json.NewDecoder(r.Body).Decode(body); err != nil {
-		ReturnJSONResponse(w, dto.StructuredResponse{
+		WriteJSON(w, dto.StructuredResponse{
 			Success: false,
 			Status:  http.StatusBadRequest,
 			Message: err.Error(),

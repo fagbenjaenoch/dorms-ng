@@ -18,6 +18,7 @@ type Config struct {
 	Server        Server        `koanf:"server" validate:"required"`
 	Logging       Logging       `koanf:"logging" validate:"required"`
 	Observability Observability `koanf:"observability" validate:"required"`
+	Auth          Auth          `koanf:"auth" validate:"required"`
 }
 
 type Primary struct {
@@ -37,10 +38,14 @@ type Logging struct {
 }
 
 type Observability struct {
-	ServiceName     string `koanf:"service_name" validate:"required"`
+	AppName         string `koanf:"app_name" validate:"required"`
 	Environment     string `koanf:"environment" validate:"required,oneof=dev development staging prod production"`
 	Endpoint        string `koanf:"endpoint" validate:"required,url"`
 	LoggingEndpoint string `koanf:"logging_endpoint" validate:"required,url"`
+}
+
+type Auth struct {
+	JWTSecret string `koanf:"jwt_secret" validate:"required"`
 }
 
 func LoadConfig() (*Config, error) {
