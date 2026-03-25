@@ -1,13 +1,21 @@
 import Image from "next/image";
+import { DetailedHTMLProps, HTMLAttributes } from "react";
 
 interface UniversityCardProps {
   name: string;
   imageUrl: string;
 }
 
-export default function UniversityCard({ name, imageUrl }: UniversityCardProps) {
+export default function UniversityCard({
+  name,
+  imageUrl,
+  ...props
+}: UniversityCardProps & HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className="relative rounded-3xl overflow-hidden group cursor-pointer">
+    <div
+      {...props}
+      className="relative rounded-3xl overflow-hidden group cursor-pointer"
+    >
       <Image
         src={imageUrl}
         alt={name}

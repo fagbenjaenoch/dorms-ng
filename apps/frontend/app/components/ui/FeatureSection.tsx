@@ -1,12 +1,17 @@
 import { FaVideo } from "react-icons/fa";
 import { FaBolt } from "react-icons/fa6";
 import { HiSparkles } from "react-icons/hi2";
+import SectionHeading from "./SectionHeader";
 
 export default function FeatureSection() {
   return (
     <section>
       <div className="container">
-        <h2>Book your perfect accomodation</h2>
+        <SectionHeading
+          label="Built for Nigerian Students"
+          description="The Experience"
+        />
+        <h2></h2>
         <div className="flex flex-col *:flex-1  gap-8 lg:flex-row lg:gap-4">
           <div className="bg-fuchsia-500/20 px-4 py-8 rounded-3xl">
             <FaBolt size={15} className="mb-4" />

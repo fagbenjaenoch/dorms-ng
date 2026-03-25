@@ -34,10 +34,6 @@ body {
   font-family: var(--font-inter), Arial, Helvetica, sans-serif;
 }
 
-h2 {
-  @apply font-sans text-2xl font-bold mb-4;
-}
-
 .container {
   @apply mx-auto max-w-7xl px-4 py-8 lg:py-24;
 }

@@ -5,7 +5,7 @@ import { MdApartment } from "react-icons/md";
 
 export default function LandingSearch() {
   return (
-    <div className="shadow-2xl p-4 gap-4 lg:w-fit max-w-3xl flex flex-col lg:flex-row lg:items-center rounded-2xl">
+    <div className="shadow-xl p-4 gap-4 lg:w-fit max-w-3xl flex flex-col lg:flex-row lg:items-center rounded-2xl">
       <div className="px-4 py-4 flex items-center gap-3 bg-foreground rounded-xl">
         <HiLocationMarker size={20} className="text-primary" />
         <input
