@@ -2,45 +2,44 @@ import { FaVideo } from "react-icons/fa";
 import { FaBolt } from "react-icons/fa6";
 import { HiSparkles } from "react-icons/hi2";
 import SectionHeading from "./SectionHeader";
+import FeatureCard from "./FeatureCard";
+import { RiVerifiedBadgeLine } from "react-icons/ri";
+import { BiWallet } from "react-icons/bi";
 
 export default function FeatureSection() {
   return (
-    <section>
-      <div className="container">
+    <section className="bg-foreground/50">
+      <div className="container pb-20">
         <SectionHeading
           label="Built for Nigerian Students"
           description="The Experience"
         />
-        <h2></h2>
-        <div className="flex flex-col *:flex-1  gap-8 lg:flex-row lg:gap-4">
-          <div className="bg-fuchsia-500/20 px-4 py-8 rounded-3xl">
-            <FaBolt size={15} className="mb-4" />
-            <h3 className="font-bold mb-2">Quick and instant search</h3>
-            <p>
-              Quickly get information of hostels either by searching for them
-              specifically or searching the campus or location and get results
-              instantly.
-            </p>
-          </div>
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-8 lg:gap-4">
+          <FeatureCard
+            title="Strict Verification"
+            description="No more 'ghost' properties. Every hostel listed
+          undergoes a physical 24-point check by our
+          campus ambassadors."
+            Icon={RiVerifiedBadgeLine}
+            iconBg="bg-fuchsia-500/20"
+          />
 
-          <div className="bg-sky-300/50 px-4 py-8 rounded-3xl">
-            <FaVideo size={15} className="mb-4" />
-            <h3 className="font-bold mb-2">Verified video or image walkthroughs</h3>
-            <p>
-              What you see is exactly what you get. Every listing includes a verified
-              video walkthrough so you never have to guess.
-            </p>
-          </div>
+          <FeatureCard
+            title="Power & Water Audit"
+            description="We provide real data on average daily electricity hours and water availability for every neighborhood"
+            Icon={FaBolt}
+            iconBg="bg-sky-300/50"
+          />
 
-          <div className="bg-amber-400/70 px-4 py-8 rounded-3xl">
-            <HiSparkles size={20} className="mb-4" />
-            <h3 className="font-bold mb-2">Hostel Insights</h3>
-            <p>
-              Get useful insights about the hostel like how far it is from the
-              school's campus, amenities provided, enviromental condition and other
-              useful information that will help you make the right choice.
-            </p>
-          </div>
+          <FeatureCard
+            title="Flexible Payments"
+            description="Flexible Payments
+         Access student-friendly payment plans and
+         roommate-matching services to split costs
+         effectively."
+            Icon={BiWallet}
+            iconBg="bg-amber-500/50"
+          />
         </div>
       </div>
     </section>

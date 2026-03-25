@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { DetailedHTMLProps, HTMLAttributes } from "react";
+import { HTMLAttributes } from "react";
 
 interface UniversityCardProps {
   name: string;
