@@ -9,13 +9,13 @@ export default function LandingSearch() {
       <div className="px-4 py-4 flex items-center gap-3 bg-foreground rounded-xl">
         <HiLocationMarker size={20} className="text-primary" />
         <input
-          className=" text-gray-900/60"
+          className=" text-gray-900/60 w-full"
           placeholder="Which University or City?"
         />
       </div>
       <div className="px-4 py-4 flex gap-3 bg-foreground rounded-xl">
         <MdApartment className="text-primary" size={20} />
-        <span className="flex gap-2">
+        <span className="w-full flex gap-2 justify-between items-center">
           Self Contain <BiChevronDown size={20} />
         </span>
       </div>

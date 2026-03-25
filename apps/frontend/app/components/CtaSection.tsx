@@ -2,13 +2,19 @@ export default function CtaSection() {
   return (
     <section>
       <div className="container">
-        <div className="py-32 text-center">
-          <h2 className="font-bold text-2xl lg:text-4xl">
-            Ready to secure your space?
-          </h2>
-          <button className="bg-blue-500 text-white p-4 rounded-2xl cursor-pointer hover:bg-blue-600 transition-all">
-            Get started for free
-          </button>
+        <div className="bg-primary text-[#cbffda] p-20 text-center space-y-8 rounded-4xl">
+          <p className="font-bold text-3xl lg:text-4xl">
+            Ready to secure your dream space?
+          </p>
+
+          <div className="flex gap-4 drop-shadow-xl justify-center">
+            <button className="bg-secondary text-foreground px-10 py-5 rounded-2xl cursor-pointer transition-all">
+              Find a hostel now
+            </button>
+            <button className="backdrop-blur-md ring-1 ring-[#cbffda]/30 bg-[#cbffda]/10 px-10 py-5 rounded-2xl cursor-pointer transition-all">
+              Sign up
+            </button>
+          </div>
         </div>
       </div>
     </section>
