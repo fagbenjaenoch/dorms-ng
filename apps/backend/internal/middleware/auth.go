@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/auth"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/config"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/utils"
@@ -30,7 +31,7 @@ func RequireAuth(next http.Handler) http.Handler {
 		}
 
 		tokenString := strings.TrimPrefix(authHeader, "Bearer ")
-		token, err := utils.ParseJWT(tokenString, config.GetGlobalConfig().Auth.JWTSecret)
+		token, err := auth.ParseJWT(tokenString, config.GetGlobalConfig().Auth.JWTSecret)
 		if err != nil {
 			span.RecordError(err)
 			utils.WriteJSON(w, dto.StructuredResponse{

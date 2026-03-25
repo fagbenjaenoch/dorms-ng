@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/auth"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/config"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/repositories"
@@ -72,14 +73,14 @@ func (us *UserService) Signup(ctx context.Context, u dto.CreateUserWithPasswordD
 
 	span.SetStatus(http.StatusCreated, "successfully created user")
 
-	params := utils.GenerateJWTParams{
+	params := auth.GenerateJWTParams{
 		Email:      user.Email,
 		FullName:   user.FullName,
 		AppName:    config.GetGlobalConfig().Observability.AppName,
 		Expiration: time.Duration(time.Hour * 100), // arbitrary for now
 		Secret:     config.GetGlobalConfig().Auth.JWTSecret,
 	}
-	tokenString, err := utils.GenerateJWT(params)
+	tokenString, err := auth.GenerateJWT(params)
 	if err != nil {
 		span.RecordError(err)
 		return dto.StructuredResponse{
@@ -147,14 +148,14 @@ func (us *UserService) Login(ctx context.Context, u dto.LoginUserDto) (dto.Struc
 	span.SetAttributes(attribute.String("user_id", u.Email))
 	span.SetStatus(http.StatusOK, "successfully logged in user")
 
-	params := utils.GenerateJWTParams{
+	params := auth.GenerateJWTParams{
 		Email:      user.Email,
 		FullName:   user.FullName,
 		AppName:    config.GetGlobalConfig().Observability.AppName,
 		Expiration: time.Duration(time.Hour * 100), // arbitrary for now
 		Secret:     config.GetGlobalConfig().Auth.JWTSecret,
 	}
-	tokenString, err := utils.GenerateJWT(params)
+	tokenString, err := auth.GenerateJWT(params)
 	if err != nil {
 		span.RecordError(err)
 		return dto.StructuredResponse{

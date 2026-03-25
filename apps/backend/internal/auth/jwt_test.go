@@ -1,10 +1,10 @@
-package utils_test
+package auth_test
 
 import (
 	"testing"
 	"time"
 
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/utils"
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/auth"
 )
 
 func TestJWTSigning(t *testing.T) {
@@ -30,19 +30,19 @@ func TestJWTSigning(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.FullName, func(t *testing.T) {
-			params := utils.GenerateJWTParams{
+			params := auth.GenerateJWTParams{
 				Email:      tc.Email,
 				FullName:   tc.FullName,
 				AppName:    "hostel-marketplace-app",
 				Secret:     testSecret,
 				Expiration: time.Duration(time.Now().Add(time.Minute * 30).Unix()),
 			}
-			jwtString, err := utils.GenerateJWT(params)
+			jwtString, err := auth.GenerateJWT(params)
 			if err != nil {
 				t.Errorf("failed to generate jwt, %s", err)
 			}
 
-			decodedJwt, err := utils.ParseJWT(jwtString, testSecret)
+			decodedJwt, err := auth.ParseJWT(jwtString, testSecret)
 			if err != nil {
 				t.Errorf("failed to parse jwt, %s", err)
 			}

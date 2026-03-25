@@ -3,6 +3,7 @@ package handlers
 import (
 	"net/http"
 
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/auth"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/server"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/services"
@@ -77,7 +78,7 @@ func (uh *UserHandler) LoginUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func (uh *UserHandler) GetUserProfile(w http.ResponseWriter, r *http.Request) {
-	claims := r.Context().Value(utils.JWTClaimsKey).(*utils.JWTClaims)
+	claims := r.Context().Value(utils.JWTClaimsKey).(*auth.JWTClaims)
 	email := claims.Subject
 
 	uh.server.Logger.Debug().Str("email", email).Send()
