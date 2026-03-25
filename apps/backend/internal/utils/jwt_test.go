@@ -11,19 +11,19 @@ func TestJWTSigning(t *testing.T) {
 	testSecret := "mysecret"
 
 	tests := []struct {
-		UserId   string
+		Email    string
 		FullName string
 	}{
 		{
-			UserId:   "user-123",
+			Email:    "user-123@example.com",
 			FullName: "User 1",
 		},
 		{
-			UserId:   "user-1234",
+			Email:    "user-1234@example.com",
 			FullName: "User 2",
 		},
 		{
-			UserId:   "user-12345",
+			Email:    "user-12345@example.com",
 			FullName: "User 3",
 		},
 	}
@@ -31,7 +31,7 @@ func TestJWTSigning(t *testing.T) {
 	for _, tc := range tests {
 		t.Run(tc.FullName, func(t *testing.T) {
 			params := utils.GenerateJWTParams{
-				UserId:     tc.UserId,
+				Email:      tc.Email,
 				FullName:   tc.FullName,
 				AppName:    "hostel-marketplace-app",
 				Secret:     testSecret,
@@ -47,8 +47,8 @@ func TestJWTSigning(t *testing.T) {
 				t.Errorf("failed to parse jwt, %s", err)
 			}
 
-			if decodedJwt.FullName != tc.FullName || decodedJwt.Subject != tc.UserId {
-				t.Errorf("jwt token is invalid, %s, %s", tc.UserId, tc.FullName)
+			if decodedJwt.FullName != tc.FullName || decodedJwt.Subject != tc.Email {
+				t.Errorf("jwt token is invalid, %s, %s", tc.Email, tc.FullName)
 			}
 		})
 	}
