@@ -1,15 +1,26 @@
-import { FaSearch } from "react-icons/fa";
+import { BiChevronDown } from "react-icons/bi";
+import { FiArrowRight } from "react-icons/fi";
+import { HiLocationMarker } from "react-icons/hi";
+import { MdApartment } from "react-icons/md";
 
 export default function LandingSearch() {
   return (
-    <div className="relative text-xl px-8 py-4 w-120 lg:w-160 flex items-center gap-4 ring ring-gray-900/40 rounded-full text-gray-900/40">
-      <input
-        type="text"
-        className="w-full mr-8"
-        placeholder="Search for hostels, universities or locations"
-      />
-      <button className="absolute top-1 right-2 group hover:bg-gray-500/20 p-4 rounded-full cursor-pointer">
-        <FaSearch className="relative group-hover:text-gray-900/60 transition ease-out" />
+    <div className="shadow-2xl p-4 gap-4 lg:w-fit max-w-3xl flex flex-col lg:flex-row lg:items-center rounded-2xl">
+      <div className="px-4 py-4 flex items-center gap-3 bg-foreground rounded-xl">
+        <HiLocationMarker size={20} className="text-primary" />
+        <input
+          className=" text-gray-900/60"
+          placeholder="Which University or City?"
+        />
+      </div>
+      <div className="px-4 py-4 flex gap-3 bg-foreground rounded-xl">
+        <MdApartment className="text-primary" size={20} />
+        <span className="flex gap-2">
+          Self Contain <BiChevronDown size={20} />
+        </span>
+      </div>
+      <button className="bg-secondary text-white flex justify-center lg:justify-normal items-center gap-2 rounded-2xl py-4 px-8 cursor-pointer">
+        Search Now <FiArrowRight />
       </button>
     </div>
   );
