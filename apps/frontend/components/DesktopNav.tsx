@@ -1,3 +1,4 @@
+import Link from "next/link";
 import BrandIcon from "./ui/BrandIcon";
 import NavLink from "./ui/NavLink";
 
@@ -12,12 +13,15 @@ export default function DesktopNav() {
       </div>
 
       <div className="flex gap-2">
-        <a className="text-primary py-2.5 px-6" href="#">
+        <Link className="text-primary py-2.5 px-6" href="/auth/signin">
           Sign In
-        </a>
-        <a className="text-white bg-primary py-2.5 px-6 rounded-xl" href="#">
+        </Link>
+        <Link
+          className="text-white bg-primary py-2.5 px-6 rounded-xl"
+          href="/auth/signup"
+        >
           Sign Up
-        </a>
+        </Link>
       </div>
     </div>
   );

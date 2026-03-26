@@ -1,12 +1,12 @@
 "use client";
 
-import MobileNav from "@/app/components/MobileNav";
-import DesktopNav from "@/app/components/DesktopNav";
-import LandingSearch from "@/app/components/LandingSearch";
-import FeatureSection from "./components/ui/FeatureSection";
-import PopularUniversities from "./components/PopularUniversities";
-import CtaSection from "./components/CtaSection";
-import Footer from "./components/ui/Footer";
+import MobileNav from "@/components/MobileNav";
+import DesktopNav from "@/components/DesktopNav";
+import LandingSearch from "@/components/LandingSearch";
+import FeatureSection from "@/components/ui/FeatureSection";
+import PopularUniversities from "@/components/PopularUniversities";
+import CtaSection from "@/components/CtaSection";
+import Footer from "@/components/ui/Footer";
 import { GoVerified } from "react-icons/go";
 
 export default function Home() {

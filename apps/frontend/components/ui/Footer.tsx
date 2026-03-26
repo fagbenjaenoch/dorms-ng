@@ -1,4 +1,4 @@
-import { getCurrentYear } from "@/app/lib/utils";
+import { getCurrentYear } from "@/lib/utils";
 import BrandIcon from "./BrandIcon";
 
 export default function Footer() {
