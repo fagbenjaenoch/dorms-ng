@@ -19,7 +19,7 @@ export default function FeatureCard({
         <Icon size={15} />
       </div>
       <h3 className="font-bold text-xl">{title}</h3>
-      <p className="text-background/70">{description}</p>
+      <p className="text-foreground/70">{description}</p>
     </div>
   );
 }

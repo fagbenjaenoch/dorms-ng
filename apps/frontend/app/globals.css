@@ -5,10 +5,12 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --primary: oklch(0.205 0 0);
-  --secondary: oklch(0.97 0 0);
-  --tertiary: #ffd709;
-  --neutral: #f5f7f6;
+  --background: oklch(1 0.00011 271.152);
+  --foreground: oklch(0.3 0.00425 197.379);
+  --primary: oklch(0.46 0.11175 156.42);
+  --secondary: oklch(0.48 0.15872 38.348);
+  --tertiary: oklch(0.88 0.18133 95.262);
+  --neutral: oklch(0.97 0.00247 167.55);
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -48,7 +50,7 @@
   --color-secondary: var(--secondary);
   --color-tertiary: var(--tertiary);
   --color-neutral: var(--neutral);
-  --font-sans: var(--font-sans);
+  --font-sans: var(--font-dm-sans);
   --font-inter: var(--font-inter);
   --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -134,7 +136,7 @@ body {
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-foreground text-background;
   }
   html {
     @apply font-sans;

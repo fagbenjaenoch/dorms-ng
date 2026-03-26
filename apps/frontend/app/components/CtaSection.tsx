@@ -8,7 +8,7 @@ export default function CtaSection() {
           </p>
 
           <div className="flex gap-4 drop-shadow-xl justify-center">
-            <button className="bg-secondary text-foreground px-10 py-5 rounded-2xl cursor-pointer transition-all">
+            <button className="bg-secondary text-background px-10 py-5 rounded-2xl cursor-pointer transition-all">
               Find a hostel now
             </button>
             <button className="backdrop-blur-md ring-1 ring-[#cbffda]/30 bg-[#cbffda]/10 px-10 py-5 rounded-2xl cursor-pointer transition-all">

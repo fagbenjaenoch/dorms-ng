@@ -27,7 +27,7 @@ export default function Home() {
               Elevate your <span className="text-primary">campus</span> <br />
               Experience.
             </h1>
-            <p className="text-background/70 lg:text-xl max-w-xl">
+            <p className="text-foreground/70 lg:text-xl max-w-xl">
               The ultimate editorial collection of verified student housing across
               Nigeria. Discover premium hostels that match your academic ambition and
               lifestyle.

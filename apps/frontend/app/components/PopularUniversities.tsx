@@ -3,7 +3,7 @@ import UniversityCard from "./ui/UniversityCard";
 
 export default function PopularUniversities() {
   return (
-    <section>
+    <section className="bg-muted-foreground/10">
       <div className="container px-32">
         <SectionHeading label="Popular Universities" description="Destinations" />
         <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4">
