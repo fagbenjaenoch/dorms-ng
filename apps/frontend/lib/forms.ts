@@ -12,7 +12,7 @@ export const signupSchema = z.object({
 
 export type SignupData = z.infer<typeof signupSchema>;
 
-const loginSchema = z.object({
+export const loginSchema = z.object({
   email: z.email(),
   password: z.string().min(8).max(100),
 });
