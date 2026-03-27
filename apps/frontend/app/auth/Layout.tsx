@@ -13,7 +13,7 @@ export default function Layout({
           <BrandIcon className="text-white" />
         </Link>
       </div>
-      <div className="bg-muted-foreground/10 pb-24 overflow-scroll overflow-x-hidden">
+      <div className="bg-muted-foreground/10 pb-24 overflow-y-auto overflow-x-hidden">
         {children}
       </div>
     </div>
