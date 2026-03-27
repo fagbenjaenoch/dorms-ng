@@ -7,6 +7,7 @@ import { Field, FieldError, FieldGroup, FieldLabel } from "./ui/field";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import Link from "next/link";
+import { toast } from "sonner";
 
 export default function SignupForm() {
   const form = useForm<SignupData>({
@@ -14,19 +15,29 @@ export default function SignupForm() {
     defaultValues: {
       email: "",
       password: "",
-      fullName: "",
+      fullname: "",
     },
   });
 
-  const onSubmit = (data: SignupData) => {
-    console.log(data);
+  const onSubmit = async (data: SignupData) => {
+    try {
+      const res = await fetch("http://localhost:8000/api/v1/signup", {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
+      const payload = await res.json();
+      console.log(payload);
+    } catch (err) {
+      toast.error("could not login");
+      console.error(err);
+    }
   };
 
   return (
     <form id="signup-form" onSubmit={form.handleSubmit(onSubmit)}>
       <FieldGroup>
         <Controller
-          name="fullName"
+          name="fullname"
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>

@@ -6,6 +6,7 @@ import { Controller, useForm } from "react-hook-form";
 import { Field, FieldError, FieldGroup, FieldLabel } from "./ui/field";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { toast } from "sonner";
 
 export default function SigninForm() {
   const form = useForm<LoginData>({
@@ -16,8 +17,18 @@ export default function SigninForm() {
     },
   });
 
-  const onSubmit = (data: LoginData) => {
-    console.log(data);
+  const onSubmit = async (data: LoginData) => {
+    try {
+      const res = await fetch("http://localhost:8000/api/v1/login", {
+        method: "POST",
+        body: JSON.stringify(data),
+      });
+      const payload = await res.json();
+      console.log(payload);
+    } catch (err) {
+      toast.error("could not login");
+      console.error(err);
+    }
   };
 
   return (
