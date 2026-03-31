@@ -1,6 +1,7 @@
 import Link from "next/link";
 import BrandIcon from "./ui/BrandIcon";
 import NavLink from "./ui/NavLink";
+import { Button } from "./ui/button";
 
 export default function DesktopNav() {
   return (
@@ -12,16 +13,13 @@ export default function DesktopNav() {
         <NavLink href="#" label="Support" />
       </div>
 
-      <div className="flex gap-2">
-        <Link className="text-primary py-2.5 px-6" href="/auth/signin">
-          Sign In
-        </Link>
-        <Link
-          className="text-white bg-primary py-2.5 px-6 rounded-xl"
-          href="/auth/signup"
-        >
-          Sign Up
-        </Link>
+      <div className="flex items-center gap-2">
+        <Button variant="link" className="text-base">
+          <Link href="/auth/signin">Sign In</Link>
+        </Button>
+        <Button className="text-base px-6">
+          <Link href="/auth/signup">Sign Up</Link>
+        </Button>
       </div>
     </div>
   );
