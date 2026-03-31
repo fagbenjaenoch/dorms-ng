@@ -19,6 +19,7 @@ type contextKey string
 const (
 	ValidatedPayloadKey contextKey = "validated_payload"
 	JWTClaimsKey        contextKey = "jwt_claims"
+	PasswordProviderKey string     = "password"
 )
 
 func IsProduction() bool {

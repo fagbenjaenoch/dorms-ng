@@ -39,7 +39,7 @@ func (ur *UserRepository) CreateUserWithPassword(ctx context.Context, user dto.C
 	u.ID = uuid.New().String()
 	u.FullName = user.FullName
 	u.Email = user.Email
-	u.Role = user.Role
+	u.Role = "user" // TODO make this better
 
 	cu, err := ur.Queries.CreateUser(ctx, u)
 	if err != nil {
@@ -49,7 +49,7 @@ func (ur *UserRepository) CreateUserWithPassword(ctx context.Context, user dto.C
 	var i models.CreateUserCredentialsParams
 	i.ID = uuid.New().String()
 	i.UserID = cu.ID
-	i.Provider = user.Provider
+	i.Provider = utils.PasswordProviderKey
 	i.ProviderID = user.Email
 
 	passwordHash := utils.CreatePasswordHash(user.Password)
