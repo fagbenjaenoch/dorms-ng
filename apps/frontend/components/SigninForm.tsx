@@ -7,8 +7,11 @@ import { Field, FieldError, FieldGroup, FieldLabel } from "./ui/field";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { toast } from "sonner";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
 export default function SigninForm() {
+  const router = useRouter();
   const form = useForm<LoginData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -17,17 +20,28 @@ export default function SigninForm() {
     },
   });
 
+  const mutation = useMutation({
+    mutationKey: ["signup"],
+    mutationFn: async (user: LoginData) => {
+      try {
+        const res = await fetch("http://localhost:8000/api/v1/login", {
+          method: "POST",
+          body: JSON.stringify(user),
+        });
+        if (!res.ok) throw new Error("could not signin");
+        return res.json();
+      } catch (err) {
+        toast.error("could not login");
+        console.error(err);
+      }
+    },
+  });
+
   const onSubmit = async (data: LoginData) => {
-    try {
-      const res = await fetch("http://localhost:8000/api/v1/login", {
-        method: "POST",
-        body: JSON.stringify(data),
-      });
-      const payload = await res.json();
-      console.log(payload);
-    } catch (err) {
-      toast.error("could not login");
-      console.error(err);
+    const payload = await mutation.mutateAsync(data);
+    console.log(payload);
+    if (mutation.isSuccess) {
+      router.push("/app");
     }
   };
 

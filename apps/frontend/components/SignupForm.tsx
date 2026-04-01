@@ -8,8 +8,11 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { toast } from "sonner";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
 export default function SignupForm() {
+  const router = useRouter();
   const form = useForm<SignupData>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -19,18 +22,27 @@ export default function SignupForm() {
     },
   });
 
+  const mutation = useMutation({
+    mutationKey: ["signup"],
+    mutationFn: async (user: SignupData) => {
+      try {
+        const res = await fetch("http://localhost:8000/api/v1/signup", {
+          method: "POST",
+          body: JSON.stringify(user),
+        });
+        if (!res.ok) throw new Error("could not signup");
+        return res.json();
+      } catch (err) {
+        toast.error("could not login");
+        console.error(err);
+      }
+    },
+  });
+
   const onSubmit = async (data: SignupData) => {
-    try {
-      const res = await fetch("http://localhost:8000/api/v1/signup", {
-        method: "POST",
-        body: JSON.stringify(data),
-      });
-      const payload = await res.json();
-      console.log(payload);
-    } catch (err) {
-      toast.error("could not login");
-      console.error(err);
-    }
+    const payload = await mutation.mutateAsync(data);
+    console.log(payload);
+    router.push("/app");
   };
 
   return (
