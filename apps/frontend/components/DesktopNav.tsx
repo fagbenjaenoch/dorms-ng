@@ -17,7 +17,7 @@ export default function DesktopNav() {
         <Button variant="link" className="text-base">
           <Link href="/auth/signin">Sign In</Link>
         </Button>
-        <Button className="text-base px-6">
+        <Button className="text-base py-2.5 h-auto px-6" size="lg">
           <Link href="/auth/signup">Sign Up</Link>
         </Button>
       </div>
