@@ -1,6 +1,5 @@
 import Link from "next/link";
 import BrandIcon from "./ui/BrandIcon";
-import NavLink from "./ui/NavLink";
 import { Button } from "./ui/button";
 
 export default function DesktopNav() {
@@ -8,9 +7,21 @@ export default function DesktopNav() {
     <div className="hidden lg:flex mx-auto max-w-7xl justify-between px-4 py-4 items-center">
       <BrandIcon />
       <div className="flex gap-4">
-        <NavLink href="#" label="Find Hostels" />
-        <NavLink href="#" label="How it works" />
-        <NavLink href="#" label="Support" />
+        <Button className="text-base" variant="link">
+          <a href="#" className="href">
+            Find Hostels
+          </a>
+        </Button>
+        <Button className="text-base" variant="link">
+          <a href="#" className="href">
+            How it works
+          </a>
+        </Button>
+        <Button className="text-base" variant="link">
+          <a href="#" className="href">
+            Support
+          </a>
+        </Button>
       </div>
 
       <div className="flex items-center gap-2">
