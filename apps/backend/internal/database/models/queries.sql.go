@@ -327,6 +327,38 @@ func (q *Queries) GetNeighborhood(ctx context.Context, id string) (Neighborhood,
 	return i, err
 }
 
+const getSearchEntry = `-- name: GetSearchEntry :many
+SELECT entity_id, entity_type, search_text, description FROM global_search WHERE search_text MATCH ? ORDER BY rank LIMIT 20
+`
+
+func (q *Queries) GetSearchEntry(ctx context.Context, searchText string) ([]GlobalSearch, error) {
+	rows, err := q.db.QueryContext(ctx, getSearchEntry, searchText)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []GlobalSearch{}
+	for rows.Next() {
+		var i GlobalSearch
+		if err := rows.Scan(
+			&i.EntityID,
+			&i.EntityType,
+			&i.SearchText,
+			&i.Description,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getUserByEmail = `-- name: GetUserByEmail :one
 SELECT id, email, full_name, role, created_at, updated_at FROM users WHERE email = ? LIMIT 1
 `

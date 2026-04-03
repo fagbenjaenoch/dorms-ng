@@ -76,3 +76,6 @@ RETURNING *;
 INSERT INTO global_search (entity_id, entity_type, search_text, description)
 VALUES (?, ?, ?, ?)
 RETURNING *;
+
+-- name: GetSearchEntry :many
+SELECT * FROM global_search WHERE search_text MATCH ? ORDER BY rank LIMIT 20;
