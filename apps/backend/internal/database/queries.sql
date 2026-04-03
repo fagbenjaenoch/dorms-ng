@@ -12,7 +12,7 @@ RETURNING *;
 -- name: Listuniversities :many
 SELECT * FROM universities ORDER BY name;
 
--- name: GetInstitution :one
+-- name: GetUniversityById :one
 SELECT * FROM universities WHERE id = ? LIMIT 1;
 
 -- name: CreateNeighborhood :one
