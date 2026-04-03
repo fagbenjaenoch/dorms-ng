@@ -25,7 +25,7 @@ func NewUserHandler(s *server.Server) UserHandler {
 }
 
 func (uh *UserHandler) Signup(w http.ResponseWriter, r *http.Request) {
-	u, err := utils.GetValidatedPayloadFromRequest[dto.CreateUserWithPasswordDto](r.Context())
+	u, err := utils.GetValidatedPayloadFromRequest[dto.CreateUserWithPassword](r.Context())
 	if err != nil {
 		msg := "failed to process request body"
 		uh.server.Logger.Err(err).Msg(msg)
@@ -52,7 +52,7 @@ func (uh *UserHandler) Signup(w http.ResponseWriter, r *http.Request) {
 }
 
 func (uh *UserHandler) LoginUser(w http.ResponseWriter, r *http.Request) {
-	u, err := utils.GetValidatedPayloadFromRequest[dto.LoginUserDto](r.Context())
+	u, err := utils.GetValidatedPayloadFromRequest[dto.LoginUser](r.Context())
 	if err != nil {
 		msg := "failed to process request body"
 		uh.server.Logger.Err(err).Msg(msg)
