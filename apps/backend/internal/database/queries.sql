@@ -2,22 +2,22 @@
 SELECT EXISTS(SELECT 1 FROM users WHERE email = ? LIMIT 1);
 
 -- name: CreateInstitution :one
-INSERT INTO universities (
+INSERT INTO institutions (
     id, name, acronym, latitude, longitude
 ) VALUES (
     ?, ?, ?, ?, ?
 )
 RETURNING *;
 
--- name: Listuniversities :many
-SELECT * FROM universities ORDER BY name;
+-- name: ListInstitutions :many
+SELECT * FROM institutions ORDER BY name;
 
--- name: GetUniversityById :one
-SELECT * FROM universities WHERE id = ? LIMIT 1;
+-- name: GetInstitutionById :one
+SELECT * FROM institutions WHERE id = ? LIMIT 1;
 
 -- name: CreateNeighborhood :one
 INSERT INTO neighborhoods (
-    id, university_id, name, avg_price_self_con, avg_price_1bed,
+    id, institution_id, name, avg_price_self_con, avg_price_1bed,
     power_rating_insight, latitude, longitude
 ) VALUES (
     ?, ?, ?, ?, ?, ?, ?, ?
@@ -26,7 +26,7 @@ RETURNING *;
 
 -- name: ListNeighborhoodsByInstitution :many
 SELECT * FROM neighborhoods
-WHERE university_id = ?
+WHERE institution_id = ?
 ORDER BY name;
 
 -- name: GetNeighborhood :one
@@ -70,4 +70,9 @@ INSERT INTO user_credentials (
 ) VALUES (
     ?, ?, ?, ?, ?
 )
+RETURNING *;
+
+-- name: CreateSearchEntry :one
+INSERT INTO global_search (entity_id, entity_type, search_text, description)
+VALUES (?, ?, ?, ?)
 RETURNING *;

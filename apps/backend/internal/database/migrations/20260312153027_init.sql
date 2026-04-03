@@ -25,7 +25,7 @@ CREATE TABLE user_credentials (
   UNIQUE(provider, provider_id)
 );
 
-CREATE TABLE universities (
+CREATE TABLE institutions (
   id TEXT NOT NULL PRIMARY KEY,
   name TEXT NOT NULL,
   acronym TEXT,
@@ -37,7 +37,7 @@ CREATE TABLE universities (
 
 CREATE TABLE neighborhoods (
   id TEXT NOT NULL PRIMARY KEY,
-  university_id TEXT NOT NULL REFERENCES universities ON DELETE CASCADE,
+  institution_id TEXT NOT NULL REFERENCES institutions ON DELETE CASCADE,
   name TEXT NOT NULL,
   avg_price_self_con INTEGER,
   avg_price_1bed INTEGER,
@@ -76,13 +76,14 @@ CREATE VIRTUAL TABLE global_search USING fts5 (
   entity_id UNINDEXED,
   entity_type UNINDEXED,
   search_text,
+  description,
   tokenize="trigram"
 );
 
 -- +goose Down
 DROP TABLE user_credentials;
 DROP TABLE users;
-DROP TABLE universities;
+DROP TABLE institutions;
 DROP TABLE neighborhoods;
 DROP TABLE hostels;
 DROP TABLE global_search;

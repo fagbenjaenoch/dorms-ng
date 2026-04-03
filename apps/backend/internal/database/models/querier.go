@@ -11,18 +11,19 @@ import (
 
 type Querier interface {
 	CreateHostel(ctx context.Context, arg CreateHostelParams) (Hostel, error)
-	CreateInstitution(ctx context.Context, arg CreateInstitutionParams) (University, error)
+	CreateInstitution(ctx context.Context, arg CreateInstitutionParams) (Institution, error)
 	CreateNeighborhood(ctx context.Context, arg CreateNeighborhoodParams) (Neighborhood, error)
+	CreateSearchEntry(ctx context.Context, arg CreateSearchEntryParams) (GlobalSearch, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
 	CreateUserCredentials(ctx context.Context, arg CreateUserCredentialsParams) (UserCredential, error)
 	GetHostel(ctx context.Context, id string) (Hostel, error)
-	GetInstitution(ctx context.Context, id string) (University, error)
+	GetInstitutionById(ctx context.Context, id string) (Institution, error)
 	GetNeighborhood(ctx context.Context, id string) (Neighborhood, error)
 	GetUserByEmail(ctx context.Context, email string) (User, error)
 	GetUserCredentialByProviderId(ctx context.Context, providerID string) (UserCredential, error)
 	ListHostelsByNeighborhood(ctx context.Context, neighborhoodID sql.NullString) ([]Hostel, error)
-	ListNeighborhoodsByInstitution(ctx context.Context, universityID string) ([]Neighborhood, error)
-	Listuniversities(ctx context.Context) ([]University, error)
+	ListInstitutions(ctx context.Context) ([]Institution, error)
+	ListNeighborhoodsByInstitution(ctx context.Context, institutionID string) ([]Neighborhood, error)
 	UserExists(ctx context.Context, email string) (int64, error)
 }
 

@@ -9,6 +9,13 @@ import (
 	"time"
 )
 
+type GlobalSearch struct {
+	EntityID    string `json:"entity_id"`
+	EntityType  string `json:"entity_type"`
+	SearchText  string `json:"search_text"`
+	Description string `json:"description"`
+}
+
 type Hostel struct {
 	ID                  string          `json:"id"`
 	NeighborhoodID      sql.NullString  `json:"neighborhood_id"`
@@ -22,27 +29,31 @@ type Hostel struct {
 	DistanceToGateKm    sql.NullFloat64 `json:"distance_to_gate_km"`
 	EtaWalkingMins      sql.NullInt64   `json:"eta_walking_mins"`
 	IsVerifiedByAdmin   sql.NullBool    `json:"is_verified_by_admin"`
-	CreatedAt           sql.NullTime    `json:"created_at"`
-	UpdatedAt           sql.NullTime    `json:"updated_at"`
+	CreatedAt           time.Time       `json:"created_at"`
+	UpdatedAt           time.Time       `json:"updated_at"`
+}
+
+type Institution struct {
+	ID        string         `json:"id"`
+	Name      string         `json:"name"`
+	Acronym   sql.NullString `json:"acronym"`
+	Latitude  float64        `json:"latitude"`
+	Longitude float64        `json:"longitude"`
+	CreatedAt time.Time      `json:"created_at"`
+	UpdatedAt time.Time      `json:"updated_at"`
 }
 
 type Neighborhood struct {
 	ID                 string         `json:"id"`
-	UniversityID       string         `json:"university_id"`
+	InstitutionID      string         `json:"institution_id"`
 	Name               string         `json:"name"`
 	AvgPriceSelfCon    sql.NullInt64  `json:"avg_price_self_con"`
 	AvgPrice1bed       sql.NullInt64  `json:"avg_price_1bed"`
 	PowerRatingInsight sql.NullString `json:"power_rating_insight"`
 	Latitude           float64        `json:"latitude"`
 	Longitude          float64        `json:"longitude"`
-}
-
-type University struct {
-	ID        string         `json:"id"`
-	Name      string         `json:"name"`
-	Acronym   sql.NullString `json:"acronym"`
-	Latitude  float64        `json:"latitude"`
-	Longitude float64        `json:"longitude"`
+	CreatedAt          time.Time      `json:"created_at"`
+	UpdatedAt          time.Time      `json:"updated_at"`
 }
 
 type User struct {
