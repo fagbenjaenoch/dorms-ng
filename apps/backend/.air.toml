@@ -5,7 +5,7 @@ tmp_dir = "tmp"
 
 [build]
 # Just plain old shell command. You could use `make` as well.
-cmd = "go build -o ./tmp/main ./cmd/api/main.go"
+cmd = "go build --tags 'fts5' -o ./tmp/main ./cmd/api/main.go"
 # Binary file yields from `cmd`.
 bin = "tmp/main"
 # Watch these filename extensions.
