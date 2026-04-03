@@ -47,7 +47,12 @@ func (s AdminService) CreateHostel(ctx context.Context, hostel dto.CreateHostel)
 		Success: true,
 		Status:  http.StatusCreated,
 		Message: "Hostel created successfully",
-		Payload: h,
+		Payload: dto.CreateHostel{
+			Name:      h.Name,
+			Address:   h.Address.String,
+			Latitude:  h.Latitude,
+			Longitude: h.Longitude,
+		},
 	}, nil
 }
 
@@ -69,7 +74,12 @@ func (s AdminService) CreateInstitution(ctx context.Context, institution dto.Cre
 		Success: true,
 		Status:  http.StatusCreated,
 		Message: "Institution created successfully",
-		Payload: i,
+		Payload: dto.CreateInstitution{
+			Name:      i.Name,
+			Acronym:   i.Acronym.String,
+			Latitude:  i.Latitude,
+			Longitude: i.Longitude,
+		},
 	}, nil
 }
 
@@ -91,6 +101,13 @@ func (s AdminService) CreateNeighborhood(ctx context.Context, neighborhood dto.C
 		Success: true,
 		Status:  http.StatusCreated,
 		Message: "Neighborhood created successfully",
-		Payload: n,
+		Payload: dto.CreateNeighborhood{
+			Name:               n.Name,
+			Latitude:           n.Latitude,
+			Longitude:          n.Longitude,
+			AvgPriceSelfCon:    int(n.AvgPriceSelfCon.Int64),
+			AvgPrice1bed:       int(n.AvgPrice1bed.Int64),
+			PowerRatingInsight: n.PowerRatingInsight.String,
+		},
 	}, nil
 }

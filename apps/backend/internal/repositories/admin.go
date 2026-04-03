@@ -46,7 +46,21 @@ func (ir *InstitutionRepository) CreateInstitution(ctx context.Context, institut
 		return nil, err
 	}
 
-	return &ci, tx.Commit()
+	searchEntry := models.CreateSearchEntryParams{
+		EntityID:   ci.ID,
+		EntityType: "institution",
+		SearchText: ci.Name,
+	}
+
+	_, err = qtx.CreateSearchEntry(ctx, searchEntry)
+	if err != nil {
+		return nil, err
+	}
+	if err := tx.Commit(); err != nil {
+		return nil, err
+	}
+
+	return &ci, nil
 }
 
 type HostelRepository struct {
@@ -96,7 +110,11 @@ func (hr *HostelRepository) CreateHostel(ctx context.Context, hostel dto.CreateH
 		return nil, err
 	}
 
-	return &ch, tx.Commit()
+	if err := tx.Commit(); err != nil {
+		return nil, err
+	}
+
+	return &ch, nil
 }
 
 type NeighborhoodRepository struct {
@@ -148,5 +166,9 @@ func (nr *NeighborhoodRepository) CreateNeighborhood(ctx context.Context, neighb
 		return nil, err
 	}
 
-	return &cn, tx.Commit()
+	if err := tx.Commit(); err != nil {
+		return nil, err
+	}
+
+	return &cn, nil
 }
