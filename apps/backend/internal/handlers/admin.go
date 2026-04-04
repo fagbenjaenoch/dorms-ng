@@ -28,7 +28,7 @@ func (h *AdminHandler) CreateInstitution(w http.ResponseWriter, r *http.Request)
 	if err != nil {
 		msg := "failed to process request body"
 		h.server.Logger.Err(err).Msg(msg)
-		h.WriteJSON(w, dto.StructuredResponse{
+		utils.WriteJSON(w, dto.StructuredResponse{
 			Success: false,
 			Status:  http.StatusInternalServerError,
 			Message: msg,
@@ -45,7 +45,7 @@ func (h *AdminHandler) CreateInstitution(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	h.WriteJSON(w, res)
+	utils.WriteJSON(w, res)
 }
 
 func (h *AdminHandler) CreateHostel(w http.ResponseWriter, r *http.Request) {
@@ -53,7 +53,7 @@ func (h *AdminHandler) CreateHostel(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		msg := "failed to process request body"
 		h.server.Logger.Err(err).Msg(msg)
-		h.WriteJSON(w, dto.StructuredResponse{
+		utils.WriteJSON(w, dto.StructuredResponse{
 			Success: false,
 			Status:  http.StatusInternalServerError,
 			Message: msg,
@@ -70,7 +70,7 @@ func (h *AdminHandler) CreateHostel(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	h.WriteJSON(w, res)
+	utils.WriteJSON(w, res)
 }
 
 func (h *AdminHandler) CreateNeighborhood(w http.ResponseWriter, r *http.Request) {
@@ -78,7 +78,7 @@ func (h *AdminHandler) CreateNeighborhood(w http.ResponseWriter, r *http.Request
 	if err != nil {
 		msg := "failed to process request body"
 		h.server.Logger.Err(err).Msg(msg)
-		h.WriteJSON(w, dto.StructuredResponse{
+		utils.WriteJSON(w, dto.StructuredResponse{
 			Success: false,
 			Status:  http.StatusInternalServerError,
 			Message: msg,
@@ -95,5 +95,5 @@ func (h *AdminHandler) CreateNeighborhood(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	h.WriteJSON(w, res)
+	utils.WriteJSON(w, res)
 }
