@@ -21,7 +21,7 @@ func NewSearchRepository(db *sql.DB, logger *zerolog.Logger) *SearchRepository {
 	}
 }
 
-func (sr *SearchRepository) Search(ctx context.Context, searchQuery string) (*[]models.GlobalSearch, error) {
+func (sr *SearchRepository) Search(ctx context.Context, searchQuery string) (*[]models.GetSearchEntryRow, error) {
 	res, err := sr.Queries.GetSearchEntry(ctx, searchQuery)
 	if err != nil {
 		return nil, err

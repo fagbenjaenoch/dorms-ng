@@ -19,7 +19,7 @@ type Querier interface {
 	GetHostel(ctx context.Context, id string) (Hostel, error)
 	GetInstitutionById(ctx context.Context, id string) (Institution, error)
 	GetNeighborhood(ctx context.Context, id string) (Neighborhood, error)
-	GetSearchEntry(ctx context.Context, searchText string) ([]GlobalSearch, error)
+	GetSearchEntry(ctx context.Context, searchText string) ([]GetSearchEntryRow, error)
 	GetUserByEmail(ctx context.Context, email string) (User, error)
 	GetUserCredentialByProviderId(ctx context.Context, providerID string) (UserCredential, error)
 	ListHostelsByNeighborhood(ctx context.Context, neighborhoodID sql.NullString) ([]Hostel, error)
