@@ -3,16 +3,16 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/server"
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/services"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/utils"
-	"github.com/go-chi/chi/v5"
 )
 
 const SearchParam = "q"
 
 type GeneralHandler struct {
 	BaseHandler
+	SearchService services.SearchService
 }
 
 func NewGeneralHandler(s *server.Server) *GeneralHandler {
@@ -20,16 +20,18 @@ func NewGeneralHandler(s *server.Server) *GeneralHandler {
 		BaseHandler: BaseHandler{
 			server: s,
 		},
+		SearchService: services.NewSearchService(s.DB, s.Logger),
 	}
 }
 
 func (gh *GeneralHandler) Search(w http.ResponseWriter, r *http.Request) {
-	q := chi.URLParam(r, SearchParam)
+	q := r.URL.Query().Get(SearchParam)
 
-	gh.server.Logger.Debug().Str("query param", q).Send()
+	res, err := gh.SearchService.Search(r.Context(), q)
+	if err != nil {
+		utils.WriteJSON(w, res)
+		return
+	}
 
-	utils.WriteJSON(w, dto.StructuredResponse{
-		Success: true,
-		Status:  http.StatusNoContent,
-	})
+	utils.WriteJSON(w, res)
 }
