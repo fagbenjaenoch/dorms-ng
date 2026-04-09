@@ -92,7 +92,7 @@ export default function LandingSearch() {
       </Button>
 
       {!!query.data?.payload?.length && (
-        <div className="absolute  -bottom-24 left-0 w-full flex flex-col gap-2 bg-primary-foreground shadow-lg ring-1 ring-gray-500/5 p-2 rounded-xl">
+        <div className="absolute top-full mt-3 left-0 w-full flex flex-col gap-2 bg-primary-foreground shadow-lg ring-1 ring-gray-500/5 p-2 rounded-xl">
           {query.data.payload.map((searchResult) => (
             <div
               className="cursor-pointer hover:bg-gray-500/10 p-2 rounded-md"
