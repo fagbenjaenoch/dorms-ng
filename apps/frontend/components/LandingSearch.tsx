@@ -61,7 +61,7 @@ export default function LandingSearch() {
 
   return (
     <div className="relative shadow-lg ring-1 ring-gray-500/5 p-4 lg:p-2 gap-4 max-w-3xl flex flex-col lg:flex-row lg:items-center rounded-2xl">
-      <div className="w-full px-4 py-4 flex items-center gap-3 bg-background rounded-xl">
+      <div className="w-full px-4 flex items-center gap-3 bg-background rounded-xl">
         <HiLocationMarker size={20} className="text-primary" />
         <search className="w-full flex items-center">
           <input
