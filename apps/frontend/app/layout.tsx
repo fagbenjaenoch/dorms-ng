@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import QueryProvider from "./QueryProvider";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -37,8 +38,10 @@ export default function RootLayout({
         className={`${inter.variable} ${dmSans.variable} antialiased selection:bg-primary selection:text-primary-foreground`}
       >
         <QueryProvider>
-          {children}
-          <Toaster />
+          <NuqsAdapter>
+            {children}
+            <Toaster />
+          </NuqsAdapter>
         </QueryProvider>
       </body>
     </html>

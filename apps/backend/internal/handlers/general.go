@@ -8,7 +8,7 @@ import (
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/utils"
 )
 
-const SearchParam = "q"
+const SearchParam = "search"
 
 type GeneralHandler struct {
 	BaseHandler
