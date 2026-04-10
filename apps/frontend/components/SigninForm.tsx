@@ -28,10 +28,12 @@ export default function SigninForm() {
           method: "POST",
           body: JSON.stringify(user),
         });
-        if (!res.ok) throw new Error("could not signin");
-        return res.json();
-      } catch (err) {
-        toast.error("could not login");
+        let responseObj = await res.json();
+        if (!res.ok) throw new Error(responseObj.message);
+
+        return responseObj;
+      } catch (err: any) {
+        toast.error(err.toString());
         console.error(err);
       }
     },
@@ -40,7 +42,7 @@ export default function SigninForm() {
   const onSubmit = async (data: LoginData) => {
     const payload = await mutation.mutateAsync(data);
     console.log(payload);
-    if (mutation.isSuccess) {
+    if (payload.success) {
       router.push("/app");
     }
   };
