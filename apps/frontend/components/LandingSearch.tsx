@@ -86,9 +86,10 @@ export default function LandingSearch() {
 
       <Button
         variant="secondary"
-        className="text-primary-foreground text-base flex justify-center lg:justify-normal items-center gap-2 rounded-2xl py-4 px-8 cursor-pointer h-auto"
+        className="group text-primary-foreground text-base flex justify-center lg:justify-normal items-center gap-2 rounded-2xl py-4 px-8 cursor-pointer h-auto"
       >
-        Search Now <FiArrowRight />
+        Search Now{" "}
+        <FiArrowRight className="group-hover:translate-x-1 transition-all" />
       </Button>
 
       {!!query.data?.payload?.length && (
