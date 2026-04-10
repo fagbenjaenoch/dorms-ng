@@ -25,11 +25,11 @@ func NewUserHandler(s *server.Server) UserHandler {
 }
 
 func (uh *UserHandler) Signup(w http.ResponseWriter, r *http.Request) {
-	u, err := utils.GetValidatedPayloadFromRequest[dto.CreateUserWithPasswordDto](r.Context())
+	u, err := utils.GetValidatedPayloadFromRequest[dto.CreateUserWithPassword](r.Context())
 	if err != nil {
 		msg := "failed to process request body"
 		uh.server.Logger.Err(err).Msg(msg)
-		uh.WriteJSON(w, dto.StructuredResponse{
+		utils.WriteJSON(w, dto.StructuredResponse{
 			Success: false,
 			Status:  http.StatusInternalServerError,
 			Message: msg,
@@ -43,20 +43,20 @@ func (uh *UserHandler) Signup(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		msg := "failed to create user"
 		uh.server.Logger.Err(err).Msg(msg)
-		uh.WriteJSON(w, res)
+		utils.WriteJSON(w, res)
 		return
 	}
 
 	uh.server.Logger.Info().Msg("successfully created user")
-	uh.WriteJSON(w, res)
+	utils.WriteJSON(w, res)
 }
 
 func (uh *UserHandler) LoginUser(w http.ResponseWriter, r *http.Request) {
-	u, err := utils.GetValidatedPayloadFromRequest[dto.LoginUserDto](r.Context())
+	u, err := utils.GetValidatedPayloadFromRequest[dto.LoginUser](r.Context())
 	if err != nil {
 		msg := "failed to process request body"
 		uh.server.Logger.Err(err).Msg(msg)
-		uh.WriteJSON(w, dto.StructuredResponse{
+		utils.WriteJSON(w, dto.StructuredResponse{
 			Success: false,
 			Status:  http.StatusUnprocessableEntity,
 			Message: msg,
@@ -69,12 +69,12 @@ func (uh *UserHandler) LoginUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		msg := "failed to login user"
 		uh.server.Logger.Err(err).Msg(msg)
-		uh.WriteJSON(w, res)
+		utils.WriteJSON(w, res)
 		return
 	}
 
 	uh.server.Logger.Info().Msg("successfully logged in user")
-	uh.WriteJSON(w, res)
+	utils.WriteJSON(w, res)
 }
 
 func (uh *UserHandler) GetUserProfile(w http.ResponseWriter, r *http.Request) {
@@ -84,10 +84,10 @@ func (uh *UserHandler) GetUserProfile(w http.ResponseWriter, r *http.Request) {
 	uh.server.Logger.Debug().Str("email", email).Send()
 	res, err := uh.UserService.GetUserByEmail(r.Context(), email)
 	if err != nil {
-		uh.WriteJSON(w, res)
+		utils.WriteJSON(w, res)
 		return
 	}
 
 	uh.server.Logger.Info().Msg("successfully fetched user profile")
-	uh.WriteJSON(w, res)
+	utils.WriteJSON(w, res)
 }

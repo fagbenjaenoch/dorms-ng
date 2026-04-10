@@ -6,6 +6,7 @@ import (
 
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/server"
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/utils"
 )
 
 type HealthHandler struct {
@@ -46,5 +47,5 @@ func (hh *HealthHandler) CheckHealth(w http.ResponseWriter, r *http.Request) {
 		},
 	}
 
-	hh.WriteJSON(w, response)
+	utils.WriteJSON(w, response)
 }

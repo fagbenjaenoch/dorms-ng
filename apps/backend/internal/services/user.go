@@ -17,7 +17,7 @@ import (
 	"go.opentelemetry.io/otel/attribute"
 )
 
-var tracer = otel.Tracer("user_service")
+var userTracer = otel.Tracer("user_service")
 
 type UserService struct {
 	userRepo repositories.UserRepository
@@ -31,8 +31,8 @@ func NewUserService(db *sql.DB, logger *zerolog.Logger) UserService {
 	}
 }
 
-func (us *UserService) Signup(ctx context.Context, u dto.CreateUserWithPasswordDto) (dto.StructuredResponse, error) {
-	tracerCtx, span := tracer.Start(ctx, "user_service.signup")
+func (us *UserService) Signup(ctx context.Context, u dto.CreateUserWithPassword) (dto.StructuredResponse, error) {
+	tracerCtx, span := userTracer.Start(ctx, "Signup")
 	defer span.End()
 
 	userExists, err := us.userRepo.UserExists(tracerCtx, u.Email)
@@ -95,12 +95,7 @@ func (us *UserService) Signup(ctx context.Context, u dto.CreateUserWithPasswordD
 		Success: true,
 		Status:  201,
 		Message: "user signed up successfully",
-		Payload: struct {
-			ID       string `json:"id"`
-			FullName string `json:"full_name"`
-			Email    string `json:"email"`
-			Token    string `json:"token"`
-		}{
+		Payload: dto.CreateUserPayload{
 			ID:       user.ID,
 			FullName: user.FullName,
 			Email:    user.Email,
@@ -109,8 +104,8 @@ func (us *UserService) Signup(ctx context.Context, u dto.CreateUserWithPasswordD
 	}, nil
 }
 
-func (us *UserService) Login(ctx context.Context, u dto.LoginUserDto) (dto.StructuredResponse, error) {
-	tracerCtx, span := tracer.Start(ctx, "user_service.login")
+func (us *UserService) Login(ctx context.Context, u dto.LoginUser) (dto.StructuredResponse, error) {
+	tracerCtx, span := userTracer.Start(ctx, "Login")
 	defer span.End()
 
 	uc, err := us.userRepo.GetUserCredentialByProviderId(tracerCtx, u.Email)
@@ -170,18 +165,14 @@ func (us *UserService) Login(ctx context.Context, u dto.LoginUserDto) (dto.Struc
 		Success: true,
 		Status:  200,
 		Message: "logged in user successfully",
-		Payload: struct {
-			ID       string `json:"id"`
-			FullName string `json:"full_name"`
-			Email    string `json:"email"`
-			Provider string `json:"provider"`
-			Token    string `json:"token"`
-		}{
-			ID:       user.ID,
-			FullName: user.FullName,
-			Email:    user.Email,
+		Payload: dto.LoginPayload{
+			CreateUserPayload: dto.CreateUserPayload{
+				ID:       user.ID,
+				FullName: user.FullName,
+				Email:    user.Email,
+				Token:    tokenString,
+			},
 			Provider: uc.Provider,
-			Token:    tokenString,
 		},
 	}, nil
 }

@@ -1,5 +1,9 @@
 -- +goose Up
+
 PRAGMA foreign_keys = ON;
+-- PRAGMA journal_mode =WAL;
+-- PRAGMA synchronous=normal;
+-- PRAGMA threads = 4;
 
 CREATE TABLE users (
 	id TEXT NOT NULL PRIMARY KEY,
@@ -21,23 +25,27 @@ CREATE TABLE user_credentials (
   UNIQUE(provider, provider_id)
 );
 
-CREATE TABLE universities (
+CREATE TABLE institutions (
   id TEXT NOT NULL PRIMARY KEY,
   name TEXT NOT NULL,
   acronym TEXT,
   latitude REAL NOT NULL,  -- GPS coordinate for the main gate
-  longitude REAL NOT NULL
+  longitude REAL NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE neighborhoods (
   id TEXT NOT NULL PRIMARY KEY,
-  university_id TEXT NOT NULL REFERENCES universities ON DELETE CASCADE,
+  institution_id TEXT NOT NULL REFERENCES institutions ON DELETE CASCADE,
   name TEXT NOT NULL,
   avg_price_self_con INTEGER,
   avg_price_1bed INTEGER,
   power_rating_insight TEXT,
   latitude REAL NOT NULL,           -- Center point of the neighborhood
-  longitude REAL NOT NULL
+  longitude REAL NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE hostels (
@@ -60,13 +68,22 @@ CREATE TABLE hostels (
   eta_walking_mins INTEGER,
 
   is_verified_by_admin BOOLEAN DEFAULT FALSE,
-  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE VIRTUAL TABLE global_search USING fts5 (
+  entity_id UNINDEXED,
+  entity_type UNINDEXED,
+  search_text,
+  description,
+  tokenize="trigram"
 );
 
 -- +goose Down
 DROP TABLE user_credentials;
 DROP TABLE users;
-DROP TABLE universities;
+DROP TABLE institutions;
 DROP TABLE neighborhoods;
 DROP TABLE hostels;
+DROP TABLE global_search;

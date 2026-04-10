@@ -34,7 +34,7 @@ func (ur *UserRepository) UserExists(ctx context.Context, email string) (bool, e
 	return exists != 0, nil
 }
 
-func (ur *UserRepository) CreateUserWithPassword(ctx context.Context, user dto.CreateUserWithPasswordDto) (*models.User, error) {
+func (ur *UserRepository) CreateUserWithPassword(ctx context.Context, user dto.CreateUserWithPassword) (*models.User, error) {
 	var u models.CreateUserParams
 	u.ID = uuid.New().String()
 	u.FullName = user.FullName
