@@ -5,7 +5,9 @@ import { Button } from "./ui/button";
 export default function DesktopNav() {
   return (
     <div className="hidden lg:flex mx-auto max-w-7xl justify-between px-4 py-4 items-center">
-      <BrandIcon />
+      <Link href="/">
+        <BrandIcon />
+      </Link>
       <div className="flex gap-4">
         <Button className="text-base" variant="link">
           <a href="#" className="href">
