@@ -35,7 +35,7 @@ export default function Home() {
             </p>
             <LandingSearch />
           </div>
-          <div className="hidden lg:inline-block overflow-hidden rounded-2xl max-w-xl">
+          <div className="hidden lg:inline-block overflow-hidden rounded-2xl max-w-xl pointer-events-none">
             <Image
               src="/hero.webp"
               width={250}
