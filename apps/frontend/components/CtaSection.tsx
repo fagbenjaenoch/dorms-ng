@@ -10,7 +10,7 @@ export default function CtaSection() {
             <div className="absolute bottom-0 left-0 w-64 h-64 bg-secondary rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl"></div>
           </div>
           <div className="relative z-10 p-12 lg:p-20 text-center">
-            <h2 className="text-4xl lg:text-6xl font-extrabold tracking-tighter mb-8 max-w-3xl mx-auto">
+            <h2 className="text-4xl lg:text-6xl text-primary-light font-extrabold tracking-tighter mb-8 max-w-3xl mx-auto">
               Ready to Secure Your Next Study Haven?
             </h2>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -23,7 +23,7 @@ export default function CtaSection() {
               </Button>
               <Button
                 size="xl"
-                className="w-full sm:w-auto bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl font-black text-lg hover:bg-white/20 transition-all"
+                className="w-full sm:w-auto text-primary-light bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl font-black text-lg hover:bg-white/20 transition-all"
               >
                 Talk to an Agent
               </Button>

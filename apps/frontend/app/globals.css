@@ -8,6 +8,7 @@
   --background: oklch(1 0.00011 271.152);
   --foreground: oklch(0.3 0.00425 197.379);
   --primary: oklch(0.46 0.11175 156.42);
+  --primary-light: oklch(0.95 0.07247 153.971);
   --secondary: oklch(0.48 0.15872 38.348);
   --tertiary: oklch(0.88 0.18133 95.262);
   --neutral: oklch(0.97 0.00247 167.55);
@@ -47,6 +48,7 @@
   --color-foreground: var(--foreground);
   --color-background: var(--background);
   --color-primary: var(--primary);
+  --color-primary-light: var(--primary-light);
   --color-secondary: var(--secondary);
   --color-tertiary: var(--tertiary);
   --color-neutral: var(--neutral);
