@@ -8,6 +8,7 @@ import PopularUniversities from "@/components/PopularUniversities";
 import CtaSection from "@/components/CtaSection";
 import Footer from "@/components/ui/Footer";
 import { GoVerified } from "react-icons/go";
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -18,7 +19,7 @@ export default function Home() {
       </nav>
 
       <main className="min-h-screen">
-        <div className="container">
+        <div className="container flex gap-24 items-center">
           <div className="flex flex-col gap-6 py-28">
             <div className="flex items-center gap-1 bg-[#92febc] text-primary px-2 py-1 text-xs font-semibold w-fit tracking-wider rounded-full uppercase">
               <GoVerified /> Verified Nigerian student housing
@@ -33,6 +34,15 @@ export default function Home() {
               lifestyle.
             </p>
             <LandingSearch />
+          </div>
+          <div className="hidden lg:inline-block overflow-hidden rounded-2xl max-w-xl">
+            <Image
+              src="/hero.webp"
+              width={250}
+              height={600}
+              alt="Students hanging out"
+              loading="lazy"
+            />
           </div>
         </div>
       </main>
