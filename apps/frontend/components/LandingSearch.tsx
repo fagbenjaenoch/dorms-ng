@@ -3,10 +3,8 @@
 import { FiArrowRight } from "react-icons/fi";
 import { HiLocationMarker } from "react-icons/hi";
 import { Button } from "./ui/button";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import useDebounce from "@/lib/hooks/useDebounce";
 import { useQuery } from "@tanstack/react-query";
-import { useRef, useState } from "react";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useQueryState } from "nuqs";
@@ -21,17 +19,12 @@ export default function LandingSearch() {
   const debounceSearchTerm = useDebounce(searchTerm, 300);
 
   interface SearchResult {
-    success: boolean;
-    status: number;
-    message: string;
-    payload: {
-      entity_id: string;
-      entity_type: string;
-      snippet: string;
-    }[];
+    entity_id: string;
+    entity_type: string;
+    snippet: string;
   }
 
-  const query = useQuery<SearchResult>({
+  const query = useQuery<APIResponse<SearchResult[]>>({
     queryKey: ["search", debounceSearchTerm],
     queryFn: async ({ signal }) => {
       try {
