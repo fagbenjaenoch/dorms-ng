@@ -29,7 +29,7 @@ const SidebarItem = ({
     size="xl"
     onClick={onClick}
     className={cn(
-      "cursor-pointer w-full mx-2 my-1 px-2 py-3 text-white flex justify-start gap-3 rounded-xl transition-all ease-out hover:text-white/30 hover:bg-primary",
+      "cursor-pointer w-full mx-2 my-1 px-2 py-3 text-white/30 flex justify-start gap-3 rounded-xl transition-all ease-out hover:text-white hover:bg-primary",
       active && " text-orange-400",
     )}
   >
@@ -44,13 +44,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {/* Sidebar */}
       <aside className="h-screen w-64 fixed left-0 top-0 flex flex-col bg-primary shadow-2xl z-50">
         <div className="flex flex-col h-full py-6">
-          <div className="px-6 mb-10 animate-in fade-in slide-in-from-top-4 duration-700">
+          <div className="px-6 mb-10">
             <Link href="/">
-              <BrandIcon className="text-white" />
+              <BrandIcon className="text-white font-bold" />
             </Link>
           </div>
 
-          <nav className="flex-1 space-y-1 px-4 animate-in fade-in slide-in-from-left-4 duration-700 delay-150 fill-mode-both">
+          <nav className="flex-1 space-y-1 px-4">
             <SidebarItem icon={LayoutDashboard} label="Dashboard" />
             <SidebarItem icon={GraduationCap} label="Universities" active />
             <SidebarItem icon={MapPin} label="Neighborhoods" />
@@ -58,7 +58,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <SidebarItem icon={CalendarDays} label="Bookings" />
           </nav>
 
-          <div className="mt-auto px-4 space-y-1 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300 fill-mode-both">
+          <div className="mt-auto px-4 space-y-1">
             <Button
               size="xl"
               className="cursor-pointer mb-6 bg-orange-500 hover:bg-orange-600 text-white font-bold shadow-lg flex items-center gap-2"

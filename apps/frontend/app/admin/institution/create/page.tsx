@@ -52,7 +52,7 @@ export default function CreateInstitution() {
   return (
     <div className="min-h-screen w-full">
       <main className="flex-1 ml-64 min-h-screen relative">
-        <header className="bg-white/70 backdrop-blur-md sticky top-0 z-40 shadow-sm flex justify-between items-center w-full px-8 py-4 border-b border-surface-container animate-in fade-in slide-in-from-top-4 duration-500">
+        <header className="bg-white/70 backdrop-blur-md sticky top-0 z-40 shadow-sm flex justify-between items-center w-full px-8 py-4 border-b border-surface-container">
           <div className="flex items-center gap-4">
             <span className="text-2xl font-black text-primary tracking-tight">
               Institution Management
@@ -83,7 +83,7 @@ export default function CreateInstitution() {
         </header>
 
         <div className="p-10 max-w-6xl mx-auto">
-          <div className="mb-10 animate-in fade-in slide-in-from-bottom-4 duration-700 ease-out">
+          <div className="mb-10">
             <h2 className="text-5xl font-bold tracking-tighter text-on-surface leading-none">
               Create New <span className="italic text-primary">Institution</span>
             </h2>
@@ -223,7 +223,7 @@ export default function CreateInstitution() {
             </div>
 
             <div className="lg:col-span-5 space-y-8">
-              <div className="bg-surface-container-lowest rounded-[2.5rem] p-4 shadow-2xl border border-surface-container transform rotate-2 hover:rotate-0 transition-transform duration-500 ease-out animate-in fade-in slide-in-from-right-8 delay-300 fill-mode-both">
+              <div className="bg-surface-container-lowest rounded-[2.5rem] p-4 shadow-2xl border border-surface-container transform rotate-2 hover:rotate-0 transition-transform">
                 <div className="relative rounded-[2rem] overflow-hidden aspect-square bg-surface-container shadow-inner group">
                   <img
                     className="w-full h-full object-cover mix-blend-overlay grayscale opacity-50 transition-transform duration-1000 group-hover:scale-110"
@@ -277,7 +277,7 @@ export default function CreateInstitution() {
               </div>
 
               {/* Side Benefit Card */}
-              <div className="bg-primary rounded-[2.5rem] p-10 text-white relative overflow-hidden shadow-xl shadow-primary/20 animate-in fade-in slide-in-from-bottom-8 duration-500 delay-500 fill-mode-both ">
+              <div className="bg-primary rounded-[2.5rem] p-10 text-white relative overflow-hidden shadow-xl shadow-primary/20">
                 <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -translate-y-20 translate-x-20 transition-transform duration-700" />
                 <h4 className="text-2xl font-bold mb-6 relative z-10">
                   Quality Assurance
