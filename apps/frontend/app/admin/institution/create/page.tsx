@@ -212,7 +212,7 @@ export default function CreateInstitution() {
                 </form>
               </section>
 
-              <div className="bg-tertiary/10 rounded-[2.5rem] p-8 relative overflow-hidden border border-tertiary/20">
+              <div className="bg-tertiary/20 rounded-[2.5rem] p-8 relative overflow-hidden">
                 <div className="relative z-10">
                   <h3 className="text-xl font-bold text-on-surface mb-2">
                     Did you know?
@@ -223,7 +223,7 @@ export default function CreateInstitution() {
                   </p>
                 </div>
                 <VerifiedIcon
-                  className="absolute -bottom-4 -right-4 text-9xl text-tertiary/10 rotate-12 transition-transform duration-700"
+                  className="absolute -bottom-4 -right-4 text-9xl text-tertiary/20 rotate-12 transition-transform duration-700"
                   size={160}
                 />
               </div>
