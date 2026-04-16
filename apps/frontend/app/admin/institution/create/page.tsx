@@ -4,7 +4,14 @@ import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field
 import { CreateInstitutionData, createInstitutionSchema } from "@/lib/forms";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { Bell, CheckCircle2, GraduationCap, MapIcon, Settings } from "lucide-react";
+import {
+  Bell,
+  CheckCircle2,
+  GraduationCap,
+  MapIcon,
+  Settings,
+  VerifiedIcon,
+} from "lucide-react";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
@@ -215,7 +222,7 @@ export default function CreateInstitution() {
                     within a 15-minute walking distance for students.
                   </p>
                 </div>
-                <CheckCircle2
+                <VerifiedIcon
                   className="absolute -bottom-4 -right-4 text-9xl text-tertiary/10 rotate-12 transition-transform duration-700"
                   size={160}
                 />
