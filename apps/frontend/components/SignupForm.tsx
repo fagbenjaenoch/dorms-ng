@@ -39,14 +39,14 @@ export default function SignupForm() {
     },
   });
 
-  const onSubmit = async (data: SignupData) => {
+  const handleSubmit = async (data: SignupData) => {
     const payload = await mutation.mutateAsync(data);
     console.log(payload);
     router.push("/app");
   };
 
   return (
-    <form id="signup-form" onSubmit={form.handleSubmit(onSubmit)}>
+    <form id="signup-form" onSubmit={form.handleSubmit(handleSubmit)}>
       <FieldGroup>
         <Controller
           name="fullname"
@@ -54,7 +54,7 @@ export default function SignupForm() {
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel
-                htmlFor="signup-form"
+                htmlFor="fullname"
                 className="uppercase text-xs"
                 aria-invalid={fieldState.invalid}
               >
@@ -62,7 +62,7 @@ export default function SignupForm() {
               </FieldLabel>
               <Input
                 {...field}
-                id="signup-form"
+                id="fullname"
                 aria-invalid={fieldState.invalid}
                 placeholder="Bola Musa Adabize"
                 autoComplete="off"
@@ -76,12 +76,12 @@ export default function SignupForm() {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="signup-form" className="uppercase text-xs">
+              <FieldLabel htmlFor="email" className="uppercase text-xs">
                 Email
               </FieldLabel>
               <Input
                 {...field}
-                id="signup-form"
+                id="email"
                 aria-invalid={fieldState.invalid}
                 placeholder="bola.musa.adabize@email.com"
                 type="email"
@@ -95,12 +95,12 @@ export default function SignupForm() {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="signup-form" className="uppercase text-xs">
+              <FieldLabel htmlFor="password" className="uppercase text-xs">
                 Password
               </FieldLabel>
               <Input
                 {...field}
-                id="signup-form"
+                id="password"
                 aria-invalid={fieldState.invalid}
                 placeholder="Min. 8 Characters"
                 type="password"
@@ -123,7 +123,7 @@ export default function SignupForm() {
       </FieldGroup>
       <Button
         className="mt-6 text-white w-full py-8 text-base cursor-pointer"
-        onClick={form.handleSubmit(onSubmit)}
+        type="submit"
         form="signup-form"
       >
         Create Account

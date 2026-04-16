@@ -11,18 +11,18 @@ import { useQueryState } from "nuqs";
 
 const queryParam = "search";
 
+interface SearchResult {
+  entity_id: string;
+  entity_type: string;
+  snippet: string;
+}
+
 export default function LandingSearch() {
   const [searchTerm, setSearchTerm] = useQueryState(queryParam, {
     defaultValue: "",
   });
 
   const debounceSearchTerm = useDebounce(searchTerm, 300);
-
-  interface SearchResult {
-    entity_id: string;
-    entity_type: string;
-    snippet: string;
-  }
 
   const query = useQuery<APIResponse<SearchResult[]>>({
     queryKey: ["search", debounceSearchTerm],

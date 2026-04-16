@@ -25,3 +25,25 @@ export type SignupData = z.infer<typeof signupSchema>;
 export const loginSchema = baseAuthSchema;
 
 export type LoginData = z.infer<typeof loginSchema>;
+
+export const createInstitutionSchema = z.object({
+  name: z.string().min(3, "University name must be at least 3 characters"),
+  acronym: z
+    .string()
+    .min(2, "Acronym must be at least 2 characters")
+    .max(10, "Acronym is too long"),
+  latitude: z
+    .string()
+    .regex(
+      /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)$/,
+      "Invalid latitude format (e.g. 6.5158)",
+    ),
+  longitude: z
+    .string()
+    .regex(
+      /^[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/,
+      "Invalid longitude format (e.g. 3.3897)",
+    ),
+});
+
+export type CreateInstitutionData = z.infer<typeof createInstitutionSchema>;
