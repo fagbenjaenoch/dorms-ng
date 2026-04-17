@@ -10,6 +10,7 @@ import (
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/config"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/utils"
+	"go.opentelemetry.io/otel/attribute"
 )
 
 func RequireAuth(next http.Handler) http.Handler {
@@ -42,6 +43,8 @@ func RequireAuth(next http.Handler) http.Handler {
 
 			return
 		}
+
+		span.SetAttributes(attribute.String("user", token.Subject))
 
 		ctx := context.WithValue(tracerCtx, utils.JWTClaimsKey, token)
 		next.ServeHTTP(w, r.WithContext(ctx))
