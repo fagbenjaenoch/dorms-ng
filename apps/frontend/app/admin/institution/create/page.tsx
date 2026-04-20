@@ -93,14 +93,6 @@ export default function CreateInstitution() {
                         Drag this!
                       </MarkerLabel>
                     </MarkerContent>
-                    <MarkerPopup>
-                      <div className="text-white space-y-1">
-                        <p>Coordinates</p>
-                        <p>
-                          {marker.lng.toFixed(4)}, {marker.lat.toFixed(4)}
-                        </p>
-                      </div>
-                    </MarkerPopup>
                   </MapMarker>
                 </Map>
               </div>
