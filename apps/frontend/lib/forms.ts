@@ -32,18 +32,14 @@ export const createInstitutionSchema = z.object({
     .string()
     .min(2, "Acronym must be at least 2 characters")
     .max(10, "Acronym is too long"),
-  latitude: z
-    .string()
-    .regex(
-      /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)$/,
-      "Invalid latitude format (e.g. 6.5158)",
-    ),
-  longitude: z
-    .string()
-    .regex(
-      /^[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/,
-      "Invalid longitude format (e.g. 3.3897)",
-    ),
+  latitude: z.coerce
+    .number<number>()
+    .min(-90, "Latitude cannot be be less than -90 degrees")
+    .max(90, "Latitude cannot be greater than 90 degrees"),
+  longitude: z.coerce
+    .number<number>()
+    .min(-180, "Longitude cannot be be less than -90 degrees")
+    .max(180, "Longitude cannot be greater than 90 degrees"),
 });
 
 export type CreateInstitutionData = z.infer<typeof createInstitutionSchema>;

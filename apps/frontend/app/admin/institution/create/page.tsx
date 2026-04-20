@@ -1,9 +1,5 @@
 "use client";
 
-import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
-import { CreateInstitutionData, createInstitutionSchema } from "@/lib/forms";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
 import {
   Bell,
   CheckCircle2,
@@ -13,48 +9,11 @@ import {
   VerifiedIcon,
 } from "lucide-react";
 import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import CreateInstitutionForm from "@/components/admin/CreateInstitutionForm";
 
 export default function CreateInstitution() {
   const [showSuccess, setShowSuccess] = useState(false);
-
-  const form = useForm<CreateInstitutionData>({
-    resolver: zodResolver(createInstitutionSchema),
-    defaultValues: {
-      name: "",
-      acronym: "",
-      latitude: "",
-      longitude: "",
-    },
-  });
-
-  const mutation = useMutation({
-    mutationKey: ["createInstitution"],
-    mutationFn: async (data: CreateInstitutionData) => {
-      try {
-        const res = await fetch("/api/institutions", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        });
-        if (!res.ok) {
-          throw new Error("Failed to create institution");
-        }
-        return res.json();
-      } catch (error) {
-        throw new Error("Failed to create institution");
-      }
-    },
-  });
-
-  const onSubmit = async (data: CreateInstitutionData) => {
-    const payload = await mutation.mutateAsync(data);
-    console.log(payload);
-  };
 
   return (
     <div className="min-h-screen w-full">
@@ -104,114 +63,7 @@ export default function CreateInstitution() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
             <div className="lg:col-span-7 space-y-8">
               <section className="bg-surface-container-lowest rounded-[2.5rem] p-10 shadow-sm border border-surface-container transition-all duration-700 delay-100 fill-mode-both">
-                <form id="institution-form" className="space-y-8">
-                  <FieldGroup>
-                    <Controller
-                      name="name"
-                      control={form.control}
-                      render={({ field, fieldState }) => (
-                        <Field data-invalid={fieldState.invalid}>
-                          <FieldLabel
-                            htmlFor="name"
-                            className="uppercase text-xs"
-                            aria-invalid={fieldState.invalid}
-                          >
-                            Name of Institution
-                          </FieldLabel>
-                          <Input
-                            {...field}
-                            id="name"
-                            aria-invalid={fieldState.invalid}
-                            placeholder="e.g University of Ilorin"
-                            className="bg-gray-300/50"
-                            autoComplete="off"
-                          />
-                          {fieldState.invalid && (
-                            <FieldError errors={[fieldState.error]} />
-                          )}
-                        </Field>
-                      )}
-                    />
-                    <Controller
-                      name="acronym"
-                      control={form.control}
-                      render={({ field, fieldState }) => (
-                        <Field data-invalid={fieldState.invalid}>
-                          <FieldLabel
-                            htmlFor="acronym"
-                            className="uppercase text-xs"
-                          >
-                            Acronym
-                          </FieldLabel>
-                          <Input
-                            {...field}
-                            id="acronym"
-                            aria-invalid={fieldState.invalid}
-                            placeholder="e.g unilorin"
-                            className="bg-gray-300/50"
-                          />
-                          {fieldState.invalid && (
-                            <FieldError errors={[fieldState.error]} />
-                          )}
-                        </Field>
-                      )}
-                    />
-                  </FieldGroup>
-                  <FieldGroup className="flex-col md:flex-row">
-                    <Controller
-                      name="latitude"
-                      control={form.control}
-                      render={({ field, fieldState }) => (
-                        <Field data-invalid={fieldState.invalid}>
-                          <FieldLabel
-                            htmlFor="latitude"
-                            className="uppercase text-xs"
-                          >
-                            Latitude (Main gate)
-                          </FieldLabel>
-                          <Input
-                            {...field}
-                            id="latitude"
-                            aria-invalid={fieldState.invalid}
-                            placeholder="6.54326533"
-                            className="bg-gray-300/50"
-                            type="text"
-                          />
-                          {fieldState.invalid && (
-                            <FieldError errors={[fieldState.error]} />
-                          )}
-                        </Field>
-                      )}
-                    />
-                    <Controller
-                      name="longitude"
-                      control={form.control}
-                      render={({ field, fieldState }) => (
-                        <Field data-invalid={fieldState.invalid}>
-                          <FieldLabel
-                            htmlFor="longitude"
-                            className="uppercase text-xs"
-                          >
-                            Longitude (Main gate)
-                          </FieldLabel>
-                          <Input
-                            {...field}
-                            id="longitude"
-                            aria-invalid={fieldState.invalid}
-                            placeholder="6.54326533"
-                            className="bg-gray-300/50"
-                            type="password"
-                          />
-                          {fieldState.invalid && (
-                            <FieldError errors={[fieldState.error]} />
-                          )}
-                        </Field>
-                      )}
-                    />
-                  </FieldGroup>
-                  <Button>Create Institution</Button>
-                  <Button>Discard changes</Button>
-                </form>
+                <CreateInstitutionForm />
               </section>
 
               <div className="bg-tertiary/20 rounded-[2.5rem] p-8 relative overflow-hidden">
