@@ -149,8 +149,13 @@ export default function CreateInstitutionForm({
         />
       </FieldGroup>
       <div className="flex flex-col md:flex-row flex-wrap gap-4">
-        <Button type="submit" size="xl" className="inline-flex gap-2">
-          <Save /> Create Institution
+        <Button
+          type="submit"
+          size="xl"
+          className="inline-flex gap-2"
+          disabled={mutation.isPending}
+        >
+          <Save /> {mutation.isPending ? "Creating" : "Create Institution"}
         </Button>
         <Button
           size="xl"
