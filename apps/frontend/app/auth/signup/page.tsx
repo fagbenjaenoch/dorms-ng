@@ -18,7 +18,7 @@ export default function Signup() {
           <h1 className="mt-20 mb-8 font-sans text-3xl lg:text-4xl tracking-tighter font-extrabold">
             Find hostels with <span className="text-secondary">peace of mind.</span>
           </h1>
-          <Button variant="outline" className="cursor-pointer w-full py-6 text-base">
+          <Button variant="outline" className="w-full py-6 text-base">
             <div className="flex items-center gap-4">
               <FaGoogle /> Continue with Google
             </div>

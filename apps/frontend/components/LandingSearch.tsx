@@ -67,7 +67,7 @@ export default function LandingSearch() {
           <Button
             variant="ghost"
             className={cn(
-              "hidden cursor-pointer hover:text-primary-background",
+              "hidden hover:text-primary-background",
               `${searchTerm?.length && "block"}`,
             )}
             onClick={clearSearch}

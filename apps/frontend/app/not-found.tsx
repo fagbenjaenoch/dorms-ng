@@ -35,7 +35,7 @@ export default function NotFound() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
               <Link href="/">
-                <Button variant="secondary" size="xl" className="cursor-pointer">
+                <Button variant="secondary" size="xl">
                   Return to homepage
                 </Button>
               </Link>

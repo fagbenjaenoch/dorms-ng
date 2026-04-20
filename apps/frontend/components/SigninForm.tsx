@@ -90,7 +90,7 @@ export default function SigninForm() {
         />
       </FieldGroup>
       <Button
-        className="mt-6 text-white w-full py-8 text-base cursor-pointer"
+        className="mt-6 text-white w-full py-8 text-base"
         onClick={form.handleSubmit(onSubmit)}
         form="signin-form"
       >

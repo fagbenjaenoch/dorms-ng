@@ -61,7 +61,7 @@ export default function DesktopNav() {
         <div className="mt-auto px-4 space-y-1">
           <Button
             size="xl"
-            className="cursor-pointer mb-6 bg-orange-500 hover:bg-orange-600 text-white font-bold shadow-lg flex items-center gap-2"
+            className="mb-6 bg-orange-500 hover:bg-orange-600 text-white font-bold shadow-lg flex items-center gap-2"
           >
             <Plus size={18} />
             Add New Listing

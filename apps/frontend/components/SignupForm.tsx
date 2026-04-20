@@ -122,7 +122,7 @@ export default function SignupForm() {
         </p>
       </FieldGroup>
       <Button
-        className="mt-6 text-white w-full py-8 text-base cursor-pointer"
+        className="mt-6 text-white w-full py-8 text-base "
         type="submit"
         form="signup-form"
       >

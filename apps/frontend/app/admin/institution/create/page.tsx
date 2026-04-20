@@ -66,10 +66,10 @@ export default function CreateInstitution() {
             </span>
           </div>
           <div className="flex items-center gap-6">
-            <Button className="cursor-pointer bg-primary-light text-primary hover:bg-primary-light/50 rounded-full">
+            <Button className="bg-primary-light text-primary hover:bg-primary-light/50 rounded-full">
               <Bell size={20} />
             </Button>
-            <Button className="cursor-pointer bg-primary-light text-primary hover:bg-primary-light/50 rounded-full">
+            <Button className="bg-primary-light text-primary hover:bg-primary-light/50 rounded-full">
               <Settings size={20} />
             </Button>
             <div className="flex items-center gap-3 pl-4 border-l border-surface-container-high">
@@ -209,6 +209,8 @@ export default function CreateInstitution() {
                       )}
                     />
                   </FieldGroup>
+                  <Button>Create Institution</Button>
+                  <Button>Discard changes</Button>
                 </form>
               </section>
 
