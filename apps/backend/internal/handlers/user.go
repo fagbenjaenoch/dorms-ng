@@ -5,6 +5,7 @@ import (
 
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/auth"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/observability"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/server"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/services"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/utils"
@@ -78,6 +79,10 @@ func (uh *UserHandler) LoginUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func (uh *UserHandler) GetUserProfile(w http.ResponseWriter, r *http.Request) {
+	metrics := *observability.GlobalMetric
+	counter, _ := metrics.Int64Counter("http.request_count")
+	counter.Add(r.Context(), 1)
+
 	claims := r.Context().Value(utils.JWTClaimsKey).(*auth.JWTClaims)
 	email := claims.Subject
 
