@@ -52,7 +52,13 @@ export default function CreateInstitution() {
             <div className="lg:col-span-5 space-y-8">
               <div className="h-100 overflow-hidden rounded-[2.5rem] shadow-xl ring-1 ring-gray-500/10">
                 <Map center={[9.066, 7.483]} zoom={4} theme="light">
-                  <MapControls />
+                  <MapControls
+                    position="top-right"
+                    showLocate
+                    showCompass
+                    showFullscreen
+                    showZoom
+                  />
                 </Map>
               </div>
               {/* Side Benefit Card */}
