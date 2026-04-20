@@ -7,7 +7,15 @@ import { Field, FieldError, FieldGroup, FieldLabel } from "../ui/field";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 
-export default function CreateInstitutionForm() {
+interface CreateInstitutionFormProps {
+  lng: number;
+  lat: number;
+}
+
+export default function CreateInstitutionForm({
+  lng,
+  lat,
+}: CreateInstitutionFormProps) {
   const form = useForm<CreateInstitutionData>({
     resolver: zodResolver(createInstitutionSchema),
     defaultValues: {
@@ -17,6 +25,9 @@ export default function CreateInstitutionForm() {
       longitude: 0,
     },
   });
+
+  form.setValue("latitude", lat);
+  form.setValue("longitude", lng);
 
   const mutation = useMutation({
     mutationKey: ["createInstitution"],
@@ -110,6 +121,7 @@ export default function CreateInstitutionForm() {
                 placeholder="6.54326533"
                 className="bg-gray-300/50"
                 type="text"
+                disabled
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
@@ -129,6 +141,7 @@ export default function CreateInstitutionForm() {
                 aria-invalid={fieldState.invalid}
                 placeholder="6.54326533"
                 className="bg-gray-300/50"
+                disabled
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>

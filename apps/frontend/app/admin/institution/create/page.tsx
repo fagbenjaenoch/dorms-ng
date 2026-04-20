@@ -1,13 +1,32 @@
 "use client";
 
-import { CheckCircle2, GraduationCap, MapIcon, VerifiedIcon } from "lucide-react";
+import {
+  CheckCircle2,
+  GraduationCap,
+  MapIcon,
+  MapPin,
+  VerifiedIcon,
+} from "lucide-react";
 import { useState } from "react";
 import CreateInstitutionForm from "@/components/admin/CreateInstitutionForm";
 import DashboardHeader from "@/components/admin/DashboardHeader";
-import { Map, MapControls } from "@/components/ui/map";
+import {
+  Map,
+  MapControls,
+  MapMarker,
+  MarkerContent,
+  MarkerLabel,
+  MarkerPopup,
+} from "@/components/ui/map";
 
 export default function CreateInstitution() {
   const [showSuccess, setShowSuccess] = useState(false);
+  const [marker, setMarker] = useState({ lng: 0, lat: 0 });
+
+  const handleDrag = (lngLat: { lng: number; lat: number }) => {
+    setMarker({ lng: lngLat.lng, lat: lngLat.lat });
+    console.log(lngLat);
+  };
 
   return (
     <div className="min-h-screen w-full">
@@ -29,7 +48,7 @@ export default function CreateInstitution() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
             <div className="lg:col-span-7 space-y-8">
               <section className="bg-surface-container-lowest rounded-[2.5rem] p-10 shadow-sm border border-surface-container transition-all duration-700 delay-100 fill-mode-both">
-                <CreateInstitutionForm />
+                <CreateInstitutionForm lng={marker.lng} lat={marker.lat} />
               </section>
 
               <div className="bg-tertiary/20 rounded-[2.5rem] p-8 relative overflow-hidden">
@@ -51,7 +70,7 @@ export default function CreateInstitution() {
 
             <div className="lg:col-span-5 space-y-8">
               <div className="h-100 overflow-hidden rounded-[2.5rem] shadow-xl ring-1 ring-gray-500/10">
-                <Map center={[9.066, 7.483]} zoom={4} theme="light">
+                <Map center={[8.606, 9.967]} zoom={4.2} theme="dark">
                   <MapControls
                     position="top-right"
                     showLocate
@@ -59,6 +78,30 @@ export default function CreateInstitution() {
                     showFullscreen
                     showZoom
                   />
+                  <MapMarker
+                    draggable
+                    longitude={marker.lng}
+                    latitude={marker.lat}
+                    onDrag={handleDrag}
+                  >
+                    <MarkerContent>
+                      <MapPin
+                        className="cursor-move fill-red-500 stroke-white"
+                        size={28}
+                      />
+                      <MarkerLabel position="bottom" className="text-white">
+                        Drag this!
+                      </MarkerLabel>
+                    </MarkerContent>
+                    <MarkerPopup>
+                      <div className="text-white space-y-1">
+                        <p>Coordinates</p>
+                        <p>
+                          {marker.lng.toFixed(4)}, {marker.lat.toFixed(4)}
+                        </p>
+                      </div>
+                    </MarkerPopup>
+                  </MapMarker>
                 </Map>
               </div>
               {/* Side Benefit Card */}
