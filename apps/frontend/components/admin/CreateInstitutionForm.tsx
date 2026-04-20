@@ -152,7 +152,12 @@ export default function CreateInstitutionForm({
         <Button type="submit" size="xl" className="inline-flex gap-2">
           <Save /> Create Institution
         </Button>
-        <Button size="xl" variant="outline">
+        <Button
+          size="xl"
+          variant="outline"
+          type="reset"
+          onClick={() => form.reset()}
+        >
           Discard changes
         </Button>
       </div>
