@@ -19,11 +19,18 @@ import {
   MarkerPopup,
 } from "@/components/ui/map";
 
+type LngLat = {
+  lng: number;
+  lat: number;
+};
+
+const defaultLngLat: LngLat = { lng: 8.606, lat: 9.967 };
+
 export default function CreateInstitution() {
   const [showSuccess, setShowSuccess] = useState(false);
-  const [marker, setMarker] = useState({ lng: 0, lat: 0 });
+  const [marker, setMarker] = useState(defaultLngLat);
 
-  const handleDrag = (lngLat: { lng: number; lat: number }) => {
+  const handleDrag = (lngLat: LngLat) => {
     setMarker({ lng: lngLat.lng, lat: lngLat.lat });
     console.log(lngLat);
   };
