@@ -6,6 +6,7 @@ import { useForm, Controller } from "react-hook-form";
 import { Field, FieldError, FieldGroup, FieldLabel } from "../ui/field";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { useEffect } from "react";
 
 interface CreateInstitutionFormProps {
   lng: number;
@@ -26,8 +27,10 @@ export default function CreateInstitutionForm({
     },
   });
 
-  form.setValue("latitude", lat);
-  form.setValue("longitude", lng);
+  useEffect(() => {
+    form.setValue("latitude", lat);
+    form.setValue("longitude", lng);
+  }, [lng, lat]);
 
   const mutation = useMutation({
     mutationKey: ["createInstitution"],

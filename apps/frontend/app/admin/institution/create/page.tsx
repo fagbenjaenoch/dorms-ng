@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  CheckCircle2,
-  GraduationCap,
-  MapIcon,
-  MapPin,
-  VerifiedIcon,
-} from "lucide-react";
+import { CheckCircle2, MapPin, VerifiedIcon } from "lucide-react";
 import { useState } from "react";
 import CreateInstitutionForm from "@/components/admin/CreateInstitutionForm";
 import DashboardHeader from "@/components/admin/DashboardHeader";
@@ -16,8 +10,8 @@ import {
   MapMarker,
   MarkerContent,
   MarkerLabel,
-  MarkerPopup,
 } from "@/components/ui/map";
+import MapEventListener from "@/components/MapEventListener";
 
 type LngLat = {
   lng: number;
@@ -32,7 +26,10 @@ export default function CreateInstitution() {
 
   const handleDrag = (lngLat: LngLat) => {
     setMarker({ lng: lngLat.lng, lat: lngLat.lat });
-    console.log(lngLat);
+  };
+
+  const handleMapClick = (e) => {
+    setMarker({ lng: e.lngLat.lng, lat: e.lngLat.lat });
   };
 
   return (
@@ -100,6 +97,7 @@ export default function CreateInstitution() {
                         Drag this!
                       </MarkerLabel>
                     </MarkerContent>
+                    <MapEventListener handleClick={handleMapClick} />
                   </MapMarker>
                 </Map>
               </div>
