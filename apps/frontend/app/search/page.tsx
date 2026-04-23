@@ -1,8 +1,9 @@
+import ActiveSearchFilters from "@/components/ActiveSearchFilters";
 import BrandIcon from "@/components/ui/BrandIcon";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/ui/Footer";
 import SearchResultCard from "@/components/ui/SearchResult";
-import { ChevronDown, LucideListFilter } from "lucide-react";
+import { ChevronDown, LucideListFilter, X } from "lucide-react";
 import Link from "next/link";
 
 type SearchResult = {
@@ -128,43 +129,7 @@ export default function SearchPage() {
           <Button size="xl">List Property</Button>
         </div>
       </nav>
-      <div className="bg-white fixed top-20 left-0 w-full z-40 shadow-sm border-b border-surface-container py-4 px-8 transition-all duration-300">
-        <div className="max-w-400 mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="flex items-center gap-3 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-hide">
-            <span className="text-sm font-bold text-on-surface-variant uppercase tracking-widest shrink-0">
-              Active Filters:
-            </span>
-            <div className="flex items-center gap-2 bg-surface px-4 py-1.5 rounded-full border border-surface-container-highest shrink-0">
-              <span className="text-sm font-medium text-on-surface">
-                Price: &lt; ₦500k
-              </span>
-              <button className="text-on-surface-variant hover:text-error transition-colors flex items-center">
-                <span className="material-symbols-outlined">close</span>
-              </button>
-            </div>
-            <div className="flex items-center gap-2 bg-surface px-4 py-1.5 rounded-full border border-surface-container-highest shrink-0">
-              <span className="text-sm font-medium text-on-surface">
-                Self-Contain
-              </span>
-              <button className="text-on-surface-variant hover:text-error transition-colors flex items-center">
-                <span className="material-symbols-outlined">close</span>
-              </button>
-            </div>
-            <div className="flex items-center gap-2 bg-surface px-4 py-1.5 rounded-full border border-surface-container-highest shrink-0">
-              <span className="text-sm font-medium text-on-surface">
-                &lt; 2km from Campus
-              </span>
-              <button className="text-on-surface-variant hover:text-error transition-colors flex items-center">
-                <span className="material-symbols-outlined">close</span>
-              </button>
-            </div>
-          </div>
-          <Button variant="ghost">
-            <LucideListFilter />
-            Filters
-          </Button>
-        </div>
-      </div>
+      <ActiveSearchFilters />
       <main className="pt-44 pb-24 px-8 min-h-screen w-full max-w-400 mx-auto">
         <div className="mb-10 flex justify-between items-end">
           <div>
