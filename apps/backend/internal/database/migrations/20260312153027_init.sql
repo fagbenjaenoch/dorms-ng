@@ -75,8 +75,8 @@ CREATE TABLE hostels (
 CREATE VIRTUAL TABLE global_search USING fts5 (
   entity_id UNINDEXED,
   entity_type UNINDEXED,
+  entity UNINDEXED,
   search_text,
-  description,
   tokenize="trigram"
 );
 
