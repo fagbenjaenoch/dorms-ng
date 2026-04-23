@@ -10,10 +10,10 @@ import (
 )
 
 type GlobalSearch struct {
-	EntityID    string `json:"entity_id"`
-	EntityType  string `json:"entity_type"`
-	SearchText  string `json:"search_text"`
-	Description string `json:"description"`
+	EntityID   string `json:"entity_id"`
+	EntityType string `json:"entity_type"`
+	Entity     string `json:"entity"`
+	SearchText string `json:"search_text"`
 }
 
 type Hostel struct {
@@ -41,6 +41,7 @@ type Institution struct {
 	Longitude float64        `json:"longitude"`
 	CreatedAt time.Time      `json:"created_at"`
 	UpdatedAt time.Time      `json:"updated_at"`
+	City      string         `json:"city"`
 }
 
 type Neighborhood struct {

@@ -73,11 +73,11 @@ func (q *Queries) CreateHostel(ctx context.Context, arg CreateHostelParams) (Hos
 
 const createInstitution = `-- name: CreateInstitution :one
 INSERT INTO institutions (
-    id, name, acronym, latitude, longitude
+    id, name, acronym, latitude, longitude, city
 ) VALUES (
-    ?, ?, ?, ?, ?
+    ?, ?, ?, ?, ?, ?
 )
-RETURNING id, name, acronym, latitude, longitude, created_at, updated_at
+RETURNING id, name, acronym, latitude, longitude, created_at, updated_at, city
 `
 
 type CreateInstitutionParams struct {
@@ -86,6 +86,7 @@ type CreateInstitutionParams struct {
 	Acronym   sql.NullString `json:"acronym"`
 	Latitude  float64        `json:"latitude"`
 	Longitude float64        `json:"longitude"`
+	City      string         `json:"city"`
 }
 
 func (q *Queries) CreateInstitution(ctx context.Context, arg CreateInstitutionParams) (Institution, error) {
@@ -95,6 +96,7 @@ func (q *Queries) CreateInstitution(ctx context.Context, arg CreateInstitutionPa
 		arg.Acronym,
 		arg.Latitude,
 		arg.Longitude,
+		arg.City,
 	)
 	var i Institution
 	err := row.Scan(
@@ -105,6 +107,7 @@ func (q *Queries) CreateInstitution(ctx context.Context, arg CreateInstitutionPa
 		&i.Longitude,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.City,
 	)
 	return i, err
 }
@@ -158,31 +161,31 @@ func (q *Queries) CreateNeighborhood(ctx context.Context, arg CreateNeighborhood
 }
 
 const createSearchEntry = `-- name: CreateSearchEntry :one
-INSERT INTO global_search (entity_id, entity_type, search_text, description)
+INSERT INTO global_search (entity_id, entity_type, entity, search_text)
 VALUES (?, ?, ?, ?)
-RETURNING entity_id, entity_type, search_text, description
+RETURNING entity_id, entity_type, entity, search_text
 `
 
 type CreateSearchEntryParams struct {
-	EntityID    string `json:"entity_id"`
-	EntityType  string `json:"entity_type"`
-	SearchText  string `json:"search_text"`
-	Description string `json:"description"`
+	EntityID   string `json:"entity_id"`
+	EntityType string `json:"entity_type"`
+	Entity     string `json:"entity"`
+	SearchText string `json:"search_text"`
 }
 
 func (q *Queries) CreateSearchEntry(ctx context.Context, arg CreateSearchEntryParams) (GlobalSearch, error) {
 	row := q.db.QueryRowContext(ctx, createSearchEntry,
 		arg.EntityID,
 		arg.EntityType,
+		arg.Entity,
 		arg.SearchText,
-		arg.Description,
 	)
 	var i GlobalSearch
 	err := row.Scan(
 		&i.EntityID,
 		&i.EntityType,
+		&i.Entity,
 		&i.SearchText,
-		&i.Description,
 	)
 	return i, err
 }
@@ -287,7 +290,7 @@ func (q *Queries) GetHostel(ctx context.Context, id string) (Hostel, error) {
 }
 
 const getInstitutionById = `-- name: GetInstitutionById :one
-SELECT id, name, acronym, latitude, longitude, created_at, updated_at FROM institutions WHERE id = ? LIMIT 1
+SELECT id, name, acronym, latitude, longitude, created_at, updated_at, city FROM institutions WHERE id = ? LIMIT 1
 `
 
 func (q *Queries) GetInstitutionById(ctx context.Context, id string) (Institution, error) {
@@ -301,6 +304,7 @@ func (q *Queries) GetInstitutionById(ctx context.Context, id string) (Institutio
 		&i.Longitude,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.City,
 	)
 	return i, err
 }
@@ -442,7 +446,7 @@ func (q *Queries) ListHostelsByNeighborhood(ctx context.Context, neighborhoodID 
 }
 
 const listInstitutions = `-- name: ListInstitutions :many
-SELECT id, name, acronym, latitude, longitude, created_at, updated_at FROM institutions ORDER BY name
+SELECT id, name, acronym, latitude, longitude, created_at, updated_at, city FROM institutions ORDER BY name
 `
 
 func (q *Queries) ListInstitutions(ctx context.Context) ([]Institution, error) {
@@ -462,6 +466,7 @@ func (q *Queries) ListInstitutions(ctx context.Context) ([]Institution, error) {
 			&i.Longitude,
 			&i.CreatedAt,
 			&i.UpdatedAt,
+			&i.City,
 		); err != nil {
 			return nil, err
 		}

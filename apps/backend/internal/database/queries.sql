@@ -3,9 +3,9 @@ SELECT EXISTS(SELECT 1 FROM users WHERE email = ? LIMIT 1);
 
 -- name: CreateInstitution :one
 INSERT INTO institutions (
-    id, name, acronym, latitude, longitude
+    id, name, acronym, latitude, longitude, city
 ) VALUES (
-    ?, ?, ?, ?, ?
+    ?, ?, ?, ?, ?, ?
 )
 RETURNING *;
 
@@ -73,7 +73,7 @@ INSERT INTO user_credentials (
 RETURNING *;
 
 -- name: CreateSearchEntry :one
-INSERT INTO global_search (entity_id, entity_type, search_text, description)
+INSERT INTO global_search (entity_id, entity_type, entity, search_text)
 VALUES (?, ?, ?, ?)
 RETURNING *;
 
