@@ -40,7 +40,7 @@ export default function CreateInstitution() {
         <div className="p-10 max-w-6xl mx-auto">
           <div className="mb-10">
             <h2 className="text-5xl font-bold tracking-tighter text-on-surface leading-none">
-              Create New <span className="italic text-primary">Institution</span>
+              Create New <span className="ext-primary">Institution</span>
             </h2>
             <p className="mt-4 max-w-xl text-lg leading-relaxed">
               Register a new academic institution to the Emerald Horizon directory.
