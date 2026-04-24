@@ -40,6 +40,10 @@ export const createInstitutionSchema = z.object({
     .number<number>()
     .min(-180, "Longitude cannot be be less than -90 degrees")
     .max(180, "Longitude cannot be greater than 90 degrees"),
+  city: z
+    .string()
+    .min(2, "City name must be at least 2 characters")
+    .max(100, "City name is too long"),
 });
 
 export type CreateInstitutionData = z.infer<typeof createInstitutionSchema>;

@@ -3,6 +3,8 @@ package repositories
 import (
 	"context"
 	"database/sql"
+	"fmt"
+	"strings"
 
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/database/models"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
@@ -37,9 +39,10 @@ func (ir *InstitutionRepository) CreateInstitution(ctx context.Context, institut
 	var i models.CreateInstitutionParams
 	i.ID = uuid.New().String()
 	i.Name = institution.Name
-	i.Acronym = sql.NullString{String: institution.Acronym, Valid: true}
+	i.Acronym = sql.NullString{String: strings.ToUpper(institution.Acronym), Valid: true}
 	i.Latitude = institution.Latitude
 	i.Longitude = institution.Longitude
+	i.City = institution.City
 
 	ci, err := qtx.CreateInstitution(ctx, i)
 	if err != nil {
@@ -49,7 +52,8 @@ func (ir *InstitutionRepository) CreateInstitution(ctx context.Context, institut
 	searchEntry := models.CreateSearchEntryParams{
 		EntityID:   ci.ID,
 		EntityType: "institution",
-		SearchText: ci.Name,
+		Entity:     ci.Name,
+		SearchText: fmt.Sprintf("%s, %s, %s", ci.Name, ci.City, ci.Acronym.String),
 	}
 
 	_, err = qtx.CreateSearchEntry(ctx, searchEntry)
@@ -99,6 +103,7 @@ func (hr *HostelRepository) CreateHostel(ctx context.Context, hostel dto.CreateH
 		return nil, err
 	}
 
+	// TODO: Fix this to fit new search table structure
 	searchEntry := models.CreateSearchEntryParams{
 		EntityID:   ch.ID,
 		EntityType: "hostel",

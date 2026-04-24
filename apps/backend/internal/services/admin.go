@@ -79,6 +79,7 @@ func (s AdminService) CreateInstitution(ctx context.Context, institution dto.Cre
 			Acronym:   i.Acronym.String,
 			Latitude:  i.Latitude,
 			Longitude: i.Longitude,
+			City:      i.City,
 		},
 	}, nil
 }

@@ -24,6 +24,7 @@ export default function CreateInstitutionForm({
       acronym: "",
       latitude: 0,
       longitude: 0,
+      city: "",
     },
   });
 
@@ -101,6 +102,25 @@ export default function CreateInstitutionForm({
                 id="acronym"
                 aria-invalid={fieldState.invalid}
                 placeholder="e.g unilorin"
+                className="bg-gray-300/50"
+              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+        <Controller
+          name="city"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor="city" className="uppercase text-xs">
+                City
+              </FieldLabel>
+              <Input
+                {...field}
+                id="city"
+                aria-invalid={fieldState.invalid}
+                placeholder="e.g ilorin"
                 className="bg-gray-300/50"
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
