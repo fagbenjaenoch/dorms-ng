@@ -78,4 +78,4 @@ VALUES (?, ?, ?, ?)
 RETURNING *;
 
 -- name: GetSearchEntry :many
-SELECT entity_id, entity_type, snippet(global_search, 2, '<b>', '</b>', '...', 30) FROM global_search WHERE search_text MATCH ? ORDER BY rank LIMIT 20;
+SELECT entity_id, entity_type, entity FROM global_search WHERE search_text MATCH ? ORDER BY rank LIMIT 5;

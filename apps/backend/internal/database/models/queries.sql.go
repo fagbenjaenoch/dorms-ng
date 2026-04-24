@@ -332,13 +332,13 @@ func (q *Queries) GetNeighborhood(ctx context.Context, id string) (Neighborhood,
 }
 
 const getSearchEntry = `-- name: GetSearchEntry :many
-SELECT entity_id, entity_type, snippet(global_search, 2, '<b>', '</b>', '...', 30) FROM global_search WHERE search_text MATCH ? ORDER BY rank LIMIT 20
+SELECT entity_id, entity_type, entity FROM global_search WHERE search_text MATCH ? ORDER BY rank LIMIT 5
 `
 
 type GetSearchEntryRow struct {
 	EntityID   string `json:"entity_id"`
 	EntityType string `json:"entity_type"`
-	Snippet    string `json:"snippet"`
+	Entity     string `json:"entity"`
 }
 
 func (q *Queries) GetSearchEntry(ctx context.Context, searchText string) ([]GetSearchEntryRow, error) {
@@ -350,7 +350,7 @@ func (q *Queries) GetSearchEntry(ctx context.Context, searchText string) ([]GetS
 	items := []GetSearchEntryRow{}
 	for rows.Next() {
 		var i GetSearchEntryRow
-		if err := rows.Scan(&i.EntityID, &i.EntityType, &i.Snippet); err != nil {
+		if err := rows.Scan(&i.EntityID, &i.EntityType, &i.Entity); err != nil {
 			return nil, err
 		}
 		items = append(items, i)
