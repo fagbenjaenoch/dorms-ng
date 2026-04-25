@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/config"
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/utils"
 	"github.com/rs/zerolog"
 	"go.opentelemetry.io/contrib/bridges/otelzerolog"
 )
@@ -31,20 +32,31 @@ func New(cfg *config.Config) zerolog.Logger {
 		}
 	}
 
-	// otel hook
-	otelHook := otelzerolog.NewHook(cfg.Observability.AppName)
+	if utils.IsProduction() {
+		// otel hook
+		otelHook := otelzerolog.NewHook(cfg.Observability.AppName)
 
-	logger := zerolog.New(writer).
-		With().
-		Timestamp().
-		Str("service", cfg.Observability.AppName).
-		Str("environment", cfg.Primary.Env).
-		Logger().
-		Hook(otelHook)
+		logger := zerolog.New(writer).
+			With().
+			Timestamp().
+			Str("service", cfg.Observability.AppName).
+			Str("environment", cfg.Primary.Env).
+			Logger().
+			Hook(otelHook)
 
-	globalLogger = logger
+		globalLogger = logger
+	} else {
+		logger := zerolog.New(writer).
+			With().
+			Timestamp().
+			Str("service", cfg.Observability.AppName).
+			Str("environment", cfg.Primary.Env).
+			Logger()
 
-	return logger
+		globalLogger = logger
+	}
+
+	return globalLogger
 }
 
 func GetGlobalLogger() *zerolog.Logger {
