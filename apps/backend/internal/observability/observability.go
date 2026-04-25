@@ -5,10 +5,12 @@ import (
 	"time"
 
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/server"
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/utils"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/exporters/otlp/otlplog/otlploghttp"
 	"go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetrichttp"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp"
+	"go.opentelemetry.io/otel/exporters/stdout/stdouttrace"
 	"go.opentelemetry.io/otel/log/global"
 	"go.opentelemetry.io/otel/propagation"
 	sdklog "go.opentelemetry.io/otel/sdk/log"
@@ -76,13 +78,24 @@ func (o *Observability) InitResources(ctx context.Context) (*resource.Resource, 
 }
 
 func (o *Observability) InitTracer(ctx context.Context, res *resource.Resource) (func(context.Context) error, error) {
-	exporter, err := otlptracehttp.New(
-		ctx,
-		otlptracehttp.WithEndpointURL(o.s.Config.Observability.Endpoint),
-		otlptracehttp.WithCompression(otlptracehttp.GzipCompression),
-	)
-	if err != nil {
-		return nil, err
+	var exporter sdkTrace.SpanExporter
+	var err error
+
+	if utils.IsProduction() {
+		exporter, err = otlptracehttp.New(
+			ctx,
+			otlptracehttp.WithEndpointURL(o.s.Config.Observability.Endpoint),
+			otlptracehttp.WithCompression(otlptracehttp.GzipCompression),
+		)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		exporter, err = stdouttrace.New(stdouttrace.WithPrettyPrint())
+		if err != nil {
+			return nil, err
+		}
+		o.s.Logger.Info().Msg("using stdout exporter for local development")
 	}
 
 	tp := sdkTrace.NewTracerProvider(
