@@ -25,6 +25,7 @@ node_modules/
 **/tmp/
 **/main
 **/build-errors.log
+metric_debug.json
 
 # --- Database Files ---
 *.sqlite

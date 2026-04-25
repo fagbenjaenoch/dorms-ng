@@ -2,13 +2,19 @@ package observability
 
 import (
 	"context"
+	"os"
 	"time"
 
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/server"
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/utils"
+	hostMetrics "go.opentelemetry.io/contrib/instrumentation/host"
+	runtimeMetrics "go.opentelemetry.io/contrib/instrumentation/runtime"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/exporters/otlp/otlplog/otlploghttp"
 	"go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetrichttp"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp"
+	"go.opentelemetry.io/otel/exporters/stdout/stdoutmetric"
+	"go.opentelemetry.io/otel/exporters/stdout/stdouttrace"
 	"go.opentelemetry.io/otel/log/global"
 	"go.opentelemetry.io/otel/propagation"
 	sdklog "go.opentelemetry.io/otel/sdk/log"
@@ -76,13 +82,24 @@ func (o *Observability) InitResources(ctx context.Context) (*resource.Resource, 
 }
 
 func (o *Observability) InitTracer(ctx context.Context, res *resource.Resource) (func(context.Context) error, error) {
-	exporter, err := otlptracehttp.New(
-		ctx,
-		otlptracehttp.WithEndpointURL(o.s.Config.Observability.Endpoint),
-		otlptracehttp.WithCompression(otlptracehttp.GzipCompression),
-	)
-	if err != nil {
-		return nil, err
+	var exporter sdkTrace.SpanExporter
+	var err error
+
+	if utils.IsProduction() {
+		exporter, err = otlptracehttp.New(
+			ctx,
+			otlptracehttp.WithEndpointURL(o.s.Config.Observability.Endpoint),
+			otlptracehttp.WithCompression(otlptracehttp.GzipCompression),
+		)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		exporter, err = stdouttrace.New(stdouttrace.WithPrettyPrint())
+		if err != nil {
+			return nil, err
+		}
+		o.s.Logger.Info().Msg("using stdout exporter for local development")
 	}
 
 	tp := sdkTrace.NewTracerProvider(
@@ -109,19 +126,49 @@ func (o *Observability) InitTracer(ctx context.Context, res *resource.Resource) 
 }
 
 func (o *Observability) InitMetrics(ctx context.Context, res *resource.Resource) (func(context.Context) error, error) {
-	metricExp, err := otlpmetrichttp.New(
-		ctx,
-		otlpmetrichttp.WithCompression(otlpmetrichttp.GzipCompression),
-		otlpmetrichttp.WithEndpointURL(o.s.Config.Observability.Endpoint),
-	)
-	if err != nil {
-		return nil, err
+	var metricExp sdkmetric.Exporter
+	var err error
+	var interval = 15 * time.Second
+
+	if utils.IsProduction() {
+		metricExp, err = otlpmetrichttp.New(
+			ctx,
+			otlpmetrichttp.WithCompression(otlpmetrichttp.GzipCompression),
+			otlpmetrichttp.WithEndpointURL(o.s.Config.Observability.Endpoint),
+		)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		file, err := os.Create("metric_debug.json")
+		if err != nil {
+			panic(err)
+		}
+
+		metricExp, err = stdoutmetric.New(stdoutmetric.WithWriter(file), stdoutmetric.WithPrettyPrint())
+		if err != nil {
+			return nil, err
+		}
+
+		interval = 1 * time.Minute
+
+		o.s.Logger.Info().Msg("using console for metrics output")
 	}
 
 	mp := sdkmetric.NewMeterProvider(
-		sdkmetric.WithReader(sdkmetric.NewPeriodicReader(metricExp, sdkmetric.WithInterval(15*time.Second))),
+		sdkmetric.WithReader(sdkmetric.NewPeriodicReader(metricExp, sdkmetric.WithInterval(interval))),
 		sdkmetric.WithResource(res),
 	)
+
+	err = runtimeMetrics.Start(
+		runtimeMetrics.WithMeterProvider(mp),
+	)
+
+	if utils.IsProduction() {
+		err = hostMetrics.Start(
+			hostMetrics.WithMeterProvider(mp),
+		)
+	}
 
 	// Set as the global MeterProvider
 	otel.SetMeterProvider(mp)
