@@ -6,6 +6,8 @@ import (
 
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/server"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/utils"
+	hostMetrics "go.opentelemetry.io/contrib/instrumentation/host"
+	runtimeMetrics "go.opentelemetry.io/contrib/instrumentation/runtime"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/exporters/otlp/otlplog/otlploghttp"
 	"go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetrichttp"
@@ -135,6 +137,16 @@ func (o *Observability) InitMetrics(ctx context.Context, res *resource.Resource)
 		sdkmetric.WithReader(sdkmetric.NewPeriodicReader(metricExp, sdkmetric.WithInterval(15*time.Second))),
 		sdkmetric.WithResource(res),
 	)
+
+	err = runtimeMetrics.Start(
+		runtimeMetrics.WithMeterProvider(mp),
+	)
+
+	if utils.IsProduction() {
+		err = hostMetrics.Start(
+			hostMetrics.WithMeterProvider(mp),
+		)
+	}
 
 	// Set as the global MeterProvider
 	otel.SetMeterProvider(mp)
