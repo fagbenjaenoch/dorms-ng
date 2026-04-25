@@ -12,6 +12,7 @@ import (
 	"go.opentelemetry.io/otel/exporters/otlp/otlplog/otlploghttp"
 	"go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetrichttp"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp"
+	"go.opentelemetry.io/otel/exporters/stdout/stdoutmetric"
 	"go.opentelemetry.io/otel/exporters/stdout/stdouttrace"
 	"go.opentelemetry.io/otel/log/global"
 	"go.opentelemetry.io/otel/propagation"
@@ -124,17 +125,32 @@ func (o *Observability) InitTracer(ctx context.Context, res *resource.Resource) 
 }
 
 func (o *Observability) InitMetrics(ctx context.Context, res *resource.Resource) (func(context.Context) error, error) {
-	metricExp, err := otlpmetrichttp.New(
-		ctx,
-		otlpmetrichttp.WithCompression(otlpmetrichttp.GzipCompression),
-		otlpmetrichttp.WithEndpointURL(o.s.Config.Observability.Endpoint),
-	)
-	if err != nil {
-		return nil, err
+	var metricExp sdkmetric.Exporter
+	var err error
+	var interval = 15 * time.Second
+
+	if utils.IsProduction() {
+		metricExp, err = otlpmetrichttp.New(
+			ctx,
+			otlpmetrichttp.WithCompression(otlpmetrichttp.GzipCompression),
+			otlpmetrichttp.WithEndpointURL(o.s.Config.Observability.Endpoint),
+		)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		metricExp, err = stdoutmetric.New(stdoutmetric.WithPrettyPrint())
+		if err != nil {
+			return nil, err
+		}
+
+		interval = 1 * time.Minute
+
+		o.s.Logger.Info().Msg("using console for metrics output")
 	}
 
 	mp := sdkmetric.NewMeterProvider(
-		sdkmetric.WithReader(sdkmetric.NewPeriodicReader(metricExp, sdkmetric.WithInterval(15*time.Second))),
+		sdkmetric.WithReader(sdkmetric.NewPeriodicReader(metricExp, sdkmetric.WithInterval(interval))),
 		sdkmetric.WithResource(res),
 	)
 
