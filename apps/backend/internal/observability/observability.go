@@ -2,6 +2,7 @@ package observability
 
 import (
 	"context"
+	"os"
 	"time"
 
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/server"
@@ -139,7 +140,12 @@ func (o *Observability) InitMetrics(ctx context.Context, res *resource.Resource)
 			return nil, err
 		}
 	} else {
-		metricExp, err = stdoutmetric.New(stdoutmetric.WithPrettyPrint())
+		file, err := os.Create("metric_debug.json")
+		if err != nil {
+			panic(err)
+		}
+
+		metricExp, err = stdoutmetric.New(stdoutmetric.WithWriter(file), stdoutmetric.WithPrettyPrint())
 		if err != nil {
 			return nil, err
 		}
