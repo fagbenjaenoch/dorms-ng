@@ -42,7 +42,9 @@ export default function SignupForm() {
   const handleSubmit = async (data: SignupData) => {
     const payload = await mutation.mutateAsync(data);
     console.log(payload);
-    router.push("/app");
+    if (payload.success) {
+      router.push("/app");
+    }
   };
 
   return (
