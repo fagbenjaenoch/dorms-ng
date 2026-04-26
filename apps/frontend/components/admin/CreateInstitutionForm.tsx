@@ -1,12 +1,21 @@
 import { CreateInstitutionData, createInstitutionSchema } from "@/lib/forms";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { Save } from "lucide-react";
+import { Check, Save } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import { Field, FieldError, FieldGroup, FieldLabel } from "../ui/field";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useEffect } from "react";
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "../ui/combobox";
+import { nigerianCities } from "@/lib/utils";
 
 interface CreateInstitutionFormProps {
   lng: number;
@@ -82,7 +91,7 @@ export default function CreateInstitutionForm({
                 id="name"
                 aria-invalid={fieldState.invalid}
                 placeholder="e.g University of Ilorin"
-                className="bg-gray-300/50"
+                className="input-bg"
                 autoComplete="off"
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
@@ -102,7 +111,7 @@ export default function CreateInstitutionForm({
                 id="acronym"
                 aria-invalid={fieldState.invalid}
                 placeholder="e.g unilorin"
-                className="bg-gray-300/50"
+                className="input-bg"
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
@@ -116,13 +125,24 @@ export default function CreateInstitutionForm({
               <FieldLabel htmlFor="city" className="uppercase text-xs">
                 City
               </FieldLabel>
-              <Input
-                {...field}
-                id="city"
-                aria-invalid={fieldState.invalid}
-                placeholder="e.g ilorin"
-                className="bg-gray-300/50"
-              />
+
+              <Combobox id="city" items={nigerianCities}>
+                <ComboboxInput
+                  {...field}
+                  className="input-bg h-12 rounded-md"
+                  placeholder="Select a city"
+                />
+                <ComboboxContent>
+                  <ComboboxEmpty>No city found.</ComboboxEmpty>
+                  <ComboboxList>
+                    {(item) => (
+                      <ComboboxItem key={item} value={item}>
+                        {item}
+                      </ComboboxItem>
+                    )}
+                  </ComboboxList>
+                </ComboboxContent>
+              </Combobox>
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
@@ -142,7 +162,7 @@ export default function CreateInstitutionForm({
                 id="latitude"
                 aria-invalid={fieldState.invalid}
                 placeholder="6.54326533"
-                className="bg-gray-300/50"
+                className="input-bg"
                 type="text"
                 disabled
               />
@@ -163,7 +183,7 @@ export default function CreateInstitutionForm({
                 id="longitude"
                 aria-invalid={fieldState.invalid}
                 placeholder="6.54326533"
-                className="bg-gray-300/50"
+                className="input-bg"
                 disabled
               />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
