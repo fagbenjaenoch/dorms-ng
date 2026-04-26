@@ -31,8 +31,8 @@ export default function CreateInstitutionForm({
     defaultValues: {
       name: "",
       acronym: "",
-      latitude: 0,
-      longitude: 0,
+      latitude: 9.967,
+      longitude: 8.606,
       city: "",
     },
   });
