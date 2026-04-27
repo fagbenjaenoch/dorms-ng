@@ -9,6 +9,7 @@ import { Button } from "./ui/button";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { SigninPayload, APIResponse } from "@/lib/api";
 
 export default function SigninForm() {
   const router = useRouter();
@@ -28,7 +29,7 @@ export default function SigninForm() {
           method: "POST",
           body: JSON.stringify(user),
         });
-        let responseObj = await res.json();
+        let responseObj = (await res.json()) as APIResponse<SigninPayload>;
         if (!res.ok) throw new Error(responseObj.message);
 
         return responseObj;
@@ -41,8 +42,7 @@ export default function SigninForm() {
 
   const onSubmit = async (data: LoginData) => {
     const payload = await mutation.mutateAsync(data);
-    console.log(payload);
-    if (payload.success) {
+    if (payload?.success) {
       router.push("/app");
     }
   };

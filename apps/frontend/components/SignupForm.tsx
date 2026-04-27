@@ -10,6 +10,7 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { APIResponse, BaseAuthPayload } from "@/lib/api";
 
 export default function SignupForm() {
   const router = useRouter();
@@ -31,7 +32,8 @@ export default function SignupForm() {
           body: JSON.stringify(user),
         });
         if (!res.ok) throw new Error("could not signup");
-        return res.json();
+
+        return res.json() as any as APIResponse<BaseAuthPayload>;
       } catch (err) {
         toast.error("could not login");
         console.error(err);
@@ -41,8 +43,7 @@ export default function SignupForm() {
 
   const handleSubmit = async (data: SignupData) => {
     const payload = await mutation.mutateAsync(data);
-    console.log(payload);
-    if (payload.success) {
+    if (payload?.success) {
       router.push("/app");
     }
   };
