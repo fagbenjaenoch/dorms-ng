@@ -59,7 +59,7 @@ export default function LandingSearch() {
         <HiLocationMarker size={20} className="text-primary" />
         <search className="w-full flex items-center">
           <input
-            name="landing_search"
+            name="landing-search"
             className=" text-gray-900 focus:outline-none w-full"
             placeholder="Which University or City?"
             onChange={handleChange}

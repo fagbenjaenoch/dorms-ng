@@ -44,19 +44,6 @@ type Institution struct {
 	City      string         `json:"city"`
 }
 
-type Neighborhood struct {
-	ID                 string         `json:"id"`
-	InstitutionID      string         `json:"institution_id"`
-	Name               string         `json:"name"`
-	AvgPriceSelfCon    sql.NullInt64  `json:"avg_price_self_con"`
-	AvgPrice1bed       sql.NullInt64  `json:"avg_price_1bed"`
-	PowerRatingInsight sql.NullString `json:"power_rating_insight"`
-	Latitude           float64        `json:"latitude"`
-	Longitude          float64        `json:"longitude"`
-	CreatedAt          time.Time      `json:"created_at"`
-	UpdatedAt          time.Time      `json:"updated_at"`
-}
-
 type User struct {
 	ID        string    `json:"id"`
 	Email     string    `json:"email"`

@@ -15,23 +15,6 @@ SELECT * FROM institutions ORDER BY name;
 -- name: GetInstitutionById :one
 SELECT * FROM institutions WHERE id = ? LIMIT 1;
 
--- name: CreateNeighborhood :one
-INSERT INTO neighborhoods (
-    id, institution_id, name, avg_price_self_con, avg_price_1bed,
-    power_rating_insight, latitude, longitude
-) VALUES (
-    ?, ?, ?, ?, ?, ?, ?, ?
-)
-RETURNING *;
-
--- name: ListNeighborhoodsByInstitution :many
-SELECT * FROM neighborhoods
-WHERE institution_id = ?
-ORDER BY name;
-
--- name: GetNeighborhood :one
-SELECT * FROM neighborhoods WHERE id = ? LIMIT 1;
-
 -- name: CreateHostel :one
 INSERT INTO hostels (
     id, neighborhood_id, name, address, latitude, longitude,

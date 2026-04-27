@@ -112,54 +112,6 @@ func (q *Queries) CreateInstitution(ctx context.Context, arg CreateInstitutionPa
 	return i, err
 }
 
-const createNeighborhood = `-- name: CreateNeighborhood :one
-INSERT INTO neighborhoods (
-    id, institution_id, name, avg_price_self_con, avg_price_1bed,
-    power_rating_insight, latitude, longitude
-) VALUES (
-    ?, ?, ?, ?, ?, ?, ?, ?
-)
-RETURNING id, institution_id, name, avg_price_self_con, avg_price_1bed, power_rating_insight, latitude, longitude, created_at, updated_at
-`
-
-type CreateNeighborhoodParams struct {
-	ID                 string         `json:"id"`
-	InstitutionID      string         `json:"institution_id"`
-	Name               string         `json:"name"`
-	AvgPriceSelfCon    sql.NullInt64  `json:"avg_price_self_con"`
-	AvgPrice1bed       sql.NullInt64  `json:"avg_price_1bed"`
-	PowerRatingInsight sql.NullString `json:"power_rating_insight"`
-	Latitude           float64        `json:"latitude"`
-	Longitude          float64        `json:"longitude"`
-}
-
-func (q *Queries) CreateNeighborhood(ctx context.Context, arg CreateNeighborhoodParams) (Neighborhood, error) {
-	row := q.db.QueryRowContext(ctx, createNeighborhood,
-		arg.ID,
-		arg.InstitutionID,
-		arg.Name,
-		arg.AvgPriceSelfCon,
-		arg.AvgPrice1bed,
-		arg.PowerRatingInsight,
-		arg.Latitude,
-		arg.Longitude,
-	)
-	var i Neighborhood
-	err := row.Scan(
-		&i.ID,
-		&i.InstitutionID,
-		&i.Name,
-		&i.AvgPriceSelfCon,
-		&i.AvgPrice1bed,
-		&i.PowerRatingInsight,
-		&i.Latitude,
-		&i.Longitude,
-		&i.CreatedAt,
-		&i.UpdatedAt,
-	)
-	return i, err
-}
-
 const createSearchEntry = `-- name: CreateSearchEntry :one
 INSERT INTO global_search (entity_id, entity_type, entity, search_text)
 VALUES (?, ?, ?, ?)
@@ -309,28 +261,6 @@ func (q *Queries) GetInstitutionById(ctx context.Context, id string) (Institutio
 	return i, err
 }
 
-const getNeighborhood = `-- name: GetNeighborhood :one
-SELECT id, institution_id, name, avg_price_self_con, avg_price_1bed, power_rating_insight, latitude, longitude, created_at, updated_at FROM neighborhoods WHERE id = ? LIMIT 1
-`
-
-func (q *Queries) GetNeighborhood(ctx context.Context, id string) (Neighborhood, error) {
-	row := q.db.QueryRowContext(ctx, getNeighborhood, id)
-	var i Neighborhood
-	err := row.Scan(
-		&i.ID,
-		&i.InstitutionID,
-		&i.Name,
-		&i.AvgPriceSelfCon,
-		&i.AvgPrice1bed,
-		&i.PowerRatingInsight,
-		&i.Latitude,
-		&i.Longitude,
-		&i.CreatedAt,
-		&i.UpdatedAt,
-	)
-	return i, err
-}
-
 const getSearchEntry = `-- name: GetSearchEntry :many
 SELECT entity_id, entity_type, entity FROM global_search WHERE search_text MATCH ? ORDER BY rank LIMIT 5
 `
@@ -467,46 +397,6 @@ func (q *Queries) ListInstitutions(ctx context.Context) ([]Institution, error) {
 			&i.CreatedAt,
 			&i.UpdatedAt,
 			&i.City,
-		); err != nil {
-			return nil, err
-		}
-		items = append(items, i)
-	}
-	if err := rows.Close(); err != nil {
-		return nil, err
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return items, nil
-}
-
-const listNeighborhoodsByInstitution = `-- name: ListNeighborhoodsByInstitution :many
-SELECT id, institution_id, name, avg_price_self_con, avg_price_1bed, power_rating_insight, latitude, longitude, created_at, updated_at FROM neighborhoods
-WHERE institution_id = ?
-ORDER BY name
-`
-
-func (q *Queries) ListNeighborhoodsByInstitution(ctx context.Context, institutionID string) ([]Neighborhood, error) {
-	rows, err := q.db.QueryContext(ctx, listNeighborhoodsByInstitution, institutionID)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	items := []Neighborhood{}
-	for rows.Next() {
-		var i Neighborhood
-		if err := rows.Scan(
-			&i.ID,
-			&i.InstitutionID,
-			&i.Name,
-			&i.AvgPriceSelfCon,
-			&i.AvgPrice1bed,
-			&i.PowerRatingInsight,
-			&i.Latitude,
-			&i.Longitude,
-			&i.CreatedAt,
-			&i.UpdatedAt,
 		); err != nil {
 			return nil, err
 		}

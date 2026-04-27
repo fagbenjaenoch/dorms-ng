@@ -35,18 +35,6 @@ CREATE TABLE institutions (
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE neighborhoods (
-  id TEXT NOT NULL PRIMARY KEY,
-  institution_id TEXT NOT NULL REFERENCES institutions ON DELETE CASCADE,
-  name TEXT NOT NULL,
-  avg_price_self_con INTEGER,
-  avg_price_1bed INTEGER,
-  power_rating_insight TEXT,
-  latitude REAL NOT NULL,           -- Center point of the neighborhood
-  longitude REAL NOT NULL,
-  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
 
 CREATE TABLE hostels (
   id TEXT PRIMARY KEY,
@@ -84,6 +72,5 @@ CREATE VIRTUAL TABLE global_search USING fts5 (
 DROP TABLE user_credentials;
 DROP TABLE users;
 DROP TABLE institutions;
-DROP TABLE neighborhoods;
 DROP TABLE hostels;
 DROP TABLE global_search;
