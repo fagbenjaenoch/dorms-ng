@@ -11,7 +11,7 @@ export default function CtaSection() {
           </div>
           <div className="relative z-10 p-12 lg:p-20 text-center">
             <h2 className="text-4xl lg:text-6xl text-primary-light font-extrabold tracking-tighter mb-8 max-w-3xl mx-auto">
-              Ready to Secure Your Next Study Haven?
+              Ready to Secure Your Dream Hostel?
             </h2>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Button

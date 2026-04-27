@@ -66,7 +66,6 @@ export default function CreateInstitutionForm({
   const onSubmit = async (data: CreateInstitutionData) => {
     const payload = await mutation.mutateAsync(data);
     form.reset();
-    console.log(payload);
   };
   return (
     <form
