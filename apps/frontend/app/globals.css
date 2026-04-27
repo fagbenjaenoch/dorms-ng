@@ -100,7 +100,7 @@ body {
 }
 
 .input-bg {
-  @apply input-bg;
+  @apply bg-gray-300/50;
 }
 
 .dark {
