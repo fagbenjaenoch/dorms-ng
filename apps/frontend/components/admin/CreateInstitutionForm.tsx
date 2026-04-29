@@ -205,6 +205,7 @@ export default function CreateInstitutionForm({
           variant="outline"
           type="reset"
           onClick={() => form.reset()}
+          className="bg-gray-300/50 hover:bg-gray-300/30"
         >
           Discard changes
         </Button>

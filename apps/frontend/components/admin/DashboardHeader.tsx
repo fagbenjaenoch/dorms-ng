@@ -17,12 +17,6 @@ export default function DashboardHeader() {
           <Settings size={20} />
         </Button>
         <div className="flex items-center gap-3 pl-4 border-l border-surface-container-high">
-          <div className="text-right hidden lg:block">
-            <p className="text-sm font-bold text-on-surface">Admin User</p>
-            <p className="text-[10px] text-on-surface-variant font-medium uppercase tracking-wider">
-              John Doe
-            </p>
-          </div>
           <img
             alt="Administrator profile"
             className="w-10 h-10 rounded-full border-2 border-primary/20 object-cover transition-transform duration-300 hover:scale-110 cursor-pointer"
