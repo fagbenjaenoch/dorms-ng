@@ -26,7 +26,6 @@ type Hostel struct {
 	GooglePlaceID       sql.NullString  `json:"google_place_id"`
 	EstimatedPriceRange sql.NullString  `json:"estimated_price_range"`
 	DistanceToGateKm    sql.NullFloat64 `json:"distance_to_gate_km"`
-	EtaWalkingMins      sql.NullInt64   `json:"eta_walking_mins"`
 	IsVerifiedByAdmin   sql.NullBool    `json:"is_verified_by_admin"`
 	CreatedAt           time.Time       `json:"created_at"`
 	UpdatedAt           time.Time       `json:"updated_at"`

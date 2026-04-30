@@ -52,7 +52,6 @@ CREATE TABLE hostels (
 
   -- Calculated Fields (Computed by your Go backend before inserting)
   distance_to_gate_km REAL,
-  eta_walking_mins INTEGER,
 
   is_verified_by_admin BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
