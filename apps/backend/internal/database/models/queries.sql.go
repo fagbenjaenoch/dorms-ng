@@ -12,24 +12,23 @@ import (
 
 const createHostel = `-- name: CreateHostel :one
 INSERT INTO hostels (
-    id, neighborhood_id, name, address, latitude, longitude,
-    google_place_id, google_rating, estimated_price_range,
+    id, name, address, city, latitude, longitude,
+    google_place_id, estimated_price_range,
     distance_to_gate_km, eta_walking_mins, is_verified_by_admin
 ) VALUES (
-    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
 )
-RETURNING id, neighborhood_id, name, address, latitude, longitude, google_place_id, google_rating, estimated_price_range, distance_to_gate_km, eta_walking_mins, is_verified_by_admin, created_at, updated_at
+RETURNING id, name, address, city, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, eta_walking_mins, is_verified_by_admin, created_at, updated_at
 `
 
 type CreateHostelParams struct {
 	ID                  string          `json:"id"`
-	NeighborhoodID      sql.NullString  `json:"neighborhood_id"`
 	Name                string          `json:"name"`
 	Address             sql.NullString  `json:"address"`
+	City                sql.NullString  `json:"city"`
 	Latitude            float64         `json:"latitude"`
 	Longitude           float64         `json:"longitude"`
 	GooglePlaceID       sql.NullString  `json:"google_place_id"`
-	GoogleRating        sql.NullFloat64 `json:"google_rating"`
 	EstimatedPriceRange sql.NullString  `json:"estimated_price_range"`
 	DistanceToGateKm    sql.NullFloat64 `json:"distance_to_gate_km"`
 	EtaWalkingMins      sql.NullInt64   `json:"eta_walking_mins"`
@@ -39,13 +38,12 @@ type CreateHostelParams struct {
 func (q *Queries) CreateHostel(ctx context.Context, arg CreateHostelParams) (Hostel, error) {
 	row := q.db.QueryRowContext(ctx, createHostel,
 		arg.ID,
-		arg.NeighborhoodID,
 		arg.Name,
 		arg.Address,
+		arg.City,
 		arg.Latitude,
 		arg.Longitude,
 		arg.GooglePlaceID,
-		arg.GoogleRating,
 		arg.EstimatedPriceRange,
 		arg.DistanceToGateKm,
 		arg.EtaWalkingMins,
@@ -54,13 +52,12 @@ func (q *Queries) CreateHostel(ctx context.Context, arg CreateHostelParams) (Hos
 	var i Hostel
 	err := row.Scan(
 		&i.ID,
-		&i.NeighborhoodID,
 		&i.Name,
 		&i.Address,
+		&i.City,
 		&i.Latitude,
 		&i.Longitude,
 		&i.GooglePlaceID,
-		&i.GoogleRating,
 		&i.EstimatedPriceRange,
 		&i.DistanceToGateKm,
 		&i.EtaWalkingMins,
@@ -216,7 +213,7 @@ func (q *Queries) CreateUserCredentials(ctx context.Context, arg CreateUserCrede
 }
 
 const getHostel = `-- name: GetHostel :one
-SELECT id, neighborhood_id, name, address, latitude, longitude, google_place_id, google_rating, estimated_price_range, distance_to_gate_km, eta_walking_mins, is_verified_by_admin, created_at, updated_at FROM hostels WHERE id = ? LIMIT 1
+SELECT id, name, address, city, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, eta_walking_mins, is_verified_by_admin, created_at, updated_at FROM hostels WHERE id = ? LIMIT 1
 `
 
 func (q *Queries) GetHostel(ctx context.Context, id string) (Hostel, error) {
@@ -224,13 +221,12 @@ func (q *Queries) GetHostel(ctx context.Context, id string) (Hostel, error) {
 	var i Hostel
 	err := row.Scan(
 		&i.ID,
-		&i.NeighborhoodID,
 		&i.Name,
 		&i.Address,
+		&i.City,
 		&i.Latitude,
 		&i.Longitude,
 		&i.GooglePlaceID,
-		&i.GoogleRating,
 		&i.EstimatedPriceRange,
 		&i.DistanceToGateKm,
 		&i.EtaWalkingMins,
@@ -329,50 +325,6 @@ func (q *Queries) GetUserCredentialByProviderId(ctx context.Context, providerID 
 		&i.UpdatedAt,
 	)
 	return i, err
-}
-
-const listHostelsByNeighborhood = `-- name: ListHostelsByNeighborhood :many
-SELECT id, neighborhood_id, name, address, latitude, longitude, google_place_id, google_rating, estimated_price_range, distance_to_gate_km, eta_walking_mins, is_verified_by_admin, created_at, updated_at FROM hostels
-WHERE neighborhood_id = ?
-ORDER BY is_verified_by_admin DESC, name
-`
-
-func (q *Queries) ListHostelsByNeighborhood(ctx context.Context, neighborhoodID sql.NullString) ([]Hostel, error) {
-	rows, err := q.db.QueryContext(ctx, listHostelsByNeighborhood, neighborhoodID)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	items := []Hostel{}
-	for rows.Next() {
-		var i Hostel
-		if err := rows.Scan(
-			&i.ID,
-			&i.NeighborhoodID,
-			&i.Name,
-			&i.Address,
-			&i.Latitude,
-			&i.Longitude,
-			&i.GooglePlaceID,
-			&i.GoogleRating,
-			&i.EstimatedPriceRange,
-			&i.DistanceToGateKm,
-			&i.EtaWalkingMins,
-			&i.IsVerifiedByAdmin,
-			&i.CreatedAt,
-			&i.UpdatedAt,
-		); err != nil {
-			return nil, err
-		}
-		items = append(items, i)
-	}
-	if err := rows.Close(); err != nil {
-		return nil, err
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return items, nil
 }
 
 const listInstitutions = `-- name: ListInstitutions :many

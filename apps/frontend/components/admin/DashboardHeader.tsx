@@ -14,13 +14,13 @@ export default function DashboardHeader({ title }: DashboardHeaderProps) {
         </span>
       </div>
       <div className="flex items-center gap-6">
-        <div className="relative hidden xl:block">
+        <div className="relative hidden xl:block ">
           <Search
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-emerald-700/50"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-primary"
             size={16}
           />
           <input
-            className="pl-10 pr-4 py-2 bg-surface-container rounded-full border-none focus:ring-2 focus:ring-emerald-500 text-sm w-64"
+            className="border border-gray-300/50 pl-10 pr-4 py-2 rounded-full text-sm w-64"
             placeholder="Search hostels..."
             type="text"
           />

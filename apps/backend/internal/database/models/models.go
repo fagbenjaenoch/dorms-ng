@@ -18,13 +18,12 @@ type GlobalSearch struct {
 
 type Hostel struct {
 	ID                  string          `json:"id"`
-	NeighborhoodID      sql.NullString  `json:"neighborhood_id"`
 	Name                string          `json:"name"`
 	Address             sql.NullString  `json:"address"`
+	City                sql.NullString  `json:"city"`
 	Latitude            float64         `json:"latitude"`
 	Longitude           float64         `json:"longitude"`
 	GooglePlaceID       sql.NullString  `json:"google_place_id"`
-	GoogleRating        sql.NullFloat64 `json:"google_rating"`
 	EstimatedPriceRange sql.NullString  `json:"estimated_price_range"`
 	DistanceToGateKm    sql.NullFloat64 `json:"distance_to_gate_km"`
 	EtaWalkingMins      sql.NullInt64   `json:"eta_walking_mins"`

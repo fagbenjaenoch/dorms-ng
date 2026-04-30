@@ -17,21 +17,16 @@ SELECT * FROM institutions WHERE id = ? LIMIT 1;
 
 -- name: CreateHostel :one
 INSERT INTO hostels (
-    id, neighborhood_id, name, address, latitude, longitude,
-    google_place_id, google_rating, estimated_price_range,
+    id, name, address, city, latitude, longitude,
+    google_place_id, estimated_price_range,
     distance_to_gate_km, eta_walking_mins, is_verified_by_admin
 ) VALUES (
-    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
 )
 RETURNING *;
 
 -- name: GetHostel :one
 SELECT * FROM hostels WHERE id = ? LIMIT 1;
-
--- name: ListHostelsByNeighborhood :many
-SELECT * FROM hostels
-WHERE neighborhood_id = ?
-ORDER BY is_verified_by_admin DESC, name;
 
 -- name: CreateUser :one
 INSERT INTO users (

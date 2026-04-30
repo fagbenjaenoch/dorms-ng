@@ -24,12 +24,15 @@ import {
   BadgeCheck,
   MapPin,
   MapIcon,
+  Save,
 } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { Map, MapControls, MapMarker, MarkerContent, MarkerLabel } from "../ui/map";
 import MapEventListener from "../MapEventListener";
 import { useEffect, useState } from "react";
 import { BiSolidBadgeCheck } from "react-icons/bi";
+import { Button } from "../ui/button";
+import { useMutation } from "@tanstack/react-query";
 
 export default function CreateHostelListingForm() {
   const form = useForm<CreateHostelListingData>({
@@ -49,6 +52,27 @@ export default function CreateHostelListingForm() {
   });
   const [marker, setMarker] = useState(defaultLngLat);
 
+  const mutation = useMutation({
+    mutationKey: ["createHostelListing"],
+    mutationFn: async (data: CreateHostelListingData) => {
+      try {
+        const res = await fetch("http://localhost:8000/api/v1/hostels", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+        if (!res.ok) {
+          throw new Error("Failed to create hostel");
+        }
+        return res.json();
+      } catch (error) {
+        throw new Error("Failed to create institution");
+      }
+    },
+  });
+
   const handleMapClick = (e) => {
     setMarker({ lng: e.lngLat.lng, lat: e.lngLat.lat });
   };
@@ -57,8 +81,9 @@ export default function CreateHostelListingForm() {
     setMarker({ lng: lngLat.lng, lat: lngLat.lat });
   };
 
-  const onSubmit = (values: CreateHostelListingData) => {
-    console.log(values);
+  const onSubmit = async (data: CreateHostelListingData) => {
+    const payload = await mutation.mutateAsync(data);
+    form.reset();
   };
 
   useEffect(() => {
@@ -163,6 +188,7 @@ export default function CreateHostelListingForm() {
                         {...field}
                         className="pl-8 input-bg"
                         placeholder="250,000 - 450,000"
+                        type="number"
                       />
                     </div>
                     {fieldState.invalid && (
@@ -420,13 +446,34 @@ export default function CreateHostelListingForm() {
               <div>
                 <h4 className="font-bold text-lg">Verified Property</h4>
                 <p className="text-xs text-primary-light leading-snug lg:leading-normal">
-                  Display Emerald Horizon Seal of Trust
+                  This means we trust this validity of this propery for the
+                  forseeable future
                 </p>
               </div>
             </div>
           </div>
         </div>
       </section>
+
+      <div className="flex flex-col md:flex-row flex-wrap gap-4">
+        <Button
+          type="submit"
+          size="xl"
+          className="inline-flex gap-2"
+          disabled={mutation.isPending}
+        >
+          <Save /> {mutation.isPending ? "Creating" : "Create Hostel"}
+        </Button>
+        <Button
+          size="xl"
+          variant="outline"
+          type="reset"
+          onClick={() => form.reset()}
+          className="bg-gray-300/50 hover:bg-gray-300/30"
+        >
+          Discard changes
+        </Button>
+      </div>
     </form>
   );
 }

@@ -38,15 +38,14 @@ CREATE TABLE institutions (
 
 CREATE TABLE hostels (
   id TEXT PRIMARY KEY,
-  neighborhood_id TEXT REFERENCES neighborhoods ON DELETE SET NULL,
   name TEXT NOT NULL,
   address TEXT,
+  city TEXT,
   latitude REAL NOT NULL,
   longitude REAL NOT NULL,
 
   -- Scraped/Sourced Data
   google_place_id TEXT UNIQUE,
-  google_rating REAL,
 
   -- Curated Trust Layer Insights
   estimated_price_range TEXT,

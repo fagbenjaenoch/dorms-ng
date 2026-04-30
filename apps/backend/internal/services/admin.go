@@ -83,32 +83,3 @@ func (s AdminService) CreateInstitution(ctx context.Context, institution dto.Cre
 		},
 	}, nil
 }
-
-func (s AdminService) CreateNeighborhood(ctx context.Context, neighborhood dto.CreateNeighborhood) (dto.StructuredResponse, error) {
-	ctx, span := adminTracer.Start(ctx, "CreateNeighborhood")
-	defer span.End()
-
-	n, err := s.neighbourhoodRepo.CreateNeighborhood(ctx, neighborhood)
-	if err != nil {
-		return dto.StructuredResponse{
-			Success: false,
-			Status:  http.StatusInternalServerError,
-			Message: "failed to create neighborhood",
-			Payload: nil,
-		}, err
-	}
-
-	return dto.StructuredResponse{
-		Success: true,
-		Status:  http.StatusCreated,
-		Message: "Neighborhood created successfully",
-		Payload: dto.CreateNeighborhood{
-			Name:               n.Name,
-			Latitude:           n.Latitude,
-			Longitude:          n.Longitude,
-			AvgPriceSelfCon:    int(n.AvgPriceSelfCon.Int64),
-			AvgPrice1bed:       int(n.AvgPrice1bed.Int64),
-			PowerRatingInsight: n.PowerRatingInsight.String,
-		},
-	}, nil
-}

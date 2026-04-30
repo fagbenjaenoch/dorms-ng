@@ -6,7 +6,6 @@ package models
 
 import (
 	"context"
-	"database/sql"
 )
 
 type Querier interface {
@@ -20,7 +19,6 @@ type Querier interface {
 	GetSearchEntry(ctx context.Context, searchText string) ([]GetSearchEntryRow, error)
 	GetUserByEmail(ctx context.Context, email string) (User, error)
 	GetUserCredentialByProviderId(ctx context.Context, providerID string) (UserCredential, error)
-	ListHostelsByNeighborhood(ctx context.Context, neighborhoodID sql.NullString) ([]Hostel, error)
 	ListInstitutions(ctx context.Context) ([]Institution, error)
 	UserExists(ctx context.Context, email string) (int64, error)
 }

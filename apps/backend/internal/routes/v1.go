@@ -23,7 +23,6 @@ func RegisterV1Routes(s *server.Server) *chi.Mux {
 
 	v1Router.With(middleware.ValidateRequestPayload[dto.CreateHostel]).Post("/hostels", adminHandler.CreateHostel)
 	v1Router.With(middleware.ValidateRequestPayload[dto.CreateInstitution]).Post("/institutions", adminHandler.CreateInstitution)
-	v1Router.With(middleware.ValidateRequestPayload[dto.CreateNeighborhood]).Post("/neighborhoods", adminHandler.CreateNeighborhood)
 
 	// general routes
 	generalHandler := handlers.NewGeneralHandler(s)

@@ -72,28 +72,3 @@ func (h *AdminHandler) CreateHostel(w http.ResponseWriter, r *http.Request) {
 
 	utils.WriteJSON(w, res)
 }
-
-func (h *AdminHandler) CreateNeighborhood(w http.ResponseWriter, r *http.Request) {
-	neighborhood, err := utils.GetValidatedPayloadFromRequest[dto.CreateNeighborhood](r.Context())
-	if err != nil {
-		msg := "failed to process request body"
-		h.server.Logger.Err(err).Msg(msg)
-		utils.WriteJSON(w, dto.StructuredResponse{
-			Success: false,
-			Status:  http.StatusInternalServerError,
-			Message: msg,
-			Payload: nil,
-		})
-		return
-	}
-
-	res, err := h.AdminService.CreateNeighborhood(r.Context(), neighborhood)
-	if err != nil {
-		msg := "failed to create neighborhood"
-		h.server.Logger.Err(err).Msg(msg)
-		utils.WriteJSON(w, res)
-		return
-	}
-
-	utils.WriteJSON(w, res)
-}

@@ -103,11 +103,11 @@ func (hr *HostelRepository) CreateHostel(ctx context.Context, hostel dto.CreateH
 		return nil, err
 	}
 
-	// TODO: Fix this to fit new search table structure
 	searchEntry := models.CreateSearchEntryParams{
 		EntityID:   ch.ID,
 		EntityType: "hostel",
-		SearchText: ch.Name,
+		Entity:     ch.Name,
+		SearchText: fmt.Sprintf("%s, %s, %s", h.Name, h.Address.String, h.City.String),
 	}
 
 	_, err = qtx.CreateSearchEntry(ctx, searchEntry)
@@ -135,45 +135,4 @@ func NewNeighborhoodRepository(db *sql.DB, logger *zerolog.Logger) *Neighborhood
 		},
 		db: db,
 	}
-}
-
-func (nr *NeighborhoodRepository) CreateNeighborhood(ctx context.Context, neighborhood dto.CreateNeighborhood) (*models.Neighborhood, error) {
-	tx, err := nr.db.Begin()
-	if err != nil {
-		return nil, err
-	}
-	defer tx.Rollback()
-
-	qtx := nr.BaseRepository.Queries.WithTx(tx)
-
-	var n models.CreateNeighborhoodParams
-	n.ID = uuid.New().String()
-	n.Name = neighborhood.Name
-	n.AvgPriceSelfCon = sql.NullInt64{Int64: int64(neighborhood.AvgPriceSelfCon), Valid: true}
-	n.AvgPrice1bed = sql.NullInt64{Int64: int64(neighborhood.AvgPrice1bed), Valid: true}
-	n.PowerRatingInsight = sql.NullString{String: neighborhood.PowerRatingInsight, Valid: true}
-	n.Latitude = neighborhood.Latitude
-	n.Longitude = neighborhood.Longitude
-
-	cn, err := qtx.CreateNeighborhood(ctx, n)
-	if err != nil {
-		return nil, err
-	}
-
-	searchEntry := models.CreateSearchEntryParams{
-		EntityID:   cn.ID,
-		EntityType: "neighborhood",
-		SearchText: cn.Name,
-	}
-
-	_, err = qtx.CreateSearchEntry(ctx, searchEntry)
-	if err != nil {
-		return nil, err
-	}
-
-	if err := tx.Commit(); err != nil {
-		return nil, err
-	}
-
-	return &cn, nil
 }
