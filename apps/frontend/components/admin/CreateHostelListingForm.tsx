@@ -29,6 +29,7 @@ import { Controller, useForm } from "react-hook-form";
 import { Map, MapControls, MapMarker, MarkerContent, MarkerLabel } from "../ui/map";
 import MapEventListener from "../MapEventListener";
 import { useEffect, useState } from "react";
+import { BiSolidBadgeCheck } from "react-icons/bi";
 
 export default function CreateHostelListingForm() {
   const form = useForm<CreateHostelListingData>({
@@ -356,7 +357,6 @@ export default function CreateHostelListingForm() {
         </div>
       </section>
 
-      {/* Marketplace Verification */}
       <section className="bg-surface p-6 sm:p-8 rounded-[2rem] border-2 border-dashed border-outline-variant/40">
         <div className="flex items-center gap-3 mb-8">
           <div className="w-10 h-10 bg-tertiary text-on-tertiary rounded-xl flex items-center justify-center">
@@ -372,17 +372,23 @@ export default function CreateHostelListingForm() {
             <label className="block text-[10px] font-black tracking-[0.2em] text-on-surface-variant uppercase">
               Google Place ID
             </label>
-            <div className="flex items-center gap-2 bg-surface p-2 rounded-xl focus-within:ring-2 focus-within:ring-primary">
-              <Link2 className="text-outline shrink-0 ml-2" size={16} />
+            <div className="flex items-center gap-2">
               <Controller
                 name="googlePlaceId"
                 control={form.control}
                 render={({ field }) => (
-                  <Input
-                    {...field}
-                    className="w-full bg-transparent border-none text-xs font-mono focus-visible:ring-0 shadow-none px-2 h-auto"
-                    placeholder="ChIJN1t..."
-                  />
+                  <div className="relative">
+                    <Link2
+                      className="absolute left-4 top-1/2 -translate-y-1/2 text-primary"
+                      size={16}
+                    />
+
+                    <Input
+                      {...field}
+                      className="pl-12 input-bg"
+                      placeholder="ChIJN1t..."
+                    />
+                  </div>
                 )}
               />
             </div>
@@ -406,18 +412,14 @@ export default function CreateHostelListingForm() {
             </div>
           </div>
 
-          <div className="lg:col-span-2 bg-emerald-900 text-white p-6 rounded-3xl flex items-center justify-between group cursor-pointer">
+          <div className="lg:col-span-2 bg-primary text-white p-6 rounded-3xl flex items-center justify-between group cursor-pointer">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-orange-500 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/20 shrink-0">
-                <BadgeCheck
-                  fill="currentColor"
-                  className="text-emerald-900"
-                  size={32}
-                />
+                <BiSolidBadgeCheck size={32} />
               </div>
               <div>
                 <h4 className="font-bold text-lg">Verified Property</h4>
-                <p className="text-xs text-emerald-100/60 leading-snug lg:leading-normal">
+                <p className="text-xs text-primary-light leading-snug lg:leading-normal">
                   Display Emerald Horizon Seal of Trust
                 </p>
               </div>
