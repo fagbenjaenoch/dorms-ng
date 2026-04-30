@@ -12,16 +12,9 @@ import {
   MarkerLabel,
 } from "@/components/ui/map";
 import MapEventListener from "@/components/MapEventListener";
-
-type LngLat = {
-  lng: number;
-  lat: number;
-};
-
-const defaultLngLat: LngLat = { lng: 8.606, lat: 9.967 };
+import { defaultLngLat, LngLat } from "@/lib/utils";
 
 export default function CreateInstitution() {
-  const [showSuccess, setShowSuccess] = useState(false);
   const [marker, setMarker] = useState(defaultLngLat);
 
   const handleDrag = (lngLat: LngLat) => {
@@ -101,7 +94,7 @@ export default function CreateInstitution() {
                   </MapMarker>
                 </Map>
               </div>
-              {/* Side Benefit Card */}
+
               <div className="bg-primary rounded-[2.5rem] p-10 text-white relative overflow-hidden shadow-xl shadow-primary/20">
                 <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -translate-y-20 translate-x-20 transition-transform duration-700" />
                 <h4 className="text-2xl font-bold mb-6 relative z-10">

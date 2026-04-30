@@ -130,3 +130,10 @@ export const nigerianCities = [
   "Yola",
   "Zaria",
 ] as const;
+
+export type LngLat = {
+  lng: number;
+  lat: number;
+};
+
+export const defaultLngLat: LngLat = { lng: 8.606, lat: 9.967 };

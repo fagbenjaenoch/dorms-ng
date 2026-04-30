@@ -64,7 +64,7 @@ export const createHostelListingSchema = z.object({
     .number<number>()
     .min(-180, "Longitude cannot be be less than -90 degrees")
     .max(180, "Longitude cannot be greater than 90 degrees"),
-  distanceM: z.coerce.number<number>().min(0, "Required"),
+  distanceKm: z.coerce.number<number>().min(0, "Required"),
   etaMins: z.coerce.number<number>().min(0, "Required"),
   googlePlaceId: z.string(),
   isVerified: z.boolean("Field must be a valid boolean i.e True or False"),

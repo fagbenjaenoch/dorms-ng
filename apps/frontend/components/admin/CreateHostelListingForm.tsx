@@ -12,20 +12,23 @@ import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { CreateHostelListingData, createHostelListingSchema } from "@/lib/forms";
-import { nigerianCities } from "@/lib/utils";
+import { defaultLngLat, LngLat, nigerianCities } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Info,
   Sparkles,
-  Map,
-  Compass,
   Link2,
   Star,
   StarHalf,
   ShieldCheck,
   BadgeCheck,
+  MapPin,
+  MapIcon,
 } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
+import { Map, MapControls, MapMarker, MarkerContent, MarkerLabel } from "../ui/map";
+import MapEventListener from "../MapEventListener";
+import { useState } from "react";
 
 export default function CreateHostelListingForm() {
   const form = useForm<CreateHostelListingData>({
@@ -40,8 +43,18 @@ export default function CreateHostelListingForm() {
       isVerified: false,
       latitude: 9.967,
       longitude: 8.606,
+      distanceKm: 0,
     },
   });
+  const [marker, setMarker] = useState(defaultLngLat);
+
+  const handleMapClick = (e) => {
+    setMarker({ lng: e.lngLat.lng, lat: e.lngLat.lat });
+  };
+
+  const handleDrag = (lngLat: LngLat) => {
+    setMarker({ lng: lngLat.lng, lat: lngLat.lat });
+  };
 
   const onSubmit = (values: CreateHostelListingData) => {
     console.log(values);
@@ -52,7 +65,7 @@ export default function CreateHostelListingForm() {
       className="space-y-8"
       onSubmit={form.handleSubmit(onSubmit)}
     >
-      <section className="bg-surface-container-lowest p-6 sm:p-8 rounded-[2rem] shadow-lg border border-gray-300/50">
+      <section className="p-6 sm:p-8 rounded-[2rem] shadow-lg border border-gray-300/50">
         <div className="flex items-center gap-3 mb-8">
           <div className="w-10 h-10 bg-primary-container text-on-primary-container rounded-xl flex items-center justify-center">
             <Info size={24} />
@@ -165,33 +178,41 @@ export default function CreateHostelListingForm() {
         </div>
       </section>
 
-      <section className="bg-surface-container p-6 sm:p-8 rounded-[2rem] relative overflow-hidden">
+      <section className="p-6 sm:p-8 rounded-[2rem] relative overflow-hidden shadow-lg border border-gray-300/50">
         <div className="flex items-center gap-3 mb-8">
           <div className="w-10 h-10 bg-secondary-container text-on-secondary-container rounded-xl flex items-center justify-center">
-            <Map size={24} />
+            <MapIcon size={24} />
           </div>
           <h2 className="text-2xl font-bold tracking-tight">Location & Proximity</h2>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          <div className="lg:col-span-4 space-y-6">
-            <div>
-              <label className="block text-[10px] font-black tracking-[0.2em] text-on-surface-variant uppercase mb-2">
-                Street Address
-              </label>
-              <Controller
-                name="address"
-                control={form.control}
-                render={({ field }) => (
+          <div className="lg:col-span-6 space-y-6">
+            <Controller
+              name="address"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel
+                    htmlFor="address"
+                    className="uppercase text-xs font-bold"
+                    aria-invalid={fieldState.invalid}
+                  >
+                    Hostel Address
+                  </FieldLabel>
                   <Textarea
                     {...field}
-                    className="w-full rounded-xl border-none p-4 font-medium resize-none"
+                    id="address"
+                    aria-invalid={fieldState.invalid}
+                    className="w-full rounded-xl border-none p-4 font-medium resize-none input-bg"
                     placeholder="Enter full physical address..."
                     rows={3}
                   />
-                )}
-              />
-            </div>
+
+                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                </Field>
+              )}
+            />
 
             <FieldGroup className="flex-col md:flex-row">
               <Controller
@@ -247,69 +268,84 @@ export default function CreateHostelListingForm() {
               />
             </FieldGroup>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-tertiary-container/30 p-4 rounded-2xl">
-                <label className="block text-[10px] font-black text-on-tertiary-container mb-1">
-                  DISTANCE (KM)
-                </label>
-                <Controller
-                  name="distanceM"
-                  control={form.control}
-                  render={({ field }) => (
+            <FieldGroup className="flex-col md:flex-row">
+              <Controller
+                name="distanceKm"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel
+                      htmlFor="distance"
+                      className="uppercase text-xs font-bold"
+                    >
+                      Distance (km)
+                    </FieldLabel>
                     <Input
                       {...field}
-                      type="number"
-                      step="0.1"
-                      className="w-full bg-transparent border-none text-2xl font-bold p-0 focus-visible:ring-0 shadow-none"
-                      placeholder="0.5"
-                      onChange={(e) => field.onChange(parseFloat(e.target.value))}
+                      id="distance"
+                      aria-invalid={fieldState.invalid}
+                      className="input-bg"
+                      disabled
                     />
-                  )}
-                />
-              </div>
-              <div className="bg-secondary-container/30 p-4 rounded-2xl">
-                <label className="block text-[10px] font-black text-on-secondary-container mb-1">
-                  ETA (MINS)
-                </label>
-                <Controller
-                  name="etaMins"
-                  control={form.control}
-                  render={({ field }) => (
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+              <Controller
+                name="etaMins"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel
+                      htmlFor="eta"
+                      className="uppercase text-xs font-bold"
+                    >
+                      ETA (mins)
+                    </FieldLabel>
                     <Input
                       {...field}
-                      type="number"
-                      className="w-full bg-transparent border-none text-2xl font-bold p-0 focus-visible:ring-0 shadow-none"
-                      placeholder="10"
-                      onChange={(e) => field.onChange(parseInt(e.target.value, 10))}
+                      id="eta"
+                      aria-invalid={fieldState.invalid}
+                      className="input-bg"
+                      disabled
                     />
-                  )}
-                />
-              </div>
-            </div>
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+            </FieldGroup>
           </div>
-
-          <div className="lg:col-span-8 bg-surface-container-highest rounded-[2.5rem] h-[300px] sm:h-[400px] shadow-inner relative group overflow-hidden">
-            <img
-              className="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700"
-              alt="Modern interactive map"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuD71CYYTurIbwn_VD3odv8Jn7A33k9jqo4LIRILCe0gIqlgQHGgzmLhCoL7ecbQx7vFm6WxMQt6szJKt_90FYrG6RsCwJT_6SeKvS1NuLxwvzNLy2BjNsPti0U6cj_3jdzVMABxkMLY1LIZ5zQjdUWg-7vMh-zvemXAYnnNX3IwCl8G7KVZ6jIpv19Xb4aap1xTWzIsvjb_i8VvYHK_-uK82E_FrLMcUWu-4xB9dmh1jDeqGAeKOv7japGpB4D01I0Zc4iDA3B9ZCCb"
-            />
-
-            <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent flex items-end justify-center sm:justify-start p-6 sm:p-8 pointer-events-none">
-              <div className="bg-white/90 backdrop-blur p-4 rounded-2xl flex items-center gap-4 shadow-xl">
-                <div className="bg-secondary text-white p-2 rounded-lg">
-                  <Compass size={24} />
-                </div>
-                <div>
-                  <p className="text-[10px] font-black text-on-surface-variant uppercase tracking-widest">
-                    Pin Location
-                  </p>
-                  <p className="text-xs sm:text-sm font-bold">
-                    Drag and drop marker to refine
-                  </p>
-                </div>
-              </div>
-            </div>
+          <div className="lg:col-span-6 h-100 overflow-hidden rounded-[2.5rem] shadow-xl ring-1 ring-gray-500/10">
+            <Map center={[8.606, 9.967]} zoom={4.2} theme="dark">
+              <MapControls
+                position="top-right"
+                showLocate
+                showCompass
+                showFullscreen
+                showZoom
+              />
+              <MapMarker
+                draggable
+                longitude={marker.lng}
+                latitude={marker.lat}
+                onDrag={handleDrag}
+              >
+                <MarkerContent>
+                  <MapPin
+                    className="cursor-move fill-red-500 stroke-white"
+                    size={28}
+                  />
+                  <MarkerLabel position="bottom" className="text-white">
+                    Drag this!
+                  </MarkerLabel>
+                </MarkerContent>
+                <MapEventListener handleClick={handleMapClick} />
+              </MapMarker>
+            </Map>
           </div>
         </div>
       </section>
