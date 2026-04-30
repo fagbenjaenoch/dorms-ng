@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { Save } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
-import { Field, FieldError, FieldGroup, FieldLabel } from "../ui/field";
+import { Field, FieldError, FieldGroup, FieldLabel, FieldTitle } from "../ui/field";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useEffect } from "react";
@@ -81,7 +81,7 @@ export default function CreateInstitutionForm({
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel
                 htmlFor="name"
-                className="uppercase text-xs"
+                className="uppercase text-xs font-bold"
                 aria-invalid={fieldState.invalid}
               >
                 Name of Institution
@@ -103,7 +103,7 @@ export default function CreateInstitutionForm({
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="acronym" className="uppercase text-xs">
+              <FieldLabel htmlFor="acronym" className="uppercase text-xs font-bold">
                 Acronym
               </FieldLabel>
               <Input
@@ -122,7 +122,7 @@ export default function CreateInstitutionForm({
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="city" className="uppercase text-xs">
+              <FieldLabel htmlFor="city" className="uppercase text-xs font-bold">
                 City
               </FieldLabel>
 
@@ -154,7 +154,7 @@ export default function CreateInstitutionForm({
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="latitude" className="uppercase text-xs">
+              <FieldLabel htmlFor="latitude" className="uppercase text-xs font-bold">
                 Latitude (Main gate)
               </FieldLabel>
               <Input
@@ -175,7 +175,10 @@ export default function CreateInstitutionForm({
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="longitude" className="uppercase text-xs">
+              <FieldLabel
+                htmlFor="longitude"
+                className="uppercase text-xs font-bold"
+              >
                 Longitude (Main gate)
               </FieldLabel>
               <Input
