@@ -28,7 +28,7 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import { Map, MapControls, MapMarker, MarkerContent, MarkerLabel } from "../ui/map";
 import MapEventListener from "../MapEventListener";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function CreateHostelListingForm() {
   const form = useForm<CreateHostelListingData>({
@@ -59,6 +59,12 @@ export default function CreateHostelListingForm() {
   const onSubmit = (values: CreateHostelListingData) => {
     console.log(values);
   };
+
+  useEffect(() => {
+    form.setValue("longitude", marker.lng);
+    form.setValue("latitude", marker.lat);
+  }, [marker]);
+
   return (
     <form
       id="create-hostel-listing-form"
