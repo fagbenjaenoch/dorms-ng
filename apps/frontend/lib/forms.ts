@@ -47,3 +47,27 @@ export const createInstitutionSchema = z.object({
 });
 
 export type CreateInstitutionData = z.infer<typeof createInstitutionSchema>;
+
+export const createHostelListingSchema = z.object({
+  name: z.string().min(3, "Hostel name must be at least 3 characters"),
+  city: z
+    .string()
+    .min(2, "City name must be at least 2 characters")
+    .max(100, "City name is too long"),
+  estimatedPriceRange: z.coerce.number<number>(),
+  address: z.string().min(5, "Address must not be less than 5 characters"),
+  latitude: z.coerce
+    .number<number>()
+    .min(-90, "Latitude cannot be be less than -90 degrees")
+    .max(90, "Latitude cannot be greater than 90 degrees"),
+  longitude: z.coerce
+    .number<number>()
+    .min(-180, "Longitude cannot be be less than -90 degrees")
+    .max(180, "Longitude cannot be greater than 90 degrees"),
+  distanceM: z.coerce.number<number>().min(0, "Required"),
+  etaMins: z.coerce.number<number>().min(0, "Required"),
+  googlePlaceId: z.string(),
+  isVerified: z.boolean("Field must be a valid boolean i.e True or False"),
+});
+
+export type CreateHostelListingData = z.infer<typeof createHostelListingSchema>;

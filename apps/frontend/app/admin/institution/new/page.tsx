@@ -35,7 +35,7 @@ export default function CreateInstitution() {
   return (
     <div className="min-h-screen w-full">
       <main className="flex-1 ml-64 min-h-screen relative">
-        <DashboardHeader />
+        <DashboardHeader title="Manage Institutions" />
 
         <div className="p-10 max-w-6xl mx-auto">
           <div className="mb-10">

@@ -1,15 +1,30 @@
-import { Bell, Settings } from "lucide-react";
+import { Bell, Search, Settings } from "lucide-react";
 import { Button } from "../ui/button";
 
-export default function DashboardHeader() {
+interface DashboardHeaderProps {
+  title: string;
+}
+
+export default function DashboardHeader({ title }: DashboardHeaderProps) {
   return (
     <header className="bg-white/70 backdrop-blur-md sticky top-0 z-40 shadow-sm flex justify-between items-center w-full px-8 py-4 border-b border-surface-container">
       <div className="flex items-center gap-4">
         <span className="text-2xl font-black text-primary tracking-tight">
-          Institution Management
+          {title}
         </span>
       </div>
       <div className="flex items-center gap-6">
+        <div className="relative hidden xl:block">
+          <Search
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-emerald-700/50"
+            size={16}
+          />
+          <input
+            className="pl-10 pr-4 py-2 bg-surface-container rounded-full border-none focus:ring-2 focus:ring-emerald-500 text-sm w-64"
+            placeholder="Search hostels..."
+            type="text"
+          />
+        </div>
         <Button className="bg-primary-light text-primary hover:bg-primary-light/50 rounded-full">
           <Bell size={20} />
         </Button>
