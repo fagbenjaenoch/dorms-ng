@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/map";
 import MapEventListener from "@/components/MapEventListener";
 import { defaultLngLat, LngLat } from "@/lib/utils";
+import { BiSolidBadgeCheck } from "react-icons/bi";
 
 export default function CreateInstitution() {
   const [marker, setMarker] = useState(defaultLngLat);
@@ -58,7 +59,7 @@ export default function CreateInstitution() {
                     within a 15-minute walking distance for students.
                   </p>
                 </div>
-                <VerifiedIcon
+                <BiSolidBadgeCheck
                   className="absolute -bottom-4 -right-4 text-9xl text-tertiary/20 rotate-12 transition-transform duration-700"
                   size={160}
                 />
