@@ -40,6 +40,7 @@ import { useEffect, useRef, useState } from "react";
 import { BiSolidBadgeCheck } from "react-icons/bi";
 import { Button } from "../ui/button";
 import { useMutation } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 export default function CreateHostelListingForm() {
   const mapRef = useRef<MapRef>(null);
@@ -76,7 +77,7 @@ export default function CreateHostelListingForm() {
         }
         return res.json();
       } catch (error) {
-        throw new Error("Failed to create institution");
+        throw new Error("Failed to create hostel");
       }
     },
   });
@@ -91,6 +92,7 @@ export default function CreateHostelListingForm() {
 
   const onSubmit = async (data: CreateHostelListingData) => {
     const payload = await mutation.mutateAsync(data);
+    toast.success("Successfully created new hostel");
     form.reset();
   };
 
