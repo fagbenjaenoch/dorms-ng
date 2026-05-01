@@ -41,6 +41,7 @@ import { BiSolidBadgeCheck } from "react-icons/bi";
 import { Button } from "../ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { APIResponse } from "@/lib/api";
 
 export default function CreateHostelListingForm() {
   const mapRef = useRef<MapRef>(null);
@@ -75,7 +76,7 @@ export default function CreateHostelListingForm() {
         if (!res.ok) {
           throw new Error("Failed to create hostel");
         }
-        return res.json();
+        return res.json() as any as APIResponse<CreateHostelListingData>;
       } catch (error) {
         throw new Error("Failed to create hostel");
       }
@@ -92,6 +93,10 @@ export default function CreateHostelListingForm() {
 
   const onSubmit = async (data: CreateHostelListingData) => {
     const payload = await mutation.mutateAsync(data);
+    if (!payload.success) {
+      toast.success("Could not create hostel");
+    }
+
     toast.success("Successfully created new hostel");
     form.reset();
   };
