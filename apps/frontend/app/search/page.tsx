@@ -117,20 +117,20 @@ const searchResults: SearchResult[] = [
 
 export default function SearchPage() {
   return (
-    <div className="bg-background text-on-background font-body antialiased selection:bg-tertiary selection:text-on-tertiary-container">
-      <nav className="bg-white z-50 shadow-sm flex justify-between items-center px-8 h-20 w-full fixed top-0 tonal shift bg-surface-container">
-        <div className="flex items-center gap-12">
+    <div>
+      <nav className="bg-white z-50 shadow-sm px-8 py-3 w-full fixed top-0">
+        <div className="flex items-center justify-between mx-auto max-w-7xl">
           <Link href="/">
             <BrandIcon />
           </Link>
-        </div>
-        <div className="hidden md:flex items-center gap-4">
-          <Button variant="link">Sign In</Button>
-          <Button size="xl">List Property</Button>
+          <div className="hidden md:flex items-center gap-4">
+            <Button variant="link">Sign In</Button>
+            <Button size="xl">List Property</Button>
+          </div>
         </div>
       </nav>
       <ActiveSearchFilters />
-      <main className="pt-44 pb-24 px-8 min-h-screen w-full max-w-400 mx-auto">
+      <main className="pt-44 pb-24 px-8 min-h-screen w-full mx-auto max-w-7xl">
         <div className="mb-10 flex justify-between items-end">
           <div>
             <h1 className="font-headline text-4xl md:text-5xl font-black text-on-surface tracking-tighter leading-none">
@@ -146,7 +146,7 @@ export default function SearchPage() {
             <ChevronDown className="text-primary" size={15} />
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {searchResults.map(({ name, location, price }, i) => (
             <SearchResultCard
               key={i}

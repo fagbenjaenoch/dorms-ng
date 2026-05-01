@@ -3,7 +3,7 @@ import { Button } from "./ui/button";
 
 function FilterItem({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex items-center gap-2 bg-surface px-4 py-1.5 rounded-full border border-surface-container-highest shrink-0">
+    <div className="flex items-center gap-2 bg-surface px-4 py-1.5 rounded-full border shrink-0">
       <span className="text-sm font-medium text-on-surface">{children}</span>
       <button className="text-on-surface-variant hover:text-error transition-colors flex items-center">
         <X size={13} />
@@ -14,8 +14,8 @@ function FilterItem({ children }: { children: React.ReactNode }) {
 
 export default function ActiveSearchFilters() {
   return (
-    <div className="bg-white fixed top-20 left-0 w-full z-40 shadow-sm border-b border-surface-container py-4 px-8 transition-all duration-300">
-      <div className="max-w-400 mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+    <div className="bg-white fixed top-20 left-0 w-full z-40 shadow-sm border-b py-4 px-8 transition-all duration-300 ">
+      <div className="flex flex-col md:flex-row justify-between items-center gap-4  mx-auto max-w-7xl">
         <div className="flex items-center gap-3 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-hide">
           <span className="text-sm font-bold text-on-surface-variant uppercase tracking-widest shrink-0">
             Active Filters:
