@@ -1,3 +1,5 @@
+import { CreateInstitutionData } from "./forms";
+
 export type APIResponse<T> = {
   success: boolean;
   status: number;
@@ -15,3 +17,5 @@ export type BaseAuthPayload = {
 export type SigninPayload = BaseAuthPayload & {
   provider: "password" | "google";
 };
+
+export type CreateInstitutionPayload = CreateInstitutionData;

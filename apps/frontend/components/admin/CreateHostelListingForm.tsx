@@ -27,14 +27,22 @@ import {
   Save,
 } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
-import { Map, MapControls, MapMarker, MarkerContent, MarkerLabel } from "../ui/map";
+import {
+  Map,
+  MapControls,
+  MapMarker,
+  MapRef,
+  MarkerContent,
+  MarkerLabel,
+} from "../ui/map";
 import MapEventListener from "../MapEventListener";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BiSolidBadgeCheck } from "react-icons/bi";
 import { Button } from "../ui/button";
 import { useMutation } from "@tanstack/react-query";
 
 export default function CreateHostelListingForm() {
+  const mapRef = useRef<MapRef>(null);
   const form = useForm<CreateHostelListingData>({
     resolver: zodResolver(createHostelListingSchema),
     defaultValues: {
@@ -89,6 +97,14 @@ export default function CreateHostelListingForm() {
   useEffect(() => {
     form.setValue("longitude", marker.lng);
     form.setValue("latitude", marker.lat);
+
+    if (mapRef.current) {
+      mapRef.current.flyTo({
+        center: [marker.lng, marker.lat],
+        zoom: 15,
+        speed: 1.2,
+      });
+    }
   }, [marker]);
 
   return (
@@ -353,7 +369,7 @@ export default function CreateHostelListingForm() {
             </FieldGroup>
           </div>
           <div className="lg:col-span-6 h-100 overflow-hidden rounded-[2.5rem] shadow-xl ring-1 ring-gray-500/10">
-            <Map center={[8.606, 9.967]} zoom={4.2} theme="dark">
+            <Map ref={mapRef} center={[8.606, 9.967]} zoom={4.2} theme="dark">
               <MapControls
                 position="top-right"
                 showLocate

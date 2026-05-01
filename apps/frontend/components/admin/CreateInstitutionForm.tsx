@@ -16,6 +16,8 @@ import {
   ComboboxList,
 } from "../ui/combobox";
 import { nigerianCities } from "@/lib/utils";
+import { APIResponse, CreateInstitutionPayload } from "@/lib/api";
+import { toast } from "sonner";
 
 interface CreateInstitutionFormProps {
   lng: number;
@@ -56,7 +58,7 @@ export default function CreateInstitutionForm({
         if (!res.ok) {
           throw new Error("Failed to create institution");
         }
-        return res.json();
+        return res.json() as any as APIResponse<CreateInstitutionPayload>;
       } catch (error) {
         throw new Error("Failed to create institution");
       }
@@ -65,6 +67,7 @@ export default function CreateInstitutionForm({
 
   const onSubmit = async (data: CreateInstitutionData) => {
     const payload = await mutation.mutateAsync(data);
+    toast.success("Created Institution Successfully");
     form.reset();
   };
   return (

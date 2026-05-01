@@ -1,13 +1,14 @@
 "use client";
 
 import { CheckCircle2, MapPin, VerifiedIcon } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CreateInstitutionForm from "@/components/admin/CreateInstitutionForm";
 import DashboardHeader from "@/components/admin/DashboardHeader";
 import {
   Map,
   MapControls,
   MapMarker,
+  MapRef,
   MarkerContent,
   MarkerLabel,
 } from "@/components/ui/map";
@@ -16,6 +17,7 @@ import { defaultLngLat, LngLat } from "@/lib/utils";
 import { BiSolidBadgeCheck } from "react-icons/bi";
 
 export default function CreateInstitution() {
+  const mapRef = useRef<MapRef>(null);
   const [marker, setMarker] = useState(defaultLngLat);
 
   const handleDrag = (lngLat: LngLat) => {
@@ -25,6 +27,16 @@ export default function CreateInstitution() {
   const handleMapClick = (e) => {
     setMarker({ lng: e.lngLat.lng, lat: e.lngLat.lat });
   };
+
+  useEffect(() => {
+    if (mapRef.current) {
+      mapRef.current.flyTo({
+        center: [marker.lng, marker.lat],
+        zoom: 15,
+        speed: 1.2,
+      });
+    }
+  }, [marker]);
 
   return (
     <div className="min-h-screen w-full">
@@ -68,7 +80,7 @@ export default function CreateInstitution() {
 
             <div className="lg:col-span-5 space-y-8">
               <div className="h-100 overflow-hidden rounded-[2.5rem] shadow-xl ring-1 ring-gray-500/10">
-                <Map center={[8.606, 9.967]} zoom={4.2} theme="dark">
+                <Map ref={mapRef} center={[8.606, 9.967]} zoom={4.2} theme="dark">
                   <MapControls
                     position="top-right"
                     showLocate
