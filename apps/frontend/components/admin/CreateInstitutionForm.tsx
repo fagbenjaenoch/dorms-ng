@@ -1,3 +1,5 @@
+"use client";
+
 import { CreateInstitutionData, createInstitutionSchema } from "@/lib/forms";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";

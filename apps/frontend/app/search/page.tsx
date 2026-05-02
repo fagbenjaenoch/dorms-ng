@@ -115,6 +115,11 @@ const searchResults: SearchResult[] = [
   },
 ];
 
+export const metadata = {
+  title: "Search Results",
+  description: "Search results for properties matching your criteria",
+};
+
 export default function SearchPage() {
   return (
     <div>

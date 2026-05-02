@@ -1,7 +1,10 @@
-"use client";
-
 import CreateHostelListingForm from "@/components/admin/CreateHostelListingForm";
 import DashboardHeader from "@/components/admin/DashboardHeader";
+
+export const metadata = {
+  title: "Create Hostel Listing",
+  description: "Add a new hostel listing to the marketplace.",
+};
 
 export default function CreateHostelListing() {
   return (

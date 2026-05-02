@@ -4,6 +4,11 @@ import Link from "next/link";
 import { FaGoogle } from "react-icons/fa6";
 import SignupForm from "@/components/SignupForm";
 
+export const metadata = {
+  title: "Sign Up",
+  description: "Create a new account",
+};
+
 export default function Signup() {
   return (
     <Layout>

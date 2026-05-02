@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckCircle2, MapPin, VerifiedIcon } from "lucide-react";
+import { CheckCircle2, MapPin } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import CreateInstitutionForm from "@/components/admin/CreateInstitutionForm";
 import DashboardHeader from "@/components/admin/DashboardHeader";
@@ -15,6 +15,11 @@ import {
 import MapEventListener from "@/components/MapEventListener";
 import { defaultLngLat, LngLat } from "@/lib/utils";
 import { BiSolidBadgeCheck } from "react-icons/bi";
+
+// export const metadata = {
+//   title: "Create Institution",
+//   description: "Add a new institution to the marketplace.",
+// };
 
 export default function CreateInstitution() {
   const mapRef = useRef<MapRef>(null);

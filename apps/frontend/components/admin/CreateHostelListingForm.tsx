@@ -20,11 +20,11 @@ import {
   Link2,
   Star,
   StarHalf,
-  ShieldCheck,
   BadgeCheck,
   MapPin,
   MapIcon,
   Save,
+  ShieldCheck,
 } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import {

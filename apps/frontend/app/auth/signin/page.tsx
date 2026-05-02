@@ -4,6 +4,11 @@ import Link from "next/link";
 import { FaGoogle } from "react-icons/fa";
 import SigninForm from "@/components/SigninForm";
 
+export const metadata = {
+  title: "Sign In",
+  description: "Sign in to your account",
+};
+
 export default function Signin() {
   return (
     <Layout>
