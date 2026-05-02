@@ -42,6 +42,7 @@ import { Button } from "../ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { APIResponse } from "@/lib/api";
+import { Switch } from "../ui/switch";
 
 export default function CreateHostelListingForm() {
   const mapRef = useRef<MapRef>(null);
@@ -468,10 +469,24 @@ export default function CreateHostelListingForm() {
               </div>
               <div>
                 <h4 className="font-bold text-lg">Verified Property</h4>
-                <p className="text-xs text-primary-light leading-snug lg:leading-normal">
-                  This means we trust this validity of this propery for the
-                  forseeable future
-                </p>
+                <div className="flex items-center justify-between gap-4">
+                  <p className="text-xs text-primary-light leading-snug lg:leading-normal">
+                    This means we trust this validity of this propery for the
+                    forseeable future
+                  </p>
+                  <Controller
+                    name="isVerified"
+                    control={form.control}
+                    render={({ field }) => (
+                      <Switch
+                        id="verified-property"
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        className="data-unchecked:input-bg data-checked:bg-orange-500"
+                      />
+                    )}
+                  />
+                </div>
               </div>
             </div>
           </div>
