@@ -86,6 +86,14 @@ export default function CreateHostelListingForm() {
 
   const handleMapClick = (e) => {
     setMarker({ lng: e.lngLat.lng, lat: e.lngLat.lat });
+
+    if (mapRef.current) {
+      mapRef.current.flyTo({
+        center: [e.lngLat.lng, e.lngLat.lat],
+        zoom: 15,
+        speed: 1.2,
+      });
+    }
   };
 
   const handleDrag = (lngLat: LngLat) => {
@@ -105,14 +113,6 @@ export default function CreateHostelListingForm() {
   useEffect(() => {
     form.setValue("longitude", marker.lng);
     form.setValue("latitude", marker.lat);
-
-    if (mapRef.current) {
-      mapRef.current.flyTo({
-        center: [marker.lng, marker.lat],
-        zoom: 15,
-        speed: 1.2,
-      });
-    }
   }, [marker]);
 
   return (
@@ -419,9 +419,9 @@ export default function CreateHostelListingForm() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="bg-surface-container-lowest p-6 rounded-3xl shadow-sm space-y-4">
-            <label className="block text-[10px] font-black tracking-[0.2em] text-on-surface-variant uppercase">
+            <FieldLabel htmlFor="eta" className="uppercase text-xs font-bold">
               Google Place ID
-            </label>
+            </FieldLabel>
             <div className="flex items-center gap-2">
               <Controller
                 name="googlePlaceId"
@@ -445,9 +445,9 @@ export default function CreateHostelListingForm() {
           </div>
 
           <div className="bg-surface-container-lowest p-6 rounded-3xl shadow-sm space-y-4">
-            <label className="block text-[10px] font-black tracking-[0.2em] text-on-surface-variant uppercase">
+            <FieldLabel htmlFor="eta" className="uppercase text-xs font-bold">
               Google Rating
-            </label>
+            </FieldLabel>
             <div className="flex items-center gap-3 pt-1">
               <span className="text-3xl font-black text-primary leading-none">
                 4.8
