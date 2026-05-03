@@ -31,17 +31,15 @@ export default function CreateInstitution() {
 
   const handleMapClick = (e) => {
     setMarker({ lng: e.lngLat.lng, lat: e.lngLat.lat });
-  };
 
-  useEffect(() => {
     if (mapRef.current) {
       mapRef.current.flyTo({
-        center: [marker.lng, marker.lat],
+        center: [e.lngLat.lng, e.lngLat.lat],
         zoom: 15,
         speed: 1.2,
       });
     }
-  }, [marker]);
+  };
 
   return (
     <div className="min-h-screen w-full">
