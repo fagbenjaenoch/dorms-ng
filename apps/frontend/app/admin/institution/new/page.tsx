@@ -48,7 +48,7 @@ export default function CreateInstitution() {
 
         <div className="p-10 max-w-6xl mx-auto">
           <div className="mb-10">
-            <h2 className="text-5xl font-bold tracking-tighter text-on-surface leading-none">
+            <h2 className="text-5xl font-bold tracking-tighter leading-none">
               Create New <span className="ext-primary">Institution</span>
             </h2>
             <p className="mt-4 max-w-xl text-lg leading-relaxed">
@@ -60,16 +60,14 @@ export default function CreateInstitution() {
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
             <div className="lg:col-span-7 space-y-8">
-              <section className="bg-surface-container-lowest rounded-[2.5rem] p-10 shadow-sm border border-surface-container transition-all duration-700 delay-100 fill-mode-both">
+              <section className="rounded-[2.5rem] p-10 shadow-sm border transition-all duration-700 delay-100 fill-mode-both">
                 <CreateInstitutionForm lng={marker.lng} lat={marker.lat} />
               </section>
 
               <div className="bg-tertiary/20 rounded-[2.5rem] p-8 relative overflow-hidden">
                 <div className="relative z-10">
-                  <h3 className="text-xl font-bold text-on-surface mb-2">
-                    Did you know?
-                  </h3>
-                  <p className="text-on-surface-variant text-sm leading-relaxed max-w-sm">
+                  <h3 className="text-xl font-bold mb-2">Did you know?</h3>
+                  <p className="text-sm leading-relaxed max-w-sm">
                     Correct coordinates ensure that our hostel recommendations stay
                     within a 15-minute walking distance for students.
                   </p>

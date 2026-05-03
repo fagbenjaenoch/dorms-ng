@@ -8,7 +8,7 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <div className="bg-surface text-on-surface flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen">
       <nav>
         <DesktopNav />
         <MobileNav />
@@ -29,7 +29,7 @@ export default function NotFound() {
                 We couldn't find that link
               </p>
             </div>
-            <p className="text-on-surface-variant leading-relaxed">
+            <p className="leading-relaxed">
               The page you're looking for might have been moved, deleted, or perhaps
               the address was entered incorrectly. Let's get you back on track.
             </p>

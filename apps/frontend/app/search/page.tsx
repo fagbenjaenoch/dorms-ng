@@ -138,10 +138,10 @@ export default function SearchPage() {
       <main className="pt-44 pb-24 px-8 min-h-screen w-full mx-auto max-w-7xl">
         <div className="mb-10 flex justify-between items-end">
           <div>
-            <h1 className="font-headline text-4xl md:text-5xl font-black text-on-surface tracking-tighter leading-none">
+            <h1 className="font-headline text-4xl md:text-5xl font-black tracking-tighter leading-none">
               Discover <span className="text-primary">places</span>
             </h1>
-            <p className="text-on-surface-variant mt-3 text-lg">
+            <p className="mt-3 text-lg">
               Showing {searchResults.length} results matching your criteria near
               Search term
             </p>

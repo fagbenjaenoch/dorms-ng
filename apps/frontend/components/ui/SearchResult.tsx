@@ -20,7 +20,7 @@ export default function SearchResultCard({
   const formattedPrice = formatter.format(price);
 
   return (
-    <article className="group bg-surface-container-lowest rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-2 flex flex-col h-full cursor-pointer relative border border-transparent hover:border-surface-container-highest">
+    <article className="group rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-2 flex flex-col h-full cursor-pointer relative border border-transparent hover:border-surface-container-highest">
       <div className="absolute top-6 right-6 z-20 bg-primary text-white font-bold text-sm px-2 py-1.5 rounded-md shadow-md uppercase tracking-widest">
         ₦{formattedPrice}
         <span className="text-[0.6rem] font-normal">/session</span>
@@ -42,8 +42,8 @@ export default function SearchResultCard({
           </div>
         </div>
       </div>
-      <div className="p-6 flex flex-col grow justify-between gap-6 bg-surface-container-lowest">
-        <div className="flex items-center justify-between text-on-surface-variant text-sm border-b border-surface-container pb-4">
+      <div className="p-6 flex flex-col grow justify-between gap-6">
+        <div className="flex items-center justify-between text-sm border-b pb-4">
           <div className="flex items-center gap-2" title="Property Type">
             <MdApartment className="text-primary" size={15} />
             <span className="font-medium">Self-Contain</span>

@@ -221,7 +221,7 @@ export default function CreateHostelListingForm() {
           <div className="bg-primary/5 rounded-[2rem] p-6 flex flex-col justify-center border border-primary/10 relative overflow-hidden group">
             <div className="absolute -right-10 -top-10 w-32 h-32 bg-primary/10 rounded-full blur-3xl group-hover:bg-primary/20 transition-all"></div>
             <Sparkles className="text-primary mb-4" size={40} fill="currentColor" />
-            <p className="text-sm font-medium text-on-surface-variant leading-relaxed relative z-10">
+            <p className="text-sm font-medium leading-relaxed relative z-10">
               "Tip: Using highly descriptive names helps students locate your listing
               faster in the search grid."
             </p>
@@ -401,7 +401,7 @@ export default function CreateHostelListingForm() {
         </div>
       </section>
 
-      <section className="bg-surface p-6 sm:p-8 rounded-[2rem] border-2 border-dashed border-outline-variant/40">
+      <section className="p-6 sm:p-8 rounded-[2rem] border-2 border-dashed border-outline-variant/40">
         <div className="flex items-center gap-3 mb-8">
           <div className="w-10 h-10 bg-tertiary text-on-tertiary rounded-xl flex items-center justify-center">
             <ShieldCheck size={24} />
@@ -412,7 +412,7 @@ export default function CreateHostelListingForm() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-surface-container-lowest p-6 rounded-3xl shadow-sm space-y-4">
+          <div className="p-6 rounded-3xl shadow-sm space-y-4">
             <FieldLabel htmlFor="eta" className="uppercase text-xs font-bold">
               Google Place ID
             </FieldLabel>
@@ -438,7 +438,7 @@ export default function CreateHostelListingForm() {
             </div>
           </div>
 
-          <div className="bg-surface-container-lowest p-6 rounded-3xl shadow-sm space-y-4">
+          <div className="p-6 rounded-3xl shadow-sm space-y-4">
             <FieldLabel htmlFor="eta" className="uppercase text-xs font-bold">
               Google Rating
             </FieldLabel>

@@ -31,7 +31,7 @@ export default function DashboardHeader({ title }: DashboardHeaderProps) {
         <Button className="bg-primary-light text-primary hover:bg-primary-light/50 rounded-full">
           <Settings size={20} />
         </Button>
-        <div className="flex items-center gap-3 pl-4 border-l border-surface-container-high">
+        <div className="flex items-center gap-3 pl-4 border-l">
           <img
             alt="Administrator profile"
             className="w-10 h-10 rounded-full border-2 border-primary/20 object-cover transition-transform duration-300 hover:scale-110 cursor-pointer"
