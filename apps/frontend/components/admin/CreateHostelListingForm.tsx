@@ -20,7 +20,6 @@ import {
   Link2,
   Star,
   StarHalf,
-  BadgeCheck,
   MapPin,
   MapIcon,
   Save,
@@ -36,7 +35,7 @@ import {
   MarkerLabel,
 } from "../ui/map";
 import MapEventListener from "../MapEventListener";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { BiSolidBadgeCheck } from "react-icons/bi";
 import { Button } from "../ui/button";
 import { useMutation } from "@tanstack/react-query";
@@ -109,11 +108,6 @@ export default function CreateHostelListingForm() {
     toast.success("Successfully created new hostel");
     form.reset();
   };
-
-  useEffect(() => {
-    form.setValue("longitude", marker.lng);
-    form.setValue("latitude", marker.lat);
-  }, [marker]);
 
   return (
     <form
