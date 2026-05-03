@@ -55,8 +55,8 @@ export default function CreateHostelListingForm() {
       etaMins: 0,
       googlePlaceId: "",
       isVerified: false,
-      latitude: 9.967,
-      longitude: 8.606,
+      latitude: defaultLngLat.lat,
+      longitude: defaultLngLat.lng,
       distanceKm: 0,
     },
   });
