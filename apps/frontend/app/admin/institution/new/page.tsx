@@ -1,7 +1,7 @@
 "use client";
 
 import { CheckCircle2, MapPin } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import CreateInstitutionForm from "@/components/admin/CreateInstitutionForm";
 import DashboardHeader from "@/components/admin/DashboardHeader";
 import {
