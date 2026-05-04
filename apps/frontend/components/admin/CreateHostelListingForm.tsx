@@ -24,6 +24,7 @@ import {
   MapIcon,
   Save,
   ShieldCheck,
+  Camera,
 } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import {
@@ -35,7 +36,7 @@ import {
   MarkerLabel,
 } from "../ui/map";
 import MapEventListener from "../MapEventListener";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { BiSolidBadgeCheck } from "react-icons/bi";
 import { Button } from "../ui/button";
 import { useMutation } from "@tanstack/react-query";
@@ -45,6 +46,7 @@ import { Switch } from "../ui/switch";
 
 export default function CreateHostelListingForm() {
   const mapRef = useRef<MapRef>(null);
+  const [primaryPhoto, setPrimaryPhoto] = useState<File | null>(null);
   const form = useForm<CreateHostelListingData>({
     resolver: zodResolver(createHostelListingSchema),
     defaultValues: {
@@ -62,22 +64,77 @@ export default function CreateHostelListingForm() {
   });
   const [marker, setMarker] = useState(defaultLngLat);
 
+  useEffect(() => {
+    form.setValue("longitude", marker.lng);
+    form.setValue("latitude", marker.lat);
+  }, [marker]);
+
   const mutation = useMutation({
     mutationKey: ["createHostelListing"],
     mutationFn: async (data: CreateHostelListingData) => {
       try {
+        if (!primaryPhoto) {
+          throw new Error("Primary photo is required");
+        }
+
+        const formData = new FormData();
+        formData.append("primaryPhoto", primaryPhoto);
+
+        const presignedUrlReqBody = {
+          entity_name: data.name,
+          entity_type: "hostel",
+        };
+
+        const presignedUrlReq = await fetch(
+          "http://localhost:8000/api/v1/get-presigned-url",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(presignedUrlReqBody),
+          },
+        );
+        if (!presignedUrlReq.ok) {
+          throw new Error("Failed to get presigned URL");
+        }
+
+        const presignedUrlRes =
+          (await presignedUrlReq.json()) as any as APIResponse<{
+            upload_url: string;
+            public_url: string;
+          }>;
+
+        const uploadReq = await fetch(presignedUrlRes.payload.upload_url, {
+          method: "PUT",
+          headers: {
+            "Content-Type": primaryPhoto.type,
+          },
+          body: primaryPhoto,
+        });
+        if (!uploadReq.ok) {
+          throw new Error("Failed to upload primary photo");
+        }
+
+        const dataWithPrimaryPhoto = {
+          ...data,
+          primary_photo_url: presignedUrlRes.payload.public_url,
+        };
+
         const res = await fetch("http://localhost:8000/api/v1/hostels", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(data),
+          body: JSON.stringify(dataWithPrimaryPhoto),
         });
         if (!res.ok) {
+          console.error(await res.json());
           throw new Error("Failed to create hostel");
         }
         return res.json() as any as APIResponse<CreateHostelListingData>;
       } catch (error) {
+        console.error(error);
         throw new Error("Failed to create hostel");
       }
     },
@@ -99,7 +156,19 @@ export default function CreateHostelListingForm() {
     setMarker({ lng: lngLat.lng, lat: lngLat.lat });
   };
 
+  const handlePrimaryPhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setPrimaryPhoto(file);
+    }
+  };
+
   const onSubmit = async (data: CreateHostelListingData) => {
+    if (!primaryPhoto) {
+      toast.error("Please select a primary photo");
+      return;
+    }
+
     const payload = await mutation.mutateAsync(data);
     if (!payload.success) {
       toast.success("Could not create hostel");
@@ -398,6 +467,36 @@ export default function CreateHostelListingForm() {
                 <MapEventListener handleClick={handleMapClick} />
               </MapMarker>
             </Map>
+          </div>
+        </div>
+      </section>
+
+      <section className="p-6 sm:p-8 rounded-[2rem] shadow-lg border border-gray-300/50">
+        <div className="flex items-center gap-3 mb-8">
+          <div className="w-10 h-10 bg-primary-container text-on-primary-container rounded-xl flex items-center justify-center">
+            <Camera size={24} />
+          </div>
+          <h2 className="text-2xl font-bold tracking-tight">Media</h2>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="col-span-1 lg:col-span-2">
+            <Field>
+              <FieldLabel
+                htmlFor="primary-photo"
+                className="uppercase text-xs font-bold"
+              >
+                Primary Photo
+              </FieldLabel>
+              <Input
+                id="primary-photo"
+                name="primaryPhoto"
+                type="file"
+                className="w-full"
+                accept="image/*"
+                onChange={handlePrimaryPhotoChange}
+              />
+            </Field>
           </div>
         </div>
       </section>
