@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
 	"github.com/go-playground/validator/v10"
@@ -105,4 +106,8 @@ func FormatValidationErrors(err error) ErrorResponse {
 	return ErrorResponse{
 		Errors: errors,
 	}
+}
+
+func GeneratePresignedURLKey(entityName, entityType string) string {
+	return fmt.Sprintf("%s/%s-%d", strings.ToLower(entityType), strings.ToLower(strings.ReplaceAll(entityName, " ", "-")), time.Now().Unix())
 }

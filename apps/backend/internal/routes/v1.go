@@ -24,6 +24,9 @@ func RegisterV1Routes(s *server.Server) *chi.Mux {
 	v1Router.With(middleware.ValidateRequestPayload[dto.CreateHostel]).Post("/hostels", adminHandler.CreateHostel)
 	v1Router.With(middleware.ValidateRequestPayload[dto.CreateInstitution]).Post("/institutions", adminHandler.CreateInstitution)
 
+	uploadHandler := handlers.NewUploadHandler(s)
+	v1Router.With(middleware.ValidateRequestPayload[dto.PresignedURLRequest]).Post("/get-presigned-url", uploadHandler.GetPresignedURL)
+
 	// general routes
 	generalHandler := handlers.NewGeneralHandler(s)
 
