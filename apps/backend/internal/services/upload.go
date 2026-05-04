@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"net/url"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
@@ -51,6 +52,22 @@ func (s *UploadService) GetPresignedURL(ctx context.Context, key string) (dto.St
 		}, err
 	}
 
+	uploadUrl := presignResult.URL
+	u, err := url.Parse(uploadUrl)
+	if err != nil {
+		s.Logger.Err(err).Msg("an error occured while parsing upload url")
+		span.RecordError(err)
+		span.SetStatus(http.StatusInternalServerError, "presign url generation failed")
+		return dto.StructuredResponse{
+			Success: false,
+			Message: "failed to generate presigned url",
+			Status:  http.StatusInternalServerError,
+			Payload: nil,
+		}, err
+	}
+
+	publicUrl := fmt.Sprintf("https://%s", u.Host+u.Path)
+
 	return dto.StructuredResponse{
 		Success: true,
 		Message: "successfully generated presigned url",
@@ -59,8 +76,8 @@ func (s *UploadService) GetPresignedURL(ctx context.Context, key string) (dto.St
 			UploadURL string `json:"upload_url"`
 			PublicURL string `json:"public_url"`
 		}{
-			UploadURL: presignResult.URL,
-			PublicURL: fmt.Sprintf("https://%s/%s", config.GetGlobalConfig().R2.Bucket, key),
+			UploadURL: uploadUrl,
+			PublicURL: publicUrl,
 		},
 	}, nil
 }
