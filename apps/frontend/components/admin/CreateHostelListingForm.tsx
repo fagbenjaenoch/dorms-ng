@@ -103,6 +103,7 @@ export default function CreateHostelListingForm() {
     const payload = await mutation.mutateAsync(data);
     if (!payload.success) {
       toast.success("Could not create hostel");
+      return;
     }
 
     toast.success("Successfully created new hostel");
