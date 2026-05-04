@@ -19,9 +19,9 @@ SELECT * FROM institutions WHERE id = ? LIMIT 1;
 INSERT INTO hostels (
     id, name, address, city, latitude, longitude,
     google_place_id, estimated_price_range,
-    distance_to_gate_km, is_verified_by_admin
+    distance_to_gate_km, is_verified_by_admin, primary_photo_url
 ) VALUES (
-    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
 )
 RETURNING *;
 

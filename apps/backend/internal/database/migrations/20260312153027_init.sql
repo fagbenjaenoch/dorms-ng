@@ -54,6 +54,8 @@ CREATE TABLE hostels (
   distance_to_gate_km REAL,
 
   is_verified_by_admin BOOLEAN DEFAULT FALSE,
+  primary_photo_url TEXT,
+
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -63,7 +65,7 @@ CREATE VIRTUAL TABLE global_search USING fts5 (
   entity_type UNINDEXED,
   entity UNINDEXED,
   search_text,
-  tokenize="trigram",
+  tokenize="trigram"
 );
 
 -- +goose Down
