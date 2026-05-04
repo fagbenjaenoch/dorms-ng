@@ -26,6 +26,7 @@ func GetR2Client() *s3.Client {
 	cfg, err := s3Config.LoadDefaultConfig(context.TODO(),
 		s3Config.WithCredentialsProvider(credentials.NewStaticCredentialsProvider(appConfig.R2.AccessKeyId, appConfig.R2.SecretAccessKey, "")),
 		s3Config.WithRegion("auto"),
+		s3Config.WithBaseEndpoint(appConfig.R2.Endpoint),
 	)
 	if err != nil {
 		log.Fatalf("failed to load R2 config: %v", err)
