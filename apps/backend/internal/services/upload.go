@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -55,9 +56,11 @@ func (s *UploadService) GetPresignedURL(ctx context.Context, key string) (dto.St
 		Message: "successfully generated presigned url",
 		Status:  http.StatusOK,
 		Payload: struct {
-			URL string `json:"url"`
+			UploadURL string `json:"url"`
+			PublicURL string `json:"publicUrl"`
 		}{
-			URL: presignResult.URL,
+			UploadURL: presignResult.URL,
+			PublicURL: fmt.Sprintf("https://%s/%s", config.GetGlobalConfig().R2.Bucket, key),
 		},
 	}, nil
 }
