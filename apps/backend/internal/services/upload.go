@@ -56,8 +56,8 @@ func (s *UploadService) GetPresignedURL(ctx context.Context, key string) (dto.St
 		Message: "successfully generated presigned url",
 		Status:  http.StatusOK,
 		Payload: struct {
-			UploadURL string `json:"url"`
-			PublicURL string `json:"publicUrl"`
+			UploadURL string `json:"upload_url"`
+			PublicURL string `json:"public_url"`
 		}{
 			UploadURL: presignResult.URL,
 			PublicURL: fmt.Sprintf("https://%s/%s", config.GetGlobalConfig().R2.Bucket, key),
