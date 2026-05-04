@@ -113,6 +113,7 @@ export default function CreateHostelListingForm() {
           body: primaryPhoto,
         });
         if (!uploadReq.ok) {
+          toast.error("could not upload primary photo");
           throw new Error("Failed to upload primary photo");
         }
 
@@ -135,6 +136,7 @@ export default function CreateHostelListingForm() {
         return res.json() as any as APIResponse<CreateHostelListingData>;
       } catch (error) {
         console.error(error);
+        toast.error("An error occured while trying to create hostel");
         throw new Error("Failed to create hostel");
       }
     },
