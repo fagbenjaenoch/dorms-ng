@@ -93,14 +93,17 @@ export default function LandingSearch() {
       </Button>
 
       {!!query.data?.payload?.length && (
-        <div className="absolute top-full mt-3 left-0 w-full flex flex-col gap-2 bg-primary-foreground shadow-lg ring-1 ring-gray-500/5 p-2 rounded-xl">
+        <div className="group absolute top-full mt-3 left-0 w-full flex flex-col gap-2 bg-primary-foreground shadow-lg ring-1 ring-gray-500/5 p-2 rounded-xl">
           {query.data.payload.map((searchResult) => (
             <div
               className="cursor-pointer hover:bg-gray-500/10 p-4 rounded-md flex items-center gap-2"
               key={searchResult.entity}
             >
               {EntityTypeToIcon[searchResult.entity_type]} {searchResult.entity}
-              <ChevronRight className="text-primary ml-auto" size={15} />
+              <ChevronRight
+                className="text-primary ml-auto group-hover:translate-x-1 transition-all"
+                size={15}
+              />
             </div>
           ))}
         </div>
