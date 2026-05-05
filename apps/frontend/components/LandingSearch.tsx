@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { useQueryState } from "nuqs";
 import { APIResponse } from "@/lib/api";
 import { MdApartment } from "react-icons/md";
+import Link from "next/link";
 
 const queryParam = "search";
 
@@ -95,8 +96,9 @@ export default function LandingSearch() {
       {!!query.data?.payload?.length && (
         <div className="group absolute top-full mt-3 left-0 w-full flex flex-col gap-2 bg-primary-foreground shadow-lg ring-1 ring-gray-500/5 p-2 rounded-xl">
           {query.data.payload.map((searchResult) => (
-            <div
+            <Link
               className="cursor-pointer hover:bg-gray-500/10 p-4 rounded-md flex items-center gap-2"
+              href={`/${searchResult.entity_type}s/${searchResult.entity_id}`}
               key={searchResult.entity}
             >
               {EntityTypeToIcon[searchResult.entity_type]} {searchResult.entity}
@@ -104,7 +106,7 @@ export default function LandingSearch() {
                 className="text-primary ml-auto group-hover:translate-x-1 transition-all"
                 size={15}
               />
-            </div>
+            </Link>
           ))}
         </div>
       )}
