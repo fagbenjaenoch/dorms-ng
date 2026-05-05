@@ -40,6 +40,7 @@ CREATE TABLE hostels (
   id TEXT PRIMARY KEY,
   name TEXT NOT NULL,
   address TEXT,
+  description TEXT,
   city TEXT,
   latitude REAL NOT NULL,
   longitude REAL NOT NULL,

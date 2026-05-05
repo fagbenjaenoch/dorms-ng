@@ -20,6 +20,7 @@ type Hostel struct {
 	ID                  string          `json:"id"`
 	Name                string          `json:"name"`
 	Address             sql.NullString  `json:"address"`
+	Description         sql.NullString  `json:"description"`
 	City                sql.NullString  `json:"city"`
 	Latitude            float64         `json:"latitude"`
 	Longitude           float64         `json:"longitude"`

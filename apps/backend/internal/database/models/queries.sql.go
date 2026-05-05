@@ -12,19 +12,20 @@ import (
 
 const createHostel = `-- name: CreateHostel :one
 INSERT INTO hostels (
-    id, name, address, city, latitude, longitude,
+    id, name, address, description, city, latitude, longitude,
     google_place_id, estimated_price_range,
     distance_to_gate_km, is_verified_by_admin, primary_photo_url
 ) VALUES (
-    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
 )
-RETURNING id, name, address, city, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, primary_photo_url, created_at, updated_at
+RETURNING id, name, address, description, city, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, primary_photo_url, created_at, updated_at
 `
 
 type CreateHostelParams struct {
 	ID                  string          `json:"id"`
 	Name                string          `json:"name"`
 	Address             sql.NullString  `json:"address"`
+	Description         sql.NullString  `json:"description"`
 	City                sql.NullString  `json:"city"`
 	Latitude            float64         `json:"latitude"`
 	Longitude           float64         `json:"longitude"`
@@ -40,6 +41,7 @@ func (q *Queries) CreateHostel(ctx context.Context, arg CreateHostelParams) (Hos
 		arg.ID,
 		arg.Name,
 		arg.Address,
+		arg.Description,
 		arg.City,
 		arg.Latitude,
 		arg.Longitude,
@@ -54,6 +56,7 @@ func (q *Queries) CreateHostel(ctx context.Context, arg CreateHostelParams) (Hos
 		&i.ID,
 		&i.Name,
 		&i.Address,
+		&i.Description,
 		&i.City,
 		&i.Latitude,
 		&i.Longitude,
@@ -213,7 +216,7 @@ func (q *Queries) CreateUserCredentials(ctx context.Context, arg CreateUserCrede
 }
 
 const getHostel = `-- name: GetHostel :one
-SELECT id, name, address, city, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, primary_photo_url, created_at, updated_at FROM hostels WHERE id = ? LIMIT 1
+SELECT id, name, address, description, city, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, primary_photo_url, created_at, updated_at FROM hostels WHERE id = ? LIMIT 1
 `
 
 func (q *Queries) GetHostel(ctx context.Context, id string) (Hostel, error) {
@@ -223,6 +226,7 @@ func (q *Queries) GetHostel(ctx context.Context, id string) (Hostel, error) {
 		&i.ID,
 		&i.Name,
 		&i.Address,
+		&i.Description,
 		&i.City,
 		&i.Latitude,
 		&i.Longitude,
