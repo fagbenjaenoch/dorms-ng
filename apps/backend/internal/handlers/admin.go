@@ -7,6 +7,7 @@ import (
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/server"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/services"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/utils"
+	"github.com/go-chi/chi/v5"
 )
 
 type AdminHandler struct {
@@ -65,6 +66,22 @@ func (h *AdminHandler) CreateHostel(w http.ResponseWriter, r *http.Request) {
 	res, err := h.AdminService.CreateHostel(r.Context(), hostel)
 	if err != nil {
 		msg := "failed to create hostel"
+		h.server.Logger.Err(err).Msg(msg)
+		utils.WriteJSON(w, res)
+		return
+	}
+
+	utils.WriteJSON(w, res)
+}
+
+func (h *AdminHandler) GetHostel(w http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
+
+	h.server.Logger.Debug().Msgf("get hostel: %s", id)
+
+	res, err := h.AdminService.GetHostel(r.Context(), id)
+	if err != nil {
+		msg := "failed to get hostel"
 		h.server.Logger.Err(err).Msg(msg)
 		utils.WriteJSON(w, res)
 		return

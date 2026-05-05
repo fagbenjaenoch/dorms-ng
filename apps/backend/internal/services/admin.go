@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"net/http"
 
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
@@ -83,6 +84,45 @@ func (s AdminService) CreateInstitution(ctx context.Context, institution dto.Cre
 			Latitude:  i.Latitude,
 			Longitude: i.Longitude,
 			City:      i.City,
+		},
+	}, nil
+}
+
+func (s AdminService) GetHostel(ctx context.Context, id string) (dto.StructuredResponse, error) {
+	ctx, span := adminTracer.Start(ctx, "GetHostel")
+	defer span.End()
+
+	h, err := s.hostelRepo.GetHostel(ctx, id)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return dto.StructuredResponse{
+				Success: false,
+				Status:  http.StatusNotFound,
+				Message: "could not find hostel",
+				Payload: nil,
+			}, err
+		}
+
+		return dto.StructuredResponse{
+			Success: false,
+			Status:  http.StatusInternalServerError,
+			Message: "failed to get hostel",
+			Payload: nil,
+		}, err
+	}
+
+	return dto.StructuredResponse{
+		Success: true,
+		Status:  http.StatusOK,
+		Message: "Hostel retrieved successfully",
+		Payload: dto.CreateHostel{
+			Name:            h.Name,
+			City:            h.City.String,
+			Description:     h.Description.String,
+			Address:         h.Address.String,
+			Latitude:        h.Latitude,
+			Longitude:       h.Longitude,
+			PrimaryPhotoURL: h.PrimaryPhotoUrl.String,
 		},
 	}, nil
 }

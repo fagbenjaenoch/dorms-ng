@@ -125,6 +125,15 @@ func (hr *HostelRepository) CreateHostel(ctx context.Context, hostel dto.CreateH
 	return &ch, nil
 }
 
+func (hr *HostelRepository) GetHostel(ctx context.Context, id string) (*models.Hostel, error) {
+	h, err := hr.BaseRepository.Queries.GetHostel(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return &h, nil
+}
+
 type NeighborhoodRepository struct {
 	BaseRepository
 	db *sql.DB
