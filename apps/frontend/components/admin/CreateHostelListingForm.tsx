@@ -324,7 +324,7 @@ export default function CreateHostelListingForm() {
             </div>
           </div>
 
-          <div className="bg-primary/5 rounded-[2rem] p-6 flex flex-col justify-center border border-primary/10 relative overflow-hidden group">
+          <div className="bg-primary/5 rounded-[2rem] p-6 flex flex-col justify-center border border-primary/10 relative overflow-hidden group max-h-60">
             <div className="absolute -right-10 -top-10 w-32 h-32 bg-primary/10 rounded-full blur-3xl group-hover:bg-primary/20 transition-all"></div>
             <Sparkles className="text-primary mb-4" size={40} fill="currentColor" />
             <p className="text-sm font-medium leading-relaxed relative z-10">
