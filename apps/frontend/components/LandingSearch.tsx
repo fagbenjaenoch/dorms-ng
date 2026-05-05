@@ -5,10 +5,11 @@ import { HiLocationMarker } from "react-icons/hi";
 import { Button } from "./ui/button";
 import useDebounce from "@/lib/hooks/useDebounce";
 import { useQuery } from "@tanstack/react-query";
-import { X } from "lucide-react";
+import { ChevronRight, GraduationCapIcon, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useQueryState } from "nuqs";
 import { APIResponse } from "@/lib/api";
+import { MdApartment } from "react-icons/md";
 
 const queryParam = "search";
 
@@ -17,6 +18,11 @@ interface SearchResult {
   entity_type: string;
   entity: string;
 }
+
+const EntityTypeToIcon: Record<string, React.ReactNode> = {
+  hostel: <MdApartment className="text-primary" size={15} />,
+  institution: <GraduationCapIcon className="text-primary" size={15} />,
+};
 
 export default function LandingSearch() {
   const [searchTerm, setSearchTerm] = useQueryState(queryParam, {
@@ -90,10 +96,11 @@ export default function LandingSearch() {
         <div className="absolute top-full mt-3 left-0 w-full flex flex-col gap-2 bg-primary-foreground shadow-lg ring-1 ring-gray-500/5 p-2 rounded-xl">
           {query.data.payload.map((searchResult) => (
             <div
-              className="cursor-pointer hover:bg-gray-500/10 p-2 rounded-md"
+              className="cursor-pointer hover:bg-gray-500/10 p-4 rounded-md flex items-center gap-2"
               key={searchResult.entity}
             >
-              {searchResult.entity}
+              {EntityTypeToIcon[searchResult.entity_type]} {searchResult.entity}
+              <ChevronRight className="text-primary ml-auto" size={15} />
             </div>
           ))}
         </div>
