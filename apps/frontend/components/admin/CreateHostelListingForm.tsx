@@ -86,7 +86,7 @@ export default function CreateHostelListingForm() {
         };
 
         const presignedUrlReq = await fetch(
-          "http://localhost:8000/api/v1/get-presigned-url",
+          "http://localhost:8000/api/v1/presigned-url",
           {
             method: "POST",
             headers: {
