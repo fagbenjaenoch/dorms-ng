@@ -49,6 +49,8 @@ func (s AdminService) CreateHostel(ctx context.Context, hostel dto.CreateHostel)
 		Message: "Hostel created successfully",
 		Payload: dto.CreateHostel{
 			Name:            h.Name,
+			City:            h.City.String,
+			Description:     h.Description.String,
 			Address:         h.Address.String,
 			Latitude:        h.Latitude,
 			Longitude:       h.Longitude,

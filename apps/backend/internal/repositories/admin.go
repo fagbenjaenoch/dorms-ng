@@ -94,10 +94,12 @@ func (hr *HostelRepository) CreateHostel(ctx context.Context, hostel dto.CreateH
 	var h models.CreateHostelParams
 	h.ID = uuid.New().String()
 	h.Name = hostel.Name
+	h.City = sql.NullString{String: hostel.City, Valid: true}
 	h.Address = sql.NullString{String: hostel.Address, Valid: true}
 	h.Latitude = hostel.Latitude
 	h.Longitude = hostel.Longitude
 	h.PrimaryPhotoUrl = sql.NullString{String: hostel.PrimaryPhotoURL, Valid: true}
+	h.Description = sql.NullString{String: hostel.Description, Valid: true}
 
 	ch, err := qtx.CreateHostel(ctx, h)
 	if err != nil {
