@@ -50,6 +50,10 @@ export type CreateInstitutionData = z.infer<typeof createInstitutionSchema>;
 
 export const createHostelListingSchema = z.object({
   name: z.string().min(3, "Hostel name must be at least 3 characters"),
+  description: z
+    .string()
+    .min(10, "Description must be at least 10 characters")
+    .max(4000, "Description must not exceed 4000 characters"),
   city: z
     .string()
     .min(2, "City name must be at least 2 characters")

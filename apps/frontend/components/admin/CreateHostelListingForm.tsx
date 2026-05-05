@@ -46,11 +46,13 @@ import { Switch } from "../ui/switch";
 
 export default function CreateHostelListingForm() {
   const mapRef = useRef<MapRef>(null);
+  const formRef = useRef<HTMLFormElement>(null);
   const [primaryPhoto, setPrimaryPhoto] = useState<File | null>(null);
   const form = useForm<CreateHostelListingData>({
     resolver: zodResolver(createHostelListingSchema),
     defaultValues: {
       name: "",
+      description: "",
       city: "",
       estimatedPriceRange: 0,
       address: "",
@@ -179,6 +181,7 @@ export default function CreateHostelListingForm() {
 
     toast.success("Successfully created new hostel");
     form.reset();
+    formRef.current?.reset();
   };
 
   return (
@@ -186,6 +189,7 @@ export default function CreateHostelListingForm() {
       id="create-hostel-listing-form"
       className="space-y-8"
       onSubmit={form.handleSubmit(onSubmit)}
+      ref={formRef}
     >
       <section className="p-6 sm:p-8 rounded-[2rem] shadow-lg border border-gray-300/50">
         <div className="flex items-center gap-3 mb-8">
@@ -288,6 +292,36 @@ export default function CreateHostelListingForm() {
                 )}
               />
             </div>
+
+            <div>
+              <Controller
+                name="description"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel
+                      htmlFor="description"
+                      className="uppercase text-xs font-bold"
+                      aria-invalid={fieldState.invalid}
+                    >
+                      Description
+                    </FieldLabel>
+                    <Textarea
+                      {...field}
+                      id="description"
+                      aria-invalid={fieldState.invalid}
+                      className="w-full rounded-xl border-none p-4 font-medium min-h-25 input-bg"
+                      placeholder="Enter hostel description..."
+                      rows={3}
+                    />
+
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+            </div>
           </div>
 
           <div className="bg-primary/5 rounded-[2rem] p-6 flex flex-col justify-center border border-primary/10 relative overflow-hidden group">
@@ -321,7 +355,7 @@ export default function CreateHostelListingForm() {
                     className="uppercase text-xs font-bold"
                     aria-invalid={fieldState.invalid}
                   >
-                    Hostel Address
+                    Address
                   </FieldLabel>
                   <Textarea
                     {...field}
