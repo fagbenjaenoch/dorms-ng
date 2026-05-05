@@ -16,11 +16,6 @@ import MapEventListener from "@/components/MapEventListener";
 import { defaultLngLat, LngLat } from "@/lib/utils";
 import { BiSolidBadgeCheck } from "react-icons/bi";
 
-// export const metadata = {
-//   title: "Create Institution",
-//   description: "Add a new institution to the marketplace.",
-// };
-
 export default function CreateInstitution() {
   const mapRef = useRef<MapRef>(null);
   const [marker, setMarker] = useState(defaultLngLat);
@@ -46,15 +41,17 @@ export default function CreateInstitution() {
       <DashboardHeader title="Manage Institutions" />
 
       <div className="p-10 max-w-6xl mx-auto">
-        <div className="mb-10">
-          <h2 className="text-5xl font-bold tracking-tighter leading-none">
-            Create New <span className="ext-primary">Institution</span>
-          </h2>
-          <p className="mt-4 max-w-xl text-lg leading-relaxed">
-            Register a new academic institution to the Emerald Horizon directory.
-            Ensure geographic coordinates are accurate for students to find hostels
-            nearby.
-          </p>
+        <div className="mb-10 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+          <div>
+            <h1 className="text-4xl font-extrabold tracking-tighter mb-2">
+              Create <span className="text-primary">Institution</span>
+            </h1>
+            <p className="font-medium">
+              Register a new academic institution to the Emerald Horizon directory.
+              Ensure geographic coordinates are accurate for students to find hostels
+              nearby.
+            </p>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
