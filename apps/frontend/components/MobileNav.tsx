@@ -1,3 +1,5 @@
+"use client";
+
 import { RxHamburgerMenu } from "react-icons/rx";
 import BrandIcon from "@/components/ui/BrandIcon";
 import { useState } from "react";
