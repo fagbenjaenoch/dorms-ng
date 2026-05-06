@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"os"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
@@ -66,7 +67,7 @@ func (s *UploadService) GetPresignedURL(ctx context.Context, key string) (dto.St
 		}, err
 	}
 
-	publicUrl := fmt.Sprintf("https://%s", u.Host+u.Path)
+	publicUrl := fmt.Sprintf("%s/%s", os.Getenv("R2_DEV_URL"), key)
 
 	return dto.StructuredResponse{
 		Success: true,
