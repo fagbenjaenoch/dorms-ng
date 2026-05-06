@@ -2,6 +2,7 @@
 
 import { APIResponse } from "@/lib/api";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import Image from "next/image";
 import { notFound, useParams } from "next/navigation";
 
 interface Hostel {
@@ -46,7 +47,9 @@ export default function HostelDetailsClient() {
       <p className="text-gray-500">{hostel.address}</p>
 
       {hostel.primary_photo_url && (
-        <img
+        <Image
+          width={400}
+          height={400}
           src={hostel.primary_photo_url}
           alt={hostel.name}
           className="w-full h-64 object-cover rounded-xl mt-4"
