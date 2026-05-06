@@ -5,6 +5,11 @@ type PresignedURLRequest struct {
 	EntityName string `json:"entity_name"`
 }
 
-type PresignedURLResponse struct {
+type PresignedURLPayload struct {
 	URL string `json:"url"`
+}
+
+type UploadURLPayload struct {
+	UploadURL string `json:"upload_url"`
+	PublicURL string `json:"public_url"`
 }

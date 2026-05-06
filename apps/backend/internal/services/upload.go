@@ -53,17 +53,13 @@ func (s *UploadService) GetPresignedURL(ctx context.Context, key string) (dto.St
 	}
 
 	uploadUrl := presignResult.URL
-
 	publicUrl := fmt.Sprintf("%s/%s", os.Getenv("R2_DEV_URL"), key)
 
 	return dto.StructuredResponse{
 		Success: true,
 		Message: "successfully generated presigned url",
 		Status:  http.StatusOK,
-		Payload: struct {
-			UploadURL string `json:"upload_url"`
-			PublicURL string `json:"public_url"`
-		}{
+		Payload: dto.UploadURLPayload{
 			UploadURL: uploadUrl,
 			PublicURL: publicUrl,
 		},
