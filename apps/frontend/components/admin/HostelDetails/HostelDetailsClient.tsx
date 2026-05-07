@@ -20,6 +20,7 @@ interface Hostel {
   address: string;
   city: string;
   description: string;
+  is_verified: boolean;
   primary_photo_url: string;
 }
 
@@ -57,15 +58,17 @@ export default function HostelDetailsClient() {
       <div className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tighter text-on-surface flex items-center gap-3">
-            Sunrise Oasis Villa
-            <span className="inline-flex gap-1 items-center bg-primary-light text-primary text-sm font-bold px-3 py-1 rounded-full uppercase tracking-widest mt-2 md:mt-0">
-              <BadgeCheck size={15} />
-              Verified
-            </span>
+            {hostel.name}
+            {hostel.is_verified && (
+              <span className="inline-flex gap-1 items-center bg-primary-light text-primary text-sm font-bold px-3 py-1 rounded-full uppercase tracking-widest mt-2 md:mt-0">
+                <BadgeCheck size={15} />
+                Verified
+              </span>
+            )}
           </h1>
           <p className="text-lg flex items-center gap-1 mt-2 font-medium">
             <MapPin className="text-primary" size={15} />
-            12 University Road, Akoka, Yaba, Lagos
+            {hostel.address}
           </p>
         </div>
         <div className="flex gap-4">
@@ -88,17 +91,17 @@ export default function HostelDetailsClient() {
 
       {hostel.primary_photo_url && (
         <Image
-          width={400}
-          height={600}
+          width={600}
+          height={800}
           src={hostel.primary_photo_url}
           alt={hostel.name}
-          className="w-full h-64 object-cover rounded-xl mt-4"
+          className="w-full h-64 object-cover rounded-xl my-4 shadow-xl"
         />
       )}
 
       <div className="flex flex-col lg:flex-row gap-12">
         <div className="lg:w-2/3 space-y-12">
-          <div className="bg-white rounded-2xl p-6 shadow-2xs border border-gray-300 flex flex-wrap gap-8">
+          <div className="bg-white rounded-2xl p-6 shadow-xs border border-gray-300 flex flex-wrap gap-8">
             <div className="flex items-center gap-4">
               <div className="bg-primary-light p-3 rounded-xl text-primary">
                 <FaPersonWalking size={18} />
