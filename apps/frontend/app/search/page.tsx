@@ -1,4 +1,6 @@
 import ActiveSearchFilters from "@/components/ActiveSearchFilters";
+import DesktopNav from "@/components/DesktopNav";
+import MobileNav from "@/components/MobileNav";
 import BrandIcon from "@/components/ui/BrandIcon";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/ui/Footer";
@@ -122,20 +124,14 @@ export const metadata = {
 
 export default function SearchPage() {
   return (
-    <div>
-      <nav className="bg-white z-50 shadow-sm px-8 py-3 w-full fixed top-0">
-        <div className="flex items-center justify-between mx-auto max-w-7xl">
-          <Link href="/">
-            <BrandIcon />
-          </Link>
-          <div className="hidden md:flex items-center gap-4">
-            <Button variant="link">Sign In</Button>
-            <Button size="xl">List Property</Button>
-          </div>
-        </div>
-      </nav>
+    <div className="bg-gray-100">
+      <>
+        <DesktopNav />
+        <MobileNav />
+      </>
+      <hr className="bg-muted-foreground" />
       <ActiveSearchFilters />
-      <main className="pt-44 pb-24 px-8 min-h-screen w-full mx-auto max-w-7xl">
+      <main className="py-24 px-8 min-h-screen w-full mx-auto max-w-7xl">
         <div className="mb-10 flex justify-between items-end">
           <div>
             <h1 className="font-headline text-4xl md:text-5xl font-black tracking-tighter leading-none">
