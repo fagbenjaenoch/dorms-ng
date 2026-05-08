@@ -134,17 +134,11 @@ func (hr *HostelRepository) GetHostel(ctx context.Context, id string) (*models.H
 	return &h, nil
 }
 
-type NeighborhoodRepository struct {
-	BaseRepository
-	db *sql.DB
-}
-
-func NewNeighborhoodRepository(db *sql.DB, logger *zerolog.Logger) *NeighborhoodRepository {
-	return &NeighborhoodRepository{
-		BaseRepository: BaseRepository{
-			Queries: models.New(db),
-			Logger:  logger,
-		},
-		db: db,
+func (hr *InstitutionRepository) GetInstitution(ctx context.Context, id string) (*models.Institution, error) {
+	i, err := hr.BaseRepository.Queries.GetInstitutionById(ctx, id)
+	if err != nil {
+		return nil, err
 	}
+
+	return &i, nil
 }

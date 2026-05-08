@@ -15,18 +15,16 @@ import (
 var adminTracer = otel.Tracer("admin_service")
 
 type AdminService struct {
-	institutionRepo   *repositories.InstitutionRepository
-	hostelRepo        *repositories.HostelRepository
-	neighbourhoodRepo *repositories.NeighborhoodRepository
-	Logger            *zerolog.Logger
+	institutionRepo *repositories.InstitutionRepository
+	hostelRepo      *repositories.HostelRepository
+	Logger          *zerolog.Logger
 }
 
 func NewAdminService(db *sql.DB, logger *zerolog.Logger) *AdminService {
 	return &AdminService{
-		institutionRepo:   repositories.NewInstitutionRepository(db, logger),
-		hostelRepo:        repositories.NewHostelRepository(db, logger),
-		neighbourhoodRepo: repositories.NewNeighborhoodRepository(db, logger),
-		Logger:            logger,
+		institutionRepo: repositories.NewInstitutionRepository(db, logger),
+		hostelRepo:      repositories.NewHostelRepository(db, logger),
+		Logger:          logger,
 	}
 }
 
@@ -123,6 +121,43 @@ func (s AdminService) GetHostel(ctx context.Context, id string) (dto.StructuredR
 			Latitude:        h.Latitude,
 			Longitude:       h.Longitude,
 			PrimaryPhotoURL: h.PrimaryPhotoUrl.String,
+		},
+	}, nil
+}
+
+func (s AdminService) GetInstitution(ctx context.Context, id string) (dto.StructuredResponse, error) {
+	ctx, span := adminTracer.Start(ctx, "GetInstitution")
+	defer span.End()
+
+	i, err := s.institutionRepo.GetInstitution(ctx, id)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return dto.StructuredResponse{
+				Success: false,
+				Status:  http.StatusNotFound,
+				Message: "could not find institution",
+				Payload: nil,
+			}, err
+		}
+
+		return dto.StructuredResponse{
+			Success: false,
+			Status:  http.StatusInternalServerError,
+			Message: "failed to get institution",
+			Payload: nil,
+		}, err
+	}
+
+	return dto.StructuredResponse{
+		Success: true,
+		Status:  http.StatusOK,
+		Message: "Institution retrieved successfully",
+		Payload: dto.CreateInstitution{
+			Name:      i.Name,
+			Acronym:   i.Acronym.String,
+			City:      i.City,
+			Latitude:  i.Latitude,
+			Longitude: i.Longitude,
 		},
 	}, nil
 }

@@ -89,3 +89,19 @@ func (h *AdminHandler) GetHostel(w http.ResponseWriter, r *http.Request) {
 
 	utils.WriteJSON(w, res)
 }
+
+func (h *AdminHandler) GetInstitution(w http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
+
+	h.server.Logger.Debug().Msgf("get institution: %s", id)
+
+	res, err := h.AdminService.GetInstitution(r.Context(), id)
+	if err != nil {
+		msg := "failed to get institution"
+		h.server.Logger.Err(err).Msg(msg)
+		utils.WriteJSON(w, res)
+		return
+	}
+
+	utils.WriteJSON(w, res)
+}
