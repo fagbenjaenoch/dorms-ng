@@ -1,10 +1,14 @@
-import { Compass, GraduationCap, MapIcon, MapPin } from "lucide-react";
+import { BusIcon, Compass, GraduationCap, MapIcon, MapPin } from "lucide-react";
 import { Button } from "../ui/button";
 import { MdTune } from "react-icons/md";
 import { BiSolidBadgeCheck } from "react-icons/bi";
 import { CgBolt } from "react-icons/cg";
-import { FaBolt } from "react-icons/fa6";
-import { PiShieldCheckeredFill } from "react-icons/pi";
+import { FaBolt, FaPersonWalking } from "react-icons/fa6";
+import {
+  PiMapPinArea,
+  PiMapPinAreaBold,
+  PiShieldCheckeredFill,
+} from "react-icons/pi";
 
 export default function InstitutionDetailsClient() {
   return (
@@ -235,10 +239,8 @@ export default function InstitutionDetailsClient() {
           <div className="grid grid-cols-1 lg:grid-cols-3">
             <div className="lg:col-span-1 p-10 flex flex-col justify-center">
               <div className="flex items-center gap-3 mb-4 text-primary">
-                <span className="material-symbols-outlined text-4xl">distance</span>
-                <h2 className="text-3xl font-black tracking-tight">
-                  Prime Location
-                </h2>
+                <PiMapPinArea size={20} />
+                <h2 className="text-3xl font-bold tracking-tight">Prime Location</h2>
               </div>
               <p className="mb-8 leading-relaxed">
                 UNILAG is situated in the vibrant Akoka-Yaba axis, perfectly
@@ -247,26 +249,26 @@ export default function InstitutionDetailsClient() {
                 short walk or quick shuttle ride away from your faculty.
               </p>
               <div className="space-y-4">
-                <div className="flex items-start gap-4 p-4 rounded-2xl">
-                  <div className="bg-primary text-on-primary p-2 rounded-xl">
-                    <span className="material-symbols-outlined">
-                      directions_walk
-                    </span>
+                <div className="flex items-start gap-4 p-4 rounded-2xl bg-gray-200">
+                  <div className="bg-primary p-2 py-3 rounded-xl">
+                    <FaPersonWalking size={20} className="text-primary-light" />
                   </div>
                   <div>
                     <h4 className="font-bold">5-10 Min Walk</h4>
-                    <p className="text-xs">Akoka &amp; Abule-Oja Gate Area</p>
+                    <p className="text-xs text-muted-foreground">
+                      Akoka &amp; Abule-Oja Gate Area
+                    </p>
                   </div>
                 </div>
-                <div className="flex items-start gap-4 p-4 rounded-2xl">
-                  <div className="bg-secondary text-on-secondary p-2 rounded-xl">
-                    <span className="material-symbols-outlined">
-                      airport_shuttle
-                    </span>
+                <div className="flex items-start gap-4 p-4 rounded-2xl bg-gray-200">
+                  <div className="bg-secondary p-2 py-3 rounded-xl">
+                    <BusIcon size={20} className="text-white" />
                   </div>
                   <div>
                     <h4 className="font-bold">15 Min Shuttle</h4>
-                    <p className="text-xs">Onike &amp; Iwaya Neighborhoods</p>
+                    <p className="text-xs text-muted-foreground">
+                      Onike &amp; Iwaya Neighborhoods
+                    </p>
                   </div>
                 </div>
               </div>

@@ -1,9 +1,10 @@
+"use client";
+
 import ActiveSearchFilters from "@/components/ActiveSearchFilters";
-import DesktopNav from "@/components/DesktopNav";
-import MobileNav from "@/components/MobileNav";
 import Footer from "@/components/ui/Footer";
 import SearchResultCard from "@/components/ui/SearchResult";
 import { ChevronDown } from "lucide-react";
+import { useQueryState } from "nuqs";
 
 type SearchResult = {
   name: string;
@@ -114,7 +115,13 @@ const searchResults: SearchResult[] = [
   },
 ];
 
+const queryParam = "q";
+
 export default function SearchPage() {
+  const [query, setQuery] = useQueryState(queryParam, {
+    defaultValue: "",
+  });
+
   return (
     <div className="bg-gray-100">
       <hr className="bg-muted-foreground" />
@@ -126,8 +133,8 @@ export default function SearchPage() {
               Discover <span className="text-primary">places</span>
             </h1>
             <p className="mt-3 text-lg">
-              Showing {searchResults.length} results matching your criteria near
-              Search term
+              Showing {searchResults.length} results matching your criteria near{" "}
+              {query}
             </p>
           </div>
           <div className="hidden md:flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-xl shadow-sm cursor-pointer ring-1 ring-gray-800/10">

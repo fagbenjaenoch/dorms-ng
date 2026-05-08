@@ -35,7 +35,7 @@ export default function SearchResultCard({
             "https://lh3.googleusercontent.com/aida/ADBb0uiGHfgr55ThFf6QFyArdeNtirsUcIUf-U_h7Q37PHOGyF5qTvy3Fglod0J6JFH-cgB77jUUx4fFEURbpcLPxM21gnuH3Up8l0I0ILqws7I8R8sax0OCvdPQks81PVVy46f6eD7-2BCksodJVJAgBYJX0sa-P49bF0NrslrcfTLEY-BesT0KlQnz2eQE0AA86RS2bCmBNfIcfAOpNT0mpqF2S35tCVdsV3Vpx1jPopqaNvccbqniv1cCSeVX23G_XFXbMGiSn6nSQKU"
           }
         />
-        <div className="absolute top-4 left-4 bg-tertiary text-on-tertiary-container px-4 py-1 rounded-full font-black text-[10px] tracking-widest shadow-lg uppercase">
+        <div className="absolute top-4 left-4 bg-tertiary text-on-tertiary-container px-4 py-1 rounded-full font-bold text-[10px] tracking-widest shadow-lg uppercase">
           Self-Contain
         </div>
         <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md p-2 rounded-xl text-primary flex items-center gap-1 shadow-md">
