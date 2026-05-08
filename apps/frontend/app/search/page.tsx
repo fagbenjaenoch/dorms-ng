@@ -1,12 +1,9 @@
 import ActiveSearchFilters from "@/components/ActiveSearchFilters";
 import DesktopNav from "@/components/DesktopNav";
 import MobileNav from "@/components/MobileNav";
-import BrandIcon from "@/components/ui/BrandIcon";
-import { Button } from "@/components/ui/button";
 import Footer from "@/components/ui/Footer";
 import SearchResultCard from "@/components/ui/SearchResult";
-import { ChevronDown, LucideListFilter, X } from "lucide-react";
-import Link from "next/link";
+import { ChevronDown } from "lucide-react";
 
 type SearchResult = {
   name: string;
@@ -117,18 +114,9 @@ const searchResults: SearchResult[] = [
   },
 ];
 
-export const metadata = {
-  title: "Search Results",
-  description: "Search results for properties matching your criteria",
-};
-
 export default function SearchPage() {
   return (
     <div className="bg-gray-100">
-      <>
-        <DesktopNav />
-        <MobileNav />
-      </>
       <hr className="bg-muted-foreground" />
       <ActiveSearchFilters />
       <main className="py-24 px-8 min-h-screen w-full mx-auto max-w-7xl">
