@@ -1,5 +1,8 @@
-import { MdLocationPin, MdApartment } from "react-icons/md";
 import { Button } from "./button";
+import { BiSolidBadgeCheck } from "react-icons/bi";
+import { PiShieldCheckeredFill } from "react-icons/pi";
+import { FaBolt } from "react-icons/fa6";
+import { MapPin } from "lucide-react";
 
 interface SearchResultCardProps {
   price: number;
@@ -20,45 +23,57 @@ export default function SearchResultCard({
   const formattedPrice = formatter.format(price);
 
   return (
-    <article className="group rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 hover:-translate-y-2 flex flex-col h-full cursor-pointer relative border border-transparent hover:border-surface-container-highest">
-      <div className="absolute top-6 right-6 z-20 bg-primary text-white font-bold text-sm px-2 py-1.5 rounded-md shadow-md uppercase tracking-widest">
-        ₦{formattedPrice}
-        <span className="text-[0.6rem] font-normal">/session</span>
-      </div>
-      <div className="relative h-64 overflow-hidden rounded-t-[2.5rem]">
+    <div className="group rounded-[2.5rem] overflow-hidden shadow-sm bg-white">
+      <div className="relative h-64 overflow-hidden">
         <img
-          alt="Property Image"
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-          data-alt="modern minimalist student apartment interior with bright window soft sunlight green plants and wooden desk"
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+          data-alt="A modern, high-end student hostel room featuring clean white walls, minimalist wooden furniture, and large windows that let in natural bright light. The interior is decorated with subtle green accents and academic decor. The photography style is professional real estate photography with a warm, inviting atmosphere and soft shadows."
+          src="https://lh3.googleusercontent.com/aida/ADBb0uiGHfgr55ThFf6QFyArdeNtirsUcIUf-U_h7Q37PHOGyF5qTvy3Fglod0J6JFH-cgB77jUUx4fFEURbpcLPxM21gnuH3Up8l0I0ILqws7I8R8sax0OCvdPQks81PVVy46f6eD7-2BCksodJVJAgBYJX0sa-P49bF0NrslrcfTLEY-BesT0KlQnz2eQE0AA86RS2bCmBNfIcfAOpNT0mpqF2S35tCVdsV3Vpx1jPopqaNvccbqniv1cCSeVX23G_XFXbMGiSn6nSQKU"
         />
-        <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent"></div>
-        <div className="absolute bottom-0 left-0 p-6 w-full text-white">
-          <h3 className="font-headline text-2xl font-bold truncate drop-shadow-md">
-            {name}
-          </h3>
-          <div className="flex items-center gap-1 mt-1 text-sm">
-            <MdLocationPin />
-            <span className="truncate">{location}</span>
-          </div>
+        <div className="absolute top-4 left-4 bg-tertiary text-on-tertiary-container px-4 py-1 rounded-full font-black text-[10px] tracking-widest shadow-lg uppercase">
+          Self-Contain
+        </div>
+        <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md p-2 rounded-xl text-primary flex items-center gap-1 shadow-md">
+          <BiSolidBadgeCheck size={18} />
+          <span className="text-xs font-bold">Verified</span>
         </div>
       </div>
-      <div className="p-6 flex flex-col grow justify-between gap-6">
-        <div className="flex items-center justify-between text-sm border-b pb-4">
-          <div className="flex items-center gap-2" title="Property Type">
-            <MdApartment className="text-primary" size={15} />
-            <span className="font-medium">Self-Contain</span>
+      <div className="p-8">
+        <div className="flex justify-between items-start mb-4">
+          <div>
+            <h3 className="text-xl font-bold mb-1">{name}</h3>
+            <p className="text-sm flex items-center gap-1">
+              <MapPin size={12} />
+              {location}
+            </p>
           </div>
-          <div className="flex gap-4">
-            <span className="flex items-center gap-1">
-              <span className="material-symbols-outlined">bed</span> 1
-            </span>
-            <span className="flex items-center gap-1">
-              <span className="material-symbols-outlined">shower</span> 1
-            </span>
+          <div className="text-right">
+            <p className="text-2xl font-black text-primary leading-none">
+              ₦{formattedPrice}
+            </p>
+            <p className="text-[10px] font-bold uppercase tracking-tighter">
+              per session
+            </p>
           </div>
         </div>
-        <Button size="xl">View Details</Button>
+        <div className="flex gap-3 mb-6">
+          <span className="px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1">
+            <FaBolt />
+            Prepaid Meter
+          </span>
+          <span className="px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1">
+            <PiShieldCheckeredFill size={13} />
+            24/7 Security
+          </span>
+        </div>
+        <Button
+          variant="ghost"
+          size="xl"
+          className="w-full py-4 rounded-2xl font-bold bg-primary/10"
+        >
+          View Details
+        </Button>
       </div>
-    </article>
+    </div>
   );
 }
