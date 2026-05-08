@@ -14,7 +14,7 @@ function FilterItem({ children }: { children: React.ReactNode }) {
 
 export default function ActiveSearchFilters() {
   return (
-    <div className="bg-white fixed top-20 left-0 w-full z-40 shadow-sm border-b py-4 px-8 transition-all duration-300 ">
+    <div className="bg-white sticky top-0 left-0 w-full z-40 shadow-sm border-b py-4 px-8 transition-all duration-300 ">
       <div className="flex flex-col md:flex-row justify-between items-center gap-4  mx-auto max-w-7xl">
         <div className="flex items-center gap-3 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-hide">
           <span className="text-sm font-bold uppercase tracking-widest shrink-0">
