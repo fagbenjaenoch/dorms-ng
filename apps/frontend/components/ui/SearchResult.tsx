@@ -9,14 +9,12 @@ interface SearchResultCardProps {
   price: number;
   name: string;
   location: string;
-  imageUrl: string;
 }
 
 export default function SearchResultCard({
   price,
   name,
   location,
-  imageUrl,
 }: SearchResultCardProps) {
   const formatter = new Intl.NumberFormat("en-US", {
     notation: "compact",
@@ -33,7 +31,7 @@ export default function SearchResultCard({
           height={200}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
           alt={name}
-          src={imageUrl}
+          src={null}
         />
         <div className="absolute top-4 left-4 bg-tertiary text-on-tertiary-container px-4 py-1 rounded-full font-black text-[10px] tracking-widest shadow-lg uppercase">
           Self-Contain
@@ -47,7 +45,7 @@ export default function SearchResultCard({
         <div className="flex justify-between items-start mb-4">
           <div>
             <h3 className="text-xl font-bold mb-1">{name}</h3>
-            <p className="text-sm flex items-center gap-1">
+            <p className="text-sm flex items-center gap-1 text-muted-foreground">
               <MapPin size={12} />
               {location}
             </p>
