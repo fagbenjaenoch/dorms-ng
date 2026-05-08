@@ -1,7 +1,8 @@
-import HostelDetailsClient from "@/components/admin/HostelDetails/HostelDetailsClient";
-import { HostelSkeleton } from "@/components/admin/HostelDetails/HostelDetailsSkeleton";
+import HostelDetailsClient from "@/components/HostelDetails/HostelDetailsClient";
+import { HostelSkeleton } from "@/components/HostelDetails/HostelDetailsSkeleton";
 import DesktopNav from "@/components/DesktopNav";
 import MobileNav from "@/components/MobileNav";
+import Footer from "@/components/ui/Footer";
 import { Suspense } from "react";
 
 export default function HostelDetailsPage() {
@@ -16,6 +17,7 @@ export default function HostelDetailsPage() {
           <HostelDetailsClient />
         </Suspense>
       </div>
+      <Footer />
     </div>
   );
 }
