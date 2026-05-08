@@ -53,7 +53,7 @@ export default function SearchResultCard({
             </p>
           </div>
           <div className="text-right">
-            <p className="text-2xl font-black text-primary leading-none">
+            <p className="text-2xl font-bold text-primary leading-none">
               ₦{formattedPrice}
             </p>
             <p className="text-[10px] font-bold uppercase tracking-tighter">
@@ -61,12 +61,12 @@ export default function SearchResultCard({
             </p>
           </div>
         </div>
-        <div className="flex gap-3 mb-6">
-          <span className="px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1">
+        <div className="flex gap-3 mb-6 text-muted-foreground">
+          <span className="px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1 bg-gray-200">
             <FaBolt />
             Prepaid Meter
           </span>
-          <span className="px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1">
+          <span className="px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1 bg-gray-200">
             <PiShieldCheckeredFill size={13} />
             24/7 Security
           </span>
