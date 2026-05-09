@@ -19,17 +19,18 @@ interface SearchResult {
   entity_type: string;
   entity: string;
   slug: string;
+  address: string;
 }
 
 const EntityTypeToIcon: Record<string, React.ReactNode> = {
   hostel: (
-    <span className="bg-secondary px-3 py-3 flex items-center rounded-md">
-      <MdApartment className="text-white" size={15} />
+    <span className="bg-secondary/10 px-3 py-3 flex items-center rounded-md">
+      <MdApartment className="text-secondary" size={15} />
     </span>
   ),
   institution: (
-    <span className="bg-primary px-3 py-3 flex items-center rounded-md">
-      <GraduationCapIcon className="text-primary-light" size={15} />
+    <span className="bg-primary-light px-3 py-3 flex items-center rounded-md">
+      <GraduationCapIcon className="text-primary" size={15} />
     </span>
   ),
 };
@@ -110,7 +111,15 @@ export default function LandingSearch() {
               href={`/${searchResult.entity_type}s/${searchResult.slug}`}
               key={searchResult.entity_id}
             >
-              {EntityTypeToIcon[searchResult.entity_type]} {searchResult.entity}
+              <div className="flex items-center gap-4">
+                {EntityTypeToIcon[searchResult.entity_type]}
+                <div className="flex flex-col">
+                  <span className="font-semibold">{searchResult.entity}</span>
+                  <span className="text-muted-foreground">
+                    {searchResult.address}
+                  </span>
+                </div>
+              </div>
               <ChevronRight
                 className="text-primary ml-auto group-hover:translate-x-1 transition-all"
                 size={15}
