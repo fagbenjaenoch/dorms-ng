@@ -44,6 +44,7 @@ func (ir *InstitutionRepository) CreateInstitution(ctx context.Context, institut
 	i.Latitude = institution.Latitude
 	i.Longitude = institution.Longitude
 	i.City = institution.City
+	i.Slug = utils.GenerateSlug(institution.Name)
 
 	ci, err := qtx.CreateInstitution(ctx, i)
 	if err != nil {
@@ -55,6 +56,7 @@ func (ir *InstitutionRepository) CreateInstitution(ctx context.Context, institut
 		EntityType: "institution",
 		Entity:     ci.Name,
 		SearchText: fmt.Sprintf("%s, %s, %s", ci.Name, ci.City, ci.Acronym.String),
+		Slug:       ci.Slug,
 	}
 
 	_, err = qtx.CreateSearchEntry(ctx, searchEntry)
@@ -139,8 +141,8 @@ func (hr *HostelRepository) GetHostel(ctx context.Context, slug string) (*models
 	return &h, nil
 }
 
-func (hr *InstitutionRepository) GetInstitution(ctx context.Context, id string) (*models.Institution, error) {
-	i, err := hr.BaseRepository.Queries.GetInstitutionById(ctx, id)
+func (hr *InstitutionRepository) GetInstitution(ctx context.Context, slug string) (*models.Institution, error) {
+	i, err := hr.BaseRepository.Queries.GetInstitutionBySlug(ctx, slug)
 	if err != nil {
 		return nil, err
 	}

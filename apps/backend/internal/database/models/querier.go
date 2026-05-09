@@ -17,6 +17,7 @@ type Querier interface {
 	GetHostel(ctx context.Context, id string) (Hostel, error)
 	GetHostelBySlug(ctx context.Context, slug string) (Hostel, error)
 	GetInstitutionById(ctx context.Context, id string) (Institution, error)
+	GetInstitutionBySlug(ctx context.Context, slug string) (Institution, error)
 	GetSearchEntry(ctx context.Context, searchText string) ([]GetSearchEntryRow, error)
 	GetUserByEmail(ctx context.Context, email string) (User, error)
 	GetUserCredentialByProviderId(ctx context.Context, providerID string) (UserCredential, error)

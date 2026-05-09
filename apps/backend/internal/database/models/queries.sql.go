@@ -299,6 +299,27 @@ func (q *Queries) GetInstitutionById(ctx context.Context, id string) (Institutio
 	return i, err
 }
 
+const getInstitutionBySlug = `-- name: GetInstitutionBySlug :one
+SELECT id, name, acronym, latitude, longitude, slug, created_at, updated_at, city FROM institutions WHERE slug = ? LIMIT 1
+`
+
+func (q *Queries) GetInstitutionBySlug(ctx context.Context, slug string) (Institution, error) {
+	row := q.db.QueryRowContext(ctx, getInstitutionBySlug, slug)
+	var i Institution
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Acronym,
+		&i.Latitude,
+		&i.Longitude,
+		&i.Slug,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.City,
+	)
+	return i, err
+}
+
 const getSearchEntry = `-- name: GetSearchEntry :many
 SELECT entity_id, entity_type, entity, slug FROM global_search WHERE search_text MATCH ? ORDER BY rank LIMIT 5
 `

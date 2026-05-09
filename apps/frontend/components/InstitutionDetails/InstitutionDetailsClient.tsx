@@ -19,15 +19,15 @@ type Institution = {
 };
 
 export default function InstitutionDetailsClient() {
-  let { id } = useParams();
-  id = id as string;
+  let { slug } = useParams();
+  slug = slug as string;
 
   const query = useSuspenseQuery({
-    queryKey: ["institution", id],
+    queryKey: ["institution", slug],
     queryFn: async () => {
       try {
         const response = await fetch(
-          `http://localhost:8000/api/v1/institutions/${id}`,
+          `http://localhost:8000/api/v1/institutions/${slug}`,
         );
 
         if (!response.ok) {

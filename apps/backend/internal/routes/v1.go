@@ -22,7 +22,7 @@ func RegisterV1Routes(s *server.Server) *chi.Mux {
 	adminHandler := handlers.NewAdminHandler(s)
 
 	v1Router.Get("/hostels/{slug}", adminHandler.GetHostel)
-	v1Router.Get("/institutions/{id}", adminHandler.GetInstitution)
+	v1Router.Get("/institutions/{slug}", adminHandler.GetInstitution)
 	v1Router.With(middleware.ValidateRequestPayload[dto.CreateHostel]).Post("/hostels", adminHandler.CreateHostel)
 	v1Router.With(middleware.ValidateRequestPayload[dto.CreateInstitution]).Post("/institutions", adminHandler.CreateInstitution)
 

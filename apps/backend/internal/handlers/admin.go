@@ -91,11 +91,11 @@ func (h *AdminHandler) GetHostel(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *AdminHandler) GetInstitution(w http.ResponseWriter, r *http.Request) {
-	id := chi.URLParam(r, "id")
+	slug := chi.URLParam(r, "slug")
 
-	h.server.Logger.Debug().Msgf("get institution: %s", id)
+	h.server.Logger.Debug().Msgf("get institution: %s", slug)
 
-	res, err := h.AdminService.GetInstitution(r.Context(), id)
+	res, err := h.AdminService.GetInstitution(r.Context(), slug)
 	if err != nil {
 		msg := "failed to get institution"
 		h.server.Logger.Err(err).Msg(msg)
