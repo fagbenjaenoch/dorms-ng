@@ -5,7 +5,7 @@ import { HiLocationMarker } from "react-icons/hi";
 import { Button } from "./ui/button";
 import useDebounce from "@/lib/hooks/useDebounce";
 import { useQuery } from "@tanstack/react-query";
-import { ChevronRight, GraduationCapIcon, X } from "lucide-react";
+import { ChevronRight, Divide, GraduationCapIcon, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useQueryState } from "nuqs";
 import { APIResponse } from "@/lib/api";
@@ -94,12 +94,12 @@ export default function LandingSearch() {
       </Button>
 
       {!!query.data?.payload?.length && (
-        <div className="group absolute top-full mt-3 left-0 w-full flex flex-col gap-2 bg-primary-foreground shadow-lg ring-1 ring-gray-500/5 p-2 rounded-xl">
+        <div className="absolute top-full mt-3 left-0 w-full flex flex-col gap-2 bg-primary-foreground shadow-lg ring-1 ring-gray-500/5 p-2 rounded-xl">
           {query.data.payload.map((searchResult) => (
             <Link
-              className="cursor-pointer hover:bg-gray-500/10 p-4 rounded-md flex items-center gap-2"
+              className="group cursor-pointer hover:bg-gray-500/10 p-4 rounded-md flex items-center gap-2"
               href={`/${searchResult.entity_type}s/${searchResult.entity_id}`}
-              key={searchResult.entity}
+              key={searchResult.entity_id}
             >
               {EntityTypeToIcon[searchResult.entity_type]} {searchResult.entity}
               <ChevronRight
