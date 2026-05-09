@@ -17,3 +17,13 @@ type CreateHostel struct {
 	Longitude       float64 `json:"longitude" validate:"required,min=-180,max=180"`
 	PrimaryPhotoURL string  `json:"primary_photo_url" validate:"required,url"`
 }
+type CreateHostelResponsePayload struct {
+	Name            string  `json:"name"`
+	Address         string  `json:"address"`
+	Description     string  `json:"description"`
+	City            string  `json:"city"`
+	Latitude        float64 `json:"latitude"`
+	Longitude       float64 `json:"longitude"`
+	PrimaryPhotoURL string  `json:"primary_photo_url"`
+	Slug            string  `json:"slug"`
+}

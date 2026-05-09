@@ -8,6 +8,7 @@ import (
 
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/database/models"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/utils"
 	"github.com/google/uuid"
 	"github.com/rs/zerolog"
 )
@@ -100,6 +101,9 @@ func (hr *HostelRepository) CreateHostel(ctx context.Context, hostel dto.CreateH
 	h.Longitude = hostel.Longitude
 	h.PrimaryPhotoUrl = sql.NullString{String: hostel.PrimaryPhotoURL, Valid: true}
 	h.Description = sql.NullString{String: hostel.Description, Valid: true}
+	h.Slug = utils.GenerateSlug(hostel.Name)
+
+	hr.Logger.Debug().Str("hostel slug", h.Slug).Msg("generated hostel slug")
 
 	ch, err := qtx.CreateHostel(ctx, h)
 	if err != nil {
@@ -111,6 +115,7 @@ func (hr *HostelRepository) CreateHostel(ctx context.Context, hostel dto.CreateH
 		EntityType: "hostel",
 		Entity:     ch.Name,
 		SearchText: fmt.Sprintf("%s, %s, %s", h.Name, h.Address.String, h.City.String),
+		Slug:       h.Slug,
 	}
 
 	_, err = qtx.CreateSearchEntry(ctx, searchEntry)

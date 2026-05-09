@@ -111,3 +111,7 @@ func FormatValidationErrors(err error) ErrorResponse {
 func GeneratePresignedURLKey(entityName, entityType string) string {
 	return fmt.Sprintf("%s/%s-%d", strings.ToLower(entityType), strings.ToLower(strings.ReplaceAll(entityName, " ", "-")), time.Now().Unix())
 }
+
+func GenerateSlug(name string) string {
+	return fmt.Sprintf("%s-%v", strings.ToLower(strings.ReplaceAll(name, " ", "-")), time.Now().Unix())
+}

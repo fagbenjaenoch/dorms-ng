@@ -31,6 +31,7 @@ CREATE TABLE institutions (
   acronym TEXT,
   latitude REAL NOT NULL,  -- GPS coordinate for the main gate
   longitude REAL NOT NULL,
+  slug TEXT UNIQUE NOT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -57,6 +58,8 @@ CREATE TABLE hostels (
   is_verified_by_admin BOOLEAN DEFAULT FALSE,
   primary_photo_url TEXT,
 
+  slug TEXT UNIQUE NOT NULL,
+
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -65,6 +68,7 @@ CREATE VIRTUAL TABLE global_search USING fts5 (
   entity_id UNINDEXED,
   entity_type UNINDEXED,
   entity UNINDEXED,
+  slug UNINDEXED,
   search_text,
   tokenize="trigram"
 );

@@ -3,9 +3,9 @@ SELECT EXISTS(SELECT 1 FROM users WHERE email = ? LIMIT 1);
 
 -- name: CreateInstitution :one
 INSERT INTO institutions (
-    id, name, acronym, latitude, longitude, city
+    id, name, acronym, latitude, longitude, city, slug
 ) VALUES (
-    ?, ?, ?, ?, ?, ?
+    ?, ?, ?, ?, ?, ?, ?
 )
 RETURNING *;
 
@@ -19,9 +19,9 @@ SELECT * FROM institutions WHERE id = ? LIMIT 1;
 INSERT INTO hostels (
     id, name, address, description, city, latitude, longitude,
     google_place_id, estimated_price_range,
-    distance_to_gate_km, is_verified_by_admin, primary_photo_url
+    distance_to_gate_km, is_verified_by_admin, primary_photo_url, slug
 ) VALUES (
-    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
 )
 RETURNING *;
 
@@ -51,8 +51,8 @@ INSERT INTO user_credentials (
 RETURNING *;
 
 -- name: CreateSearchEntry :one
-INSERT INTO global_search (entity_id, entity_type, entity, search_text)
-VALUES (?, ?, ?, ?)
+INSERT INTO global_search (entity_id, entity_type, entity, search_text, slug)
+VALUES (?, ?, ?, ?, ?)
 RETURNING *;
 
 -- name: GetSearchEntry :many

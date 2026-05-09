@@ -46,7 +46,7 @@ func (s AdminService) CreateHostel(ctx context.Context, hostel dto.CreateHostel)
 		Success: true,
 		Status:  http.StatusCreated,
 		Message: "Hostel created successfully",
-		Payload: dto.CreateHostel{
+		Payload: dto.CreateHostelResponsePayload{
 			Name:            h.Name,
 			City:            h.City.String,
 			Description:     h.Description.String,
@@ -54,6 +54,7 @@ func (s AdminService) CreateHostel(ctx context.Context, hostel dto.CreateHostel)
 			Latitude:        h.Latitude,
 			Longitude:       h.Longitude,
 			PrimaryPhotoURL: h.PrimaryPhotoUrl.String,
+			Slug:            h.Slug,
 		},
 	}, nil
 }

@@ -14,11 +14,11 @@ const createHostel = `-- name: CreateHostel :one
 INSERT INTO hostels (
     id, name, address, description, city, latitude, longitude,
     google_place_id, estimated_price_range,
-    distance_to_gate_km, is_verified_by_admin, primary_photo_url
+    distance_to_gate_km, is_verified_by_admin, primary_photo_url, slug
 ) VALUES (
-    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
 )
-RETURNING id, name, address, description, city, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, primary_photo_url, created_at, updated_at
+RETURNING id, name, address, description, city, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, primary_photo_url, slug, created_at, updated_at
 `
 
 type CreateHostelParams struct {
@@ -34,6 +34,7 @@ type CreateHostelParams struct {
 	DistanceToGateKm    sql.NullFloat64 `json:"distance_to_gate_km"`
 	IsVerifiedByAdmin   sql.NullBool    `json:"is_verified_by_admin"`
 	PrimaryPhotoUrl     sql.NullString  `json:"primary_photo_url"`
+	Slug                string          `json:"slug"`
 }
 
 func (q *Queries) CreateHostel(ctx context.Context, arg CreateHostelParams) (Hostel, error) {
@@ -50,6 +51,7 @@ func (q *Queries) CreateHostel(ctx context.Context, arg CreateHostelParams) (Hos
 		arg.DistanceToGateKm,
 		arg.IsVerifiedByAdmin,
 		arg.PrimaryPhotoUrl,
+		arg.Slug,
 	)
 	var i Hostel
 	err := row.Scan(
@@ -65,6 +67,7 @@ func (q *Queries) CreateHostel(ctx context.Context, arg CreateHostelParams) (Hos
 		&i.DistanceToGateKm,
 		&i.IsVerifiedByAdmin,
 		&i.PrimaryPhotoUrl,
+		&i.Slug,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 	)
@@ -73,11 +76,11 @@ func (q *Queries) CreateHostel(ctx context.Context, arg CreateHostelParams) (Hos
 
 const createInstitution = `-- name: CreateInstitution :one
 INSERT INTO institutions (
-    id, name, acronym, latitude, longitude, city
+    id, name, acronym, latitude, longitude, city, slug
 ) VALUES (
-    ?, ?, ?, ?, ?, ?
+    ?, ?, ?, ?, ?, ?, ?
 )
-RETURNING id, name, acronym, latitude, longitude, created_at, updated_at, city
+RETURNING id, name, acronym, latitude, longitude, slug, created_at, updated_at, city
 `
 
 type CreateInstitutionParams struct {
@@ -87,6 +90,7 @@ type CreateInstitutionParams struct {
 	Latitude  float64        `json:"latitude"`
 	Longitude float64        `json:"longitude"`
 	City      string         `json:"city"`
+	Slug      string         `json:"slug"`
 }
 
 func (q *Queries) CreateInstitution(ctx context.Context, arg CreateInstitutionParams) (Institution, error) {
@@ -97,6 +101,7 @@ func (q *Queries) CreateInstitution(ctx context.Context, arg CreateInstitutionPa
 		arg.Latitude,
 		arg.Longitude,
 		arg.City,
+		arg.Slug,
 	)
 	var i Institution
 	err := row.Scan(
@@ -105,6 +110,7 @@ func (q *Queries) CreateInstitution(ctx context.Context, arg CreateInstitutionPa
 		&i.Acronym,
 		&i.Latitude,
 		&i.Longitude,
+		&i.Slug,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.City,
@@ -113,9 +119,9 @@ func (q *Queries) CreateInstitution(ctx context.Context, arg CreateInstitutionPa
 }
 
 const createSearchEntry = `-- name: CreateSearchEntry :one
-INSERT INTO global_search (entity_id, entity_type, entity, search_text)
-VALUES (?, ?, ?, ?)
-RETURNING entity_id, entity_type, entity, search_text
+INSERT INTO global_search (entity_id, entity_type, entity, search_text, slug)
+VALUES (?, ?, ?, ?, ?)
+RETURNING entity_id, entity_type, entity, slug, search_text
 `
 
 type CreateSearchEntryParams struct {
@@ -123,6 +129,7 @@ type CreateSearchEntryParams struct {
 	EntityType string `json:"entity_type"`
 	Entity     string `json:"entity"`
 	SearchText string `json:"search_text"`
+	Slug       string `json:"slug"`
 }
 
 func (q *Queries) CreateSearchEntry(ctx context.Context, arg CreateSearchEntryParams) (GlobalSearch, error) {
@@ -131,12 +138,14 @@ func (q *Queries) CreateSearchEntry(ctx context.Context, arg CreateSearchEntryPa
 		arg.EntityType,
 		arg.Entity,
 		arg.SearchText,
+		arg.Slug,
 	)
 	var i GlobalSearch
 	err := row.Scan(
 		&i.EntityID,
 		&i.EntityType,
 		&i.Entity,
+		&i.Slug,
 		&i.SearchText,
 	)
 	return i, err
@@ -216,7 +225,7 @@ func (q *Queries) CreateUserCredentials(ctx context.Context, arg CreateUserCrede
 }
 
 const getHostel = `-- name: GetHostel :one
-SELECT id, name, address, description, city, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, primary_photo_url, created_at, updated_at FROM hostels WHERE id = ? LIMIT 1
+SELECT id, name, address, description, city, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, primary_photo_url, slug, created_at, updated_at FROM hostels WHERE id = ? LIMIT 1
 `
 
 func (q *Queries) GetHostel(ctx context.Context, id string) (Hostel, error) {
@@ -235,6 +244,7 @@ func (q *Queries) GetHostel(ctx context.Context, id string) (Hostel, error) {
 		&i.DistanceToGateKm,
 		&i.IsVerifiedByAdmin,
 		&i.PrimaryPhotoUrl,
+		&i.Slug,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 	)
@@ -242,7 +252,7 @@ func (q *Queries) GetHostel(ctx context.Context, id string) (Hostel, error) {
 }
 
 const getInstitutionById = `-- name: GetInstitutionById :one
-SELECT id, name, acronym, latitude, longitude, created_at, updated_at, city FROM institutions WHERE id = ? LIMIT 1
+SELECT id, name, acronym, latitude, longitude, slug, created_at, updated_at, city FROM institutions WHERE id = ? LIMIT 1
 `
 
 func (q *Queries) GetInstitutionById(ctx context.Context, id string) (Institution, error) {
@@ -254,6 +264,7 @@ func (q *Queries) GetInstitutionById(ctx context.Context, id string) (Institutio
 		&i.Acronym,
 		&i.Latitude,
 		&i.Longitude,
+		&i.Slug,
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.City,
@@ -332,7 +343,7 @@ func (q *Queries) GetUserCredentialByProviderId(ctx context.Context, providerID 
 }
 
 const listInstitutions = `-- name: ListInstitutions :many
-SELECT id, name, acronym, latitude, longitude, created_at, updated_at, city FROM institutions ORDER BY name
+SELECT id, name, acronym, latitude, longitude, slug, created_at, updated_at, city FROM institutions ORDER BY name
 `
 
 func (q *Queries) ListInstitutions(ctx context.Context) ([]Institution, error) {
@@ -350,6 +361,7 @@ func (q *Queries) ListInstitutions(ctx context.Context) ([]Institution, error) {
 			&i.Acronym,
 			&i.Latitude,
 			&i.Longitude,
+			&i.Slug,
 			&i.CreatedAt,
 			&i.UpdatedAt,
 			&i.City,

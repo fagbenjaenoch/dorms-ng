@@ -13,6 +13,7 @@ type GlobalSearch struct {
 	EntityID   string `json:"entity_id"`
 	EntityType string `json:"entity_type"`
 	Entity     string `json:"entity"`
+	Slug       string `json:"slug"`
 	SearchText string `json:"search_text"`
 }
 
@@ -29,6 +30,7 @@ type Hostel struct {
 	DistanceToGateKm    sql.NullFloat64 `json:"distance_to_gate_km"`
 	IsVerifiedByAdmin   sql.NullBool    `json:"is_verified_by_admin"`
 	PrimaryPhotoUrl     sql.NullString  `json:"primary_photo_url"`
+	Slug                string          `json:"slug"`
 	CreatedAt           time.Time       `json:"created_at"`
 	UpdatedAt           time.Time       `json:"updated_at"`
 }
@@ -39,6 +41,7 @@ type Institution struct {
 	Acronym   sql.NullString `json:"acronym"`
 	Latitude  float64        `json:"latitude"`
 	Longitude float64        `json:"longitude"`
+	Slug      string         `json:"slug"`
 	CreatedAt time.Time      `json:"created_at"`
 	UpdatedAt time.Time      `json:"updated_at"`
 	City      string         `json:"city"`
