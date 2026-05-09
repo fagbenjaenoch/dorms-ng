@@ -14,6 +14,7 @@ type GlobalSearch struct {
 	EntityType string `json:"entity_type"`
 	Entity     string `json:"entity"`
 	Slug       string `json:"slug"`
+	Address    string `json:"address"`
 	SearchText string `json:"search_text"`
 }
 

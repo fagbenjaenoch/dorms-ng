@@ -119,9 +119,9 @@ func (q *Queries) CreateInstitution(ctx context.Context, arg CreateInstitutionPa
 }
 
 const createSearchEntry = `-- name: CreateSearchEntry :one
-INSERT INTO global_search (entity_id, entity_type, entity, search_text, slug)
-VALUES (?, ?, ?, ?, ?)
-RETURNING entity_id, entity_type, entity, slug, search_text
+INSERT INTO global_search (entity_id, entity_type, entity, search_text, slug, address)
+VALUES (?, ?, ?, ?, ?, ?)
+RETURNING entity_id, entity_type, entity, slug, address, search_text
 `
 
 type CreateSearchEntryParams struct {
@@ -130,6 +130,7 @@ type CreateSearchEntryParams struct {
 	Entity     string `json:"entity"`
 	SearchText string `json:"search_text"`
 	Slug       string `json:"slug"`
+	Address    string `json:"address"`
 }
 
 func (q *Queries) CreateSearchEntry(ctx context.Context, arg CreateSearchEntryParams) (GlobalSearch, error) {
@@ -139,6 +140,7 @@ func (q *Queries) CreateSearchEntry(ctx context.Context, arg CreateSearchEntryPa
 		arg.Entity,
 		arg.SearchText,
 		arg.Slug,
+		arg.Address,
 	)
 	var i GlobalSearch
 	err := row.Scan(
@@ -146,6 +148,7 @@ func (q *Queries) CreateSearchEntry(ctx context.Context, arg CreateSearchEntryPa
 		&i.EntityType,
 		&i.Entity,
 		&i.Slug,
+		&i.Address,
 		&i.SearchText,
 	)
 	return i, err
@@ -321,7 +324,7 @@ func (q *Queries) GetInstitutionBySlug(ctx context.Context, slug string) (Instit
 }
 
 const getSearchEntry = `-- name: GetSearchEntry :many
-SELECT entity_id, entity_type, entity, slug FROM global_search WHERE search_text MATCH ? ORDER BY rank LIMIT 5
+SELECT entity_id, entity_type, entity, slug, address FROM global_search WHERE search_text MATCH ? ORDER BY rank LIMIT 5
 `
 
 type GetSearchEntryRow struct {
@@ -329,6 +332,7 @@ type GetSearchEntryRow struct {
 	EntityType string `json:"entity_type"`
 	Entity     string `json:"entity"`
 	Slug       string `json:"slug"`
+	Address    string `json:"address"`
 }
 
 func (q *Queries) GetSearchEntry(ctx context.Context, searchText string) ([]GetSearchEntryRow, error) {
@@ -345,6 +349,7 @@ func (q *Queries) GetSearchEntry(ctx context.Context, searchText string) ([]GetS
 			&i.EntityType,
 			&i.Entity,
 			&i.Slug,
+			&i.Address,
 		); err != nil {
 			return nil, err
 		}

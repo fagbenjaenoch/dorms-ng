@@ -69,6 +69,7 @@ CREATE VIRTUAL TABLE global_search USING fts5 (
   entity_type UNINDEXED,
   entity UNINDEXED,
   slug UNINDEXED,
+  address UNINDEXED,
   search_text,
   tokenize="trigram"
 );

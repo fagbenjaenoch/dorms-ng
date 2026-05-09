@@ -57,6 +57,7 @@ func (ir *InstitutionRepository) CreateInstitution(ctx context.Context, institut
 		Entity:     ci.Name,
 		SearchText: fmt.Sprintf("%s, %s, %s", ci.Name, ci.City, ci.Acronym.String),
 		Slug:       ci.Slug,
+		Address:    ci.City,
 	}
 
 	_, err = qtx.CreateSearchEntry(ctx, searchEntry)
@@ -118,6 +119,7 @@ func (hr *HostelRepository) CreateHostel(ctx context.Context, hostel dto.CreateH
 		Entity:     ch.Name,
 		SearchText: fmt.Sprintf("%s, %s, %s", h.Name, h.Address.String, h.City.String),
 		Slug:       h.Slug,
+		Address:    ch.Address.String,
 	}
 
 	_, err = qtx.CreateSearchEntry(ctx, searchEntry)

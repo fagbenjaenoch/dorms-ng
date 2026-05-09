@@ -57,9 +57,9 @@ INSERT INTO user_credentials (
 RETURNING *;
 
 -- name: CreateSearchEntry :one
-INSERT INTO global_search (entity_id, entity_type, entity, search_text, slug)
-VALUES (?, ?, ?, ?, ?)
+INSERT INTO global_search (entity_id, entity_type, entity, search_text, slug, address)
+VALUES (?, ?, ?, ?, ?, ?)
 RETURNING *;
 
 -- name: GetSearchEntry :many
-SELECT entity_id, entity_type, entity, slug FROM global_search WHERE search_text MATCH ? ORDER BY rank LIMIT 5;
+SELECT entity_id, entity_type, entity, slug, address FROM global_search WHERE search_text MATCH ? ORDER BY rank LIMIT 5;
