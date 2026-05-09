@@ -1,5 +1,5 @@
 import DesktopNav from "@/components/DesktopNav";
-import { HostelSkeleton } from "@/components/HostelDetails/HostelDetailsSkeleton";
+import { HostelDetailsSkeleton } from "@/components/HostelDetails/HostelDetailsSkeleton";
 import InstitutionDetailsClient from "@/components/InstitutionDetails/InstitutionDetailsClient";
 import MobileNav from "@/components/MobileNav";
 import Footer from "@/components/ui/Footer";
@@ -13,7 +13,7 @@ export default function InstitutionDetailsPage() {
         <MobileNav />
       </>
       <div className="bg-gray-100">
-        <Suspense fallback={<HostelSkeleton />}>
+        <Suspense fallback={<HostelDetailsSkeleton />}>
           <InstitutionDetailsClient />
         </Suspense>
       </div>

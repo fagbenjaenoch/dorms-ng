@@ -1,11 +1,10 @@
 "use client";
 
-import { BusIcon, Compass, GraduationCap, MapIcon, MapPin } from "lucide-react";
+import { BusIcon, Compass, GraduationCap, MapIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { MdTune } from "react-icons/md";
-import { BiSolidBadgeCheck } from "react-icons/bi";
-import { FaBolt, FaPersonWalking } from "react-icons/fa6";
-import { PiMapPinArea, PiShieldCheckeredFill } from "react-icons/pi";
+import { FaPersonWalking } from "react-icons/fa6";
+import { PiMapPinArea } from "react-icons/pi";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import { APIResponse } from "@/lib/api";
@@ -43,6 +42,8 @@ export default function InstitutionDetailsClient() {
       }
     },
   });
+
+  if (!query.data) return null;
 
   const { payload: institution } = query.data;
 
