@@ -21,8 +21,16 @@ interface SearchResult {
 }
 
 const EntityTypeToIcon: Record<string, React.ReactNode> = {
-  hostel: <MdApartment className="text-primary" size={15} />,
-  institution: <GraduationCapIcon className="text-primary" size={15} />,
+  hostel: (
+    <span className="bg-secondary px-3 py-3 flex items-center rounded-md">
+      <MdApartment className="text-white" size={15} />
+    </span>
+  ),
+  institution: (
+    <span className="bg-primary px-3 py-3 flex items-center rounded-md">
+      <GraduationCapIcon className="text-primary-light" size={15} />
+    </span>
+  ),
 };
 
 export default function LandingSearch() {
