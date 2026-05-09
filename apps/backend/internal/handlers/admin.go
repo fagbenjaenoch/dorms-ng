@@ -75,11 +75,11 @@ func (h *AdminHandler) CreateHostel(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *AdminHandler) GetHostel(w http.ResponseWriter, r *http.Request) {
-	id := chi.URLParam(r, "id")
+	slug := chi.URLParam(r, "slug")
 
-	h.server.Logger.Debug().Msgf("get hostel: %s", id)
+	h.server.Logger.Debug().Msgf("get hostel: %s", slug)
 
-	res, err := h.AdminService.GetHostel(r.Context(), id)
+	res, err := h.AdminService.GetHostel(r.Context(), slug)
 	if err != nil {
 		msg := "failed to get hostel"
 		h.server.Logger.Err(err).Msg(msg)

@@ -15,6 +15,7 @@ type Querier interface {
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
 	CreateUserCredentials(ctx context.Context, arg CreateUserCredentialsParams) (UserCredential, error)
 	GetHostel(ctx context.Context, id string) (Hostel, error)
+	GetHostelBySlug(ctx context.Context, slug string) (Hostel, error)
 	GetInstitutionById(ctx context.Context, id string) (Institution, error)
 	GetSearchEntry(ctx context.Context, searchText string) ([]GetSearchEntryRow, error)
 	GetUserByEmail(ctx context.Context, email string) (User, error)

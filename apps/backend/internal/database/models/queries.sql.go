@@ -251,6 +251,33 @@ func (q *Queries) GetHostel(ctx context.Context, id string) (Hostel, error) {
 	return i, err
 }
 
+const getHostelBySlug = `-- name: GetHostelBySlug :one
+SELECT id, name, address, description, city, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, primary_photo_url, slug, created_at, updated_at FROM hostels WHERE slug = ? LIMIT 1
+`
+
+func (q *Queries) GetHostelBySlug(ctx context.Context, slug string) (Hostel, error) {
+	row := q.db.QueryRowContext(ctx, getHostelBySlug, slug)
+	var i Hostel
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Address,
+		&i.Description,
+		&i.City,
+		&i.Latitude,
+		&i.Longitude,
+		&i.GooglePlaceID,
+		&i.EstimatedPriceRange,
+		&i.DistanceToGateKm,
+		&i.IsVerifiedByAdmin,
+		&i.PrimaryPhotoUrl,
+		&i.Slug,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
+}
+
 const getInstitutionById = `-- name: GetInstitutionById :one
 SELECT id, name, acronym, latitude, longitude, slug, created_at, updated_at, city FROM institutions WHERE id = ? LIMIT 1
 `
@@ -273,13 +300,14 @@ func (q *Queries) GetInstitutionById(ctx context.Context, id string) (Institutio
 }
 
 const getSearchEntry = `-- name: GetSearchEntry :many
-SELECT entity_id, entity_type, entity FROM global_search WHERE search_text MATCH ? ORDER BY rank LIMIT 5
+SELECT entity_id, entity_type, entity, slug FROM global_search WHERE search_text MATCH ? ORDER BY rank LIMIT 5
 `
 
 type GetSearchEntryRow struct {
 	EntityID   string `json:"entity_id"`
 	EntityType string `json:"entity_type"`
 	Entity     string `json:"entity"`
+	Slug       string `json:"slug"`
 }
 
 func (q *Queries) GetSearchEntry(ctx context.Context, searchText string) ([]GetSearchEntryRow, error) {
@@ -291,7 +319,12 @@ func (q *Queries) GetSearchEntry(ctx context.Context, searchText string) ([]GetS
 	items := []GetSearchEntryRow{}
 	for rows.Next() {
 		var i GetSearchEntryRow
-		if err := rows.Scan(&i.EntityID, &i.EntityType, &i.Entity); err != nil {
+		if err := rows.Scan(
+			&i.EntityID,
+			&i.EntityType,
+			&i.Entity,
+			&i.Slug,
+		); err != nil {
 			return nil, err
 		}
 		items = append(items, i)

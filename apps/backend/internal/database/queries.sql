@@ -28,6 +28,9 @@ RETURNING *;
 -- name: GetHostel :one
 SELECT * FROM hostels WHERE id = ? LIMIT 1;
 
+-- name: GetHostelBySlug :one
+SELECT * FROM hostels WHERE slug = ? LIMIT 1;
+
 -- name: CreateUser :one
 INSERT INTO users (
     id, full_name, email, role
@@ -56,4 +59,4 @@ VALUES (?, ?, ?, ?, ?)
 RETURNING *;
 
 -- name: GetSearchEntry :many
-SELECT entity_id, entity_type, entity FROM global_search WHERE search_text MATCH ? ORDER BY rank LIMIT 5;
+SELECT entity_id, entity_type, entity, slug FROM global_search WHERE search_text MATCH ? ORDER BY rank LIMIT 5;

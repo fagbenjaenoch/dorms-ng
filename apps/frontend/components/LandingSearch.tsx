@@ -18,6 +18,7 @@ interface SearchResult {
   entity_id: string;
   entity_type: string;
   entity: string;
+  slug: string;
 }
 
 const EntityTypeToIcon: Record<string, React.ReactNode> = {
@@ -106,7 +107,7 @@ export default function LandingSearch() {
           {query.data.payload.map((searchResult) => (
             <Link
               className="group cursor-pointer hover:bg-gray-500/10 p-4 rounded-md flex items-center gap-2"
-              href={`/${searchResult.entity_type}s/${searchResult.entity_id}`}
+              href={`/${searchResult.entity_type}s/${searchResult.slug}`}
               key={searchResult.entity_id}
             >
               {EntityTypeToIcon[searchResult.entity_type]} {searchResult.entity}

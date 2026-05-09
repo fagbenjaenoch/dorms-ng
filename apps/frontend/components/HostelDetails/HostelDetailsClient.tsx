@@ -25,14 +25,14 @@ interface Hostel {
 }
 
 export default function HostelDetailsClient() {
-  let { id } = useParams();
-  id = id as string;
+  let { slug } = useParams();
+  slug = slug as string;
 
   const { data: res } = useSuspenseQuery({
-    queryKey: ["hostel", id],
+    queryKey: ["hostel", slug],
     queryFn: async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/v1/hostels/${id}`);
+        const response = await fetch(`http://localhost:8000/api/v1/hostels/${slug}`);
 
         if (!response.ok) {
           if (response.status === 404) return null;

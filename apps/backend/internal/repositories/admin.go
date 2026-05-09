@@ -130,8 +130,8 @@ func (hr *HostelRepository) CreateHostel(ctx context.Context, hostel dto.CreateH
 	return &ch, nil
 }
 
-func (hr *HostelRepository) GetHostel(ctx context.Context, id string) (*models.Hostel, error) {
-	h, err := hr.BaseRepository.Queries.GetHostel(ctx, id)
+func (hr *HostelRepository) GetHostel(ctx context.Context, slug string) (*models.Hostel, error) {
+	h, err := hr.BaseRepository.Queries.GetHostelBySlug(ctx, slug)
 	if err != nil {
 		return nil, err
 	}

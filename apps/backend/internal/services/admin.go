@@ -87,11 +87,11 @@ func (s AdminService) CreateInstitution(ctx context.Context, institution dto.Cre
 	}, nil
 }
 
-func (s AdminService) GetHostel(ctx context.Context, id string) (dto.StructuredResponse, error) {
+func (s AdminService) GetHostel(ctx context.Context, slug string) (dto.StructuredResponse, error) {
 	ctx, span := adminTracer.Start(ctx, "GetHostel")
 	defer span.End()
 
-	h, err := s.hostelRepo.GetHostel(ctx, id)
+	h, err := s.hostelRepo.GetHostel(ctx, slug)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return dto.StructuredResponse{
