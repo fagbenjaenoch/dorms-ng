@@ -1,16 +1,51 @@
+"use client";
+
 import { BusIcon, Compass, GraduationCap, MapIcon, MapPin } from "lucide-react";
 import { Button } from "../ui/button";
 import { MdTune } from "react-icons/md";
 import { BiSolidBadgeCheck } from "react-icons/bi";
-import { CgBolt } from "react-icons/cg";
 import { FaBolt, FaPersonWalking } from "react-icons/fa6";
-import {
-  PiMapPinArea,
-  PiMapPinAreaBold,
-  PiShieldCheckeredFill,
-} from "react-icons/pi";
+import { PiMapPinArea, PiShieldCheckeredFill } from "react-icons/pi";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { useParams } from "next/navigation";
+import { APIResponse } from "@/lib/api";
+import SearchResultCard from "../ui/SearchResult";
+
+type Institution = {
+  name: string;
+  acronym: string;
+  city: string;
+  longitude: number;
+  latitude: number;
+};
 
 export default function InstitutionDetailsClient() {
+  let { id } = useParams();
+  id = id as string;
+
+  const query = useSuspenseQuery({
+    queryKey: ["institution", id],
+    queryFn: async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:8000/api/v1/institutions/${id}`,
+        );
+
+        if (!response.ok) {
+          if (response.status === 404) return null;
+          throw new Error("Failed to fetch hostel");
+        }
+
+        return response.json() as any as APIResponse<Institution>;
+      } catch (error) {
+        console.error(error);
+        return null;
+      }
+    },
+  });
+
+  const { payload: institution } = query.data;
+
   return (
     <main className="pt-20">
       <section className="relative px-8 py-12 pb-32 max-w-7xl mx-auto overflow-hidden">
@@ -20,23 +55,23 @@ export default function InstitutionDetailsClient() {
               <GraduationCap size={14} />
               Top Tier Institution
             </div>
-            <h1 className="text-4xl md:text-5xl font-black tracking-tighter leading-none mb-4">
-              University of <span className="text-primary">Lagos</span>
+            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tighter leading-none mb-4">
+              {institution?.name}
             </h1>
             <p className="text-2xl font-bold text-muted-foreground mb-8 tracking-tight">
-              UNILAG • Akoka, Yaba
+              {institution?.acronym} • {institution?.city}
             </p>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-10">
               <div className="bg-muted-foreground/10 p-6 rounded-[2rem] transition-colors duration-300">
-                <p className="text-3xl font-black text-primary">124+</p>
+                <p className="text-3xl font-bold text-primary">124+</p>
                 <p className="text-sm font-medium">Affiliated Hostels</p>
               </div>
               <div className="bg-muted-foreground/10 p-6 rounded-[2rem] transition-colors duration-300">
-                <p className="text-3xl font-black text-secondary">55k+</p>
+                <p className="text-3xl font-bold text-secondary">55k+</p>
                 <p className="text-sm font-medium">Student Population</p>
               </div>
               <div className="bg-muted-foreground/10 p-6 rounded-[2rem] transition-colors duration-300">
-                <p className="text-3xl font-black">4.8</p>
+                <p className="text-3xl font-bold">4.8</p>
                 <p className="text-sm font-medium">Safety Rating</p>
               </div>
             </div>
@@ -44,7 +79,7 @@ export default function InstitutionDetailsClient() {
               <Button
                 variant="default"
                 size="xl"
-                className="px-8 py-4 flex items-center gap-2"
+                className="px-8 py-4 flex items-center gap-2 text-primary-light"
               >
                 <Compass />
                 Explore Nearby Hostels
@@ -60,25 +95,26 @@ export default function InstitutionDetailsClient() {
           </div>
         </div>
       </section>
-      <section className="py-24 px-8">
+      <section className="py-24 px-8 bg-gray-200/80">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
             <div>
-              <h2 className="text-4xl font-black tracking-tight mb-2">
-                Hostels near <span className="text-primary">UNILAG</span>
+              <h2 className="text-4xl font-extrabold tracking-tight mb-2">
+                Hostels near{" "}
+                <span className="text-primary">{institution?.acronym}</span>
               </h2>
-              <p className="font-medium text-lg">
+              <p className="font-medium text-lg text-muted-foreground">
                 Verified student housing within 2km of the campus gate.
               </p>
             </div>
             <div className="flex gap-2">
               <Button
                 variant="ghost"
-                className="p-3 rounded-xl shadow-sm text-black hover:text-primary transition-colors"
+                className="p-3 rounded-xl shadow-sm bg-white text-black hover:bg-gray-100 transition-colors"
               >
                 <MdTune size={25} />
               </Button>
-              <select className="border-none rounded-xl font-bold px-6 py-3 shadow-sm focus:ring-primary">
+              <select className="border-none rounded-xl font-bold px-6 py-3 shadow-sm focus:ring-primary bg-white">
                 <option>Price: Low to High</option>
                 <option>Closest to Gate</option>
                 <option>Highest Rated</option>
@@ -86,151 +122,21 @@ export default function InstitutionDetailsClient() {
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="group rounded-[2.5rem] overflow-hidden shadow-sm">
-              <div className="relative h-64 overflow-hidden">
-                <img
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                  data-alt="A modern, high-end student hostel room featuring clean white walls, minimalist wooden furniture, and large windows that let in natural bright light. The interior is decorated with subtle green accents and academic decor. The photography style is professional real estate photography with a warm, inviting atmosphere and soft shadows."
-                  src="https://lh3.googleusercontent.com/aida/ADBb0uiGHfgr55ThFf6QFyArdeNtirsUcIUf-U_h7Q37PHOGyF5qTvy3Fglod0J6JFH-cgB77jUUx4fFEURbpcLPxM21gnuH3Up8l0I0ILqws7I8R8sax0OCvdPQks81PVVy46f6eD7-2BCksodJVJAgBYJX0sa-P49bF0NrslrcfTLEY-BesT0KlQnz2eQE0AA86RS2bCmBNfIcfAOpNT0mpqF2S35tCVdsV3Vpx1jPopqaNvccbqniv1cCSeVX23G_XFXbMGiSn6nSQKU"
-                />
-                <div className="absolute top-4 left-4 bg-tertiary text-on-tertiary-container px-4 py-1 rounded-full font-black text-[10px] tracking-widest shadow-lg uppercase">
-                  Self-Contain
-                </div>
-                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md p-2 rounded-xl text-primary flex items-center gap-1 shadow-md">
-                  <BiSolidBadgeCheck size={18} />
-                  <span className="text-xs font-bold">Verified</span>
-                </div>
-              </div>
-              <div className="p-8">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <h3 className="text-xl font-bold mb-1">Platinum Heights</h3>
-                    <p className="text-sm flex items-center gap-1">
-                      <MapPin size={12} />
-                      Akoka (5 mins walk)
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-2xl font-black text-primary leading-none">
-                      ₦450k
-                    </p>
-                    <p className="text-[10px] font-bold uppercase tracking-tighter">
-                      per session
-                    </p>
-                  </div>
-                </div>
-                <div className="flex gap-3 mb-6">
-                  <span className="px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1">
-                    <FaBolt />
-                    Prepaid Meter
-                  </span>
-                  <span className="px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1">
-                    <PiShieldCheckeredFill size={13} />
-                    24/7 Security
-                  </span>
-                </div>
-                <Button
-                  variant="ghost"
-                  size="xl"
-                  className="w-full py-4 rounded-2xl font-bold bg-primary/10"
-                >
-                  View Details
-                </Button>
-              </div>
-            </div>
-            <div className="group rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
-              <div className="relative h-64 overflow-hidden">
-                <img
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                  data-alt="A contemporary exterior of a multi-story student residence building with sleek architectural lines and vibrant landscaping. The building facade is painted in neutral earth tones with emerald green window frames. The setting is a clear bright day in Lagos with a deep blue sky. High-end architectural visualization style with realistic lighting and reflections."
-                  src="https://lh3.googleusercontent.com/aida/ADBb0uh-38lYvbhwE3C7Wz468a8KEABCdKlg8xdky9MLkyIcFhuU793UrIZm0o9h1arqPlEPJqUq-BSnoSM1c-J7oHNvotjTDmgxyvYCKWXRJumEUs0j5ymaZa-EG_Iz97E6aHtElzRHqM61iOdG7bfxdSP7nRye6I0KEgcZPIgmQYRweEae_EY8l4QjgUlbrzCPJslEdWc8pnZPZstBRlAv6eDgGZXE5DdrNrDEif117Osh4ddV3HPZldmv6t8DCukbPcl_atjWeZX13Q"
-                />
-                <div className="absolute top-4 left-4 bg-tertiary text-on-tertiary-container px-4 py-1 rounded-full font-black text-[10px] tracking-widest shadow-lg uppercase">
-                  Apartment
-                </div>
-              </div>
-              <div className="p-8">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <h3 className="text-xl font-bold mb-1">Emerald Villas</h3>
-                    <p className="text-sm flex items-center gap-1">
-                      Abule Oja (10 mins walk)
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-2xl font-black text-primary leading-none">
-                      ₦600k
-                    </p>
-                    <p className="text-[10px] font-bold uppercase tracking-tighter">
-                      per session
-                    </p>
-                  </div>
-                </div>
-                <div className="flex gap-3 mb-6">
-                  <span className="px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1">
-                    <span className="material-symbols-outlined text-sm">wifi</span>{" "}
-                    High-speed WiFi
-                  </span>
-                  <span className="px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1">
-                    <span className="material-symbols-outlined text-sm">
-                      water_drop
-                    </span>{" "}
-                    Water Inc.
-                  </span>
-                </div>
-                <button className="w-full py-4 bg-primary/10 text-primary rounded-2xl font-bold hover:bg-primary hover:text-on-primary transition-all duration-300">
-                  View Details
-                </button>
-              </div>
-            </div>
-            <div className="group rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 hover:-translate-y-2">
-              <div className="relative h-64 overflow-hidden">
-                <img
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                  data-alt="A cozy and functional student living space showing a study area with a modern desk, ergonomic chair, and floating bookshelves. The room is brightly lit with warm evening lighting coming from a desk lamp, creating a focused and studious atmosphere. The design is contemporary Nigerian student-chic with emerald green accents and scholarly aesthetics."
-                  src="https://lh3.googleusercontent.com/aida/ADBb0uiGHfgr55ThFf6QFyArdeNtirsUcIUf-U_h7Q37PHOGyF5qTvy3Fglod0J6JFH-cgB77jUUx4fFEURbpcLPxM21gnuH3Up8l0I0ILqws7I8R8sax0OCvdPQks81PVVy46f6eD7-2BCksodJVJAgBYJX0sa-P49bF0NrslrcfTLEY-BesT0KlQnz2eQE0AA86RS2bCmBNfIcfAOpNT0mpqF2S35tCVdsV3Vpx1jPopqaNvccbqniv1cCSeVX23G_XFXbMGiSn6nSQKU"
-                />
-                <div className="absolute top-4 left-4 bg-tertiary text-on-tertiary-container px-4 py-1 rounded-full font-black text-[10px] tracking-widest shadow-lg uppercase">
-                  Bunk Space
-                </div>
-              </div>
-              <div className="p-8">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <h3 className="text-xl font-bold mb-1">Scholar's Nest</h3>
-                    <p className="text-sm flex items-center gap-1">
-                      <span className="material-symbols-outlined text-sm">
-                        location_on
-                      </span>{" "}
-                      Onike (15 mins walk)
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-2xl font-black text-primary leading-none">
-                      ₦250k
-                    </p>
-                    <p className="text-[10px] font-bold uppercase tracking-tighter">
-                      per session
-                    </p>
-                  </div>
-                </div>
-                <div className="flex gap-3 mb-6">
-                  <span className="px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1">
-                    <span className="material-symbols-outlined text-sm">group</span>{" "}
-                    Shared Kitchen
-                  </span>
-                  <span className="px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1">
-                    <span className="material-symbols-outlined text-sm">
-                      laundry
-                    </span>{" "}
-                    Laundry Area
-                  </span>
-                </div>
-                <button className="w-full py-4 bg-primary/10 text-primary rounded-2xl font-bold hover:bg-primary hover:text-on-primary transition-all duration-300">
-                  View Details
-                </button>
-              </div>
-            </div>
+            <SearchResultCard
+              location="Akoka"
+              name="Platinum heights"
+              price={450000}
+            />
+            <SearchResultCard
+              location="Akoka"
+              name="Platinum heights"
+              price={450000}
+            />
+            <SearchResultCard
+              location="Akoka"
+              name="Platinum heights"
+              price={450000}
+            />
           </div>
         </div>
       </section>
