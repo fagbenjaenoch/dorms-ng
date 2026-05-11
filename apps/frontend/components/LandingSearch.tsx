@@ -6,27 +6,13 @@ import { Button } from "./ui/button";
 import useDebounce from "@/lib/hooks/useDebounce";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronRight, Divide, GraduationCapIcon, X } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, queryParam } from "@/lib/utils";
 import { useQueryState } from "nuqs";
 import { APIResponse, SearchResult } from "@/lib/dto";
 import { MdApartment } from "react-icons/md";
 import Link from "next/link";
 import { search } from "@/lib/api/search";
-
-const queryParam = "search";
-
-const EntityTypeToIcon: Record<string, React.ReactNode> = {
-  hostel: (
-    <span className="bg-secondary/10 px-3 py-3 flex items-center rounded-md">
-      <MdApartment className="text-secondary" size={15} />
-    </span>
-  ),
-  institution: (
-    <span className="bg-primary-light px-3 py-3 flex items-center rounded-md">
-      <GraduationCapIcon className="text-primary" size={15} />
-    </span>
-  ),
-};
+import { EntityTypeToIcon } from "@/lib/utils/search";
 
 export default function LandingSearch() {
   const [searchTerm, setSearchTerm] = useQueryState(queryParam, {

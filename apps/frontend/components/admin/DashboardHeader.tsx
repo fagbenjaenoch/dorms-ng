@@ -1,5 +1,6 @@
-import { Bell, Search, Settings } from "lucide-react";
+import { Bell, Settings } from "lucide-react";
 import { Button } from "../ui/button";
+import Search from "./Search";
 
 interface DashboardHeaderProps {
   title: string;
@@ -14,17 +15,7 @@ export default function DashboardHeader({ title }: DashboardHeaderProps) {
         </span>
       </div>
       <div className="flex items-center gap-6">
-        <div className="relative hidden xl:block ">
-          <Search
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-primary"
-            size={16}
-          />
-          <input
-            className="border border-gray-300/50 pl-10 pr-4 py-2 rounded-full text-sm w-64"
-            placeholder="Search hostels..."
-            type="text"
-          />
-        </div>
+        <Search />
         <Button className="bg-primary-light text-primary hover:bg-primary-light/50 rounded-full">
           <Bell size={20} />
         </Button>
