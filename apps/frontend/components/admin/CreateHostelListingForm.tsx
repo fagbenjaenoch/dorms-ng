@@ -41,7 +41,7 @@ import { BiSolidBadgeCheck } from "react-icons/bi";
 import { Button } from "../ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { APIResponse } from "@/lib/api";
+import { APIResponse } from "@/lib/dto";
 import { Switch } from "../ui/switch";
 
 export default function CreateHostelListingForm() {

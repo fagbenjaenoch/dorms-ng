@@ -7,7 +7,7 @@ import { FaPersonWalking } from "react-icons/fa6";
 import { PiMapPinArea } from "react-icons/pi";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
-import { APIResponse } from "@/lib/api";
+import { APIResponse } from "@/lib/dto";
 import SearchResultCard from "../ui/SearchResult";
 
 type Institution = {

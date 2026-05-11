@@ -18,7 +18,7 @@ import {
   ComboboxList,
 } from "../ui/combobox";
 import { nigerianCities } from "@/lib/utils";
-import { APIResponse, CreateInstitutionPayload } from "@/lib/api";
+import { APIResponse, CreateInstitutionPayload } from "@/lib/dto";
 import { toast } from "sonner";
 
 interface CreateInstitutionFormProps {

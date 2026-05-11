@@ -10,7 +10,7 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { APIResponse, BaseAuthPayload } from "@/lib/api";
+import { APIResponse, BaseAuthPayload } from "@/lib/dto";
 
 export default function SignupForm() {
   const router = useRouter();

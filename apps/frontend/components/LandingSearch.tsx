@@ -8,7 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ChevronRight, Divide, GraduationCapIcon, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useQueryState } from "nuqs";
-import { APIResponse } from "@/lib/api";
+import { APIResponse } from "@/lib/dto";
 import { MdApartment } from "react-icons/md";
 import Link from "next/link";
 

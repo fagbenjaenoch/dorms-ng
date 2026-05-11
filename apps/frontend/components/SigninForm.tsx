@@ -9,7 +9,7 @@ import { Button } from "./ui/button";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { SigninPayload, APIResponse } from "@/lib/api";
+import { SigninPayload, APIResponse } from "@/lib/dto";
 
 export default function SigninForm() {
   const router = useRouter();

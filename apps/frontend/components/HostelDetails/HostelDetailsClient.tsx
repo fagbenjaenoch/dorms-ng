@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { APIResponse } from "@/lib/api";
+import { APIResponse } from "@/lib/dto";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import {
   BadgeCheck,
