@@ -2,7 +2,7 @@
 
 import ActiveSearchFilters from "@/components/ActiveSearchFilters";
 import Footer from "@/components/ui/Footer";
-import SearchResultCard from "@/components/ui/SearchResult";
+import PropertyCard from "@/components/ui/PropertyCard";
 import { ChevronDown } from "lucide-react";
 import { useQueryState } from "nuqs";
 
@@ -144,12 +144,7 @@ export default function SearchPage() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {searchResults.map(({ name, location, price }, i) => (
-            <SearchResultCard
-              key={i}
-              name={name}
-              location={location}
-              price={price}
-            />
+            <PropertyCard key={i} name={name} location={location} price={price} />
           ))}
         </div>
       </main>

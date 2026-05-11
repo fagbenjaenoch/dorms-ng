@@ -11,7 +11,7 @@ interface SearchResultCardProps {
   location: string;
 }
 
-export default function SearchResultCard({
+export default function PropertyCard({
   price,
   name,
   location,

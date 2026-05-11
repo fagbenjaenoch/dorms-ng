@@ -8,7 +8,7 @@ import { PiMapPinArea } from "react-icons/pi";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import { APIResponse } from "@/lib/dto";
-import SearchResultCard from "../ui/SearchResult";
+import PropertyCard from "../ui/PropertyCard";
 
 type Institution = {
   name: string;
@@ -123,21 +123,9 @@ export default function InstitutionDetailsClient() {
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <SearchResultCard
-              location="Akoka"
-              name="Platinum heights"
-              price={450000}
-            />
-            <SearchResultCard
-              location="Akoka"
-              name="Platinum heights"
-              price={450000}
-            />
-            <SearchResultCard
-              location="Akoka"
-              name="Platinum heights"
-              price={450000}
-            />
+            <PropertyCard location="Akoka" name="Platinum heights" price={450000} />
+            <PropertyCard location="Akoka" name="Platinum heights" price={450000} />
+            <PropertyCard location="Akoka" name="Platinum heights" price={450000} />
           </div>
         </div>
       </section>
