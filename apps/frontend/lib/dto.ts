@@ -19,3 +19,11 @@ export type SigninPayload = BaseAuthPayload & {
 };
 
 export type CreateInstitutionPayload = CreateInstitutionData;
+
+export interface SearchResult {
+  entity_id: string;
+  entity_type: string;
+  entity: string;
+  slug: string;
+  address: string;
+}

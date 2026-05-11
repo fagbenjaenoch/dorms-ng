@@ -8,19 +8,12 @@ import { useQuery } from "@tanstack/react-query";
 import { ChevronRight, Divide, GraduationCapIcon, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useQueryState } from "nuqs";
-import { APIResponse } from "@/lib/dto";
+import { APIResponse, SearchResult } from "@/lib/dto";
 import { MdApartment } from "react-icons/md";
 import Link from "next/link";
+import { search } from "@/lib/api/search";
 
 const queryParam = "search";
-
-interface SearchResult {
-  entity_id: string;
-  entity_type: string;
-  entity: string;
-  slug: string;
-  address: string;
-}
 
 const EntityTypeToIcon: Record<string, React.ReactNode> = {
   hostel: (
@@ -44,21 +37,7 @@ export default function LandingSearch() {
 
   const query = useQuery<APIResponse<SearchResult[]>>({
     queryKey: ["search", debounceSearchTerm],
-    queryFn: async ({ signal }) => {
-      try {
-        let path = `http://localhost:8000/api/v1/search?${queryParam}=${debounceSearchTerm}`;
-
-        const res = await fetch(path, {
-          method: "GET",
-          signal,
-        });
-
-        if (!res.json) throw new Error("could not search item");
-        return res.json();
-      } catch (err) {
-        throw new Error("could not search item");
-      }
-    },
+    queryFn: ({ signal }) => search(debounceSearchTerm, { signal }),
     enabled: debounceSearchTerm?.length > 0,
   });
 
