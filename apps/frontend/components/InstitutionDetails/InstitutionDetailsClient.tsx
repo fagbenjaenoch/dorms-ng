@@ -7,16 +7,8 @@ import { FaPersonWalking } from "react-icons/fa6";
 import { PiMapPinArea } from "react-icons/pi";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
-import { APIResponse } from "@/lib/dto";
 import PropertyCard from "../ui/PropertyCard";
-
-type Institution = {
-  name: string;
-  acronym: string;
-  city: string;
-  longitude: number;
-  latitude: number;
-};
+import { fetchInstitution } from "@/lib/api/institution";
 
 export default function InstitutionDetailsClient() {
   let { slug } = useParams();
@@ -24,23 +16,7 @@ export default function InstitutionDetailsClient() {
 
   const query = useSuspenseQuery({
     queryKey: ["institution", slug],
-    queryFn: async () => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/institutions/${slug}`,
-        );
-
-        if (!response.ok) {
-          if (response.status === 404) return null;
-          throw new Error("Failed to fetch hostel");
-        }
-
-        return response.json() as any as APIResponse<Institution>;
-      } catch (error) {
-        console.error(error);
-        return null;
-      }
-    },
+    queryFn: () => fetchInstitution(slug),
   });
 
   if (!query.data) return null;

@@ -27,3 +27,20 @@ export interface SearchResult {
   slug: string;
   address: string;
 }
+
+export interface Hostel {
+  name: string;
+  address: string;
+  city: string;
+  description: string;
+  is_verified: boolean;
+  primary_photo_url: string;
+}
+
+export type Institution = {
+  name: string;
+  acronym: string;
+  city: string;
+  longitude: number;
+  latitude: number;
+};

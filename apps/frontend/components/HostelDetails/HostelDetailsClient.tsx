@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { APIResponse } from "@/lib/dto";
+import { fetchHostel } from "@/lib/api/hostel";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import {
   BadgeCheck,
@@ -15,38 +15,13 @@ import Image from "next/image";
 import { notFound, useParams } from "next/navigation";
 import { FaPersonWalking } from "react-icons/fa6";
 
-interface Hostel {
-  name: string;
-  address: string;
-  city: string;
-  description: string;
-  is_verified: boolean;
-  primary_photo_url: string;
-}
-
 export default function HostelDetailsClient() {
   let { slug } = useParams();
   slug = slug as string;
 
   const { data: res } = useSuspenseQuery({
     queryKey: ["hostel", slug],
-    queryFn: async () => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/hostels/${slug}`,
-        );
-
-        if (!response.ok) {
-          if (response.status === 404) return null;
-          throw new Error("Failed to fetch hostel");
-        }
-
-        return response.json() as any as APIResponse<Hostel>;
-      } catch (error) {
-        console.error(error);
-        return null;
-      }
-    },
+    queryFn: () => fetchHostel(slug),
   });
 
   if (!res || !res.success) {
