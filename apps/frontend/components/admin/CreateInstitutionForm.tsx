@@ -49,12 +49,17 @@ export default function CreateInstitutionForm({
   const mutation = useMutation({
     mutationKey: ["createInstitution"],
     mutationFn: createInstitution,
+    onSuccess: () => {
+      toast.success("Created Institution Successfully");
+      form.reset();
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
   });
 
   const onSubmit = async (data: CreateInstitutionData) => {
-    const payload = await mutation.mutateAsync(data);
-    toast.success("Created Institution Successfully");
-    form.reset();
+    await mutation.mutateAsync(data);
   };
   return (
     <form
