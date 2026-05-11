@@ -27,7 +27,7 @@ export default function SignupForm() {
     mutationKey: ["signup"],
     mutationFn: async (user: SignupData) => {
       try {
-        const res = await fetch("http://localhost:8000/api/v1/signup", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/signup`, {
           method: "POST",
           body: JSON.stringify(user),
         });

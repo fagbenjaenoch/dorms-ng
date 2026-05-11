@@ -32,7 +32,9 @@ export default function HostelDetailsClient() {
     queryKey: ["hostel", slug],
     queryFn: async () => {
       try {
-        const response = await fetch(`http://localhost:8000/api/v1/hostels/${slug}`);
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/hostels/${slug}`,
+        );
 
         if (!response.ok) {
           if (response.status === 404) return null;

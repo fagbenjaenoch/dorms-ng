@@ -88,7 +88,7 @@ export default function CreateHostelListingForm() {
         };
 
         const presignedUrlReq = await fetch(
-          "http://localhost:8000/api/v1/presigned-url",
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/presigned-url`,
           {
             method: "POST",
             headers: {
@@ -124,13 +124,16 @@ export default function CreateHostelListingForm() {
           primary_photo_url: presignedUrlRes.payload.public_url,
         };
 
-        const res = await fetch("http://localhost:8000/api/v1/hostels", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/hostels`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(dataWithPrimaryPhoto),
           },
-          body: JSON.stringify(dataWithPrimaryPhoto),
-        });
+        );
         if (!res.ok) {
           console.error(await res.json());
           throw new Error("Failed to create hostel");

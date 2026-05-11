@@ -50,13 +50,16 @@ export default function CreateInstitutionForm({
     mutationKey: ["createInstitution"],
     mutationFn: async (data: CreateInstitutionData) => {
       try {
-        const res = await fetch("http://localhost:8000/api/v1/institutions", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/institutions`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
           },
-          body: JSON.stringify(data),
-        });
+        );
         if (!res.ok) {
           throw new Error("Failed to create institution");
         }

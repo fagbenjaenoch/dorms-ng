@@ -7,7 +7,7 @@ export async function search(
   { signal }: { signal: AbortSignal },
 ): Promise<APIResponse<SearchResult[]>> {
   try {
-    let path = `http://localhost:8000/api/v1/search?${queryParam}=${query}`;
+    let path = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/search?${queryParam}=${query}`;
 
     const res = await fetch(path, {
       method: "GET",
