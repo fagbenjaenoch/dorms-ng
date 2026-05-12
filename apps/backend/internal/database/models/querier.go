@@ -16,16 +16,17 @@ type Querier interface {
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
 	CreateUserCredentials(ctx context.Context, arg CreateUserCredentialsParams) (UserCredential, error)
 	GetAllInstitutions(ctx context.Context) ([]Institution, error)
+	GetAllNeighborhoods(ctx context.Context) ([]Neighborhood, error)
 	GetHostel(ctx context.Context, id string) (Hostel, error)
 	GetHostelBySlug(ctx context.Context, slug string) (Hostel, error)
 	GetInstitutionById(ctx context.Context, id string) (Institution, error)
 	GetInstitutionBySlug(ctx context.Context, slug string) (Institution, error)
 	GetNeighborhoodById(ctx context.Context, id string) (Neighborhood, error)
+	GetNeighborhoodsByInstitution(ctx context.Context, institutionID string) ([]Neighborhood, error)
 	GetSearchEntry(ctx context.Context, searchText string) ([]GetSearchEntryRow, error)
 	GetUserByEmail(ctx context.Context, email string) (User, error)
 	GetUserCredentialByProviderId(ctx context.Context, providerID string) (UserCredential, error)
 	ListInstitutions(ctx context.Context) ([]Institution, error)
-	ListNeighborhoodsByInstitution(ctx context.Context, institutionID string) ([]Neighborhood, error)
 	UserExists(ctx context.Context, email string) (int64, error)
 }
 

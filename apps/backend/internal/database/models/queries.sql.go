@@ -303,6 +303,40 @@ func (q *Queries) GetAllInstitutions(ctx context.Context) ([]Institution, error)
 	return items, nil
 }
 
+const getAllNeighborhoods = `-- name: GetAllNeighborhoods :many
+SELECT id, institution_id, name, avg_price_self_con, avg_price_1bed, power_rating_insight FROM neighborhoods ORDER BY name
+`
+
+func (q *Queries) GetAllNeighborhoods(ctx context.Context) ([]Neighborhood, error) {
+	rows, err := q.db.QueryContext(ctx, getAllNeighborhoods)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Neighborhood{}
+	for rows.Next() {
+		var i Neighborhood
+		if err := rows.Scan(
+			&i.ID,
+			&i.InstitutionID,
+			&i.Name,
+			&i.AvgPriceSelfCon,
+			&i.AvgPrice1bed,
+			&i.PowerRatingInsight,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getHostel = `-- name: GetHostel :one
 SELECT id, name, address, description, city, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, primary_photo_url, slug, created_at, updated_at FROM hostels WHERE id = ? LIMIT 1
 `
@@ -417,6 +451,40 @@ func (q *Queries) GetNeighborhoodById(ctx context.Context, id string) (Neighborh
 	return i, err
 }
 
+const getNeighborhoodsByInstitution = `-- name: GetNeighborhoodsByInstitution :many
+SELECT id, institution_id, name, avg_price_self_con, avg_price_1bed, power_rating_insight FROM neighborhoods WHERE institution_id = ? ORDER BY name
+`
+
+func (q *Queries) GetNeighborhoodsByInstitution(ctx context.Context, institutionID string) ([]Neighborhood, error) {
+	rows, err := q.db.QueryContext(ctx, getNeighborhoodsByInstitution, institutionID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Neighborhood{}
+	for rows.Next() {
+		var i Neighborhood
+		if err := rows.Scan(
+			&i.ID,
+			&i.InstitutionID,
+			&i.Name,
+			&i.AvgPriceSelfCon,
+			&i.AvgPrice1bed,
+			&i.PowerRatingInsight,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getSearchEntry = `-- name: GetSearchEntry :many
 SELECT entity_id, entity_type, entity, slug, address FROM global_search WHERE search_text MATCH ? ORDER BY rank LIMIT 5
 `
@@ -518,40 +586,6 @@ func (q *Queries) ListInstitutions(ctx context.Context) ([]Institution, error) {
 			&i.CreatedAt,
 			&i.UpdatedAt,
 			&i.City,
-		); err != nil {
-			return nil, err
-		}
-		items = append(items, i)
-	}
-	if err := rows.Close(); err != nil {
-		return nil, err
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return items, nil
-}
-
-const listNeighborhoodsByInstitution = `-- name: ListNeighborhoodsByInstitution :many
-SELECT id, institution_id, name, avg_price_self_con, avg_price_1bed, power_rating_insight FROM neighborhoods WHERE institution_id = ? ORDER BY name
-`
-
-func (q *Queries) ListNeighborhoodsByInstitution(ctx context.Context, institutionID string) ([]Neighborhood, error) {
-	rows, err := q.db.QueryContext(ctx, listNeighborhoodsByInstitution, institutionID)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	items := []Neighborhood{}
-	for rows.Next() {
-		var i Neighborhood
-		if err := rows.Scan(
-			&i.ID,
-			&i.InstitutionID,
-			&i.Name,
-			&i.AvgPriceSelfCon,
-			&i.AvgPrice1bed,
-			&i.PowerRatingInsight,
 		); err != nil {
 			return nil, err
 		}

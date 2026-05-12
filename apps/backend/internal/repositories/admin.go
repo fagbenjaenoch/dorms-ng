@@ -189,3 +189,12 @@ func (hr *NeighborhoodRepository) CreateNeighborhood(ctx context.Context, neighb
 
 	return &cn, nil
 }
+
+func (hr *NeighborhoodRepository) GetAllNeighborhoods(ctx context.Context) ([]models.Neighborhood, error) {
+	neighborhoods, err := hr.BaseRepository.Queries.GetAllNeighborhoods(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return neighborhoods, nil
+}

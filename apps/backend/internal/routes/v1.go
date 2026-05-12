@@ -31,6 +31,7 @@ func RegisterV1Routes(s *server.Server) *chi.Mux {
 	v1Router.With(middleware.ValidateRequestPayload[dto.CreateInstitution]).Post("/institutions", adminHandler.CreateInstitution)
 
 	// neighborhood routes
+	v1Router.Get("/neighborhoods", adminHandler.GetAllNeighborhoods)
 	v1Router.With(middleware.ValidateRequestPayload[dto.CreateNeighborhood]).Post("/neighborhoods", adminHandler.CreateNeighborhood)
 
 	// upload route

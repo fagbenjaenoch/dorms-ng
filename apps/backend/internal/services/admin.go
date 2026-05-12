@@ -210,3 +210,25 @@ func (s AdminService) CreateNeighborhood(ctx context.Context, neighborhood dto.C
 		},
 	}, nil
 }
+
+func (s AdminService) GetAllNeighborhoods(ctx context.Context) (dto.StructuredResponse, error) {
+	ctx, span := adminTracer.Start(ctx, "GetAllNeighborhoods")
+	defer span.End()
+
+	neighborhoods, err := s.neighborhoodRepo.GetAllNeighborhoods(ctx)
+	if err != nil {
+		return dto.StructuredResponse{
+			Success: false,
+			Status:  http.StatusInternalServerError,
+			Message: "failed to get all neighborhoods",
+			Payload: nil,
+		}, err
+	}
+
+	return dto.StructuredResponse{
+		Success: true,
+		Status:  http.StatusOK,
+		Message: "Neighborhoods retrieved successfully",
+		Payload: neighborhoods,
+	}, nil
+}

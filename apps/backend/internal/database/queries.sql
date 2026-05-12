@@ -70,8 +70,12 @@ RETURNING *;
 -- name: GetNeighborhoodById :one
 SELECT * FROM neighborhoods WHERE id = ? LIMIT 1;
 
--- name: ListNeighborhoodsByInstitution :many
+-- name: GetNeighborhoodsByInstitution :many
 SELECT * FROM neighborhoods WHERE institution_id = ? ORDER BY name;
+
+-- name: GetAllNeighborhoods :many
+SELECT * FROM neighborhoods ORDER BY name;
+
 
 -- name: CreateSearchEntry :one
 INSERT INTO global_search (entity_id, entity_type, entity, search_text, slug, address)
