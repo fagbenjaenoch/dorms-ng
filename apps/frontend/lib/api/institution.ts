@@ -30,10 +30,27 @@ export async function fetchInstitution(slug: string) {
 
     if (!response.ok) {
       if (response.status === 404) return null;
-      throw new Error("Failed to fetch hostel");
+      throw new Error("Failed to fetch institution");
     }
 
     return response.json() as any as APIResponse<Institution>;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+export async function fetchAllInstitutions() {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/institutions`,
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch institutions");
+    }
+
+    return response.json() as any as APIResponse<Institution[]>;
   } catch (error) {
     console.error(error);
     return null;

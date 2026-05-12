@@ -17,8 +17,9 @@ import {
 import { nigerianCities } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { createNeighborhood } from "@/lib/api/neighborhood";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { fetchAllInstitutions } from "@/lib/api/institution";
 
 export default function CreateNeighborhoodForm() {
   const form = useForm({
@@ -40,6 +41,13 @@ export default function CreateNeighborhoodForm() {
       toast.error(error.message);
     },
   });
+
+  const query = useQuery({
+    queryKey: ["fetchAllInstitutions"],
+    queryFn: fetchAllInstitutions,
+  });
+
+  const institutions = query.data?.payload;
 
   const onSubmit = async (data: any) => {
     await mutation.mutateAsync(data);
@@ -93,21 +101,27 @@ export default function CreateNeighborhoodForm() {
                   Institution
                 </FieldLabel>
 
-                <Combobox id="institution" items={nigerianCities}>
+                <Combobox id="institution" items={institutions}>
                   <ComboboxInput
                     {...field}
                     className="input-bg h-12 rounded-md"
                     placeholder="Select an institution"
                   />
                   <ComboboxContent>
-                    <ComboboxEmpty>No institution found.</ComboboxEmpty>
-                    <ComboboxList>
-                      {(item) => (
-                        <ComboboxItem key={item} value={item}>
-                          {item}
-                        </ComboboxItem>
-                      )}
-                    </ComboboxList>
+                    {query.isLoading ? (
+                      <ComboboxEmpty>Loading...</ComboboxEmpty>
+                    ) : (
+                      <>
+                        <ComboboxEmpty>No institution found.</ComboboxEmpty>
+                        <ComboboxList>
+                          {({ name, id }) => (
+                            <ComboboxItem key={id} value={id}>
+                              {name}
+                            </ComboboxItem>
+                          )}
+                        </ComboboxList>
+                      </>
+                    )}
                   </ComboboxContent>
                 </Combobox>
                 {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
