@@ -115,3 +115,15 @@ func GeneratePresignedURLKey(entityName, entityType string) string {
 func GenerateSlug(name string) string {
 	return fmt.Sprintf("%s-%v", strings.ToLower(strings.ReplaceAll(name, " ", "-")), time.Now().Unix())
 }
+
+func SkipTelemetry(r *http.Request) bool {
+	if r.URL.Path == "/health" || r.URL.Path == "/metrics" {
+		return false
+	}
+
+	if strings.HasPrefix(r.URL.Path, "/docs/") {
+		return false
+	}
+
+	return true
+}
