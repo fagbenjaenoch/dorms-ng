@@ -186,12 +186,17 @@ export default function CreateHostelListingForm() {
                         {...field}
                         className="input-bg h-12 rounded-md"
                         placeholder="Select a city"
+                        showClear={true}
                       />
                       <ComboboxContent>
                         <ComboboxEmpty>No city found.</ComboboxEmpty>
                         <ComboboxList>
                           {(item) => (
-                            <ComboboxItem key={item} value={item}>
+                            <ComboboxItem
+                              key={item}
+                              value={item}
+                              onClick={() => field.onChange(item)}
+                            >
                               {item}
                             </ComboboxItem>
                           )}

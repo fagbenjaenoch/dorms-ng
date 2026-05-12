@@ -106,6 +106,7 @@ export default function CreateNeighborhoodForm() {
                     {...field}
                     className="input-bg h-12 rounded-md"
                     placeholder="Select an institution"
+                    showClear={true}
                   />
                   <ComboboxContent>
                     {query.isLoading ? (
@@ -115,7 +116,11 @@ export default function CreateNeighborhoodForm() {
                         <ComboboxEmpty>No institution found.</ComboboxEmpty>
                         <ComboboxList>
                           {({ name, id }) => (
-                            <ComboboxItem key={id} value={id}>
+                            <ComboboxItem
+                              key={id}
+                              value={id}
+                              onClick={() => field.onChange(name)}
+                            >
                               {name}
                             </ComboboxItem>
                           )}
