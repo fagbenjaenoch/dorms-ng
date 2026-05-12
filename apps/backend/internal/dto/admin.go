@@ -32,3 +32,7 @@ type CreateNeighborhood struct {
 	Name          string `json:"name" validate:"required,min=2,max=100"`
 	InstitutionId string `json:"institutionId" validate:"required,min=2,max=100"`
 }
+
+type CreateNeighborhoodResponsePayload struct {
+	Name string `json:"name"`
+}

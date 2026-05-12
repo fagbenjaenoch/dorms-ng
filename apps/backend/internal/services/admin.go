@@ -191,7 +191,7 @@ func (s AdminService) CreateNeighborhood(ctx context.Context, neighborhood dto.C
 	ctx, span := adminTracer.Start(ctx, "CreateNeighborhood")
 	defer span.End()
 
-	_, err := s.neighborhoodRepo.CreateNeighborhood(ctx, neighborhood)
+	n, err := s.neighborhoodRepo.CreateNeighborhood(ctx, neighborhood)
 	if err != nil {
 		return dto.StructuredResponse{
 			Success: false,
@@ -205,6 +205,8 @@ func (s AdminService) CreateNeighborhood(ctx context.Context, neighborhood dto.C
 		Success: true,
 		Status:  http.StatusOK,
 		Message: "Neighborhood created successfully",
-		Payload: nil,
+		Payload: dto.CreateNeighborhoodResponsePayload{
+			Name: n.Name,
+		},
 	}, nil
 }
