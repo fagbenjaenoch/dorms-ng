@@ -15,6 +15,9 @@ SELECT * FROM institutions ORDER BY name;
 -- name: GetInstitutionById :one
 SELECT * FROM institutions WHERE id = ? LIMIT 1;
 
+-- name: GetAllInstitutions :many
+SELECT * FROM institutions;
+
 -- name: GetInstitutionBySlug :one
 SELECT * FROM institutions WHERE slug = ? LIMIT 1;
 

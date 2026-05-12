@@ -266,6 +266,43 @@ func (q *Queries) CreateUserCredentials(ctx context.Context, arg CreateUserCrede
 	return i, err
 }
 
+const getAllInstitutions = `-- name: GetAllInstitutions :many
+SELECT id, name, acronym, latitude, longitude, slug, created_at, updated_at, city FROM institutions
+`
+
+func (q *Queries) GetAllInstitutions(ctx context.Context) ([]Institution, error) {
+	rows, err := q.db.QueryContext(ctx, getAllInstitutions)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Institution{}
+	for rows.Next() {
+		var i Institution
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Acronym,
+			&i.Latitude,
+			&i.Longitude,
+			&i.Slug,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+			&i.City,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getHostel = `-- name: GetHostel :one
 SELECT id, name, address, description, city, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, primary_photo_url, slug, created_at, updated_at FROM hostels WHERE id = ? LIMIT 1
 `
