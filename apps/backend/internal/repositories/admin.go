@@ -151,3 +151,41 @@ func (hr *InstitutionRepository) GetInstitution(ctx context.Context, slug string
 
 	return &i, nil
 }
+
+func (hr *InstitutionRepository) GetAllInstitutions(ctx context.Context) ([]models.Institution, error) {
+	institutions, err := hr.BaseRepository.Queries.GetAllInstitutions(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return institutions, nil
+}
+
+type NeighborhoodRepository struct {
+	BaseRepository
+	db *sql.DB
+}
+
+func NewNeighborhoodRepository(db *sql.DB, logger *zerolog.Logger) *NeighborhoodRepository {
+	return &NeighborhoodRepository{
+		BaseRepository: BaseRepository{
+			Queries: models.New(db),
+			Logger:  logger,
+		},
+		db: db,
+	}
+}
+
+func (hr *NeighborhoodRepository) CreateNeighborhood(ctx context.Context, neighborhood dto.CreateNeighborhood) (*models.Neighborhood, error) {
+	var n models.CreateNeighborhoodParams
+	n.ID = uuid.NewString()
+	n.Name = neighborhood.Name
+	n.InstitutionID = neighborhood.InstitutionId
+
+	cn, err := hr.BaseRepository.Queries.CreateNeighborhood(ctx, n)
+	if err != nil {
+		return nil, err
+	}
+
+	return &cn, nil
+}

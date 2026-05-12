@@ -27,3 +27,8 @@ type CreateHostelResponsePayload struct {
 	PrimaryPhotoURL string  `json:"primary_photo_url"`
 	Slug            string  `json:"slug"`
 }
+
+type CreateNeighborhood struct {
+	Name          string `json:"name" validate:"required,min=2,max=100"`
+	InstitutionId string `json:"institutionId" validate:"required,min=2,max=100"`
+}

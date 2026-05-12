@@ -15,16 +15,18 @@ import (
 var adminTracer = otel.Tracer("admin_service")
 
 type AdminService struct {
-	institutionRepo *repositories.InstitutionRepository
-	hostelRepo      *repositories.HostelRepository
-	Logger          *zerolog.Logger
+	institutionRepo  *repositories.InstitutionRepository
+	hostelRepo       *repositories.HostelRepository
+	neighborhoodRepo *repositories.NeighborhoodRepository
+	Logger           *zerolog.Logger
 }
 
 func NewAdminService(db *sql.DB, logger *zerolog.Logger) *AdminService {
 	return &AdminService{
-		institutionRepo: repositories.NewInstitutionRepository(db, logger),
-		hostelRepo:      repositories.NewHostelRepository(db, logger),
-		Logger:          logger,
+		institutionRepo:  repositories.NewInstitutionRepository(db, logger),
+		hostelRepo:       repositories.NewHostelRepository(db, logger),
+		neighborhoodRepo: repositories.NewNeighborhoodRepository(db, logger),
+		Logger:           logger,
 	}
 }
 
@@ -84,6 +86,28 @@ func (s AdminService) CreateInstitution(ctx context.Context, institution dto.Cre
 			Longitude: i.Longitude,
 			City:      i.City,
 		},
+	}, nil
+}
+
+func (s AdminService) GetAllInstitutions(ctx context.Context) (dto.StructuredResponse, error) {
+	ctx, span := adminTracer.Start(ctx, "GetAllInstitutions")
+	defer span.End()
+
+	institutions, err := s.institutionRepo.GetAllInstitutions(ctx)
+	if err != nil {
+		return dto.StructuredResponse{
+			Success: false,
+			Status:  http.StatusInternalServerError,
+			Message: "failed to get all institutions",
+			Payload: nil,
+		}, err
+	}
+
+	return dto.StructuredResponse{
+		Success: true,
+		Status:  http.StatusOK,
+		Message: "Institutions retrieved successfully",
+		Payload: institutions,
 	}, nil
 }
 
@@ -160,5 +184,27 @@ func (s AdminService) GetInstitution(ctx context.Context, slug string) (dto.Stru
 			Latitude:  i.Latitude,
 			Longitude: i.Longitude,
 		},
+	}, nil
+}
+
+func (s AdminService) CreateNeighborhood(ctx context.Context, neighborhood dto.CreateNeighborhood) (dto.StructuredResponse, error) {
+	ctx, span := adminTracer.Start(ctx, "CreateNeighborhood")
+	defer span.End()
+
+	_, err := s.neighborhoodRepo.CreateNeighborhood(ctx, neighborhood)
+	if err != nil {
+		return dto.StructuredResponse{
+			Success: false,
+			Status:  http.StatusInternalServerError,
+			Message: "failed to create neighborhood",
+			Payload: nil,
+		}, err
+	}
+
+	return dto.StructuredResponse{
+		Success: true,
+		Status:  http.StatusOK,
+		Message: "Neighborhood created successfully",
+		Payload: nil,
 	}, nil
 }
