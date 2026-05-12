@@ -128,7 +128,7 @@ export default function CreateHostelListingForm() {
 
   return (
     <form
-      id="create-hostel-listing-form"
+      id="create-hostel-listing"
       className="space-y-8"
       onSubmit={form.handleSubmit(onSubmit)}
       ref={formRef}
