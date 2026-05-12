@@ -56,6 +56,20 @@ INSERT INTO user_credentials (
 )
 RETURNING *;
 
+-- name: CreateNeighborhood :one
+INSERT INTO neighborhoods (
+    id, institution_id, name, avg_price_self_con, avg_price_1bed, power_rating_insight
+) VALUES (
+    ?, ?, ?, ?, ?, ?
+)
+RETURNING *;
+
+-- name: GetNeighborhoodById :one
+SELECT * FROM neighborhoods WHERE id = ? LIMIT 1;
+
+-- name: ListNeighborhoodsByInstitution :many
+SELECT * FROM neighborhoods WHERE institution_id = ? ORDER BY name;
+
 -- name: CreateSearchEntry :one
 INSERT INTO global_search (entity_id, entity_type, entity, search_text, slug, address)
 VALUES (?, ?, ?, ?, ?, ?)
