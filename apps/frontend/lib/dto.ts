@@ -1,3 +1,4 @@
+import { STRING_LITERAL_DROP_BUNDLE } from "next/dist/shared/lib/constants";
 import { CreateInstitutionData } from "./forms";
 
 export type APIResponse<T> = {
@@ -20,6 +21,11 @@ export type SigninPayload = BaseAuthPayload & {
 
 export type CreateInstitutionPayload = CreateInstitutionData;
 
+export type CreateNeighborhood = {
+  name: string;
+  institutionId: string;
+};
+
 export interface SearchResult {
   entity_id: string;
   entity_type: string;
@@ -38,6 +44,7 @@ export interface Hostel {
 }
 
 export type Institution = {
+  id: string;
   name: string;
   acronym: string;
   city: string;

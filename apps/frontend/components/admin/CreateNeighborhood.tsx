@@ -4,7 +4,7 @@ import { Info, Save } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { Field, FieldError, FieldLabel } from "../ui/field";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createNeighborhoodSchema } from "@/lib/forms";
+import { CreateNeighborhoodData, createNeighborhoodSchema } from "@/lib/forms";
 import { Input } from "../ui/input";
 import {
   Combobox,
@@ -27,12 +27,17 @@ export default function CreateNeighborhoodForm() {
     defaultValues: {
       name: "",
       institution: "",
+      institutionId: "",
     },
   });
 
   const mutation = useMutation({
     mutationKey: ["createNeighbourhood"],
-    mutationFn: createNeighborhood,
+    mutationFn: (data: CreateNeighborhoodData) =>
+      createNeighborhood({
+        name: data.name,
+        institutionId: data.institutionId,
+      }),
     onSuccess: () => {
       toast.success("Created Neighbourhood Successfully");
       form.reset();
@@ -119,7 +124,10 @@ export default function CreateNeighborhoodForm() {
                             <ComboboxItem
                               key={id}
                               value={id}
-                              onClick={() => field.onChange(name)}
+                              onClick={() => {
+                                field.onChange(name);
+                                form.setValue("institutionId", id);
+                              }}
                             >
                               {name}
                             </ComboboxItem>
