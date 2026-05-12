@@ -37,6 +37,15 @@ BEGIN
     SET updated_at = CURRENT_TIMESTAMP
     WHERE id = OLD.id;
 END;
+
+CREATE TRIGGER update_neighborhoods_updated_at
+AFTER UPDATE ON neighborhoods
+FOR EACH ROW
+BEGIN
+    UPDATE neighborhoods
+    SET updated_at = CURRENT_TIMESTAMP
+    WHERE id = OLD.id;
+END;
 -- +goose StatementEnd
 
 -- +goose Down
@@ -46,4 +55,5 @@ DROP TRIGGER IF EXISTS update_users_updated_at;
 DROP TRIGGER IF EXISTS update_user_credentials_updated_at;
 DROP TRIGGER IF EXISTS update_institutions_updated_at;
 DROP TRIGGER IF EXISTS update_hostels_updated_at;
+DROP TRIGGER IF EXISTS update_neighborhoods_updated_at;
 -- +goose StatementEnd
