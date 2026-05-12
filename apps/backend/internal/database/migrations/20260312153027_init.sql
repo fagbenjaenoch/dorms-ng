@@ -64,6 +64,20 @@ CREATE TABLE hostels (
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE neighborhoods (
+    id TEXT PRIMARY KEY,
+    institution_id TEXT NOT NULL,
+
+    name TEXT NOT NULL,
+
+    avg_price_self_con INTEGER,
+    avg_price_1bed INTEGER,
+    power_rating_insight TEXT,
+
+    -- Foreign Key Constraint
+    FOREIGN KEY (institution_id) REFERENCES institutions(id) ON DELETE CASCADE
+);
+
 CREATE VIRTUAL TABLE global_search USING fts5 (
   entity_id UNINDEXED,
   entity_type UNINDEXED,
@@ -79,4 +93,5 @@ DROP TABLE user_credentials;
 DROP TABLE users;
 DROP TABLE institutions;
 DROP TABLE hostels;
+DROP TABLE neighborhoods;
 DROP TABLE global_search;
