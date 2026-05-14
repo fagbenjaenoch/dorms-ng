@@ -10,6 +10,8 @@ import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { SigninPayload, APIResponse } from "@/lib/dto";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "./ui/input-group";
+import { KeyRound, MailIcon } from "lucide-react";
 
 export default function SigninForm() {
   const router = useRouter();
@@ -58,13 +60,18 @@ export default function SigninForm() {
               <FieldLabel htmlFor="signin-form" className="uppercase text-xs">
                 Email
               </FieldLabel>
-              <Input
-                {...field}
-                id="signin-form"
-                aria-invalid={fieldState.invalid}
-                placeholder="bola.musa.adabize@email.com"
-                type="email"
-              />
+              <InputGroup>
+                <InputGroupInput
+                  {...field}
+                  id="signin-form"
+                  aria-invalid={fieldState.invalid}
+                  placeholder="bola.musa.adabize@email.com"
+                  type="email"
+                />
+                <InputGroupAddon>
+                  <MailIcon />
+                </InputGroupAddon>
+              </InputGroup>
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
@@ -77,13 +84,18 @@ export default function SigninForm() {
               <FieldLabel htmlFor="signin-form" className="uppercase text-xs">
                 Password
               </FieldLabel>
-              <Input
-                {...field}
-                id="signin-form"
-                aria-invalid={fieldState.invalid}
-                placeholder="Min. 8 Characters"
-                type="password"
-              />
+              <InputGroup>
+                <InputGroupInput
+                  {...field}
+                  id="signin-form"
+                  aria-invalid={fieldState.invalid}
+                  placeholder="Min 8 Characters"
+                  type="password"
+                />
+                <InputGroupAddon>
+                  <KeyRound />
+                </InputGroupAddon>
+              </InputGroup>
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
