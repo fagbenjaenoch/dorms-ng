@@ -58,6 +58,11 @@ export const createHostelListingSchema = z.object({
     .string()
     .min(2, "City name must be at least 2 characters")
     .max(100, "City name is too long"),
+  neighborhood: z
+    .string()
+    .min(2, "Neigborhood name must be at least 2 characters")
+    .max(100, "Neigborhood name is too long"),
+  neighborhoodId: z.uuid(),
   estimatedPriceRange: z.coerce.number<number>(),
   address: z.string().min(5, "Address must not be less than 5 characters"),
   latitude: z.coerce

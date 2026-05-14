@@ -1,4 +1,4 @@
-import { APIResponse, CreateNeighborhood } from "../dto";
+import { APIResponse, CreateNeighborhood, Neighborhood } from "../dto";
 
 export async function createNeighborhood(data: CreateNeighborhood) {
   try {
@@ -18,5 +18,22 @@ export async function createNeighborhood(data: CreateNeighborhood) {
     return res.json() as any as APIResponse<CreateNeighborhood>;
   } catch (error) {
     throw new Error("Failed to create neighborhood");
+  }
+}
+
+export async function fetchAllNeighborhoods() {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/neighborhoods`,
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch institutions");
+    }
+
+    return response.json() as any as APIResponse<Neighborhood[]>;
+  } catch (error) {
+    console.error(error);
+    return null;
   }
 }

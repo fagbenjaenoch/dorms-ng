@@ -39,10 +39,12 @@ import MapEventListener from "../MapEventListener";
 import { useEffect, useRef, useState } from "react";
 import { BiSolidBadgeCheck } from "react-icons/bi";
 import { Button } from "../ui/button";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Switch } from "../ui/switch";
 import { createHostelListing } from "@/lib/api/hostel";
+import { fetchAllNeighborhoods } from "@/lib/api/neighborhood";
+import { Neighborhood } from "@/lib/dto";
 
 export default function CreateHostelListingForm() {
   const mapRef = useRef<MapRef>(null);
@@ -54,6 +56,7 @@ export default function CreateHostelListingForm() {
       name: "",
       description: "",
       city: "",
+      neighborhood: "",
       estimatedPriceRange: 0,
       address: "",
       etaMins: 0,
@@ -85,6 +88,13 @@ export default function CreateHostelListingForm() {
       toast.error(error.message);
     },
   });
+
+  const query = useQuery({
+    queryKey: ["fetchAllNeighborhoods"],
+    queryFn: fetchAllNeighborhoods,
+  });
+
+  const neighborhoods = query.data?.payload;
 
   const handleMapClick = (e) => {
     setMarker({ lng: e.lngLat.lng, lat: e.lngLat.lat });
@@ -210,28 +220,42 @@ export default function CreateHostelListingForm() {
                 )}
               />
               <Controller
-                name="estimatedPriceRange"
+                name="neighborhood"
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
                     <FieldLabel
-                      htmlFor="estimatedPriceRange"
+                      htmlFor="neighborhood"
                       className="uppercase text-xs font-bold"
-                      aria-invalid={fieldState.invalid}
                     >
-                      Estimated Price Range
+                      Neighborhood
                     </FieldLabel>
-                    <div className="relative">
-                      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-primary font-bold">
-                        ₦
-                      </span>
-                      <Input
+
+                    <Combobox id="neighborhood" items={neighborhoods}>
+                      <ComboboxInput
                         {...field}
-                        className="pl-8 input-bg"
-                        placeholder="250,000 - 450,000"
-                        type="number"
+                        className="input-bg h-12 rounded-md"
+                        placeholder="Select a neighborhood"
+                        showClear={true}
                       />
-                    </div>
+                      <ComboboxContent>
+                        <ComboboxEmpty>No neighborhood found.</ComboboxEmpty>
+                        <ComboboxList>
+                          {({ id, name }: Neighborhood) => (
+                            <ComboboxItem
+                              key={id}
+                              value={name}
+                              onClick={() => {
+                                field.onChange(name);
+                                form.setValue("neighborhoodId", id);
+                              }}
+                            >
+                              {name}
+                            </ComboboxItem>
+                          )}
+                        </ComboboxList>
+                      </ComboboxContent>
+                    </Combobox>
                     {fieldState.invalid && (
                       <FieldError errors={[fieldState.error]} />
                     )}
@@ -239,36 +263,59 @@ export default function CreateHostelListingForm() {
                 )}
               />
             </div>
-
-            <div>
-              <Controller
-                name="description"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel
-                      htmlFor="description"
-                      className="uppercase text-xs font-bold"
-                      aria-invalid={fieldState.invalid}
-                    >
-                      Description
-                    </FieldLabel>
-                    <Textarea
+            <Controller
+              name="estimatedPriceRange"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel
+                    htmlFor="estimatedPriceRange"
+                    className="uppercase text-xs font-bold"
+                    aria-invalid={fieldState.invalid}
+                  >
+                    Estimated Price Range
+                  </FieldLabel>
+                  <div className="relative">
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-primary font-bold">
+                      ₦
+                    </span>
+                    <Input
                       {...field}
-                      id="description"
-                      aria-invalid={fieldState.invalid}
-                      className="w-full rounded-xl border-none p-4 font-medium min-h-25 input-bg"
-                      placeholder="Enter hostel description..."
-                      rows={3}
+                      className="pl-8 input-bg"
+                      placeholder="250,000 - 450,000"
+                      type="number"
                     />
+                  </div>
+                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                </Field>
+              )}
+            />
 
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
-            </div>
+            <Controller
+              name="description"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel
+                    htmlFor="description"
+                    className="uppercase text-xs font-bold"
+                    aria-invalid={fieldState.invalid}
+                  >
+                    Description
+                  </FieldLabel>
+                  <Textarea
+                    {...field}
+                    id="description"
+                    aria-invalid={fieldState.invalid}
+                    className="w-full rounded-xl border-none p-4 font-medium min-h-25 input-bg"
+                    placeholder="Enter hostel description..."
+                    rows={3}
+                  />
+
+                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                </Field>
+              )}
+            />
           </div>
 
           <div className="bg-primary/5 rounded-[2rem] p-6 flex flex-col justify-center border border-primary/10 relative overflow-hidden group max-h-60">
