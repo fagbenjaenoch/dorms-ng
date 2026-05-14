@@ -59,13 +59,15 @@ export default function DesktopNav() {
         </nav>
 
         <div className="mt-auto px-4 space-y-1">
-          <Button
-            size="xl"
-            className="mb-6 bg-orange-500 hover:bg-orange-600 text-white font-bold shadow-lg flex items-center gap-2"
-          >
-            <Plus size={18} />
-            Add New Listing
-          </Button>
+          <Link href="/admin/hostels/new">
+            <Button
+              size="xl"
+              className="mb-6 bg-orange-500 hover:bg-orange-600 text-white font-bold shadow-lg flex items-center gap-2"
+            >
+              <Plus size={18} />
+              Add New Listing
+            </Button>
+          </Link>
           <SidebarItem icon={HelpCircle} label="Support" />
           <SidebarItem icon={LogOut} label="Logout" />
         </div>
