@@ -16,7 +16,7 @@ export default function NotFound() {
       <main className="grow flex flex-col items-center justify-center px-6 pt-24 pb-12">
         <div className="max-w-4xl w-full flex flex-col items-center text-center">
           <div className="relative mb-8">
-            <h1 className="text-[12rem] md:text-[16rem] font-black text-primary leading-none select-none">
+            <h1 className="text-[12rem] bg-clip-text text-transparent bg-linear-to-b from-primary-light to-primary-light/20 to-90% md:text-[16rem] font-black text-linear leading-none select-none">
               404
             </h1>
           </div>
