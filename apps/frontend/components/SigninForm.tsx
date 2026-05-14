@@ -57,13 +57,13 @@ export default function SigninForm() {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="signin-form" className="uppercase text-xs">
+              <FieldLabel htmlFor="email" className="uppercase text-xs">
                 Email
               </FieldLabel>
               <InputGroup>
                 <InputGroupInput
                   {...field}
-                  id="signin-form"
+                  id="email"
                   aria-invalid={fieldState.invalid}
                   placeholder="bola.musa.adabize@email.com"
                   type="email"
@@ -81,13 +81,13 @@ export default function SigninForm() {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="signin-form" className="uppercase text-xs">
+              <FieldLabel htmlFor="password" className="uppercase text-xs">
                 Password
               </FieldLabel>
               <InputGroup>
                 <InputGroupInput
                   {...field}
-                  id="signin-form"
+                  id="password"
                   aria-invalid={fieldState.invalid}
                   placeholder="Min 8 Characters"
                   type="password"
