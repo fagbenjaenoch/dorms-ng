@@ -11,6 +11,9 @@ import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { APIResponse, BaseAuthPayload } from "@/lib/dto";
+import { KeyRound, MailIcon } from "lucide-react";
+import { InputGroup, InputGroupInput, InputGroupAddon } from "./ui/input-group";
+import { BsPerson } from "react-icons/bs";
 
 export default function SignupForm() {
   const router = useRouter();
@@ -63,13 +66,17 @@ export default function SignupForm() {
               >
                 Full Name
               </FieldLabel>
-              <Input
-                {...field}
-                id="fullname"
-                aria-invalid={fieldState.invalid}
-                placeholder="Bola Musa Adabize"
-                autoComplete="off"
-              />
+              <InputGroup>
+                <InputGroupInput
+                  {...field}
+                  id="email"
+                  aria-invalid={fieldState.invalid}
+                  placeholder="Bola Musa Adabize"
+                />
+                <InputGroupAddon>
+                  <BsPerson />
+                </InputGroupAddon>
+              </InputGroup>
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
@@ -82,13 +89,18 @@ export default function SignupForm() {
               <FieldLabel htmlFor="email" className="uppercase text-xs">
                 Email
               </FieldLabel>
-              <Input
-                {...field}
-                id="email"
-                aria-invalid={fieldState.invalid}
-                placeholder="bola.musa.adabize@email.com"
-                type="email"
-              />
+              <InputGroup>
+                <InputGroupInput
+                  {...field}
+                  id="email"
+                  aria-invalid={fieldState.invalid}
+                  placeholder="bola.musa.adabize@email.com"
+                  type="email"
+                />
+                <InputGroupAddon>
+                  <MailIcon />
+                </InputGroupAddon>
+              </InputGroup>
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
@@ -101,13 +113,18 @@ export default function SignupForm() {
               <FieldLabel htmlFor="password" className="uppercase text-xs">
                 Password
               </FieldLabel>
-              <Input
-                {...field}
-                id="password"
-                aria-invalid={fieldState.invalid}
-                placeholder="Min. 8 Characters"
-                type="password"
-              />
+              <InputGroup>
+                <InputGroupInput
+                  {...field}
+                  id="password"
+                  aria-invalid={fieldState.invalid}
+                  placeholder="Min 8 Characters"
+                  type="password"
+                />
+                <InputGroupAddon>
+                  <KeyRound />
+                </InputGroupAddon>
+              </InputGroup>
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
