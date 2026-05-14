@@ -36,3 +36,8 @@ type CreateNeighborhood struct {
 type CreateNeighborhoodResponsePayload struct {
 	Name string `json:"name"`
 }
+
+type NeighborhoodPayload struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}

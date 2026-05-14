@@ -225,10 +225,18 @@ func (s AdminService) GetAllNeighborhoods(ctx context.Context) (dto.StructuredRe
 		}, err
 	}
 
+	var np []dto.NeighborhoodPayload
+	for _, n := range neighborhoods {
+		np = append(np, dto.NeighborhoodPayload{
+			ID:   n.ID,
+			Name: n.Name,
+		})
+	}
+
 	return dto.StructuredResponse{
 		Success: true,
 		Status:  http.StatusOK,
 		Message: "Neighborhoods retrieved successfully",
-		Payload: neighborhoods,
+		Payload: np,
 	}, nil
 }
