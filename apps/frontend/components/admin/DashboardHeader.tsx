@@ -14,12 +14,12 @@ export default function DashboardHeader({ title }: DashboardHeaderProps) {
           {title}
         </span>
       </div>
-      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-3">
         <Search />
-        <Button className="bg-primary-light text-primary hover:bg-primary-light/50 rounded-full">
+        <Button variant="ghost">
           <Bell size={20} />
         </Button>
-        <Button className="bg-primary-light text-primary hover:bg-primary-light/50 rounded-full">
+        <Button variant="ghost">
           <Settings size={20} />
         </Button>
         <div className="flex items-center gap-3 pl-4 border-l">
