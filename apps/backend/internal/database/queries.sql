@@ -24,10 +24,10 @@ SELECT * FROM institutions WHERE slug = ? LIMIT 1;
 -- name: CreateHostel :one
 INSERT INTO hostels (
     id, name, address, description, city, latitude, longitude,
-    google_place_id, estimated_price_range,
+    google_place_id, estimated_price_range, neighborhood, neighborhood_id,
     distance_to_gate_km, is_verified_by_admin, primary_photo_url, slug
 ) VALUES (
-    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
 )
 RETURNING *;
 

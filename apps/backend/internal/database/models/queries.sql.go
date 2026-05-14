@@ -13,12 +13,12 @@ import (
 const createHostel = `-- name: CreateHostel :one
 INSERT INTO hostels (
     id, name, address, description, city, latitude, longitude,
-    google_place_id, estimated_price_range,
+    google_place_id, estimated_price_range, neighborhood, neighborhood_id,
     distance_to_gate_km, is_verified_by_admin, primary_photo_url, slug
 ) VALUES (
-    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
 )
-RETURNING id, name, address, description, city, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, primary_photo_url, slug, created_at, updated_at
+RETURNING id, name, address, description, city, neighborhood, neighborhood_id, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, primary_photo_url, slug, created_at, updated_at
 `
 
 type CreateHostelParams struct {
@@ -31,6 +31,8 @@ type CreateHostelParams struct {
 	Longitude           float64         `json:"longitude"`
 	GooglePlaceID       sql.NullString  `json:"google_place_id"`
 	EstimatedPriceRange sql.NullString  `json:"estimated_price_range"`
+	Neighborhood        sql.NullString  `json:"neighborhood"`
+	NeighborhoodID      sql.NullString  `json:"neighborhood_id"`
 	DistanceToGateKm    sql.NullFloat64 `json:"distance_to_gate_km"`
 	IsVerifiedByAdmin   sql.NullBool    `json:"is_verified_by_admin"`
 	PrimaryPhotoUrl     sql.NullString  `json:"primary_photo_url"`
@@ -48,6 +50,8 @@ func (q *Queries) CreateHostel(ctx context.Context, arg CreateHostelParams) (Hos
 		arg.Longitude,
 		arg.GooglePlaceID,
 		arg.EstimatedPriceRange,
+		arg.Neighborhood,
+		arg.NeighborhoodID,
 		arg.DistanceToGateKm,
 		arg.IsVerifiedByAdmin,
 		arg.PrimaryPhotoUrl,
@@ -60,6 +64,8 @@ func (q *Queries) CreateHostel(ctx context.Context, arg CreateHostelParams) (Hos
 		&i.Address,
 		&i.Description,
 		&i.City,
+		&i.Neighborhood,
+		&i.NeighborhoodID,
 		&i.Latitude,
 		&i.Longitude,
 		&i.GooglePlaceID,
@@ -338,7 +344,7 @@ func (q *Queries) GetAllNeighborhoods(ctx context.Context) ([]Neighborhood, erro
 }
 
 const getHostel = `-- name: GetHostel :one
-SELECT id, name, address, description, city, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, primary_photo_url, slug, created_at, updated_at FROM hostels WHERE id = ? LIMIT 1
+SELECT id, name, address, description, city, neighborhood, neighborhood_id, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, primary_photo_url, slug, created_at, updated_at FROM hostels WHERE id = ? LIMIT 1
 `
 
 func (q *Queries) GetHostel(ctx context.Context, id string) (Hostel, error) {
@@ -350,6 +356,8 @@ func (q *Queries) GetHostel(ctx context.Context, id string) (Hostel, error) {
 		&i.Address,
 		&i.Description,
 		&i.City,
+		&i.Neighborhood,
+		&i.NeighborhoodID,
 		&i.Latitude,
 		&i.Longitude,
 		&i.GooglePlaceID,
@@ -365,7 +373,7 @@ func (q *Queries) GetHostel(ctx context.Context, id string) (Hostel, error) {
 }
 
 const getHostelBySlug = `-- name: GetHostelBySlug :one
-SELECT id, name, address, description, city, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, primary_photo_url, slug, created_at, updated_at FROM hostels WHERE slug = ? LIMIT 1
+SELECT id, name, address, description, city, neighborhood, neighborhood_id, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, primary_photo_url, slug, created_at, updated_at FROM hostels WHERE slug = ? LIMIT 1
 `
 
 func (q *Queries) GetHostelBySlug(ctx context.Context, slug string) (Hostel, error) {
@@ -377,6 +385,8 @@ func (q *Queries) GetHostelBySlug(ctx context.Context, slug string) (Hostel, err
 		&i.Address,
 		&i.Description,
 		&i.City,
+		&i.Neighborhood,
+		&i.NeighborhoodID,
 		&i.Latitude,
 		&i.Longitude,
 		&i.GooglePlaceID,

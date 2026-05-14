@@ -24,6 +24,8 @@ type Hostel struct {
 	Address             sql.NullString  `json:"address"`
 	Description         sql.NullString  `json:"description"`
 	City                sql.NullString  `json:"city"`
+	Neighborhood        sql.NullString  `json:"neighborhood"`
+	NeighborhoodID      sql.NullString  `json:"neighborhood_id"`
 	Latitude            float64         `json:"latitude"`
 	Longitude           float64         `json:"longitude"`
 	GooglePlaceID       sql.NullString  `json:"google_place_id"`

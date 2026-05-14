@@ -99,6 +99,8 @@ func (hr *HostelRepository) CreateHostel(ctx context.Context, hostel dto.CreateH
 	h.ID = uuid.New().String()
 	h.Name = hostel.Name
 	h.City = sql.NullString{String: hostel.City, Valid: true}
+	h.Neighborhood = sql.NullString{String: hostel.Neighborhood, Valid: true}
+	h.NeighborhoodID = sql.NullString{String: hostel.NeighborhoodID, Valid: true}
 	h.Address = sql.NullString{String: hostel.Address, Valid: true}
 	h.Latitude = hostel.Latitude
 	h.Longitude = hostel.Longitude

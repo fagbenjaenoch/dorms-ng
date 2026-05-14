@@ -43,6 +43,8 @@ CREATE TABLE hostels (
   address TEXT,
   description TEXT,
   city TEXT,
+  neighborhood TEXT,
+  neighborhood_id TEXT REFERENCES neighborhood(id),
   latitude REAL NOT NULL,
   longitude REAL NOT NULL,
 

@@ -13,10 +13,13 @@ type CreateHostel struct {
 	Address         string  `json:"address" validate:"required,min=2,max=255"`
 	Description     string  `json:"description" validate:"required,min=10,max=4000"`
 	City            string  `json:"city" validate:"required,min=2,max=100"`
+	Neighborhood    string  `json:"neighborhood" validate:"required,min=2,max=100"`
+	NeighborhoodID  string  `json:"neighborhoodId" validate:"required,uuid"`
 	Latitude        float64 `json:"latitude" validate:"required,min=-90,max=90"`
 	Longitude       float64 `json:"longitude" validate:"required,min=-180,max=180"`
 	PrimaryPhotoURL string  `json:"primary_photo_url" validate:"required,url"`
 }
+
 type CreateHostelResponsePayload struct {
 	Name            string  `json:"name"`
 	Address         string  `json:"address"`
