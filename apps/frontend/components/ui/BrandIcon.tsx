@@ -2,11 +2,8 @@ import { HTMLAttributes } from "react";
 
 export default function BrandIcon({ ...props }: HTMLAttributes<HTMLSpanElement>) {
   return (
-    <span
-      className="font-sans text-primary font-extrabold tracking-tighter"
-      {...props}
-    >
-      🏠 Hostel.ng
+    <span className="font-black tracking-tighter mb-6 block" {...props}>
+      Hostel<span className="text-orange-500">.ng</span>
     </span>
   );
 }
