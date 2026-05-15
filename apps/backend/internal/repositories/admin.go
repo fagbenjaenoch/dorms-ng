@@ -226,6 +226,17 @@ func (nr *NeighborhoodRepository) CreateNeighborhood(ctx context.Context, neighb
 		return nil, err
 	}
 
+	searchEntry := models.CreateSearchEntryParams{
+		EntityID:   cn.ID,
+		Entity:     neighborhood.Name,
+		EntityType: "neighborhood",
+		SearchText: neighborhood.Name,
+	}
+
+	if _, err := qtx.CreateSearchEntry(ctx, searchEntry); err != nil {
+		return nil, err
+	}
+
 	placeSearchEntry := models.CreatePlaceSearchEntryParams{
 		PlaceID: cn.ID,
 		Name:    cn.Name,
