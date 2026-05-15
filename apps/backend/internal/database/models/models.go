@@ -59,6 +59,11 @@ type Neighborhood struct {
 	PowerRatingInsight sql.NullString `json:"power_rating_insight"`
 }
 
+type PlaceSearch struct {
+	PlaceID string `json:"place_id"`
+	Name    string `json:"name"`
+}
+
 type User struct {
 	ID        string    `json:"id"`
 	Email     string    `json:"email"`

@@ -163,6 +163,24 @@ func (q *Queries) CreateNeighborhood(ctx context.Context, arg CreateNeighborhood
 	return i, err
 }
 
+const createPlaceSearchEntry = `-- name: CreatePlaceSearchEntry :one
+INSERT INTO place_search (place_id, name)
+VALUES (?, ?)
+RETURNING place_id, name
+`
+
+type CreatePlaceSearchEntryParams struct {
+	PlaceID string `json:"place_id"`
+	Name    string `json:"name"`
+}
+
+func (q *Queries) CreatePlaceSearchEntry(ctx context.Context, arg CreatePlaceSearchEntryParams) (PlaceSearch, error) {
+	row := q.db.QueryRowContext(ctx, createPlaceSearchEntry, arg.PlaceID, arg.Name)
+	var i PlaceSearch
+	err := row.Scan(&i.PlaceID, &i.Name)
+	return i, err
+}
+
 const createSearchEntry = `-- name: CreateSearchEntry :one
 INSERT INTO global_search (entity_id, entity_type, entity, search_text, slug, address)
 VALUES (?, ?, ?, ?, ?, ?)
@@ -617,6 +635,33 @@ func (q *Queries) GetNeighborhoodsByInstitution(ctx context.Context, institution
 			&i.AvgPrice1bed,
 			&i.PowerRatingInsight,
 		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getPlaceSearchEntry = `-- name: GetPlaceSearchEntry :many
+SELECT place_id, name FROM place_search WHERE name MATCH ? ORDER BY rank LIMIT 5
+`
+
+func (q *Queries) GetPlaceSearchEntry(ctx context.Context, name string) ([]PlaceSearch, error) {
+	rows, err := q.db.QueryContext(ctx, getPlaceSearchEntry, name)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []PlaceSearch{}
+	for rows.Next() {
+		var i PlaceSearch
+		if err := rows.Scan(&i.PlaceID, &i.Name); err != nil {
 			return nil, err
 		}
 		items = append(items, i)
