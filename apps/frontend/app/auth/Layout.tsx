@@ -10,7 +10,7 @@ export default function Layout({
     <div className="block lg:flex *:flex-1 h-screen w-full">
       <div className="hidden lg:block overflow-hidden bg-primary p-8 max-w-3xl">
         <Link href="/">
-          <BrandIcon className="text-white" />
+          <BrandIcon className="text-white font-bold" />
         </Link>
       </div>
       <div className="bg-muted-foreground/10 pb-24 overflow-y-auto overflow-x-hidden">
