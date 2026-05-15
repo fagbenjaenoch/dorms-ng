@@ -33,9 +33,9 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
           <div className="md:col-span-4">
             <Link href="#">
-              <BrandIcon className="text-2xl" />
+              <BrandIcon className="text-2xl mb-6" />
             </Link>
-            <p className="text-emerald-100/60 text-sm leading-relaxed max-w-xs">
+            <p className="text-primary-light text-sm leading-relaxed max-w-xs">
               Empowering Nigerian students with seamless access to secure, verified,
               and affordable housing solutions nationwide.
             </p>
@@ -50,7 +50,7 @@ export default function Footer() {
                   {items.map((item) => (
                     <li key={item.title}>
                       <Link
-                        className="text-sm text-emerald-100/80 hover:text-white transition-colors duration-200"
+                        className="text-sm text-primary-light hover:text-white transition-colors duration-200"
                         href={item.href}
                       >
                         {item.title}
@@ -63,25 +63,25 @@ export default function Footer() {
           </div>
         </div>
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-emerald-100/40 text-[10px] font-medium tracking-wider uppercase">
+          <p className="text-primary-light/60 text-[10px] font-medium tracking-wider uppercase">
             © {getCurrentYear()} Hostel.ng. All rights reserved. Built for Nigerian
             Students.
           </p>
           <div className="flex gap-6">
             <Link
-              className="text-primary-light hover:text-orange-500 transition-colors duration-300"
+              className="text-primary-light/60 hover:text-orange-500 transition-colors duration-300"
               href="#"
             >
               <FaGlobeAfrica size={15} />
             </Link>
             <Link
-              className="text-primary-light hover:text-orange-500 transition-colors duration-300"
+              className="text-primary-light/60 hover:text-orange-500 transition-colors duration-300"
               href="#"
             >
               <FaAt size={15} />
             </Link>
             <Link
-              className="text-primary-light hover:text-orange-500 transition-colors duration-300"
+              className="text-primary-light/60 hover:text-orange-500 transition-colors duration-300"
               href="#"
             >
               <MessageSquareTextIcon size={15} />
