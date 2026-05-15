@@ -138,4 +138,4 @@ export type LngLat = {
 
 export const defaultLngLat: LngLat = { lng: 8.606, lat: 9.967 };
 
-export const queryParam = "search";
+export const queryParam = "q";

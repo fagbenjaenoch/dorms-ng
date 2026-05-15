@@ -14,7 +14,7 @@ import { search } from "@/lib/api/search";
 import { EntityTypeToIcon } from "@/lib/utils/search";
 
 export default function LandingSearch() {
-  const [searchTerm, setSearchTerm] = useQueryState(queryParam, {
+  const [searchTerm, setSearchTerm] = useQueryState(searchQueryParam, {
     defaultValue: "",
   });
 

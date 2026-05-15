@@ -11,7 +11,7 @@ import Link from "next/link";
 import { useQueryState } from "nuqs";
 
 export default function Search() {
-  const [searchTerm, setSearchTerm] = useQueryState(queryParam, {
+  const [searchTerm, setSearchTerm] = useQueryState(searchQueryParam, {
     defaultValue: "",
   });
 

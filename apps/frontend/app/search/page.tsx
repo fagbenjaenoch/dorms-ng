@@ -117,8 +117,6 @@ const searchResults: SearchResult[] = [
   },
 ];
 
-const queryParam = "q";
-
 export default function SearchPage() {
   const [query, setQuery] = useQueryState(queryParam, {
     defaultValue: "",
