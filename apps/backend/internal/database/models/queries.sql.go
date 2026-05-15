@@ -401,6 +401,141 @@ func (q *Queries) GetHostelBySlug(ctx context.Context, slug string) (Hostel, err
 	return i, err
 }
 
+const getHostelsByCity = `-- name: GetHostelsByCity :many
+SELECT id, name, address, description, city, neighborhood, neighborhood_id, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, primary_photo_url, slug, created_at, updated_at FROM hostels WHERE city = ? ORDER BY name
+`
+
+func (q *Queries) GetHostelsByCity(ctx context.Context, city sql.NullString) ([]Hostel, error) {
+	rows, err := q.db.QueryContext(ctx, getHostelsByCity, city)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Hostel{}
+	for rows.Next() {
+		var i Hostel
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Address,
+			&i.Description,
+			&i.City,
+			&i.Neighborhood,
+			&i.NeighborhoodID,
+			&i.Latitude,
+			&i.Longitude,
+			&i.GooglePlaceID,
+			&i.EstimatedPriceRange,
+			&i.DistanceToGateKm,
+			&i.IsVerifiedByAdmin,
+			&i.PrimaryPhotoUrl,
+			&i.Slug,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getHostelsByInstitution = `-- name: GetHostelsByInstitution :many
+SELECT hostels.id, hostels.name, hostels.address, hostels.description, hostels.city, hostels.neighborhood, hostels.neighborhood_id, hostels.latitude, hostels.longitude, hostels.google_place_id, hostels.estimated_price_range, hostels.distance_to_gate_km, hostels.is_verified_by_admin, hostels.primary_photo_url, hostels.slug, hostels.created_at, hostels.updated_at FROM hostels INNER JOIN neighborhoods ON hostels.neighborhood_id = neighborhoods.id WHERE neighborhoods.institution_id = ?
+`
+
+func (q *Queries) GetHostelsByInstitution(ctx context.Context, institutionID string) ([]Hostel, error) {
+	rows, err := q.db.QueryContext(ctx, getHostelsByInstitution, institutionID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Hostel{}
+	for rows.Next() {
+		var i Hostel
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Address,
+			&i.Description,
+			&i.City,
+			&i.Neighborhood,
+			&i.NeighborhoodID,
+			&i.Latitude,
+			&i.Longitude,
+			&i.GooglePlaceID,
+			&i.EstimatedPriceRange,
+			&i.DistanceToGateKm,
+			&i.IsVerifiedByAdmin,
+			&i.PrimaryPhotoUrl,
+			&i.Slug,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getHostelsByNeighborhood = `-- name: GetHostelsByNeighborhood :many
+SELECT id, name, address, description, city, neighborhood, neighborhood_id, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, primary_photo_url, slug, created_at, updated_at FROM hostels WHERE neighborhood_id = ? ORDER BY name
+`
+
+func (q *Queries) GetHostelsByNeighborhood(ctx context.Context, neighborhoodID sql.NullString) ([]Hostel, error) {
+	rows, err := q.db.QueryContext(ctx, getHostelsByNeighborhood, neighborhoodID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []Hostel{}
+	for rows.Next() {
+		var i Hostel
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Address,
+			&i.Description,
+			&i.City,
+			&i.Neighborhood,
+			&i.NeighborhoodID,
+			&i.Latitude,
+			&i.Longitude,
+			&i.GooglePlaceID,
+			&i.EstimatedPriceRange,
+			&i.DistanceToGateKm,
+			&i.IsVerifiedByAdmin,
+			&i.PrimaryPhotoUrl,
+			&i.Slug,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getInstitutionById = `-- name: GetInstitutionById :one
 SELECT id, name, acronym, latitude, longitude, slug, created_at, updated_at, city FROM institutions WHERE id = ? LIMIT 1
 `

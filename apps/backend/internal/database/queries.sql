@@ -37,6 +37,15 @@ SELECT * FROM hostels WHERE id = ? LIMIT 1;
 -- name: GetHostelBySlug :one
 SELECT * FROM hostels WHERE slug = ? LIMIT 1;
 
+-- name: GetHostelsByNeighborhood :many
+SELECT * FROM hostels WHERE neighborhood_id = ? ORDER BY name;
+
+-- name: GetHostelsByCity :many
+SELECT * FROM hostels WHERE city = ? ORDER BY name;
+
+-- name: GetHostelsByInstitution :many
+SELECT hostels.* FROM hostels INNER JOIN neighborhoods ON hostels.neighborhood_id = neighborhoods.id WHERE neighborhoods.institution_id = ?;
+
 -- name: CreateUser :one
 INSERT INTO users (
     id, full_name, email, role
