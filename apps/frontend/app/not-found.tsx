@@ -8,7 +8,7 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <div className="bg-surface text-on-surface flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen">
       <nav>
         <DesktopNav />
         <MobileNav />
@@ -16,7 +16,7 @@ export default function NotFound() {
       <main className="grow flex flex-col items-center justify-center px-6 pt-24 pb-12">
         <div className="max-w-4xl w-full flex flex-col items-center text-center">
           <div className="relative mb-8">
-            <h1 className="text-[12rem] md:text-[16rem] font-black text-primary leading-none select-none">
+            <h1 className="text-[12rem] bg-clip-text text-transparent bg-linear-to-b from-primary-light to-primary-light/20 to-90% md:text-[16rem] font-black text-linear leading-none select-none">
               404
             </h1>
           </div>
@@ -29,13 +29,13 @@ export default function NotFound() {
                 We couldn't find that link
               </p>
             </div>
-            <p className="text-on-surface-variant leading-relaxed">
+            <p className="leading-relaxed">
               The page you're looking for might have been moved, deleted, or perhaps
               the address was entered incorrectly. Let's get you back on track.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
               <Link href="/">
-                <Button variant="secondary" size="xl" className="cursor-pointer">
+                <Button variant="secondary" size="xl">
                   Return to homepage
                 </Button>
               </Link>

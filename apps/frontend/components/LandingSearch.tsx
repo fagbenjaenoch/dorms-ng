@@ -5,11 +5,13 @@ import { HiLocationMarker } from "react-icons/hi";
 import { Button } from "./ui/button";
 import useDebounce from "@/lib/hooks/useDebounce";
 import { useQuery } from "@tanstack/react-query";
-import { X } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { ChevronRight, Divide, GraduationCapIcon, X } from "lucide-react";
+import { cn, queryParam } from "@/lib/utils";
 import { useQueryState } from "nuqs";
-
-const queryParam = "search";
+import { APIResponse, SearchResult } from "@/lib/dto";
+import Link from "next/link";
+import { search } from "@/lib/api/search";
+import { EntityTypeToIcon } from "@/lib/utils/search";
 
 export default function LandingSearch() {
   const [searchTerm, setSearchTerm] = useQueryState(queryParam, {
@@ -18,29 +20,9 @@ export default function LandingSearch() {
 
   const debounceSearchTerm = useDebounce(searchTerm, 300);
 
-  interface SearchResult {
-    entity_id: string;
-    entity_type: string;
-    snippet: string;
-  }
-
   const query = useQuery<APIResponse<SearchResult[]>>({
     queryKey: ["search", debounceSearchTerm],
-    queryFn: async ({ signal }) => {
-      try {
-        let path = `http://localhost:8000/api/v1/search?${queryParam}=${debounceSearchTerm}`;
-
-        const res = await fetch(path, {
-          method: "GET",
-          signal,
-        });
-
-        if (!res.json) throw new Error("could not search item");
-        return res.json();
-      } catch (err) {
-        throw new Error("could not search item");
-      }
-    },
+    queryFn: ({ signal }) => search(debounceSearchTerm, { signal }),
     enabled: debounceSearchTerm?.length > 0,
   });
 
@@ -58,7 +40,7 @@ export default function LandingSearch() {
         <HiLocationMarker size={20} className="text-primary" />
         <search className="w-full flex items-center">
           <input
-            name="landing_search"
+            name="landing-search"
             className=" text-gray-900 focus:outline-none w-full"
             placeholder="Which University or City?"
             onChange={handleChange}
@@ -67,7 +49,7 @@ export default function LandingSearch() {
           <Button
             variant="ghost"
             className={cn(
-              "hidden cursor-pointer hover:text-primary-background",
+              "hidden hover:text-primary-background",
               `${searchTerm?.length && "block"}`,
             )}
             onClick={clearSearch}
@@ -88,10 +70,25 @@ export default function LandingSearch() {
       {!!query.data?.payload?.length && (
         <div className="absolute top-full mt-3 left-0 w-full flex flex-col gap-2 bg-primary-foreground shadow-lg ring-1 ring-gray-500/5 p-2 rounded-xl">
           {query.data.payload.map((searchResult) => (
-            <div
-              className="cursor-pointer hover:bg-gray-500/10 p-2 rounded-md"
-              dangerouslySetInnerHTML={{ __html: searchResult.snippet }}
-            ></div>
+            <Link
+              className="group cursor-pointer hover:bg-gray-500/10 p-4 rounded-md flex items-center gap-2"
+              href={`/${searchResult.entity_type}s/${searchResult.slug}`}
+              key={searchResult.entity_id}
+            >
+              <div className="flex items-center gap-4">
+                {EntityTypeToIcon[searchResult.entity_type]}
+                <div className="flex flex-col">
+                  <span className="font-semibold">{searchResult.entity}</span>
+                  <span className="text-muted-foreground">
+                    {searchResult.address}
+                  </span>
+                </div>
+              </div>
+              <ChevronRight
+                className="text-primary ml-auto group-hover:translate-x-1 transition-all"
+                size={15}
+              />
+            </Link>
           ))}
         </div>
       )}

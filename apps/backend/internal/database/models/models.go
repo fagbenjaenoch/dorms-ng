@@ -10,25 +10,30 @@ import (
 )
 
 type GlobalSearch struct {
-	EntityID    string `json:"entity_id"`
-	EntityType  string `json:"entity_type"`
-	SearchText  string `json:"search_text"`
-	Description string `json:"description"`
+	EntityID   string `json:"entity_id"`
+	EntityType string `json:"entity_type"`
+	Entity     string `json:"entity"`
+	Slug       string `json:"slug"`
+	Address    string `json:"address"`
+	SearchText string `json:"search_text"`
 }
 
 type Hostel struct {
 	ID                  string          `json:"id"`
-	NeighborhoodID      sql.NullString  `json:"neighborhood_id"`
 	Name                string          `json:"name"`
 	Address             sql.NullString  `json:"address"`
+	Description         sql.NullString  `json:"description"`
+	City                sql.NullString  `json:"city"`
+	Neighborhood        sql.NullString  `json:"neighborhood"`
+	NeighborhoodID      sql.NullString  `json:"neighborhood_id"`
 	Latitude            float64         `json:"latitude"`
 	Longitude           float64         `json:"longitude"`
 	GooglePlaceID       sql.NullString  `json:"google_place_id"`
-	GoogleRating        sql.NullFloat64 `json:"google_rating"`
 	EstimatedPriceRange sql.NullString  `json:"estimated_price_range"`
 	DistanceToGateKm    sql.NullFloat64 `json:"distance_to_gate_km"`
-	EtaWalkingMins      sql.NullInt64   `json:"eta_walking_mins"`
 	IsVerifiedByAdmin   sql.NullBool    `json:"is_verified_by_admin"`
+	PrimaryPhotoUrl     sql.NullString  `json:"primary_photo_url"`
+	Slug                string          `json:"slug"`
 	CreatedAt           time.Time       `json:"created_at"`
 	UpdatedAt           time.Time       `json:"updated_at"`
 }
@@ -39,8 +44,10 @@ type Institution struct {
 	Acronym   sql.NullString `json:"acronym"`
 	Latitude  float64        `json:"latitude"`
 	Longitude float64        `json:"longitude"`
+	Slug      string         `json:"slug"`
 	CreatedAt time.Time      `json:"created_at"`
 	UpdatedAt time.Time      `json:"updated_at"`
+	City      string         `json:"city"`
 }
 
 type Neighborhood struct {
@@ -50,10 +57,6 @@ type Neighborhood struct {
 	AvgPriceSelfCon    sql.NullInt64  `json:"avg_price_self_con"`
 	AvgPrice1bed       sql.NullInt64  `json:"avg_price_1bed"`
 	PowerRatingInsight sql.NullString `json:"power_rating_insight"`
-	Latitude           float64        `json:"latitude"`
-	Longitude          float64        `json:"longitude"`
-	CreatedAt          time.Time      `json:"created_at"`
-	UpdatedAt          time.Time      `json:"updated_at"`
 }
 
 type User struct {

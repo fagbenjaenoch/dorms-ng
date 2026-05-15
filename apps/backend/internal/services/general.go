@@ -23,10 +23,13 @@ func NewSearchService(db *sql.DB, logger *zerolog.Logger) SearchService {
 }
 
 func (ss *SearchService) Search(ctx context.Context, searchQuery string) (dto.StructuredResponse, error) {
+	ss.Logger.Debug().Str("search_query", searchQuery).Msg("Searching hostels by keyword")
+
 	res, err := ss.searchRepo.Search(ctx, searchQuery)
 	if err != nil {
 		return dto.StructuredResponse{
-			Status: http.StatusNotFound,
+			Message: "could not find hostels",
+			Status:  http.StatusNotFound,
 		}, err
 	}
 

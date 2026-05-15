@@ -19,6 +19,7 @@ type Config struct {
 	Logging       Logging       `koanf:"logging" validate:"required"`
 	Observability Observability `koanf:"observability" validate:"required"`
 	Auth          Auth          `koanf:"auth" validate:"required"`
+	R2            R2            `koanf:"r2" validate:"required"`
 }
 
 type Primary struct {
@@ -46,6 +47,14 @@ type Observability struct {
 
 type Auth struct {
 	JWTSecret string `koanf:"jwt_secret" validate:"required"`
+}
+
+type R2 struct {
+	AccessKeyId     string `koanf:"access_key_id" validate:"required"`
+	SecretAccessKey string `koanf:"secret_access_key" validate:"required"`
+	SecretKey       string `koanf:"secret_key" validate:"required"`
+	Bucket          string `koanf:"bucket" validate:"required"`
+	Endpoint        string `koanf:"endpoint" validate:"required,url"`
 }
 
 func LoadConfig() (*Config, error) {

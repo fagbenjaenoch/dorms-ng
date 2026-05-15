@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
 	"github.com/go-playground/validator/v10"
@@ -105,4 +106,24 @@ func FormatValidationErrors(err error) ErrorResponse {
 	return ErrorResponse{
 		Errors: errors,
 	}
+}
+
+func GeneratePresignedURLKey(entityName, entityType string) string {
+	return fmt.Sprintf("%s/%s-%d", strings.ToLower(entityType), strings.ToLower(strings.ReplaceAll(entityName, " ", "-")), time.Now().Unix())
+}
+
+func GenerateSlug(name string) string {
+	return fmt.Sprintf("%s-%v", strings.ToLower(strings.ReplaceAll(name, " ", "-")), time.Now().Unix())
+}
+
+func SkipTelemetry(r *http.Request) bool {
+	if r.URL.Path == "/health" || r.URL.Path == "/metrics" {
+		return false
+	}
+
+	if strings.HasPrefix(r.URL.Path, "/docs/") {
+		return false
+	}
+
+	return true
 }

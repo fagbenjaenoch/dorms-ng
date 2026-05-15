@@ -9,6 +9,9 @@ import { Button } from "./ui/button";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { SigninPayload, APIResponse } from "@/lib/dto";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "./ui/input-group";
+import { KeyRound, MailIcon } from "lucide-react";
 
 export default function SigninForm() {
   const router = useRouter();
@@ -24,11 +27,11 @@ export default function SigninForm() {
     mutationKey: ["signup"],
     mutationFn: async (user: LoginData) => {
       try {
-        const res = await fetch("http://localhost:8000/api/v1/login", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/login`, {
           method: "POST",
           body: JSON.stringify(user),
         });
-        let responseObj = await res.json();
+        let responseObj = (await res.json()) as APIResponse<SigninPayload>;
         if (!res.ok) throw new Error(responseObj.message);
 
         return responseObj;
@@ -41,8 +44,7 @@ export default function SigninForm() {
 
   const onSubmit = async (data: LoginData) => {
     const payload = await mutation.mutateAsync(data);
-    console.log(payload);
-    if (payload.success) {
+    if (payload?.success) {
       router.push("/app");
     }
   };
@@ -55,16 +57,21 @@ export default function SigninForm() {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="signin-form" className="uppercase text-xs">
+              <FieldLabel htmlFor="email" className="uppercase text-xs">
                 Email
               </FieldLabel>
-              <Input
-                {...field}
-                id="signin-form"
-                aria-invalid={fieldState.invalid}
-                placeholder="bola.musa.adabize@email.com"
-                type="email"
-              />
+              <InputGroup>
+                <InputGroupInput
+                  {...field}
+                  id="email"
+                  aria-invalid={fieldState.invalid}
+                  placeholder="bola.musa.adabize@email.com"
+                  type="email"
+                />
+                <InputGroupAddon>
+                  <MailIcon />
+                </InputGroupAddon>
+              </InputGroup>
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
@@ -74,23 +81,28 @@ export default function SigninForm() {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="signin-form" className="uppercase text-xs">
+              <FieldLabel htmlFor="password" className="uppercase text-xs">
                 Password
               </FieldLabel>
-              <Input
-                {...field}
-                id="signin-form"
-                aria-invalid={fieldState.invalid}
-                placeholder="Min. 8 Characters"
-                type="password"
-              />
+              <InputGroup>
+                <InputGroupInput
+                  {...field}
+                  id="password"
+                  aria-invalid={fieldState.invalid}
+                  placeholder="Min 8 Characters"
+                  type="password"
+                />
+                <InputGroupAddon>
+                  <KeyRound />
+                </InputGroupAddon>
+              </InputGroup>
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
         />
       </FieldGroup>
       <Button
-        className="mt-6 text-white w-full py-8 text-base cursor-pointer"
+        className="mt-6 text-white w-full py-8 text-base"
         onClick={form.handleSubmit(onSubmit)}
         form="signin-form"
       >

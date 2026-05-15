@@ -31,52 +31,62 @@ CREATE TABLE institutions (
   acronym TEXT,
   latitude REAL NOT NULL,  -- GPS coordinate for the main gate
   longitude REAL NOT NULL,
+  slug TEXT UNIQUE NOT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE neighborhoods (
-  id TEXT NOT NULL PRIMARY KEY,
-  institution_id TEXT NOT NULL REFERENCES institutions ON DELETE CASCADE,
-  name TEXT NOT NULL,
-  avg_price_self_con INTEGER,
-  avg_price_1bed INTEGER,
-  power_rating_insight TEXT,
-  latitude REAL NOT NULL,           -- Center point of the neighborhood
-  longitude REAL NOT NULL,
-  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
 
 CREATE TABLE hostels (
   id TEXT PRIMARY KEY,
-  neighborhood_id TEXT REFERENCES neighborhoods ON DELETE SET NULL,
   name TEXT NOT NULL,
   address TEXT,
+  description TEXT,
+  city TEXT,
+  neighborhood TEXT,
+  neighborhood_id TEXT REFERENCES neighborhood(id),
   latitude REAL NOT NULL,
   longitude REAL NOT NULL,
 
   -- Scraped/Sourced Data
   google_place_id TEXT UNIQUE,
-  google_rating REAL,
 
   -- Curated Trust Layer Insights
   estimated_price_range TEXT,
 
   -- Calculated Fields (Computed by your Go backend before inserting)
   distance_to_gate_km REAL,
-  eta_walking_mins INTEGER,
 
   is_verified_by_admin BOOLEAN DEFAULT FALSE,
+  primary_photo_url TEXT,
+
+  slug TEXT UNIQUE NOT NULL,
+
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE neighborhoods (
+    id TEXT PRIMARY KEY,
+    institution_id TEXT NOT NULL,
+
+    name TEXT NOT NULL,
+
+    avg_price_self_con INTEGER,
+    avg_price_1bed INTEGER,
+    power_rating_insight TEXT,
+
+    -- Foreign Key Constraint
+    FOREIGN KEY (institution_id) REFERENCES institutions(id) ON DELETE CASCADE
 );
 
 CREATE VIRTUAL TABLE global_search USING fts5 (
   entity_id UNINDEXED,
   entity_type UNINDEXED,
+  entity UNINDEXED,
+  slug UNINDEXED,
+  address UNINDEXED,
   search_text,
-  description,
   tokenize="trigram"
 );
 
@@ -84,6 +94,6 @@ CREATE VIRTUAL TABLE global_search USING fts5 (
 DROP TABLE user_credentials;
 DROP TABLE users;
 DROP TABLE institutions;
-DROP TABLE neighborhoods;
 DROP TABLE hostels;
+DROP TABLE neighborhoods;
 DROP TABLE global_search;

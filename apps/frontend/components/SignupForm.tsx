@@ -10,6 +10,10 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { APIResponse, BaseAuthPayload } from "@/lib/dto";
+import { KeyRound, MailIcon } from "lucide-react";
+import { InputGroup, InputGroupInput, InputGroupAddon } from "./ui/input-group";
+import { BsPerson } from "react-icons/bs";
 
 export default function SignupForm() {
   const router = useRouter();
@@ -26,12 +30,13 @@ export default function SignupForm() {
     mutationKey: ["signup"],
     mutationFn: async (user: SignupData) => {
       try {
-        const res = await fetch("http://localhost:8000/api/v1/signup", {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/signup`, {
           method: "POST",
           body: JSON.stringify(user),
         });
         if (!res.ok) throw new Error("could not signup");
-        return res.json();
+
+        return res.json() as any as APIResponse<BaseAuthPayload>;
       } catch (err) {
         toast.error("could not login");
         console.error(err);
@@ -39,14 +44,15 @@ export default function SignupForm() {
     },
   });
 
-  const onSubmit = async (data: SignupData) => {
+  const handleSubmit = async (data: SignupData) => {
     const payload = await mutation.mutateAsync(data);
-    console.log(payload);
-    router.push("/app");
+    if (payload?.success) {
+      router.push("/app");
+    }
   };
 
   return (
-    <form id="signup-form" onSubmit={form.handleSubmit(onSubmit)}>
+    <form id="signup-form" onSubmit={form.handleSubmit(handleSubmit)}>
       <FieldGroup>
         <Controller
           name="fullname"
@@ -54,19 +60,23 @@ export default function SignupForm() {
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel
-                htmlFor="signup-form"
+                htmlFor="fullname"
                 className="uppercase text-xs"
                 aria-invalid={fieldState.invalid}
               >
                 Full Name
               </FieldLabel>
-              <Input
-                {...field}
-                id="signup-form"
-                aria-invalid={fieldState.invalid}
-                placeholder="Bola Musa Adabize"
-                autoComplete="off"
-              />
+              <InputGroup>
+                <InputGroupInput
+                  {...field}
+                  id="email"
+                  aria-invalid={fieldState.invalid}
+                  placeholder="Bola Musa Adabize"
+                />
+                <InputGroupAddon>
+                  <BsPerson />
+                </InputGroupAddon>
+              </InputGroup>
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
@@ -76,16 +86,21 @@ export default function SignupForm() {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="signup-form" className="uppercase text-xs">
+              <FieldLabel htmlFor="email" className="uppercase text-xs">
                 Email
               </FieldLabel>
-              <Input
-                {...field}
-                id="signup-form"
-                aria-invalid={fieldState.invalid}
-                placeholder="bola.musa.adabize@email.com"
-                type="email"
-              />
+              <InputGroup>
+                <InputGroupInput
+                  {...field}
+                  id="email"
+                  aria-invalid={fieldState.invalid}
+                  placeholder="bola.musa.adabize@email.com"
+                  type="email"
+                />
+                <InputGroupAddon>
+                  <MailIcon />
+                </InputGroupAddon>
+              </InputGroup>
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
@@ -95,16 +110,21 @@ export default function SignupForm() {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="signup-form" className="uppercase text-xs">
+              <FieldLabel htmlFor="password" className="uppercase text-xs">
                 Password
               </FieldLabel>
-              <Input
-                {...field}
-                id="signup-form"
-                aria-invalid={fieldState.invalid}
-                placeholder="Min. 8 Characters"
-                type="password"
-              />
+              <InputGroup>
+                <InputGroupInput
+                  {...field}
+                  id="password"
+                  aria-invalid={fieldState.invalid}
+                  placeholder="Min 8 Characters"
+                  type="password"
+                />
+                <InputGroupAddon>
+                  <KeyRound />
+                </InputGroupAddon>
+              </InputGroup>
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
@@ -122,8 +142,8 @@ export default function SignupForm() {
         </p>
       </FieldGroup>
       <Button
-        className="mt-6 text-white w-full py-8 text-base cursor-pointer"
-        onClick={form.handleSubmit(onSubmit)}
+        className="mt-6 text-white w-full py-8 text-base "
+        type="submit"
         form="signup-form"
       >
         Create Account

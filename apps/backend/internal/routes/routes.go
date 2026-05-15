@@ -3,12 +3,12 @@ package routes
 import (
 	"fmt"
 	"net/http"
-	"strings"
 	"time"
 
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/handlers"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/middleware"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/server"
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/utils"
 	"github.com/go-chi/chi/v5"
 	chiMiddleware "github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/httprate"
@@ -35,23 +35,11 @@ func New(s *server.Server) *chi.Mux {
 	r.Use(httprate.LimitByIP(100, 1*time.Minute))
 	r.Use(chiMiddleware.Recoverer)
 
-	skipTelemetry := func(r *http.Request) bool {
-		if r.URL.Path == "/health" || r.URL.Path == "/metrics" {
-			return false
-		}
-
-		if strings.HasPrefix(r.URL.Path, "/docs/") {
-			return false
-		}
-
-		return true
-	}
-
 	// initialize observability middleware
 	r.Use(otelchi.Middleware(
 		s.Config.Observability.AppName,
 		otelchi.WithChiRoutes(r),
-		otelchi.WithFilter(skipTelemetry),
+		otelchi.WithFilter(utils.SkipTelemetry),
 	),
 	)
 

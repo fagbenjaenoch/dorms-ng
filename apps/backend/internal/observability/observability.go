@@ -16,6 +16,7 @@ import (
 	"go.opentelemetry.io/otel/exporters/stdout/stdoutmetric"
 	"go.opentelemetry.io/otel/exporters/stdout/stdouttrace"
 	"go.opentelemetry.io/otel/log/global"
+	"go.opentelemetry.io/otel/metric"
 	"go.opentelemetry.io/otel/propagation"
 	sdklog "go.opentelemetry.io/otel/sdk/log"
 	sdkmetric "go.opentelemetry.io/otel/sdk/metric"
@@ -125,6 +126,8 @@ func (o *Observability) InitTracer(ctx context.Context, res *resource.Resource) 
 	return tp.Shutdown, nil
 }
 
+var GlobalMetric *metric.Meter
+
 func (o *Observability) InitMetrics(ctx context.Context, res *resource.Resource) (func(context.Context) error, error) {
 	var metricExp sdkmetric.Exporter
 	var err error
@@ -172,6 +175,8 @@ func (o *Observability) InitMetrics(ctx context.Context, res *resource.Resource)
 
 	// Set as the global MeterProvider
 	otel.SetMeterProvider(mp)
+	newMeter := mp.Meter(o.s.Config.Observability.AppName)
+	GlobalMetric = &newMeter
 
 	return mp.Shutdown, nil
 }

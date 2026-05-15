@@ -1,0 +1,217 @@
+"use client";
+
+import { CreateInstitutionData, createInstitutionSchema } from "@/lib/forms";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { Save } from "lucide-react";
+import { useForm, Controller } from "react-hook-form";
+import { Field, FieldError, FieldGroup, FieldLabel, FieldTitle } from "../ui/field";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import { useEffect } from "react";
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+} from "../ui/combobox";
+import { nigerianCities } from "@/lib/utils";
+import { toast } from "sonner";
+import { createInstitution } from "@/lib/api/institution";
+
+interface CreateInstitutionFormProps {
+  lng: number;
+  lat: number;
+}
+
+export default function CreateInstitutionForm({
+  lng,
+  lat,
+}: CreateInstitutionFormProps) {
+  const form = useForm<CreateInstitutionData>({
+    resolver: zodResolver(createInstitutionSchema),
+    defaultValues: {
+      name: "",
+      acronym: "",
+      latitude: 9.967,
+      longitude: 8.606,
+      city: "",
+    },
+  });
+
+  useEffect(() => {
+    form.setValue("latitude", lat);
+    form.setValue("longitude", lng);
+  }, [lng, lat]);
+
+  const mutation = useMutation({
+    mutationKey: ["createInstitution"],
+    mutationFn: createInstitution,
+    onSuccess: () => {
+      toast.success("Created Institution Successfully");
+      form.reset();
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  const onSubmit = async (data: CreateInstitutionData) => {
+    await mutation.mutateAsync(data);
+  };
+  return (
+    <form
+      id="institution-form"
+      className="space-y-8"
+      onSubmit={form.handleSubmit(onSubmit)}
+    >
+      <FieldGroup>
+        <Controller
+          name="name"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel
+                htmlFor="name"
+                className="uppercase text-xs font-bold"
+                aria-invalid={fieldState.invalid}
+              >
+                Name of Institution
+              </FieldLabel>
+              <Input
+                {...field}
+                id="name"
+                aria-invalid={fieldState.invalid}
+                placeholder="e.g University of Ilorin"
+                className="input-bg"
+                autoComplete="off"
+              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+        <Controller
+          name="acronym"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor="acronym" className="uppercase text-xs font-bold">
+                Acronym
+              </FieldLabel>
+              <Input
+                {...field}
+                id="acronym"
+                aria-invalid={fieldState.invalid}
+                placeholder="e.g unilorin"
+                className="input-bg"
+              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+        <Controller
+          name="city"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor="city" className="uppercase text-xs font-bold">
+                City
+              </FieldLabel>
+
+              <Combobox id="city" items={nigerianCities}>
+                <ComboboxInput
+                  {...field}
+                  className="input-bg h-12 rounded-md"
+                  placeholder="Select a city"
+                  showClear={true}
+                />
+                <ComboboxContent>
+                  <ComboboxEmpty>No city found.</ComboboxEmpty>
+                  <ComboboxList>
+                    {(item) => (
+                      <ComboboxItem
+                        key={item}
+                        value={item}
+                        onClick={() => field.onChange(item)}
+                      >
+                        {item}
+                      </ComboboxItem>
+                    )}
+                  </ComboboxList>
+                </ComboboxContent>
+              </Combobox>
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+      </FieldGroup>
+      <FieldGroup className="flex-col md:flex-row">
+        <Controller
+          name="latitude"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor="latitude" className="uppercase text-xs font-bold">
+                Latitude (Main gate)
+              </FieldLabel>
+              <Input
+                {...field}
+                id="latitude"
+                aria-invalid={fieldState.invalid}
+                placeholder="6.54326533"
+                className="input-bg"
+                type="text"
+                disabled
+              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+        <Controller
+          name="longitude"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel
+                htmlFor="longitude"
+                className="uppercase text-xs font-bold"
+              >
+                Longitude (Main gate)
+              </FieldLabel>
+              <Input
+                {...field}
+                id="longitude"
+                aria-invalid={fieldState.invalid}
+                placeholder="6.54326533"
+                className="input-bg"
+                disabled
+              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+      </FieldGroup>
+      <div className="flex flex-col md:flex-row flex-wrap gap-4">
+        <Button
+          type="submit"
+          size="xl"
+          className="inline-flex gap-2"
+          disabled={mutation.isPending}
+        >
+          <Save /> {mutation.isPending ? "Creating" : "Create Institution"}
+        </Button>
+        <Button
+          size="xl"
+          variant="outline"
+          type="reset"
+          onClick={() => form.reset()}
+          className="bg-gray-300/50 hover:bg-gray-300/30"
+        >
+          Discard changes
+        </Button>
+      </div>
+    </form>
+  );
+}
