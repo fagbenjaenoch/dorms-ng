@@ -5,7 +5,7 @@ import LocationSearch from "@/components/LocationSearch";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/ui/Footer";
 import PropertyCard from "@/components/ui/PropertyCard";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, LucideListFilter } from "lucide-react";
 import { useQueryState } from "nuqs";
 
 type SearchResult = {
@@ -146,10 +146,6 @@ export default function SearchPage() {
               Showing {searchResults.length} results matching your criteria near{" "}
               {query}
             </p>
-          </div>
-          <div className="hidden md:flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-xl shadow-sm cursor-pointer ring-1 ring-gray-800/10">
-            Sort by: <span className="text-primary font-bold">Recommended</span>
-            <ChevronDown className="text-primary" size={15} />
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
