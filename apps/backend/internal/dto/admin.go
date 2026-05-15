@@ -20,7 +20,7 @@ type CreateHostel struct {
 	PrimaryPhotoURL string  `json:"primary_photo_url" validate:"required,url"`
 }
 
-type CreateHostelResponsePayload struct {
+type Hostel struct {
 	Name            string  `json:"name"`
 	Address         string  `json:"address"`
 	Description     string  `json:"description"`
@@ -36,7 +36,7 @@ type CreateNeighborhood struct {
 	InstitutionId string `json:"institutionId" validate:"required,min=2,max=100"`
 }
 
-type CreateNeighborhoodResponsePayload struct {
+type Neighborhood struct {
 	Name string `json:"name"`
 }
 

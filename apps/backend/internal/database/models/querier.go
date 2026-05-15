@@ -6,6 +6,7 @@ package models
 
 import (
 	"context"
+	"database/sql"
 )
 
 type Querier interface {
