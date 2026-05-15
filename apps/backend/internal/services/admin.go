@@ -6,6 +6,7 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/database/models"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/repositories"
 	"github.com/rs/zerolog"
@@ -48,7 +49,7 @@ func (s AdminService) CreateHostel(ctx context.Context, hostel dto.CreateHostel)
 		Success: true,
 		Status:  http.StatusCreated,
 		Message: "Hostel created successfully",
-		Payload: dto.CreateHostelResponsePayload{
+		Payload: dto.Hostel{
 			Name:            h.Name,
 			City:            h.City.String,
 			Description:     h.Description.String,
@@ -150,6 +151,62 @@ func (s AdminService) GetHostel(ctx context.Context, slug string) (dto.Structure
 	}, nil
 }
 
+func (s AdminService) SearchHostels(ctx context.Context, searchType, id string) (dto.StructuredResponse, error) {
+	var res []models.Hostel
+	var err error
+
+	switch searchType {
+	case "institution":
+		s.Logger.Debug().Msg("Searching hostels by institution")
+		res, err = s.hostelRepo.Queries.GetHostelsByInstitution(ctx, id)
+		if err != nil {
+			return dto.StructuredResponse{
+				Message: "could not find hostels",
+				Status:  http.StatusNotFound,
+			}, err
+		}
+
+	case "neighborhood":
+		s.Logger.Debug().Msg("Searching hostels by neighborhood")
+		q := sql.NullString{String: id, Valid: true}
+		res, err = s.hostelRepo.Queries.GetHostelsByNeighborhood(ctx, q)
+		if err != nil {
+			return dto.StructuredResponse{
+				Message: "could not find hostels",
+				Status:  http.StatusNotFound,
+			}, err
+		}
+
+	default:
+		return dto.StructuredResponse{
+			Status:  http.StatusBadRequest,
+			Message: "invalid search type",
+		}, nil
+	}
+
+	var hostels []dto.Hostel
+
+	for _, v := range res {
+		hostels = append(hostels, dto.Hostel{
+			Name:            v.Name,
+			Address:         v.Address.String,
+			Description:     v.Description.String,
+			City:            v.City.String,
+			Neighborhood:    v.Neighborhood.String,
+			Longitude:       v.Longitude,
+			Latitude:        v.Latitude,
+			Slug:            v.Slug,
+			PrimaryPhotoURL: v.PrimaryPhotoUrl.String,
+		})
+	}
+
+	return dto.StructuredResponse{
+		Success: true,
+		Status:  http.StatusOK,
+		Payload: hostels,
+	}, nil
+}
+
 func (s AdminService) GetInstitution(ctx context.Context, slug string) (dto.StructuredResponse, error) {
 	ctx, span := adminTracer.Start(ctx, "GetInstitution")
 	defer span.End()
@@ -205,7 +262,7 @@ func (s AdminService) CreateNeighborhood(ctx context.Context, neighborhood dto.C
 		Success: true,
 		Status:  http.StatusOK,
 		Message: "Neighborhood created successfully",
-		Payload: dto.CreateNeighborhoodResponsePayload{
+		Payload: dto.Neighborhood{
 			Name: n.Name,
 		},
 	}, nil

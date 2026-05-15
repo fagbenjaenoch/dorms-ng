@@ -145,6 +145,25 @@ func (hr *HostelRepository) GetHostel(ctx context.Context, slug string) (*models
 	return &h, nil
 }
 
+func (hr *HostelRepository) GetHostelByNeighborhood(ctx context.Context, neighborhoodID string) ([]models.Hostel, error) {
+	nId := sql.NullString{String: neighborhoodID, Valid: true}
+	hostels, err := hr.BaseRepository.Queries.GetHostelsByNeighborhood(ctx, nId)
+	if err != nil {
+		return nil, err
+	}
+
+	return hostels, nil
+}
+
+func (hr *HostelRepository) GetHostelByInstitution(ctx context.Context, institutionID string) ([]models.Hostel, error) {
+	hostels, err := hr.BaseRepository.Queries.GetHostelsByInstitution(ctx, institutionID)
+	if err != nil {
+		return nil, err
+	}
+
+	return hostels, nil
+}
+
 func (hr *InstitutionRepository) GetInstitution(ctx context.Context, slug string) (*models.Institution, error) {
 	i, err := hr.BaseRepository.Queries.GetInstitutionBySlug(ctx, slug)
 	if err != nil {

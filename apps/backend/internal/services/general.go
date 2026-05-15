@@ -12,6 +12,7 @@ import (
 
 type SearchService struct {
 	searchRepo repositories.SearchRepository
+	hostelRepo repositories.HostelRepository
 	Logger     *zerolog.Logger
 }
 

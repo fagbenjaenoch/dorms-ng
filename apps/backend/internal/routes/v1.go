@@ -24,6 +24,7 @@ func RegisterV1Routes(s *server.Server) *chi.Mux {
 	// hostel routes
 	v1Router.Get("/hostels/{slug}", adminHandler.GetHostel)
 	v1Router.With(middleware.ValidateRequestPayload[dto.CreateHostel]).Post("/hostels", adminHandler.CreateHostel)
+	v1Router.Get("/hostels/search", adminHandler.SearchHostels)
 
 	// institution routes
 	v1Router.Get("/institutions", adminHandler.GetAllInstitutions)

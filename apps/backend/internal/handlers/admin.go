@@ -90,6 +90,23 @@ func (h *AdminHandler) GetHostel(w http.ResponseWriter, r *http.Request) {
 	utils.WriteJSON(w, res)
 }
 
+func (h *AdminHandler) SearchHostels(w http.ResponseWriter, r *http.Request) {
+	typ := r.URL.Query().Get(utils.TypeParam.String())
+	id := r.URL.Query().Get(utils.IdParam.String())
+
+	h.server.Logger.Debug().Str("typ", typ).Str("id", id).Msg("search hostels")
+
+	res, err := h.AdminService.SearchHostels(r.Context(), typ, id)
+	if err != nil {
+		msg := "failed to search hostels"
+		h.server.Logger.Err(err).Msg(msg)
+		utils.WriteJSON(w, res)
+		return
+	}
+
+	utils.WriteJSON(w, res)
+}
+
 func (h *AdminHandler) GetInstitution(w http.ResponseWriter, r *http.Request) {
 	slug := chi.URLParam(r, "slug")
 
