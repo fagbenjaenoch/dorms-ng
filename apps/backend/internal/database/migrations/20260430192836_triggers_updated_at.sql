@@ -50,7 +50,6 @@ END;
 
 -- +goose Down
 -- +goose StatementBegin
-SELECT 'down SQL query';
 DROP TRIGGER IF EXISTS update_users_updated_at;
 DROP TRIGGER IF EXISTS update_user_credentials_updated_at;
 DROP TRIGGER IF EXISTS update_institutions_updated_at;
