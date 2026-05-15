@@ -8,8 +8,6 @@ import (
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/utils"
 )
 
-const SearchParam = "search"
-
 type GeneralHandler struct {
 	BaseHandler
 	SearchService services.SearchService
@@ -25,7 +23,7 @@ func NewGeneralHandler(s *server.Server) *GeneralHandler {
 }
 
 func (gh *GeneralHandler) Search(w http.ResponseWriter, r *http.Request) {
-	q := r.URL.Query().Get(SearchParam)
+	q := r.URL.Query().Get(utils.SearchParam.String())
 
 	res, err := gh.SearchService.Search(r.Context(), q)
 	if err != nil {
