@@ -64,6 +64,16 @@ func (ir *InstitutionRepository) CreateInstitution(ctx context.Context, institut
 	if err != nil {
 		return nil, err
 	}
+
+	placeSearchEntry := models.CreatePlaceSearchEntryParams{
+		PlaceID: ci.ID,
+		Name:    fmt.Sprintf("%s, %s", ci.Name, ci.City),
+	}
+
+	if _, err := qtx.CreatePlaceSearchEntry(ctx, placeSearchEntry); err != nil {
+		return nil, err
+	}
+
 	if err := tx.Commit(); err != nil {
 		return nil, err
 	}
@@ -197,22 +207,43 @@ func NewNeighborhoodRepository(db *sql.DB, logger *zerolog.Logger) *Neighborhood
 	}
 }
 
-func (hr *NeighborhoodRepository) CreateNeighborhood(ctx context.Context, neighborhood dto.CreateNeighborhood) (*models.Neighborhood, error) {
+func (nr *NeighborhoodRepository) CreateNeighborhood(ctx context.Context, neighborhood dto.CreateNeighborhood) (*models.Neighborhood, error) {
+	tx, err := nr.db.Begin()
+	if err != nil {
+		return nil, err
+	}
+	defer tx.Rollback()
+
+	qtx := nr.BaseRepository.Queries.WithTx(tx)
+
 	var n models.CreateNeighborhoodParams
 	n.ID = uuid.NewString()
 	n.Name = neighborhood.Name
 	n.InstitutionID = neighborhood.InstitutionId
 
-	cn, err := hr.BaseRepository.Queries.CreateNeighborhood(ctx, n)
+	cn, err := qtx.CreateNeighborhood(ctx, n)
 	if err != nil {
+		return nil, err
+	}
+
+	placeSearchEntry := models.CreatePlaceSearchEntryParams{
+		PlaceID: cn.ID,
+		Name:    cn.Name,
+	}
+
+	if _, err := qtx.CreatePlaceSearchEntry(ctx, placeSearchEntry); err != nil {
+		return nil, err
+	}
+
+	if err := tx.Commit(); err != nil {
 		return nil, err
 	}
 
 	return &cn, nil
 }
 
-func (hr *NeighborhoodRepository) GetAllNeighborhoods(ctx context.Context) ([]models.Neighborhood, error) {
-	neighborhoods, err := hr.BaseRepository.Queries.GetAllNeighborhoods(ctx)
+func (nr *NeighborhoodRepository) GetAllNeighborhoods(ctx context.Context) ([]models.Neighborhood, error) {
+	neighborhoods, err := nr.BaseRepository.Queries.GetAllNeighborhoods(ctx)
 	if err != nil {
 		return nil, err
 	}

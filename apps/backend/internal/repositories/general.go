@@ -29,3 +29,12 @@ func (sr *SearchRepository) Search(ctx context.Context, searchQuery string) (*[]
 
 	return &res, nil
 }
+
+func (sr *SearchRepository) SearchPlaces(ctx context.Context, searchQuery string) (*[]models.PlaceSearch, error) {
+	res, err := sr.Queries.GetPlaceSearchEntry(ctx, searchQuery)
+	if err != nil {
+		return nil, err
+	}
+
+	return &res, nil
+}

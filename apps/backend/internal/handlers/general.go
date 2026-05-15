@@ -33,3 +33,15 @@ func (gh *GeneralHandler) Search(w http.ResponseWriter, r *http.Request) {
 
 	utils.WriteJSON(w, res)
 }
+
+func (gh *GeneralHandler) SearchPlaces(w http.ResponseWriter, r *http.Request) {
+	q := r.URL.Query().Get(utils.SearchParam.String())
+
+	res, err := gh.SearchService.SearchPlaces(r.Context(), q)
+	if err != nil {
+		utils.WriteJSON(w, res)
+		return
+	}
+
+	utils.WriteJSON(w, res)
+}

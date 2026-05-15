@@ -23,7 +23,7 @@ func NewSearchService(db *sql.DB, logger *zerolog.Logger) SearchService {
 }
 
 func (ss *SearchService) Search(ctx context.Context, searchQuery string) (dto.StructuredResponse, error) {
-	ss.Logger.Debug().Str("search_query", searchQuery).Msg("Searching hostels by keyword")
+	ss.Logger.Debug().Str("search_query", searchQuery).Msg("Searching all entities by keyword")
 
 	res, err := ss.searchRepo.Search(ctx, searchQuery)
 	if err != nil {
@@ -36,6 +36,25 @@ func (ss *SearchService) Search(ctx context.Context, searchQuery string) (dto.St
 	return dto.StructuredResponse{
 		Success: true,
 		Status:  http.StatusOK,
+		Payload: res,
+	}, nil
+}
+
+func (ss *SearchService) SearchPlaces(ctx context.Context, searchQuery string) (dto.StructuredResponse, error) {
+	ss.Logger.Debug().Str("search_query", searchQuery).Msg("Searching places by keyword")
+
+	res, err := ss.searchRepo.SearchPlaces(ctx, searchQuery)
+	if err != nil {
+		return dto.StructuredResponse{
+			Message: "could not find places",
+			Status:  http.StatusNotFound,
+		}, err
+	}
+
+	return dto.StructuredResponse{
+		Success: true,
+		Status:  http.StatusOK,
+		Message: "successfully searched places",
 		Payload: res,
 	}, nil
 }

@@ -43,6 +43,7 @@ func RegisterV1Routes(s *server.Server) *chi.Mux {
 	generalHandler := handlers.NewGeneralHandler(s)
 
 	v1Router.Get("/search", generalHandler.Search)
+	v1Router.Get("/search/places", generalHandler.SearchPlaces)
 
 	return v1Router
 }
