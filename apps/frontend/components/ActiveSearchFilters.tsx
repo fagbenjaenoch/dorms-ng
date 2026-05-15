@@ -25,11 +25,6 @@ export default function ActiveSearchFilters() {
           <FilterItem>Self-Contain</FilterItem>
           <FilterItem>&lt; 2km from Campus</FilterItem>
         </div>
-
-        <Button variant="ghost">
-          <LucideListFilter />
-          Filters
-        </Button>
       </div>
     </div>
   );
