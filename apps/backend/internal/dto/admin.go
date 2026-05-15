@@ -25,6 +25,7 @@ type Hostel struct {
 	Address         string  `json:"address"`
 	Description     string  `json:"description"`
 	City            string  `json:"city"`
+	Neighborhood    string  `json:"neighborhood"`
 	Latitude        float64 `json:"latitude"`
 	Longitude       float64 `json:"longitude"`
 	PrimaryPhotoURL string  `json:"primary_photo_url"`
