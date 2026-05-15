@@ -6,7 +6,7 @@ import { Button } from "./ui/button";
 import useDebounce from "@/lib/hooks/useDebounce";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronRight, Divide, GraduationCapIcon, X } from "lucide-react";
-import { cn, queryParam } from "@/lib/utils";
+import { cn, searchQueryParam } from "@/lib/utils";
 import { useQueryState } from "nuqs";
 import { APIResponse, SearchResult } from "@/lib/dto";
 import Link from "next/link";

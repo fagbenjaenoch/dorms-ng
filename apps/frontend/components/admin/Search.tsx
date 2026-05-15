@@ -3,10 +3,10 @@
 import { search } from "@/lib/api/search";
 import { APIResponse, SearchResult } from "@/lib/dto";
 import useDebounce from "@/lib/hooks/useDebounce";
-import { queryParam } from "@/lib/utils";
+import { searchQueryParam } from "@/lib/utils";
 import { EntityTypeToIcon } from "@/lib/utils/search";
 import { useQuery } from "@tanstack/react-query";
-import { ChevronRight, SearchIcon, X } from "lucide-react";
+import { SearchIcon, X } from "lucide-react";
 import Link from "next/link";
 import { useQueryState } from "nuqs";
 

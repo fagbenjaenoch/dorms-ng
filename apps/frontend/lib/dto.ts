@@ -43,6 +43,11 @@ export interface Hostel {
   primary_photo_url: string;
 }
 
+export type Place = {
+  id: string;
+  name: string;
+};
+
 export type Institution = {
   id: string;
   name: string;
