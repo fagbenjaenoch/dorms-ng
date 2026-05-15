@@ -1,6 +1,6 @@
 import { APIResponse, SearchResult } from "../dto";
 
-const queryParam = "search";
+const queryParam = "q";
 
 export async function search(
   query: string,

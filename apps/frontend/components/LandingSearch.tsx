@@ -9,7 +9,6 @@ import { ChevronRight, Divide, GraduationCapIcon, X } from "lucide-react";
 import { cn, queryParam } from "@/lib/utils";
 import { useQueryState } from "nuqs";
 import { APIResponse, SearchResult } from "@/lib/dto";
-import { MdApartment } from "react-icons/md";
 import Link from "next/link";
 import { search } from "@/lib/api/search";
 import { EntityTypeToIcon } from "@/lib/utils/search";
