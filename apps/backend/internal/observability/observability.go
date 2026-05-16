@@ -96,7 +96,12 @@ func (o *Observability) InitTracer(ctx context.Context, res *resource.Resource) 
 			return nil, err
 		}
 	} else {
-		exporter, err = stdouttrace.New(stdouttrace.WithPrettyPrint())
+		file, err := os.Create("trace_debug.json")
+		if err != nil {
+			panic(err)
+		}
+
+		exporter, err = stdouttrace.New(stdouttrace.WithWriter(file), stdouttrace.WithPrettyPrint())
 		if err != nil {
 			return nil, err
 		}
