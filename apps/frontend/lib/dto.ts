@@ -38,13 +38,16 @@ export interface Hostel {
   name: string;
   address: string;
   city: string;
+  estimated_price_range: number;
   description: string;
   is_verified: boolean;
   primary_photo_url: string;
+  slug: string;
 }
 
 export type Place = {
-  id: string;
+  place_id: string;
+  place_type: string;
   name: string;
 };
 

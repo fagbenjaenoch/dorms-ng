@@ -1,129 +1,30 @@
 "use client";
 
 import ActiveSearchFilters from "@/components/ActiveSearchFilters";
+import HostelResults from "@/components/HostelResults";
+import HostelResultsError from "@/components/HostelResultsError";
 import LocationSearch from "@/components/LocationSearch";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/ui/Footer";
-import PropertyCard from "@/components/ui/PropertyCard";
+import PropertyCardSkeleton from "@/components/ui/PropertyCardSkeleton";
 import { placeSearch } from "@/lib/api/search";
-import { APIResponse, Place } from "@/lib/dto";
+import { APIResponse, Hostel, Place } from "@/lib/dto";
 import useDebounce from "@/lib/hooks/useDebounce";
-import { searchQueryParam } from "@/lib/utils";
-import { useQuery } from "@tanstack/react-query";
+import { AreaTypeEnum, idParam, searchQueryParam, typeParam } from "@/lib/utils";
+import { QueryErrorResetBoundary, useQuery } from "@tanstack/react-query";
 import { LucideListFilter, MapPin } from "lucide-react";
 import { useQueryState } from "nuqs";
-
-type SearchResult = {
-  name: string;
-  location: string;
-  price: number;
-};
-
-const searchResults: SearchResult[] = [
-  {
-    name: "Sunshine Hostel",
-    location: "Yaba, Lagos",
-    price: 150000,
-  },
-  {
-    name: "Greenville Lodge",
-    location: "Gwarinpa, Abuja",
-    price: 250000,
-  },
-  {
-    name: "Oceanview Annex",
-    location: "Choba, Port Harcourt",
-    price: 120000,
-  },
-  {
-    name: "Heritage Homes",
-    location: "Agodi, Ibadan",
-    price: 80000,
-  },
-  {
-    name: "Coal City Haven",
-    location: "Independence Layout, Enugu",
-    price: 110000,
-  },
-  {
-    name: "Savannah Retreat",
-    location: "Nassarawa, Kano",
-    price: 70000,
-  },
-  {
-    name: "Crocodile Creek",
-    location: "Barnawa, Kaduna",
-    price: 65000,
-  },
-  {
-    name: "Royal Court",
-    location: "GRA, Benin City",
-    price: 130000,
-  },
-  {
-    name: "Palm Grove",
-    location: "Ewet Housing Estate, Uyo",
-    price: 140000,
-  },
-  {
-    name: "Paradise Lodge",
-    location: "Marian Road, Calabar",
-    price: 125000,
-  },
-  {
-    name: "Plateau View",
-    location: "Rayfield, Jos",
-    price: 90000,
-  },
-  {
-    name: "Harmony House",
-    location: "Tanke, Ilorin",
-    price: 85000,
-  },
-  {
-    name: "Heartland Annex",
-    location: "Ikenegbu, Owerri",
-    price: 105000,
-  },
-  {
-    name: "Sunshine Acres",
-    location: "Alagbaka, Akure",
-    price: 95000,
-  },
-  {
-    name: "Rock City Hostel",
-    location: "Ibara, Abeokuta",
-    price: 100000,
-  },
-  {
-    name: "Delta Breeze",
-    location: "Nnebisi Road, Asaba",
-    price: 115000,
-  },
-  {
-    name: "Creek Haven",
-    location: "Amarata, Yenagoa",
-    price: 135000,
-  },
-  {
-    name: "Osun Spring",
-    location: "Ring Road, Osogbo",
-    price: 75000,
-  },
-  {
-    name: "Fountain Lodge",
-    location: "Fajuyi, Ado-Ekiti",
-    price: 80000,
-  },
-  {
-    name: "Confluence Quarters",
-    location: "Lokongoma, Lokoja",
-    price: 85000,
-  },
-];
+import { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 
 export default function SearchPage() {
   const [searchTerm, setSearchTerm] = useQueryState(searchQueryParam, {
+    defaultValue: "",
+  });
+  const [areaType, setAreaType] = useQueryState(typeParam, {
+    defaultValue: "",
+  });
+  const [areaId, setAreaId] = useQueryState(idParam, {
     defaultValue: "",
   });
 
@@ -138,6 +39,12 @@ export default function SearchPage() {
   const clearSearch = () => {
     setSearchTerm(null);
   };
+
+  const handleSearchResultClick = (type: string, id: string) => {
+    setAreaType(type);
+    setAreaId(id);
+  };
+
   return (
     <div className="bg-gray-100">
       <hr className="bg-muted-foreground" />
@@ -160,7 +67,13 @@ export default function SearchPage() {
                     {query.data.payload.map((searchResult) => (
                       <div
                         className="cursor-pointer hover:bg-gray-500/10 p-2 rounded-md flex items-center gap-2 text-muted-foreground"
-                        key={searchResult.id}
+                        key={searchResult.place_id}
+                        onClick={() =>
+                          handleSearchResultClick(
+                            searchResult.place_type,
+                            searchResult.place_id,
+                          )
+                        }
                       >
                         <MapPin size={12} />
                         <span className="text-sm">{searchResult.name}</span>
@@ -177,17 +90,47 @@ export default function SearchPage() {
             </div>
             {searchTerm.length > 0 && (
               <p className="mt-3 text-sm text-muted-foreground">
-                Showing {searchResults.length} results matching your criteria near{" "}
+                Showing length results matching your criteria near{" "}
                 <b>{searchTerm}</b>
               </p>
             )}
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {searchResults.map(({ name, location, price }, i) => (
-            <PropertyCard key={i} name={name} location={location} price={price} />
-          ))}
-        </div>
+        {areaType.length > 0 ? (
+          <QueryErrorResetBoundary>
+            {({ reset }) => (
+              <ErrorBoundary
+                onReset={reset}
+                fallbackRender={({ error, resetErrorBoundary }) => (
+                  <HostelResultsError
+                    error={error as Error}
+                    resetErrorBoundary={resetErrorBoundary}
+                  />
+                )}
+              >
+                <Suspense
+                  fallback={
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                      {Array.from({ length: 10 }).map((_, i) => (
+                        <PropertyCardSkeleton key={i} />
+                      ))}
+                    </div>
+                  }
+                >
+                  <HostelResults
+                    areaType={areaType as AreaTypeEnum}
+                    areaId={areaId}
+                  />
+                </Suspense>
+              </ErrorBoundary>
+            )}
+          </QueryErrorResetBoundary>
+        ) : (
+          <div className="flex flex-col items-center">
+            <h2>Nothing to see here</h2>
+            <p>Start typing in the search bar to see results</p>
+          </div>
+        )}
       </main>
       <Footer />
     </div>
