@@ -104,7 +104,7 @@ export default function HostelDetailsClient() {
           </div>
           <section>
             <h2 className="text-3xl font-bold text-on-surface mb-6">
-              About this <span className="text-primary">sanctuary</span>
+              About this <span className="text-primary">hostel</span>
             </h2>
             <div className="prose prose-lg font-body">{hostel.description}</div>
           </section>
