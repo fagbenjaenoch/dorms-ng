@@ -5,17 +5,21 @@ import { FaBolt } from "react-icons/fa6";
 import { MapPin } from "lucide-react";
 import Image from "next/image";
 
-interface SearchResultCardProps {
+interface PropertyCardProps {
   price: number;
   name: string;
   location: string;
+  imageUrl: string;
+  slug: string;
 }
 
 export default function PropertyCard({
   price,
   name,
   location,
-}: SearchResultCardProps) {
+  imageUrl,
+  slug,
+}: PropertyCardProps) {
   const formatter = new Intl.NumberFormat("en-US", {
     notation: "compact",
     compactDisplay: "short",
@@ -31,9 +35,7 @@ export default function PropertyCard({
           height={200}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
           alt={name}
-          src={
-            "https://lh3.googleusercontent.com/aida/ADBb0uiGHfgr55ThFf6QFyArdeNtirsUcIUf-U_h7Q37PHOGyF5qTvy3Fglod0J6JFH-cgB77jUUx4fFEURbpcLPxM21gnuH3Up8l0I0ILqws7I8R8sax0OCvdPQks81PVVy46f6eD7-2BCksodJVJAgBYJX0sa-P49bF0NrslrcfTLEY-BesT0KlQnz2eQE0AA86RS2bCmBNfIcfAOpNT0mpqF2S35tCVdsV3Vpx1jPopqaNvccbqniv1cCSeVX23G_XFXbMGiSn6nSQKU"
-          }
+          src={imageUrl}
         />
         <div className="absolute top-4 left-4 bg-tertiary text-on-tertiary-container px-4 py-1 rounded-full font-bold text-[10px] tracking-widest shadow-lg uppercase">
           Self-Contain
@@ -71,13 +73,15 @@ export default function PropertyCard({
             24/7 Security
           </span>
         </div>
-        <Button
-          variant="ghost"
-          size="xl"
-          className="w-full py-4 rounded-2xl font-bold bg-primary/10"
-        >
-          View Details
-        </Button>
+        <Link href={`/hostels/${slug}`}>
+          <Button
+            variant="ghost"
+            size="xl"
+            className="w-full py-4 rounded-2xl font-bold bg-primary/10"
+          >
+            View Details
+          </Button>
+        </Link>
       </div>
     </div>
   );
