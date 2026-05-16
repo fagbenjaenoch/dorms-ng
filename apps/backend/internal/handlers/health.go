@@ -38,7 +38,7 @@ func (hh *HealthHandler) CheckHealth(w http.ResponseWriter, r *http.Request) {
 
 	response := dto.StructuredResponse{
 		Success: true,
-		Status:  200,
+		Status:  http.StatusOK,
 		Message: "server is healthy",
 		Payload: HealthCheckPayload{
 			Timestamp:   time.Now().UTC().String(),

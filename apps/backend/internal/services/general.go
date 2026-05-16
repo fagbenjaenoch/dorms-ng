@@ -36,6 +36,7 @@ func (ss *SearchService) Search(ctx context.Context, searchQuery string) (dto.St
 	return dto.StructuredResponse{
 		Success: true,
 		Status:  http.StatusOK,
+		Message: "successfully searched query",
 		Payload: res,
 	}, nil
 }

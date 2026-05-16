@@ -163,7 +163,7 @@ func (us *UserService) Login(ctx context.Context, u dto.LoginUser) (dto.Structur
 
 	return dto.StructuredResponse{
 		Success: true,
-		Status:  200,
+		Status:  http.StatusOK,
 		Message: "logged in user successfully",
 		Payload: dto.LoginPayload{
 			CreateUserPayload: dto.CreateUserPayload{
@@ -192,7 +192,7 @@ func (us *UserService) GetUserByEmail(ctx context.Context, email string) (dto.St
 
 	return dto.StructuredResponse{
 		Success: true,
-		Status:  200,
+		Status:  http.StatusOK,
 		Message: "found user",
 		Payload: user,
 	}, nil

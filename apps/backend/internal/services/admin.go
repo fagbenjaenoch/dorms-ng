@@ -203,6 +203,7 @@ func (s AdminService) SearchHostels(ctx context.Context, searchType, id string) 
 	return dto.StructuredResponse{
 		Success: true,
 		Status:  http.StatusOK,
+		Message: "successfully searched hostels",
 		Payload: hostels,
 	}, nil
 }
