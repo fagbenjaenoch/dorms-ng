@@ -49,9 +49,9 @@ export default function PropertyCard({
         <div className="flex justify-between items-start mb-4">
           <div>
             <h3 className="text-xl font-bold mb-1">{name}</h3>
-            <p className="text-sm flex items-center gap-1 text-muted-foreground">
-              <MapPin size={12} />
-              {location}
+            <p className="text-sm flex items-start gap-1 text-muted-foreground">
+              <MapPin className="shrink-0" size={12} />
+              <p className="leading-snug max-w-60">{location}</p>
             </p>
           </div>
           <div className="text-right">
