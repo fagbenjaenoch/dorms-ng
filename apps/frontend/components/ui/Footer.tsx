@@ -35,7 +35,7 @@ export default function Footer() {
             <Link href="/">
               <BrandIcon className="text-2xl mb-6" />
             </Link>
-            <p className="text-primary-light text-sm leading-relaxed max-w-xs">
+            <p className="text-primary-light/50 text-sm leading-relaxed max-w-xs">
               Empowering Nigerian students with seamless access to secure, verified,
               and affordable housing solutions nationwide.
             </p>
@@ -50,7 +50,7 @@ export default function Footer() {
                   {items.map((item) => (
                     <li key={item.title}>
                       <Link
-                        className="text-sm text-primary-light hover:text-white transition-colors duration-200"
+                        className="text-sm text-primary-light/50 hover:text-white transition-colors duration-200"
                         href={item.href}
                       >
                         {item.title}
@@ -63,7 +63,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-primary-light/60 text-[10px] font-medium tracking-wider uppercase">
+          <p className="text-primary-light/50 text-[10px] font-medium tracking-wider uppercase">
             © {getCurrentYear()} Hostel.ng. All rights reserved. Built for Nigerian
             Students.
           </p>
