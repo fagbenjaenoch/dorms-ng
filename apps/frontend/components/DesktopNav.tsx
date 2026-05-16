@@ -3,7 +3,7 @@ import BrandIcon from "./ui/BrandIcon";
 import { Button } from "./ui/button";
 
 const navLink = [
-  { title: "Find Hostels", href: "#" },
+  { title: "Find Hostels", href: "/search" },
   { title: "How it works", href: "#" },
   { title: "Support", href: "#" },
 ];
