@@ -60,8 +60,9 @@ type Neighborhood struct {
 }
 
 type PlaceSearch struct {
-	PlaceID string `json:"place_id"`
-	Name    string `json:"name"`
+	PlaceID   string `json:"place_id"`
+	PlaceType string `json:"place_type"`
+	Name      string `json:"name"`
 }
 
 type User struct {

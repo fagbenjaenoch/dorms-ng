@@ -95,9 +95,9 @@ RETURNING *;
 SELECT entity_id, entity_type, entity, slug, address FROM global_search WHERE search_text MATCH ? ORDER BY rank LIMIT 5;
 
 -- name: CreatePlaceSearchEntry :one
-INSERT INTO place_search (place_id, name)
-VALUES (?, ?)
+INSERT INTO place_search (place_id, place_type, name)
+VALUES (?, ?, ?)
 RETURNING *;
 
 -- name: GetPlaceSearchEntry :many
-SELECT place_id, name FROM place_search WHERE name MATCH ? ORDER BY rank LIMIT 5;
+SELECT place_id, place_type, name FROM place_search WHERE name MATCH ? ORDER BY rank LIMIT 5;

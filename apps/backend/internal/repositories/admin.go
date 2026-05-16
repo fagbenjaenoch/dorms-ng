@@ -66,8 +66,9 @@ func (ir *InstitutionRepository) CreateInstitution(ctx context.Context, institut
 	}
 
 	placeSearchEntry := models.CreatePlaceSearchEntryParams{
-		PlaceID: ci.ID,
-		Name:    fmt.Sprintf("%s, %s", ci.Name, ci.City),
+		PlaceID:   ci.ID,
+		PlaceType: "institution",
+		Name:      fmt.Sprintf("%s, %s", ci.Name, ci.City),
 	}
 
 	if _, err := qtx.CreatePlaceSearchEntry(ctx, placeSearchEntry); err != nil {
@@ -238,8 +239,9 @@ func (nr *NeighborhoodRepository) CreateNeighborhood(ctx context.Context, neighb
 	}
 
 	placeSearchEntry := models.CreatePlaceSearchEntryParams{
-		PlaceID: cn.ID,
-		Name:    cn.Name,
+		PlaceID:   cn.ID,
+		PlaceType: "neighborhood",
+		Name:      cn.Name,
 	}
 
 	if _, err := qtx.CreatePlaceSearchEntry(ctx, placeSearchEntry); err != nil {
