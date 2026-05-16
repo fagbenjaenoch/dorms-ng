@@ -1,8 +1,5 @@
 import { APIResponse, Place, SearchResult } from "../dto";
-
-const queryParam = "q";
-const typeParam = "type";
-const idParam = "id";
+import { searchQueryParam } from "../utils";
 
 type TypeEnum = "institution" | "neighborhood";
 
@@ -11,7 +8,7 @@ export async function search(
   { signal }: { signal: AbortSignal },
 ): Promise<APIResponse<SearchResult[]>> {
   try {
-    let path = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/search?${queryParam}=${query}`;
+    let path = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/search?${searchQueryParam}=${query}`;
 
     const res = await fetch(path, {
       method: "GET",
@@ -30,7 +27,7 @@ export async function placeSearch(
   { signal }: { signal: AbortSignal },
 ): Promise<APIResponse<Place[]>> {
   try {
-    let path = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/search/places?${queryParam}=${query}`;
+    let path = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/search/places?${searchQueryParam}=${query}`;
 
     const res = await fetch(path, {
       method: "GET",

@@ -139,3 +139,7 @@ export type LngLat = {
 export const defaultLngLat: LngLat = { lng: 8.606, lat: 9.967 };
 
 export const searchQueryParam = "q";
+export const typeParam = "type";
+export const idParam = "id";
+
+export type AreaTypeEnum = "institution" | "neighborhood";
