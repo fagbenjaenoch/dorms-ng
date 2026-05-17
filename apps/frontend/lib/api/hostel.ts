@@ -1,4 +1,3 @@
-import { toast } from "sonner";
 import { APIResponse, Hostel } from "../dto";
 import { CreateHostelListingData } from "../forms";
 import { idParam, typeParam } from "../utils";
@@ -47,7 +46,6 @@ export async function createHostelListing(
       body: primaryPhoto,
     });
     if (!uploadReq.ok) {
-      toast.error("could not upload primary photo");
       throw new Error("Failed to upload primary photo");
     }
 
@@ -70,7 +68,6 @@ export async function createHostelListing(
     return res.json() as any as APIResponse<CreateHostelListingData>;
   } catch (error) {
     console.error(error);
-    toast.error("An error occured while trying to create hostel");
     throw new Error("Failed to create hostel");
   }
 }
