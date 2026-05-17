@@ -52,7 +52,7 @@ CREATE TABLE hostels (
   google_place_id TEXT UNIQUE,
 
   -- Curated Trust Layer Insights
-  estimated_price_range TEXT,
+  estimated_price_range REAL,
 
   -- Calculated Fields (Computed by your Go backend before inserting)
   distance_to_gate_km REAL,

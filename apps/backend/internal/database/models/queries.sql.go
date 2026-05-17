@@ -30,7 +30,7 @@ type CreateHostelParams struct {
 	Latitude            float64         `json:"latitude"`
 	Longitude           float64         `json:"longitude"`
 	GooglePlaceID       sql.NullString  `json:"google_place_id"`
-	EstimatedPriceRange sql.NullString  `json:"estimated_price_range"`
+	EstimatedPriceRange sql.NullFloat64 `json:"estimated_price_range"`
 	Neighborhood        sql.NullString  `json:"neighborhood"`
 	NeighborhoodID      sql.NullString  `json:"neighborhood_id"`
 	DistanceToGateKm    sql.NullFloat64 `json:"distance_to_gate_km"`

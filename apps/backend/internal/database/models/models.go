@@ -29,7 +29,7 @@ type Hostel struct {
 	Latitude            float64         `json:"latitude"`
 	Longitude           float64         `json:"longitude"`
 	GooglePlaceID       sql.NullString  `json:"google_place_id"`
-	EstimatedPriceRange sql.NullString  `json:"estimated_price_range"`
+	EstimatedPriceRange sql.NullFloat64 `json:"estimated_price_range"`
 	DistanceToGateKm    sql.NullFloat64 `json:"distance_to_gate_km"`
 	IsVerifiedByAdmin   sql.NullBool    `json:"is_verified_by_admin"`
 	PrimaryPhotoUrl     sql.NullString  `json:"primary_photo_url"`
