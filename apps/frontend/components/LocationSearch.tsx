@@ -8,12 +8,14 @@ interface LocationSearchProps {
   searchTerm: string;
   clearSearch: () => void;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onClick: (e: React.MouseEvent<HTMLInputElement>) => void;
 }
 
 export default function LocationSearch({
   searchTerm,
   clearSearch,
   handleChange,
+  onClick,
 }: LocationSearchProps) {
   return (
     <div>
@@ -22,6 +24,7 @@ export default function LocationSearch({
           placeholder="Search locations..."
           value={searchTerm}
           onChange={handleChange}
+          onClick={onClick}
         />
         <InputGroupAddon>
           <SearchIcon />

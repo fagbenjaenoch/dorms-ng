@@ -14,7 +14,7 @@ import { AreaTypeEnum, idParam, searchQueryParam, typeParam } from "@/lib/utils"
 import { QueryErrorResetBoundary, useQuery } from "@tanstack/react-query";
 import { LucideListFilter, MapPin } from "lucide-react";
 import { useQueryState } from "nuqs";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
 export default function SearchPage() {
@@ -27,6 +27,7 @@ export default function SearchPage() {
   const [areaId, setAreaId] = useQueryState(idParam, {
     defaultValue: "",
   });
+  const [showDropdown, setShowDropdown] = useState(false);
 
   const debounceSearchTerm = useDebounce(searchTerm, 300);
 
@@ -40,9 +41,23 @@ export default function SearchPage() {
     setSearchTerm(null);
   };
 
-  const handleSearchResultClick = (type: string, id: string) => {
+  const handleSearchResultClick = ({
+    type,
+    id,
+    name,
+  }: {
+    type: string;
+    id: string;
+    name: string;
+  }) => {
     setAreaType(type);
     setAreaId(id);
+    setShowDropdown(false);
+    setSearchTerm(name);
+  };
+
+  const showDropdownOnClick = (e: React.MouseEvent<HTMLInputElement>) => {
+    setShowDropdown(true);
   };
 
   return (
@@ -61,18 +76,20 @@ export default function SearchPage() {
                   searchTerm={searchTerm}
                   handleChange={(e) => setSearchTerm(e.target.value)}
                   clearSearch={clearSearch}
+                  onClick={showDropdownOnClick}
                 />
-                {!!query.data?.payload?.length && (
+                {showDropdown && !!query.data?.payload?.length && (
                   <div className="absolute top-full mt-3 left-0 w-full flex flex-col gap-2 bg-primary-foreground shadow-lg ring-1 ring-gray-500/5 p-2 rounded-xl">
                     {query.data.payload.map((searchResult) => (
                       <div
                         className="cursor-pointer hover:bg-gray-500/10 p-2 rounded-md flex items-center gap-2 text-muted-foreground"
                         key={searchResult.place_id}
                         onClick={() =>
-                          handleSearchResultClick(
-                            searchResult.place_type,
-                            searchResult.place_id,
-                          )
+                          handleSearchResultClick({
+                            type: searchResult.place_type,
+                            id: searchResult.place_id,
+                            name: searchResult.name,
+                          })
                         }
                       >
                         <MapPin size={12} />
