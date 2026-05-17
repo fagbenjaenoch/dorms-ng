@@ -188,15 +188,16 @@ func (s AdminService) SearchHostels(ctx context.Context, searchType, id string) 
 
 	for _, v := range res {
 		hostels = append(hostels, dto.Hostel{
-			Name:            v.Name,
-			Address:         v.Address.String,
-			Description:     v.Description.String,
-			City:            v.City.String,
-			Neighborhood:    v.Neighborhood.String,
-			Longitude:       v.Longitude,
-			Latitude:        v.Latitude,
-			Slug:            v.Slug,
-			PrimaryPhotoURL: v.PrimaryPhotoUrl.String,
+			Name:                v.Name,
+			Address:             v.Address.String,
+			Description:         v.Description.String,
+			City:                v.City.String,
+			Neighborhood:        v.Neighborhood.String,
+			EstimatedPriceRange: v.EstimatedPriceRange.Float64,
+			Longitude:           v.Longitude,
+			Latitude:            v.Latitude,
+			Slug:                v.Slug,
+			PrimaryPhotoURL:     v.PrimaryPhotoUrl.String,
 		})
 	}
 

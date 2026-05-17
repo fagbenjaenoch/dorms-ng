@@ -113,6 +113,7 @@ func (hr *HostelRepository) CreateHostel(ctx context.Context, hostel dto.CreateH
 	h.Neighborhood = sql.NullString{String: hostel.Neighborhood, Valid: true}
 	h.NeighborhoodID = sql.NullString{String: hostel.NeighborhoodID, Valid: true}
 	h.Address = sql.NullString{String: hostel.Address, Valid: true}
+	h.EstimatedPriceRange = sql.NullFloat64{Float64: hostel.EstimatedPriceRange, Valid: true}
 	h.Latitude = hostel.Latitude
 	h.Longitude = hostel.Longitude
 	h.PrimaryPhotoUrl = sql.NullString{String: hostel.PrimaryPhotoURL, Valid: true}
