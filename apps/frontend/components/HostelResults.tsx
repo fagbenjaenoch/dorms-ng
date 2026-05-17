@@ -9,9 +9,14 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 interface HostelResultProps {
   areaType: AreaTypeEnum;
   areaId: string;
+  areaName: string;
 }
 
-export default function HostelResults({ areaType, areaId }: HostelResultProps) {
+export default function HostelResults({
+  areaType,
+  areaId,
+  areaName,
+}: HostelResultProps) {
   const hostelQuery = useSuspenseQuery<APIResponse<Hostel[]>>({
     queryKey: ["hostels", areaId],
     queryFn: () => fetchHostelsByArea(areaType, areaId),
@@ -20,23 +25,32 @@ export default function HostelResults({ areaType, areaId }: HostelResultProps) {
   const hostels = hostelQuery.data?.payload;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {hostels?.length ? (
-        hostels.map(
-          ({ name, address, estimatedPriceRange, primary_photo_url, slug }, i) => (
-            <PropertyCard
-              key={i}
-              name={name}
-              location={address}
-              price={estimatedPriceRange}
-              imageUrl={primary_photo_url}
-              slug={slug}
-            />
-          ),
-        )
-      ) : (
-        <div>No results found</div>
+    <div>
+      {hostelQuery.data.payload.length > 0 && (
+        <p className="mt-3 text-sm text-muted-foreground mb-15">
+          Showing {hostelQuery.data?.payload.length} result
+          {hostelQuery.data?.payload.length !== 1 ? "s" : ""} matching your criteria
+          within <b>{areaName}</b>
+        </p>
       )}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {hostels?.length ? (
+          hostels.map(
+            ({ name, address, estimatedPriceRange, primary_photo_url, slug }, i) => (
+              <PropertyCard
+                key={i}
+                name={name}
+                location={address}
+                price={estimatedPriceRange}
+                imageUrl={primary_photo_url}
+                slug={slug}
+              />
+            ),
+          )
+        ) : (
+          <div>No results found</div>
+        )}
+      </div>
     </div>
   );
 }

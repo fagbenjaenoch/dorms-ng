@@ -39,6 +39,8 @@ export default function SearchPage() {
 
   const clearSearch = () => {
     setSearchTerm(null);
+    setAreaType(null);
+    setAreaId(null);
   };
 
   const handleSearchResultClick = ({
@@ -65,7 +67,7 @@ export default function SearchPage() {
       <hr className="bg-muted-foreground" />
       <ActiveSearchFilters />
       <main className="pt-12 pb-24 px-8 min-h-screen w-full mx-auto max-w-7xl">
-        <div className="mb-20 flex justify-between items-end">
+        <div className="flex justify-between items-end">
           <div className="w-full">
             <h1 className="font-headline text-4xl md:text-5xl font-black tracking-tighter mb-10">
               Discover <span className="text-primary">places</span>
@@ -105,13 +107,6 @@ export default function SearchPage() {
                 Filters
               </Button>
             </div>
-            {searchTerm.length > 0 && (
-              <p className="mt-3 text-sm text-muted-foreground">
-                Showing {query.data?.payload.length} result
-                {query.data?.payload.length !== 1 ? "s" : ""} matching your criteria
-                near <b>{searchTerm}</b>
-              </p>
-            )}
           </div>
         </div>
         {areaType.length > 0 ? (
@@ -138,13 +133,14 @@ export default function SearchPage() {
                   <HostelResults
                     areaType={areaType as AreaTypeEnum}
                     areaId={areaId}
+                    areaName={searchTerm}
                   />
                 </Suspense>
               </ErrorBoundary>
             )}
           </QueryErrorResetBoundary>
         ) : (
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center mt-20">
             <h2>Nothing to see here</h2>
             <p>Start typing in the search bar to see results</p>
           </div>
