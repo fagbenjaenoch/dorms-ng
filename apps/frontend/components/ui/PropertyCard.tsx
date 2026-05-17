@@ -52,7 +52,7 @@ export default function PropertyCard({
             <h3 className="text-xl font-bold mb-1">{name}</h3>
             <p className="text-sm flex items-start gap-1 text-muted-foreground">
               <MapPin className="shrink-0" size={12} />
-              <p className="leading-snug max-w-60">{location}</p>
+              <span className="leading-snug max-w-60 line-clamp-2">{location}</span>
             </p>
           </div>
           <div className="text-right">
