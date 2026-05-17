@@ -38,7 +38,7 @@ export interface Hostel {
   name: string;
   address: string;
   city: string;
-  estimated_price_range: number;
+  estimatedPriceRange: number;
   description: string;
   is_verified: boolean;
   primary_photo_url: string;

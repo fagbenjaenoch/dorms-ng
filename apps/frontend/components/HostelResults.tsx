@@ -23,12 +23,12 @@ export default function HostelResults({ areaType, areaId }: HostelResultProps) {
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
       {hostels?.length ? (
         hostels.map(
-          ({ name, address, estimated_price_range, primary_photo_url, slug }, i) => (
+          ({ name, address, estimatedPriceRange, primary_photo_url, slug }, i) => (
             <PropertyCard
               key={i}
               name={name}
               location={address}
-              price={estimated_price_range}
+              price={estimatedPriceRange}
               imageUrl={primary_photo_url}
               slug={slug}
             />
