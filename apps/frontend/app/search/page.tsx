@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import Footer from "@/components/ui/Footer";
 import PropertyCardSkeleton from "@/components/ui/PropertyCardSkeleton";
 import { placeSearch } from "@/lib/api/search";
-import { APIResponse, Hostel, Place } from "@/lib/dto";
+import { APIResponse, Place } from "@/lib/dto";
 import useDebounce from "@/lib/hooks/useDebounce";
 import { AreaTypeEnum, idParam, searchQueryParam, typeParam } from "@/lib/utils";
 import { QueryErrorResetBoundary, useQuery } from "@tanstack/react-query";
@@ -107,8 +107,9 @@ export default function SearchPage() {
             </div>
             {searchTerm.length > 0 && (
               <p className="mt-3 text-sm text-muted-foreground">
-                Showing length results matching your criteria near{" "}
-                <b>{searchTerm}</b>
+                Showing {query.data?.payload.length} result
+                {query.data?.payload.length !== 1 ? "s" : ""} matching your criteria
+                near <b>{searchTerm}</b>
               </p>
             )}
           </div>
