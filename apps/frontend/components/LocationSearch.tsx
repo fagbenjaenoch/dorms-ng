@@ -18,25 +18,23 @@ export default function LocationSearch({
   onClick,
 }: LocationSearchProps) {
   return (
-    <div>
-      <InputGroup className="w-xl">
-        <InputGroupInput
-          placeholder="Search locations..."
-          value={searchTerm}
-          onChange={handleChange}
-          onClick={onClick}
-        />
-        <InputGroupAddon>
-          <SearchIcon />
+    <InputGroup className="max-w-xl">
+      <InputGroupInput
+        placeholder="Search locations..."
+        value={searchTerm}
+        onChange={handleChange}
+        onClick={onClick}
+      />
+      <InputGroupAddon>
+        <SearchIcon />
+      </InputGroupAddon>
+      {searchTerm.length > 0 && (
+        <InputGroupAddon align="inline-end">
+          <Button variant="ghost" onClick={clearSearch}>
+            <X />
+          </Button>
         </InputGroupAddon>
-        {searchTerm.length > 0 && (
-          <InputGroupAddon align="inline-end">
-            <Button variant="ghost" onClick={clearSearch}>
-              <X />
-            </Button>
-          </InputGroupAddon>
-        )}
-      </InputGroup>
-    </div>
+      )}
+    </InputGroup>
   );
 }
