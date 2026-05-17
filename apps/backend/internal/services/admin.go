@@ -139,7 +139,7 @@ func (s AdminService) GetHostel(ctx context.Context, slug string) (dto.Structure
 		Success: true,
 		Status:  http.StatusOK,
 		Message: "Hostel retrieved successfully",
-		Payload: dto.CreateHostel{
+		Payload: dto.Hostel{
 			Name:            h.Name,
 			City:            h.City.String,
 			Description:     h.Description.String,
@@ -198,6 +198,7 @@ func (s AdminService) SearchHostels(ctx context.Context, searchType, id string) 
 			Latitude:            v.Latitude,
 			Slug:                v.Slug,
 			PrimaryPhotoURL:     v.PrimaryPhotoUrl.String,
+			IsVerified:          v.IsVerifiedByAdmin.Bool,
 		})
 	}
 

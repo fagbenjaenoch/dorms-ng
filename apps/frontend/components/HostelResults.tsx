@@ -36,7 +36,17 @@ export default function HostelResults({
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {hostels?.length ? (
           hostels.map(
-            ({ name, address, estimatedPriceRange, primary_photo_url, slug }, i) => (
+            (
+              {
+                name,
+                address,
+                estimatedPriceRange,
+                primary_photo_url,
+                slug,
+                isVerified,
+              },
+              i,
+            ) => (
               <PropertyCard
                 key={i}
                 name={name}
@@ -44,6 +54,7 @@ export default function HostelResults({
                 price={estimatedPriceRange}
                 imageUrl={primary_photo_url}
                 slug={slug}
+                isVerified={isVerified}
               />
             ),
           )

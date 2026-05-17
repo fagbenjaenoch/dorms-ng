@@ -116,6 +116,7 @@ func (hr *HostelRepository) CreateHostel(ctx context.Context, hostel dto.CreateH
 	h.EstimatedPriceRange = sql.NullFloat64{Float64: hostel.EstimatedPriceRange, Valid: true}
 	h.Latitude = hostel.Latitude
 	h.Longitude = hostel.Longitude
+	h.IsVerifiedByAdmin = sql.NullBool{Bool: hostel.IsVerified, Valid: true}
 	h.PrimaryPhotoUrl = sql.NullString{String: hostel.PrimaryPhotoURL, Valid: true}
 	h.Description = sql.NullString{String: hostel.Description, Valid: true}
 	h.Slug = utils.GenerateSlug(hostel.Name)

@@ -12,6 +12,7 @@ interface PropertyCardProps {
   location: string;
   imageUrl: string;
   slug: string;
+  isVerified: boolean;
 }
 
 export default function PropertyCard({
@@ -20,6 +21,7 @@ export default function PropertyCard({
   location,
   imageUrl,
   slug,
+  isVerified,
 }: PropertyCardProps) {
   const formatter = new Intl.NumberFormat("en-US", {
     notation: "compact",
@@ -41,10 +43,12 @@ export default function PropertyCard({
         <div className="absolute top-4 left-4 bg-tertiary text-on-tertiary-container px-4 py-1 rounded-full font-bold text-[10px] tracking-widest shadow-lg uppercase">
           Self-Contain
         </div>
-        <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md p-2 rounded-xl text-primary flex items-center gap-1 shadow-md">
-          <BiSolidBadgeCheck size={18} />
-          <span className="text-xs font-bold">Verified</span>
-        </div>
+        {isVerified && (
+          <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-md p-2 rounded-xl text-primary flex items-center gap-1 shadow-md">
+            <BiSolidBadgeCheck size={18} />
+            <span className="text-xs font-bold">Verified</span>
+          </div>
+        )}
       </div>
       <div className="p-8">
         <div className="flex justify-between items-start mb-4">
@@ -55,7 +59,7 @@ export default function PropertyCard({
               <span className="leading-snug max-w-60 line-clamp-2">{location}</span>
             </p>
           </div>
-          <div className="text-right">
+          <div className="text-right shrink-0">
             <p className="text-2xl font-bold text-primary leading-none">
               ₦{formattedPrice}
             </p>
