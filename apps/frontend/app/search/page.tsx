@@ -1,6 +1,7 @@
 "use client";
 
 import ActiveSearchFilters from "@/components/ActiveSearchFilters";
+import QueryErrorBoundary from "@/components/error/QueryErrorBoundary";
 import HostelResults from "@/components/HostelResults";
 import HostelResultsError from "@/components/HostelResultsError";
 import LocationSearch from "@/components/LocationSearch";
@@ -110,35 +111,23 @@ export default function SearchPage() {
           </div>
         </div>
         {areaType.length > 0 ? (
-          <QueryErrorResetBoundary>
-            {({ reset }) => (
-              <ErrorBoundary
-                onReset={reset}
-                fallbackRender={({ error, resetErrorBoundary }) => (
-                  <HostelResultsError
-                    error={error as Error}
-                    resetErrorBoundary={resetErrorBoundary}
-                  />
-                )}
-              >
-                <Suspense
-                  fallback={
-                    <div className="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                      {Array.from({ length: 10 }).map((_, i) => (
-                        <PropertyCardSkeleton key={i} />
-                      ))}
-                    </div>
-                  }
-                >
-                  <HostelResults
-                    areaType={areaType as AreaTypeEnum}
-                    areaId={areaId}
-                    areaName={searchTerm}
-                  />
-                </Suspense>
-              </ErrorBoundary>
-            )}
-          </QueryErrorResetBoundary>
+          <QueryErrorBoundary errorFallback={HostelResultsError}>
+            <Suspense
+              fallback={
+                <div className="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {Array.from({ length: 10 }).map((_, i) => (
+                    <PropertyCardSkeleton key={i} />
+                  ))}
+                </div>
+              }
+            >
+              <HostelResults
+                areaType={areaType as AreaTypeEnum}
+                areaId={areaId}
+                areaName={searchTerm}
+              />
+            </Suspense>
+          </QueryErrorBoundary>
         ) : (
           <div className="flex flex-col items-center mt-20">
             <h2>Nothing to see here</h2>
