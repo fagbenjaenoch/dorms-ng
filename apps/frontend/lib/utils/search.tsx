@@ -28,7 +28,7 @@ export const EntityTypeToIcon: Record<string, React.ReactNode> = {
     </span>
   ),
   neighborhood_sm: (
-    <span className="bg-orange-200 text-orange-500  px-3 py-3 flex items-center rounded-md">
+    <span className="bg-orange-200 text-orange-500  px-1 py-1 flex items-center rounded-md">
       <MapPin size={12} />
     </span>
   ),
