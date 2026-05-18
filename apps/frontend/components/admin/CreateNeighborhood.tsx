@@ -2,7 +2,7 @@
 
 import { Info, Save } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
-import { Field, FieldError, FieldLabel } from "../ui/field";
+import { Field, FieldError, FieldGroup, FieldLabel } from "../ui/field";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CreateNeighborhoodData, createNeighborhoodSchema } from "@/lib/forms";
 import { Input } from "../ui/input";
@@ -28,6 +28,7 @@ export default function CreateNeighborhoodForm() {
       name: "",
       institution: "",
       institutionId: "",
+      city: "",
     },
   });
 
@@ -64,7 +65,7 @@ export default function CreateNeighborhoodForm() {
           <h2 className="text-2xl font-bold tracking-tight">General Info</h2>
         </div>
 
-        <div className="space-y-6">
+        <FieldGroup>
           <Controller
             name="name"
             control={form.control}
@@ -139,6 +140,42 @@ export default function CreateNeighborhoodForm() {
             )}
           />
 
+          <Controller
+            name="city"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel htmlFor="city" className="uppercase text-xs font-bold">
+                  City
+                </FieldLabel>
+
+                <Combobox id="city" items={nigerianCities}>
+                  <ComboboxInput
+                    {...field}
+                    className="input-bg h-12 rounded-md"
+                    placeholder="Select a city"
+                    showClear={true}
+                  />
+                  <ComboboxContent>
+                    <ComboboxEmpty>No city found.</ComboboxEmpty>
+                    <ComboboxList>
+                      {(item: string) => (
+                        <ComboboxItem
+                          key={item}
+                          value={item}
+                          onClick={() => field.onChange(item)}
+                        >
+                          {item}
+                        </ComboboxItem>
+                      )}
+                    </ComboboxList>
+                  </ComboboxContent>
+                </Combobox>
+                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+              </Field>
+            )}
+          />
+
           <div className="flex flex-col md:flex-row flex-wrap gap-4">
             <Button
               type="submit"
@@ -158,7 +195,7 @@ export default function CreateNeighborhoodForm() {
               Discard changes
             </Button>
           </div>
-        </div>
+        </FieldGroup>
       </section>
     </form>
   );

@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"strings"
 
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/database/models"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
@@ -40,18 +41,24 @@ func (nr *NeighborhoodRepository) CreateNeighborhood(ctx context.Context, neighb
 	n.Name = neighborhood.Name
 	n.Institution = neighborhood.Institution
 	n.InstitutionID = neighborhood.InstitutionId
+	n.City = neighborhood.City
 
 	cn, err := qtx.CreateNeighborhood(ctx, n)
 	if err != nil {
 		return nil, err
 	}
 
+	address := cn.City
+	if strings.ToLower(cn.Name) == "main campus" {
+		address = cn.Institution
+	}
+
 	searchEntry := models.CreateSearchEntryParams{
 		EntityID:   cn.ID,
 		Entity:     cn.Name,
 		EntityType: "neighborhood",
-		SearchText: fmt.Sprintf("%s, %s", cn.Name, cn.Institution),
-		Address:    cn.Institution,
+		SearchText: fmt.Sprintf("%s, %s", cn.Name, address),
+		Address:    address,
 	}
 
 	nr.Logger.Debug().Str("institution", cn.Institution).Msg("creating neighborhood search entry")
