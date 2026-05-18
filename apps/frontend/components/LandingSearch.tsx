@@ -5,7 +5,7 @@ import { HiLocationMarker } from "react-icons/hi";
 import { Button } from "./ui/button";
 import useDebounce from "@/lib/hooks/useDebounce";
 import { useQuery } from "@tanstack/react-query";
-import { ChevronRight, Divide, GraduationCapIcon, X } from "lucide-react";
+import { ChevronRight, X } from "lucide-react";
 import { cn, searchQueryParam } from "@/lib/utils";
 import { useQueryState } from "nuqs";
 import { APIResponse, SearchResult } from "@/lib/dto";
@@ -72,7 +72,11 @@ export default function LandingSearch() {
           {query.data.payload.map((searchResult) => (
             <Link
               className="group cursor-pointer hover:bg-gray-500/10 p-4 rounded-md flex items-center gap-2"
-              href={`/${searchResult.entity_type}s/${searchResult.slug}`}
+              href={
+                searchResult.entity_type === "neighborhood"
+                  ? `/search?q=${searchResult.entity}`
+                  : `/${searchResult.entity_type}s/${searchResult.slug}`
+              }
               key={searchResult.entity_id}
             >
               <div className="flex items-center gap-4">
