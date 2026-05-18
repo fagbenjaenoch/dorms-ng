@@ -7,3 +7,12 @@ type CreateInstitution struct {
 	Longitude float64 `json:"longitude" validate:"required,min=-180,max=180"`
 	City      string  `json:"city" validate:"required,min=2,max=100"`
 }
+
+type Institution struct {
+	ID        string  `json:"id"`
+	Name      string  `json:"name"`
+	Acronym   string  `json:"acronym"`
+	Latitude  float64 `json:"latitude"`
+	Longitude float64 `json:"longitude"`
+	City      string  `json:"city"`
+}

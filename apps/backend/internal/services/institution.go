@@ -44,7 +44,8 @@ func (s InstitutionService) CreateInstitution(ctx context.Context, institution d
 		Success: true,
 		Status:  http.StatusCreated,
 		Message: "Institution created successfully",
-		Payload: dto.CreateInstitution{
+		Payload: dto.Institution{
+			ID:        i.ID,
 			Name:      i.Name,
 			Acronym:   i.Acronym.String,
 			Latitude:  i.Latitude,
@@ -81,7 +82,8 @@ func (s InstitutionService) GetInstitution(ctx context.Context, slug string) (dt
 		Success: true,
 		Status:  http.StatusOK,
 		Message: "Institution retrieved successfully",
-		Payload: dto.CreateInstitution{
+		Payload: dto.Institution{
+			ID:        i.ID,
 			Name:      i.Name,
 			Acronym:   i.Acronym.String,
 			City:      i.City,
