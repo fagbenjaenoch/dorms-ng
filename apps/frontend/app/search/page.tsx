@@ -27,7 +27,7 @@ export default function SearchPage() {
   const [areaId, setAreaId] = useQueryState(idParam, {
     defaultValue: "",
   });
-  const [showDropdown, setShowDropdown] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(searchTerm.length > 0);
 
   const debounceSearchTerm = useDebounce(searchTerm, 300);
 

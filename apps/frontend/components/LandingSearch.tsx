@@ -74,7 +74,7 @@ export default function LandingSearch() {
               className="group cursor-pointer hover:bg-gray-500/10 p-4 rounded-md flex items-center gap-2"
               href={
                 searchResult.entity_type === "neighborhood"
-                  ? `/search?q=${searchResult.entity}`
+                  ? `/search?${searchQueryParam}=${searchResult.entity}`
                   : `/${searchResult.entity_type}s/${searchResult.slug}`
               }
               key={searchResult.entity_id}
