@@ -83,7 +83,7 @@ export type CreateHostelListingData = z.infer<typeof createHostelListingSchema>;
 
 export const createNeighborhoodSchema = z.object({
   name: z.string().min(3, "Neigborhood name must not be less than 2 characters"),
-  institution: z.string(),
+  institution: z.string().min(3, "Institution name is required"),
   institutionId: z.uuid(),
 });
 
