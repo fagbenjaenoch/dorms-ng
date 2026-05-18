@@ -36,9 +36,16 @@ func (nr *NeighborhoodRepository) CreateNeighborhood(ctx context.Context, neighb
 
 	qtx := nr.BaseRepository.Queries.WithTx(tx)
 
+	address := neighborhood.City
+	if strings.ToLower(neighborhood.Name) == "main campus" {
+		address = neighborhood.Institution
+	}
+
+	combinedName := fmt.Sprintf("%s, %s", neighborhood.Name, address)
+
 	var n models.CreateNeighborhoodParams
 	n.ID = uuid.NewString()
-	n.Name = neighborhood.Name
+	n.Name = combinedName
 	n.Institution = neighborhood.Institution
 	n.InstitutionID = neighborhood.InstitutionId
 	n.City = neighborhood.City
@@ -48,16 +55,11 @@ func (nr *NeighborhoodRepository) CreateNeighborhood(ctx context.Context, neighb
 		return nil, err
 	}
 
-	address := cn.City
-	if strings.ToLower(cn.Name) == "main campus" {
-		address = cn.Institution
-	}
-
 	searchEntry := models.CreateSearchEntryParams{
 		EntityID:   cn.ID,
 		Entity:     cn.Name,
 		EntityType: "neighborhood",
-		SearchText: fmt.Sprintf("%s, %s", cn.Name, address),
+		SearchText: combinedName,
 		Address:    address,
 	}
 
@@ -70,7 +72,7 @@ func (nr *NeighborhoodRepository) CreateNeighborhood(ctx context.Context, neighb
 	placeSearchEntry := models.CreatePlaceSearchEntryParams{
 		PlaceID:   cn.ID,
 		PlaceType: "neighborhood",
-		Name:      fmt.Sprintf("%s, %s", cn.Name, address),
+		Name:      combinedName,
 	}
 
 	if _, err := qtx.CreatePlaceSearchEntry(ctx, placeSearchEntry); err != nil {
