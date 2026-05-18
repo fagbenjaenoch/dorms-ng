@@ -10,12 +10,14 @@ interface HostelResultProps {
   areaType: AreaTypeEnum;
   areaId: string;
   areaName: string;
+  showInsight?: boolean;
 }
 
 export default function HostelResults({
   areaType,
   areaId,
   areaName,
+  showInsight,
 }: HostelResultProps) {
   const hostelQuery = useSuspenseQuery<APIResponse<Hostel[]>>({
     queryKey: ["hostels", areaId],
@@ -28,11 +30,13 @@ export default function HostelResults({
     <div>
       {hostels && hostels?.length ? (
         <>
-          <p className="mt-3 text-sm text-muted-foreground mb-15">
-            Showing {hostelQuery.data?.payload.length} result
-            {hostelQuery.data?.payload.length !== 1 ? "s" : ""} matching your
-            criteria within <b>{areaName}</b>
-          </p>
+          {showInsight && (
+            <p className="mt-3 text-sm text-muted-foreground mb-15">
+              Showing {hostelQuery.data?.payload.length} result
+              {hostelQuery.data?.payload.length !== 1 ? "s" : ""} matching your
+              criteria within <b>{areaName}</b>
+            </p>
+          )}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {hostels.map(
               (

@@ -9,7 +9,12 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import PropertyCard from "../ui/PropertyCard";
 import { fetchInstitution } from "@/lib/api/institution";
-import { scrollTo } from "@/lib/utils";
+import { AreaTypeEnum, scrollTo } from "@/lib/utils";
+import { Suspense } from "react";
+import QueryErrorBoundary from "../error/QueryErrorBoundary";
+import HostelResults from "../HostelResults";
+import HostelResultsError from "../HostelResultsError";
+import PropertyCardSkeleton from "../ui/PropertyCardSkeleton";
 
 export default function InstitutionDetailsClient() {
   let { slug } = useParams();
@@ -101,11 +106,23 @@ export default function InstitutionDetailsClient() {
               </select>
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <PropertyCard location="Akoka" name="Platinum heights" price={450000} />
-            <PropertyCard location="Akoka" name="Platinum heights" price={450000} />
-            <PropertyCard location="Akoka" name="Platinum heights" price={450000} />
-          </div>
+          <QueryErrorBoundary errorFallback={HostelResultsError}>
+            <Suspense
+              fallback={
+                <div className="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {Array.from({ length: 10 }).map((_, i) => (
+                    <PropertyCardSkeleton key={i} />
+                  ))}
+                </div>
+              }
+            >
+              <HostelResults
+                areaType={"institution"}
+                areaId={institution.id}
+                areaName={institution.name}
+              />
+            </Suspense>
+          </QueryErrorBoundary>
         </div>
       </section>
       <section className="py-24 px-8 max-w-7xl mx-auto" id="map">
