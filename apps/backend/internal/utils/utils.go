@@ -112,8 +112,12 @@ func GeneratePresignedURLKey(entityName, entityType string) string {
 	return fmt.Sprintf("%s/%s-%d", strings.ToLower(entityType), strings.ToLower(strings.ReplaceAll(entityName, " ", "-")), time.Now().Unix())
 }
 
-func GenerateSlug(name string) string {
-	return fmt.Sprintf("%s-%v", strings.ToLower(strings.ReplaceAll(name, " ", "-")), time.Now().Unix())
+func GenerateSlug(stringInput ...string) string {
+	var slug string
+	for _, s := range stringInput {
+		slug += strings.ToLower(strings.ReplaceAll(s, " ", "-")) + "-"
+	}
+	return strings.TrimRight(slug, "-")
 }
 
 func SkipTelemetry(r *http.Request) bool {

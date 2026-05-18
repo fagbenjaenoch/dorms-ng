@@ -31,7 +31,7 @@ export const createInstitutionSchema = z.object({
   acronym: z
     .string()
     .min(2, "Acronym must be at least 2 characters")
-    .max(10, "Acronym is too long"),
+    .max(20, "Acronym is too long"),
   latitude: z.coerce
     .number<number>()
     .min(-90, "Latitude cannot be be less than -90 degrees")

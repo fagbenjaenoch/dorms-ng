@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/database/models"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
@@ -44,7 +45,7 @@ func (ir *InstitutionRepository) CreateInstitution(ctx context.Context, institut
 	i.Latitude = institution.Latitude
 	i.Longitude = institution.Longitude
 	i.City = institution.City
-	i.Slug = utils.GenerateSlug(institution.Name)
+	i.Slug = utils.GenerateSlug(institution.Acronym)
 
 	ci, err := qtx.CreateInstitution(ctx, i)
 	if err != nil {
@@ -119,7 +120,7 @@ func (hr *HostelRepository) CreateHostel(ctx context.Context, hostel dto.CreateH
 	h.IsVerifiedByAdmin = sql.NullBool{Bool: hostel.IsVerified, Valid: true}
 	h.PrimaryPhotoUrl = sql.NullString{String: hostel.PrimaryPhotoURL, Valid: true}
 	h.Description = sql.NullString{String: hostel.Description, Valid: true}
-	h.Slug = utils.GenerateSlug(hostel.Name)
+	h.Slug = utils.GenerateSlug(hostel.Name, fmt.Sprintf("%d", time.Now().Unix()))
 
 	hr.Logger.Debug().Str("hostel slug", h.Slug).Msg("generated hostel slug")
 
