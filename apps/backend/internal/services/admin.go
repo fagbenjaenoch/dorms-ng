@@ -62,56 +62,6 @@ func (s AdminService) CreateHostel(ctx context.Context, hostel dto.CreateHostel)
 	}, nil
 }
 
-func (s AdminService) CreateInstitution(ctx context.Context, institution dto.CreateInstitution) (dto.StructuredResponse, error) {
-	ctx, span := adminTracer.Start(ctx, "CreateInstitution")
-	defer span.End()
-
-	i, err := s.institutionRepo.CreateInstitution(ctx, institution)
-	if err != nil {
-		return dto.StructuredResponse{
-			Success: false,
-			Status:  http.StatusInternalServerError,
-			Message: "failed to create institution",
-			Payload: nil,
-		}, err
-	}
-
-	return dto.StructuredResponse{
-		Success: true,
-		Status:  http.StatusCreated,
-		Message: "Institution created successfully",
-		Payload: dto.CreateInstitution{
-			Name:      i.Name,
-			Acronym:   i.Acronym.String,
-			Latitude:  i.Latitude,
-			Longitude: i.Longitude,
-			City:      i.City,
-		},
-	}, nil
-}
-
-func (s AdminService) GetAllInstitutions(ctx context.Context) (dto.StructuredResponse, error) {
-	ctx, span := adminTracer.Start(ctx, "GetAllInstitutions")
-	defer span.End()
-
-	institutions, err := s.institutionRepo.GetAllInstitutions(ctx)
-	if err != nil {
-		return dto.StructuredResponse{
-			Success: false,
-			Status:  http.StatusInternalServerError,
-			Message: "failed to get all institutions",
-			Payload: nil,
-		}, err
-	}
-
-	return dto.StructuredResponse{
-		Success: true,
-		Status:  http.StatusOK,
-		Message: "Institutions retrieved successfully",
-		Payload: institutions,
-	}, nil
-}
-
 func (s AdminService) GetHostel(ctx context.Context, slug string) (dto.StructuredResponse, error) {
 	ctx, span := adminTracer.Start(ctx, "GetHostel")
 	defer span.End()
@@ -207,43 +157,6 @@ func (s AdminService) SearchHostels(ctx context.Context, searchType, id string) 
 		Status:  http.StatusOK,
 		Message: "successfully searched hostels",
 		Payload: hostels,
-	}, nil
-}
-
-func (s AdminService) GetInstitution(ctx context.Context, slug string) (dto.StructuredResponse, error) {
-	ctx, span := adminTracer.Start(ctx, "GetInstitution")
-	defer span.End()
-
-	i, err := s.institutionRepo.GetInstitution(ctx, slug)
-	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return dto.StructuredResponse{
-				Success: false,
-				Status:  http.StatusNotFound,
-				Message: "could not find institution",
-				Payload: nil,
-			}, err
-		}
-
-		return dto.StructuredResponse{
-			Success: false,
-			Status:  http.StatusInternalServerError,
-			Message: "failed to get institution",
-			Payload: nil,
-		}, err
-	}
-
-	return dto.StructuredResponse{
-		Success: true,
-		Status:  http.StatusOK,
-		Message: "Institution retrieved successfully",
-		Payload: dto.CreateInstitution{
-			Name:      i.Name,
-			Acronym:   i.Acronym.String,
-			City:      i.City,
-			Latitude:  i.Latitude,
-			Longitude: i.Longitude,
-		},
 	}, nil
 }
 

@@ -24,31 +24,6 @@ func NewAdminHandler(s *server.Server) AdminHandler {
 	}
 }
 
-func (h *AdminHandler) CreateInstitution(w http.ResponseWriter, r *http.Request) {
-	institution, err := utils.GetValidatedPayloadFromRequest[dto.CreateInstitution](r.Context())
-	if err != nil {
-		msg := "failed to process request body"
-		h.server.Logger.Err(err).Msg(msg)
-		utils.WriteJSON(w, dto.StructuredResponse{
-			Success: false,
-			Status:  http.StatusInternalServerError,
-			Message: msg,
-			Payload: nil,
-		})
-		return
-	}
-
-	res, err := h.AdminService.CreateInstitution(r.Context(), institution)
-	if err != nil {
-		msg := "failed to create institution"
-		h.server.Logger.Err(err).Msg(msg)
-		utils.WriteJSON(w, res)
-		return
-	}
-
-	utils.WriteJSON(w, res)
-}
-
 func (h *AdminHandler) CreateHostel(w http.ResponseWriter, r *http.Request) {
 	hostel, err := utils.GetValidatedPayloadFromRequest[dto.CreateHostel](r.Context())
 	if err != nil {
@@ -99,34 +74,6 @@ func (h *AdminHandler) SearchHostels(w http.ResponseWriter, r *http.Request) {
 	res, err := h.AdminService.SearchHostels(r.Context(), typ, id)
 	if err != nil {
 		msg := "failed to search hostels"
-		h.server.Logger.Err(err).Msg(msg)
-		utils.WriteJSON(w, res)
-		return
-	}
-
-	utils.WriteJSON(w, res)
-}
-
-func (h *AdminHandler) GetInstitution(w http.ResponseWriter, r *http.Request) {
-	slug := chi.URLParam(r, "slug")
-
-	h.server.Logger.Debug().Msgf("get institution: %s", slug)
-
-	res, err := h.AdminService.GetInstitution(r.Context(), slug)
-	if err != nil {
-		msg := "failed to get institution"
-		h.server.Logger.Err(err).Msg(msg)
-		utils.WriteJSON(w, res)
-		return
-	}
-
-	utils.WriteJSON(w, res)
-}
-
-func (h *AdminHandler) GetAllInstitutions(w http.ResponseWriter, r *http.Request) {
-	res, err := h.AdminService.GetAllInstitutions(r.Context())
-	if err != nil {
-		msg := "failed to get all institutions"
 		h.server.Logger.Err(err).Msg(msg)
 		utils.WriteJSON(w, res)
 		return
