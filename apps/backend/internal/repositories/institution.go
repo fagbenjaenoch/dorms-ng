@@ -1,0 +1,101 @@
+package repositories
+
+import (
+	"context"
+	"database/sql"
+	"fmt"
+	"strings"
+
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/database/models"
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/utils"
+	"github.com/google/uuid"
+	"github.com/rs/zerolog"
+)
+
+type InstitutionRepository struct {
+	BaseRepository
+	db *sql.DB
+}
+
+func NewInstitutionRepository(db *sql.DB, logger *zerolog.Logger) *InstitutionRepository {
+	return &InstitutionRepository{
+		BaseRepository: BaseRepository{
+			Queries: models.New(db),
+			Logger:  logger,
+		},
+		db: db,
+	}
+}
+
+func (ir *InstitutionRepository) CreateInstitution(ctx context.Context, institution dto.CreateInstitution) (*models.Institution, error) {
+	tx, err := ir.db.Begin()
+	if err != nil {
+		return nil, err
+	}
+	defer tx.Rollback()
+
+	qtx := ir.BaseRepository.Queries.WithTx(tx)
+
+	var i models.CreateInstitutionParams
+	i.ID = uuid.New().String()
+	i.Name = institution.Name
+	i.Acronym = sql.NullString{String: strings.ToUpper(institution.Acronym), Valid: true}
+	i.Latitude = institution.Latitude
+	i.Longitude = institution.Longitude
+	i.City = institution.City
+	i.Slug = utils.GenerateSlug(institution.Acronym)
+
+	ci, err := qtx.CreateInstitution(ctx, i)
+	if err != nil {
+		return nil, err
+	}
+
+	searchEntry := models.CreateSearchEntryParams{
+		EntityID:   ci.ID,
+		EntityType: "institution",
+		Entity:     ci.Name,
+		SearchText: fmt.Sprintf("%s, %s, %s", ci.Name, ci.City, ci.Acronym.String),
+		Slug:       ci.Slug,
+		Address:    ci.City,
+	}
+
+	_, err = qtx.CreateSearchEntry(ctx, searchEntry)
+	if err != nil {
+		return nil, err
+	}
+
+	placeSearchEntry := models.CreatePlaceSearchEntryParams{
+		PlaceID:   ci.ID,
+		PlaceType: "institution",
+		Name:      fmt.Sprintf("%s, %s", ci.Name, ci.City),
+	}
+
+	if _, err := qtx.CreatePlaceSearchEntry(ctx, placeSearchEntry); err != nil {
+		return nil, err
+	}
+
+	if err := tx.Commit(); err != nil {
+		return nil, err
+	}
+
+	return &ci, nil
+}
+
+func (ir *InstitutionRepository) GetInstitution(ctx context.Context, slug string) (*models.Institution, error) {
+	i, err := ir.BaseRepository.Queries.GetInstitutionBySlug(ctx, slug)
+	if err != nil {
+		return nil, err
+	}
+
+	return &i, nil
+}
+
+func (ir *InstitutionRepository) GetAllInstitutions(ctx context.Context) ([]models.Institution, error) {
+	institutions, err := ir.BaseRepository.Queries.GetAllInstitutions(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return institutions, nil
+}

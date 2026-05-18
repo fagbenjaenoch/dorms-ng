@@ -18,9 +18,6 @@ func RegisterV1Routes(s *server.Server) *chi.Mux {
 	v1Router.With(middleware.ValidateRequestPayload[dto.LoginUser]).Post("/login", userHandler.LoginUser)
 	v1Router.With(middleware.RequireAuth).Get("/profile", userHandler.GetUserProfile)
 
-	// admin routes
-	adminHandler := handlers.NewAdminHandler(s)
-
 	// hostel routes
 	hostelHandler := handlers.NewHostelHandler(s)
 	v1Router.Get("/hostels/{slug}", hostelHandler.GetHostel)
@@ -34,8 +31,9 @@ func RegisterV1Routes(s *server.Server) *chi.Mux {
 	v1Router.With(middleware.ValidateRequestPayload[dto.CreateInstitution]).Post("/institutions", institutionHandler.CreateInstitution)
 
 	// neighborhood routes
-	v1Router.Get("/neighborhoods", adminHandler.GetAllNeighborhoods)
-	v1Router.With(middleware.ValidateRequestPayload[dto.CreateNeighborhood]).Post("/neighborhoods", adminHandler.CreateNeighborhood)
+	neighborhoodHandler := handlers.NewNeighborhoodHandler(s)
+	v1Router.Get("/neighborhoods", neighborhoodHandler.GetAllNeighborhoods)
+	v1Router.With(middleware.ValidateRequestPayload[dto.CreateNeighborhood]).Post("/neighborhoods", neighborhoodHandler.CreateNeighborhood)
 
 	// upload route
 	uploadHandler := handlers.NewUploadHandler(s)

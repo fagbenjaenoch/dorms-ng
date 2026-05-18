@@ -10,7 +10,10 @@ import (
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/repositories"
 	"github.com/rs/zerolog"
+	"go.opentelemetry.io/otel"
 )
+
+var hostelTracer = otel.Tracer("hostel_service")
 
 type HostelService struct {
 	repo   *repositories.HostelRepository
@@ -25,7 +28,7 @@ func NewHostelService(db *sql.DB, logger *zerolog.Logger) *HostelService {
 }
 
 func (s HostelService) CreateHostel(ctx context.Context, hostel dto.CreateHostel) (dto.StructuredResponse, error) {
-	ctx, span := adminTracer.Start(ctx, "CreateHostel")
+	ctx, span := hostelTracer.Start(ctx, "CreateHostel")
 	defer span.End()
 
 	h, err := s.repo.CreateHostel(ctx, hostel)
@@ -56,7 +59,7 @@ func (s HostelService) CreateHostel(ctx context.Context, hostel dto.CreateHostel
 }
 
 func (s HostelService) GetHostel(ctx context.Context, slug string) (dto.StructuredResponse, error) {
-	ctx, span := adminTracer.Start(ctx, "GetHostel")
+	ctx, span := hostelTracer.Start(ctx, "GetHostel")
 	defer span.End()
 
 	h, err := s.repo.GetHostel(ctx, slug)

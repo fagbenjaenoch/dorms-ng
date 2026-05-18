@@ -9,7 +9,10 @@ import (
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/repositories"
 	"github.com/rs/zerolog"
+	"go.opentelemetry.io/otel"
 )
+
+var institutionTracer = otel.Tracer("institution_service")
 
 type InstitutionService struct {
 	repo   *repositories.InstitutionRepository
@@ -24,7 +27,7 @@ func NewInstitutionService(db *sql.DB, logger *zerolog.Logger) *InstitutionServi
 }
 
 func (s InstitutionService) CreateInstitution(ctx context.Context, institution dto.CreateInstitution) (dto.StructuredResponse, error) {
-	ctx, span := adminTracer.Start(ctx, "CreateInstitution")
+	ctx, span := institutionTracer.Start(ctx, "CreateInstitution")
 	defer span.End()
 
 	i, err := s.repo.CreateInstitution(ctx, institution)
@@ -52,7 +55,7 @@ func (s InstitutionService) CreateInstitution(ctx context.Context, institution d
 }
 
 func (s InstitutionService) GetInstitution(ctx context.Context, slug string) (dto.StructuredResponse, error) {
-	ctx, span := adminTracer.Start(ctx, "GetInstitution")
+	ctx, span := institutionTracer.Start(ctx, "GetInstitution")
 	defer span.End()
 
 	i, err := s.repo.GetInstitution(ctx, slug)
@@ -89,7 +92,7 @@ func (s InstitutionService) GetInstitution(ctx context.Context, slug string) (dt
 }
 
 func (s InstitutionService) GetAllInstitutions(ctx context.Context) (dto.StructuredResponse, error) {
-	ctx, span := adminTracer.Start(ctx, "GetAllInstitutions")
+	ctx, span := institutionTracer.Start(ctx, "GetAllInstitutions")
 	defer span.End()
 
 	institutions, err := s.repo.GetAllInstitutions(ctx)
