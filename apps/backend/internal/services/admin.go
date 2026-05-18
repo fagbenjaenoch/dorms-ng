@@ -3,10 +3,8 @@ package services
 import (
 	"context"
 	"database/sql"
-	"errors"
 	"net/http"
 
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/database/models"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/repositories"
 	"github.com/rs/zerolog"
@@ -29,135 +27,6 @@ func NewAdminService(db *sql.DB, logger *zerolog.Logger) *AdminService {
 		neighborhoodRepo: repositories.NewNeighborhoodRepository(db, logger),
 		Logger:           logger,
 	}
-}
-
-func (s AdminService) CreateHostel(ctx context.Context, hostel dto.CreateHostel) (dto.StructuredResponse, error) {
-	ctx, span := adminTracer.Start(ctx, "CreateHostel")
-	defer span.End()
-
-	h, err := s.hostelRepo.CreateHostel(ctx, hostel)
-	if err != nil {
-		return dto.StructuredResponse{
-			Success: false,
-			Status:  http.StatusInternalServerError,
-			Message: "failed to create hostel",
-			Payload: nil,
-		}, err
-	}
-
-	return dto.StructuredResponse{
-		Success: true,
-		Status:  http.StatusCreated,
-		Message: "Hostel created successfully",
-		Payload: dto.Hostel{
-			Name:            h.Name,
-			City:            h.City.String,
-			Description:     h.Description.String,
-			Address:         h.Address.String,
-			Latitude:        h.Latitude,
-			Longitude:       h.Longitude,
-			PrimaryPhotoURL: h.PrimaryPhotoUrl.String,
-			Slug:            h.Slug,
-		},
-	}, nil
-}
-
-func (s AdminService) GetHostel(ctx context.Context, slug string) (dto.StructuredResponse, error) {
-	ctx, span := adminTracer.Start(ctx, "GetHostel")
-	defer span.End()
-
-	h, err := s.hostelRepo.GetHostel(ctx, slug)
-	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return dto.StructuredResponse{
-				Success: false,
-				Status:  http.StatusNotFound,
-				Message: "could not find hostel",
-				Payload: nil,
-			}, err
-		}
-
-		return dto.StructuredResponse{
-			Success: false,
-			Status:  http.StatusInternalServerError,
-			Message: "failed to get hostel",
-			Payload: nil,
-		}, err
-	}
-
-	return dto.StructuredResponse{
-		Success: true,
-		Status:  http.StatusOK,
-		Message: "Hostel retrieved successfully",
-		Payload: dto.Hostel{
-			Name:            h.Name,
-			City:            h.City.String,
-			Description:     h.Description.String,
-			Address:         h.Address.String,
-			Latitude:        h.Latitude,
-			Longitude:       h.Longitude,
-			PrimaryPhotoURL: h.PrimaryPhotoUrl.String,
-		},
-	}, nil
-}
-
-func (s AdminService) SearchHostels(ctx context.Context, searchType, id string) (dto.StructuredResponse, error) {
-	var res []models.Hostel
-	var err error
-
-	switch searchType {
-	case "institution":
-		s.Logger.Debug().Msg("Searching hostels by institution")
-		res, err = s.hostelRepo.Queries.GetHostelsByInstitution(ctx, id)
-		if err != nil {
-			return dto.StructuredResponse{
-				Message: "could not find hostels",
-				Status:  http.StatusNotFound,
-			}, err
-		}
-
-	case "neighborhood":
-		s.Logger.Debug().Msg("Searching hostels by neighborhood")
-		q := sql.NullString{String: id, Valid: true}
-		res, err = s.hostelRepo.Queries.GetHostelsByNeighborhood(ctx, q)
-		if err != nil {
-			return dto.StructuredResponse{
-				Message: "could not find hostels",
-				Status:  http.StatusNotFound,
-			}, err
-		}
-
-	default:
-		return dto.StructuredResponse{
-			Status:  http.StatusBadRequest,
-			Message: "invalid search type",
-		}, nil
-	}
-
-	var hostels []dto.Hostel
-
-	for _, v := range res {
-		hostels = append(hostels, dto.Hostel{
-			Name:                v.Name,
-			Address:             v.Address.String,
-			Description:         v.Description.String,
-			City:                v.City.String,
-			Neighborhood:        v.Neighborhood.String,
-			EstimatedPriceRange: v.EstimatedPriceRange.Float64,
-			Longitude:           v.Longitude,
-			Latitude:            v.Latitude,
-			Slug:                v.Slug,
-			PrimaryPhotoURL:     v.PrimaryPhotoUrl.String,
-			IsVerified:          v.IsVerifiedByAdmin.Bool,
-		})
-	}
-
-	return dto.StructuredResponse{
-		Success: true,
-		Status:  http.StatusOK,
-		Message: "successfully searched hostels",
-		Payload: hostels,
-	}, nil
 }
 
 func (s AdminService) CreateNeighborhood(ctx context.Context, neighborhood dto.CreateNeighborhood) (dto.StructuredResponse, error) {
