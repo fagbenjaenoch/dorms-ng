@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Button } from "./ui/button";
 
 export default function CtaSection() {
@@ -14,13 +15,15 @@ export default function CtaSection() {
               Ready to Secure Your Dream Hostel?
             </h2>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Button
-                variant="secondary"
-                size="xl"
-                className="w-full sm:w-auto bg-secondary text-primary-foreground rounded-2xl font-black text-lg shadow-xl hover:bg-secondary-dim transition-all"
-              >
-                Find a Hostel Now
-              </Button>
+              <Link href="/search">
+                <Button
+                  variant="secondary"
+                  size="xl"
+                  className="w-full sm:w-auto bg-secondary text-primary-foreground rounded-2xl font-black text-lg shadow-xl hover:bg-secondary-dim transition-all"
+                >
+                  Find a Hostel Now
+                </Button>
+              </Link>
               <Button
                 size="xl"
                 className="w-full sm:w-auto text-primary-light bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl font-black text-lg hover:bg-white/20 transition-all"
