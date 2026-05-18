@@ -21,11 +21,6 @@ export type SigninPayload = BaseAuthPayload & {
 
 export type CreateInstitutionPayload = CreateInstitutionData;
 
-export type CreateNeighborhood = {
-  name: string;
-  institutionId: string;
-};
-
 export interface SearchResult {
   entity_id: string;
   entity_type: string;

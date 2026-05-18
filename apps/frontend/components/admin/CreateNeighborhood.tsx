@@ -33,11 +33,7 @@ export default function CreateNeighborhoodForm() {
 
   const mutation = useMutation({
     mutationKey: ["createNeighbourhood"],
-    mutationFn: (data: CreateNeighborhoodData) =>
-      createNeighborhood({
-        name: data.name,
-        institutionId: data.institutionId,
-      }),
+    mutationFn: createNeighborhood,
     onSuccess: () => {
       toast.success("Created Neighbourhood Successfully");
       form.reset();
@@ -54,7 +50,7 @@ export default function CreateNeighborhoodForm() {
 
   const institutions = query.data?.payload;
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: CreateNeighborhoodData) => {
     await mutation.mutateAsync(data);
   };
 
@@ -112,6 +108,7 @@ export default function CreateNeighborhoodForm() {
                     className="input-bg h-12 rounded-md"
                     placeholder="Select an institution"
                     showClear={true}
+                    aria-invalid={fieldState.invalid}
                   />
                   <ComboboxContent>
                     {query.isLoading ? (
