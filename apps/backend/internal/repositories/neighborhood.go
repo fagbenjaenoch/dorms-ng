@@ -3,6 +3,7 @@ package repositories
 import (
 	"context"
 	"database/sql"
+	"fmt"
 
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/database/models"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
@@ -37,6 +38,7 @@ func (nr *NeighborhoodRepository) CreateNeighborhood(ctx context.Context, neighb
 	var n models.CreateNeighborhoodParams
 	n.ID = uuid.NewString()
 	n.Name = neighborhood.Name
+	n.Institution = neighborhood.Institution
 	n.InstitutionID = neighborhood.InstitutionId
 
 	cn, err := qtx.CreateNeighborhood(ctx, n)
@@ -46,10 +48,13 @@ func (nr *NeighborhoodRepository) CreateNeighborhood(ctx context.Context, neighb
 
 	searchEntry := models.CreateSearchEntryParams{
 		EntityID:   cn.ID,
-		Entity:     neighborhood.Name,
+		Entity:     cn.Name,
 		EntityType: "neighborhood",
-		SearchText: neighborhood.Name,
+		SearchText: fmt.Sprintf("%s, %s", cn.Name, cn.Institution),
+		Address:    cn.Institution,
 	}
+
+	nr.Logger.Debug().Str("institution", cn.Institution).Msg("creating neighborhood search entry")
 
 	if _, err := qtx.CreateSearchEntry(ctx, searchEntry); err != nil {
 		return nil, err

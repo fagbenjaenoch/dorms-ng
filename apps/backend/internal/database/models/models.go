@@ -52,6 +52,7 @@ type Institution struct {
 
 type Neighborhood struct {
 	ID                 string         `json:"id"`
+	Institution        string         `json:"institution"`
 	InstitutionID      string         `json:"institution_id"`
 	Name               string         `json:"name"`
 	AvgPriceSelfCon    sql.NullInt64  `json:"avg_price_self_con"`
