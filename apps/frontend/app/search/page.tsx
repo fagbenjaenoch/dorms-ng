@@ -123,7 +123,7 @@ export default function SearchPage() {
               >
                 <Suspense
                   fallback={
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                       {Array.from({ length: 10 }).map((_, i) => (
                         <PropertyCardSkeleton key={i} />
                       ))}
