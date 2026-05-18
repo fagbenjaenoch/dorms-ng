@@ -125,6 +125,7 @@ export default function SearchPage() {
                 areaType={areaType as AreaTypeEnum}
                 areaId={areaId}
                 areaName={searchTerm}
+                showInsight
               />
             </Suspense>
           </QueryErrorBoundary>
