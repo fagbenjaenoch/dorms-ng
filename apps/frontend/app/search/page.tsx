@@ -73,7 +73,7 @@ export default function SearchPage() {
               Discover <span className="text-primary">places</span>
             </h1>
             <div className="flex items-center justify-between">
-              <div className="relative flex-1">
+              <div className="relative flex-1 max-w-xl">
                 <LocationSearch
                   searchTerm={searchTerm}
                   handleChange={(e) => setSearchTerm(e.target.value)}

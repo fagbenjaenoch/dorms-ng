@@ -18,7 +18,7 @@ export default function LocationSearch({
   onClick,
 }: LocationSearchProps) {
   return (
-    <InputGroup className="max-w-xl">
+    <InputGroup>
       <InputGroupInput
         placeholder="Search locations..."
         value={searchTerm}
