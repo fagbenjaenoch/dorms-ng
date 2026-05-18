@@ -18,22 +18,22 @@ func RegisterV1Routes(s *server.Server) *chi.Mux {
 	v1Router.With(middleware.ValidateRequestPayload[dto.LoginUser]).Post("/login", userHandler.LoginUser)
 	v1Router.With(middleware.RequireAuth).Get("/profile", userHandler.GetUserProfile)
 
-	// admin routes
-	adminHandler := handlers.NewAdminHandler(s)
-
 	// hostel routes
-	v1Router.Get("/hostels/{slug}", adminHandler.GetHostel)
-	v1Router.With(middleware.ValidateRequestPayload[dto.CreateHostel]).Post("/hostels", adminHandler.CreateHostel)
-	v1Router.Get("/hostels/search", adminHandler.SearchHostels)
+	hostelHandler := handlers.NewHostelHandler(s)
+	v1Router.Get("/hostels/{slug}", hostelHandler.GetHostel)
+	v1Router.With(middleware.ValidateRequestPayload[dto.CreateHostel]).Post("/hostels", hostelHandler.CreateHostel)
+	v1Router.Get("/hostels/search", hostelHandler.SearchHostels)
 
 	// institution routes
-	v1Router.Get("/institutions", adminHandler.GetAllInstitutions)
-	v1Router.Get("/institutions/{slug}", adminHandler.GetInstitution)
-	v1Router.With(middleware.ValidateRequestPayload[dto.CreateInstitution]).Post("/institutions", adminHandler.CreateInstitution)
+	institutionHandler := handlers.NewInstitutionHandler(s)
+	v1Router.Get("/institutions", institutionHandler.GetAllInstitutions)
+	v1Router.Get("/institutions/{slug}", institutionHandler.GetInstitution)
+	v1Router.With(middleware.ValidateRequestPayload[dto.CreateInstitution]).Post("/institutions", institutionHandler.CreateInstitution)
 
 	// neighborhood routes
-	v1Router.Get("/neighborhoods", adminHandler.GetAllNeighborhoods)
-	v1Router.With(middleware.ValidateRequestPayload[dto.CreateNeighborhood]).Post("/neighborhoods", adminHandler.CreateNeighborhood)
+	neighborhoodHandler := handlers.NewNeighborhoodHandler(s)
+	v1Router.Get("/neighborhoods", neighborhoodHandler.GetAllNeighborhoods)
+	v1Router.With(middleware.ValidateRequestPayload[dto.CreateNeighborhood]).Post("/neighborhoods", neighborhoodHandler.CreateNeighborhood)
 
 	// upload route
 	uploadHandler := handlers.NewUploadHandler(s)

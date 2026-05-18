@@ -9,6 +9,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import PropertyCard from "../ui/PropertyCard";
 import { fetchInstitution } from "@/lib/api/institution";
+import { scrollTo } from "@/lib/utils";
 
 export default function InstitutionDetailsClient() {
   let { slug } = useParams();
@@ -57,6 +58,7 @@ export default function InstitutionDetailsClient() {
                 variant="default"
                 size="xl"
                 className="px-8 py-4 flex items-center gap-2 text-primary-light"
+                onClick={() => scrollTo("#hostels")}
               >
                 <Compass />
                 Explore Nearby Hostels
@@ -65,6 +67,7 @@ export default function InstitutionDetailsClient() {
                 variant="ghost"
                 size="xl"
                 className="px-8 py-4 text-primary rounded-2xl font-bold flex items-center gap-2 shadow-sm border border-outline-variant/40 transition-colors duration-300"
+                onClick={() => scrollTo("#map")}
               >
                 <MapIcon /> View on Map
               </Button>
@@ -72,7 +75,7 @@ export default function InstitutionDetailsClient() {
           </div>
         </div>
       </section>
-      <section className="py-24 px-8 bg-gray-200/80">
+      <section className="py-24 px-8 bg-gray-200/80" id="hostels">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
             <div>
@@ -105,7 +108,7 @@ export default function InstitutionDetailsClient() {
           </div>
         </div>
       </section>
-      <section className="py-24 px-8 max-w-7xl mx-auto">
+      <section className="py-24 px-8 max-w-7xl mx-auto" id="map">
         <div className="rounded-[3rem] overflow-hidden shadow-xl border border-outline-variant/20">
           <div className="grid grid-cols-1 lg:grid-cols-3">
             <div className="lg:col-span-1 p-10 flex flex-col justify-center">

@@ -9,6 +9,13 @@ export function getCurrentYear(): number {
   return new Date().getFullYear();
 }
 
+export function scrollTo(selector: string) {
+  const element = document.querySelector(selector);
+  if (element) {
+    element.scrollIntoView({ behavior: "smooth" });
+  }
+}
+
 export const nigerianCities = [
   "Aba",
   "Abakaliki",
