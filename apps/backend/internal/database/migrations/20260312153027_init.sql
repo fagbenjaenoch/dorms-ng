@@ -68,9 +68,10 @@ CREATE TABLE hostels (
 
 CREATE TABLE neighborhoods (
     id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
     institution TEXT NOT NULL,
     institution_id TEXT NOT NULL,
-    name TEXT NOT NULL,
+    city TEXT NOT NULL,
     avg_price_self_con INTEGER,
     avg_price_1bed INTEGER,
     power_rating_insight TEXT,

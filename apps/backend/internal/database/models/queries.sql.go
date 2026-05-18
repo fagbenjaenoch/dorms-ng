@@ -126,11 +126,11 @@ func (q *Queries) CreateInstitution(ctx context.Context, arg CreateInstitutionPa
 
 const createNeighborhood = `-- name: CreateNeighborhood :one
 INSERT INTO neighborhoods (
-    id, institution, institution_id, name, avg_price_self_con, avg_price_1bed, power_rating_insight
+    id, institution, institution_id, name, city, avg_price_self_con, avg_price_1bed, power_rating_insight
 ) VALUES (
-    ?, ?, ?, ?, ?, ?, ?
+    ?, ?, ?, ?, ?, ?, ?, ?
 )
-RETURNING id, institution, institution_id, name, avg_price_self_con, avg_price_1bed, power_rating_insight
+RETURNING id, name, institution, institution_id, city, avg_price_self_con, avg_price_1bed, power_rating_insight
 `
 
 type CreateNeighborhoodParams struct {
@@ -138,6 +138,7 @@ type CreateNeighborhoodParams struct {
 	Institution        string         `json:"institution"`
 	InstitutionID      string         `json:"institution_id"`
 	Name               string         `json:"name"`
+	City               string         `json:"city"`
 	AvgPriceSelfCon    sql.NullInt64  `json:"avg_price_self_con"`
 	AvgPrice1bed       sql.NullInt64  `json:"avg_price_1bed"`
 	PowerRatingInsight sql.NullString `json:"power_rating_insight"`
@@ -149,6 +150,7 @@ func (q *Queries) CreateNeighborhood(ctx context.Context, arg CreateNeighborhood
 		arg.Institution,
 		arg.InstitutionID,
 		arg.Name,
+		arg.City,
 		arg.AvgPriceSelfCon,
 		arg.AvgPrice1bed,
 		arg.PowerRatingInsight,
@@ -156,9 +158,10 @@ func (q *Queries) CreateNeighborhood(ctx context.Context, arg CreateNeighborhood
 	var i Neighborhood
 	err := row.Scan(
 		&i.ID,
+		&i.Name,
 		&i.Institution,
 		&i.InstitutionID,
-		&i.Name,
+		&i.City,
 		&i.AvgPriceSelfCon,
 		&i.AvgPrice1bed,
 		&i.PowerRatingInsight,
@@ -332,7 +335,7 @@ func (q *Queries) GetAllInstitutions(ctx context.Context) ([]Institution, error)
 }
 
 const getAllNeighborhoods = `-- name: GetAllNeighborhoods :many
-SELECT id, institution, institution_id, name, avg_price_self_con, avg_price_1bed, power_rating_insight FROM neighborhoods ORDER BY name
+SELECT id, name, institution, institution_id, city, avg_price_self_con, avg_price_1bed, power_rating_insight FROM neighborhoods ORDER BY name
 `
 
 func (q *Queries) GetAllNeighborhoods(ctx context.Context) ([]Neighborhood, error) {
@@ -346,9 +349,10 @@ func (q *Queries) GetAllNeighborhoods(ctx context.Context) ([]Neighborhood, erro
 		var i Neighborhood
 		if err := rows.Scan(
 			&i.ID,
+			&i.Name,
 			&i.Institution,
 			&i.InstitutionID,
-			&i.Name,
+			&i.City,
 			&i.AvgPriceSelfCon,
 			&i.AvgPrice1bed,
 			&i.PowerRatingInsight,
@@ -602,7 +606,7 @@ func (q *Queries) GetInstitutionBySlug(ctx context.Context, slug string) (Instit
 }
 
 const getNeighborhoodById = `-- name: GetNeighborhoodById :one
-SELECT id, institution, institution_id, name, avg_price_self_con, avg_price_1bed, power_rating_insight FROM neighborhoods WHERE id = ? LIMIT 1
+SELECT id, name, institution, institution_id, city, avg_price_self_con, avg_price_1bed, power_rating_insight FROM neighborhoods WHERE id = ? LIMIT 1
 `
 
 func (q *Queries) GetNeighborhoodById(ctx context.Context, id string) (Neighborhood, error) {
@@ -610,9 +614,10 @@ func (q *Queries) GetNeighborhoodById(ctx context.Context, id string) (Neighborh
 	var i Neighborhood
 	err := row.Scan(
 		&i.ID,
+		&i.Name,
 		&i.Institution,
 		&i.InstitutionID,
-		&i.Name,
+		&i.City,
 		&i.AvgPriceSelfCon,
 		&i.AvgPrice1bed,
 		&i.PowerRatingInsight,
@@ -621,7 +626,7 @@ func (q *Queries) GetNeighborhoodById(ctx context.Context, id string) (Neighborh
 }
 
 const getNeighborhoodsByInstitution = `-- name: GetNeighborhoodsByInstitution :many
-SELECT id, institution, institution_id, name, avg_price_self_con, avg_price_1bed, power_rating_insight FROM neighborhoods WHERE institution_id = ? ORDER BY name
+SELECT id, name, institution, institution_id, city, avg_price_self_con, avg_price_1bed, power_rating_insight FROM neighborhoods WHERE institution_id = ? ORDER BY name
 `
 
 func (q *Queries) GetNeighborhoodsByInstitution(ctx context.Context, institutionID string) ([]Neighborhood, error) {
@@ -635,9 +640,10 @@ func (q *Queries) GetNeighborhoodsByInstitution(ctx context.Context, institution
 		var i Neighborhood
 		if err := rows.Scan(
 			&i.ID,
+			&i.Name,
 			&i.Institution,
 			&i.InstitutionID,
-			&i.Name,
+			&i.City,
 			&i.AvgPriceSelfCon,
 			&i.AvgPrice1bed,
 			&i.PowerRatingInsight,

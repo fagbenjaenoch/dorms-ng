@@ -70,9 +70,9 @@ RETURNING *;
 
 -- name: CreateNeighborhood :one
 INSERT INTO neighborhoods (
-    id, institution, institution_id, name, avg_price_self_con, avg_price_1bed, power_rating_insight
+    id, institution, institution_id, name, city, avg_price_self_con, avg_price_1bed, power_rating_insight
 ) VALUES (
-    ?, ?, ?, ?, ?, ?, ?
+    ?, ?, ?, ?, ?, ?, ?, ?
 )
 RETURNING *;
 
