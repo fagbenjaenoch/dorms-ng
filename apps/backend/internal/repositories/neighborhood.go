@@ -70,7 +70,7 @@ func (nr *NeighborhoodRepository) CreateNeighborhood(ctx context.Context, neighb
 	placeSearchEntry := models.CreatePlaceSearchEntryParams{
 		PlaceID:   cn.ID,
 		PlaceType: "neighborhood",
-		Name:      cn.Name,
+		Name:      fmt.Sprintf("%s, %s", cn.Name, address),
 	}
 
 	if _, err := qtx.CreatePlaceSearchEntry(ctx, placeSearchEntry); err != nil {
