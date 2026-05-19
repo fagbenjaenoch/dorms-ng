@@ -6,7 +6,7 @@ import { MdTune } from "react-icons/md";
 import { FaPersonWalking } from "react-icons/fa6";
 import { PiMapPinArea } from "react-icons/pi";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
+import { notFound, useParams } from "next/navigation";
 import PropertyCard from "../ui/PropertyCard";
 import { fetchInstitution } from "@/lib/api/institution";
 import { AreaTypeEnum, scrollTo } from "@/lib/utils";
@@ -25,7 +25,7 @@ export default function InstitutionDetailsClient() {
     queryFn: () => fetchInstitution(slug),
   });
 
-  if (!query.data) return null;
+  if (!query.data) return notFound();
 
   const { payload: institution } = query.data;
 
