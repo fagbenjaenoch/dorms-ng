@@ -37,8 +37,9 @@ func (s *UploadService) GetPresignedURL(ctx context.Context, key string) (dto.St
 	presignClient := s3.NewPresignClient(s.UploadClient)
 
 	presignResult, err := presignClient.PresignPutObject(tracerCtx, &s3.PutObjectInput{
-		Bucket: &config.GetGlobalConfig().R2.Bucket,
-		Key:    aws.String(key),
+		Bucket:      &config.GetGlobalConfig().R2.Bucket,
+		Key:         aws.String(key),
+		IfNoneMatch: aws.String("*"),
 	})
 	if err != nil {
 		s.Logger.Err(err).Msg("failed to generate presigned url")
