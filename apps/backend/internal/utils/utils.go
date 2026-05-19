@@ -1,12 +1,13 @@
 package utils
 
 import (
+	"crypto/sha1"
+	"encoding/base64"
 	pkgError "errors"
 	"fmt"
 	"net/http"
 	"os"
 	"strings"
-	"time"
 
 	"github.com/go-playground/validator/v10"
 )
@@ -69,7 +70,8 @@ func FormatValidationErrors(err error) ErrorResponse {
 }
 
 func GeneratePresignedURLKey(entityName, entityType string) string {
-	return fmt.Sprintf("%s/%s-%d", strings.ToLower(entityType), strings.ToLower(strings.ReplaceAll(entityName, " ", "-")), time.Now().Unix())
+	nameHash := GenerateHash(entityName)
+	return fmt.Sprintf("%s/%s/%s", strings.ToLower(entityType), strings.ToLower(strings.ReplaceAll(entityName, " ", "-")), nameHash)
 }
 
 func GenerateSlug(stringInput ...string) string {
@@ -78,6 +80,12 @@ func GenerateSlug(stringInput ...string) string {
 		slug += strings.ToLower(strings.ReplaceAll(s, " ", "-")) + "-"
 	}
 	return strings.TrimRight(slug, "-")
+}
+
+func GenerateHash(input string) string {
+	h := sha1.New()
+	h.Write([]byte(input))
+	return base64.RawURLEncoding.Strict().EncodeToString(h.Sum(nil))
 }
 
 func SkipTelemetry(r *http.Request) bool {
