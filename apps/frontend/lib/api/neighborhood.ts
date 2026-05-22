@@ -2,24 +2,23 @@ import { APIResponse, Neighborhood } from "../dto";
 import { CreateNeighborhoodData } from "../forms";
 
 export async function createNeighborhood(data: CreateNeighborhoodData) {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/neighborhoods`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/v1/neighborhoods`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-    );
-    if (!res.ok) {
-      throw new Error("Failed to create neighborhood");
-    }
-    return res.json() as any as APIResponse<CreateNeighborhoodData>;
-  } catch (error) {
-    throw new Error("Failed to create neighborhood");
+      body: JSON.stringify(data),
+    },
+  );
+
+  const response = await res.json();
+  if (!response.success) {
+    throw new Error(response.message);
   }
+
+  return response as any as APIResponse<CreateNeighborhoodData>;
 }
 
 export async function fetchAllNeighborhoods() {
