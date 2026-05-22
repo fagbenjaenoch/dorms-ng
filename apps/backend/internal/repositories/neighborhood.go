@@ -36,12 +36,9 @@ func (nr *NeighborhoodRepository) CreateNeighborhood(ctx context.Context, neighb
 
 	qtx := nr.BaseRepository.Queries.WithTx(tx)
 
-	address := neighborhood.City
-	if strings.ToLower(neighborhood.Name) == "main campus" {
-		address = neighborhood.Institution
-	}
+	address := utils.GetNeighborhoodAddress(neighborhood)
 
-	combinedName := fmt.Sprintf("%s, %s", neighborhood.Name, address)
+	combinedName := utils.NormalizeNeighborhoodName(neighborhood)
 
 	var n models.CreateNeighborhoodParams
 	n.ID = uuid.NewString()
