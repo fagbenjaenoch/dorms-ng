@@ -121,13 +121,11 @@ export default function CreateHostelListingForm() {
 
   const onSubmit = async (data: CreateHostelListingData) => {
     if (!primaryPhoto) {
-      throw new Error("Please select a primary photo");
+      toast.error("Please select a primary photo");
+      return;
     }
 
     const payload = await mutation.mutateAsync(data);
-    if (!payload.success) {
-      throw new Error("Could not create hostel");
-    }
 
     form.reset();
     formRef.current?.reset();
