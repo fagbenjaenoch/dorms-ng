@@ -29,11 +29,16 @@ export async function createHostelListing(
     },
     body: JSON.stringify(dataWithPrimaryPhoto),
   });
-  if (!res.ok) {
-    console.error(await res.json());
-    throw new Error("Failed to create hostel");
+
+  try {
+    const response = await res.json();
+    if (!response.success) {
+      throw new Error(response.message);
+    }
+    return response as any as APIResponse<CreateHostelListingData>;
+  } catch (e) {
+    throw e;
   }
-  return res.json() as any as APIResponse<CreateHostelListingData>;
 }
 
 export async function fetchHostel(

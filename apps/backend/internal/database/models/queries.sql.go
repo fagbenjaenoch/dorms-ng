@@ -10,6 +10,50 @@ import (
 	"database/sql"
 )
 
+const checkHostelExists = `-- name: CheckHostelExists :one
+SELECT EXISTS(SELECT 1 FROM hostels WHERE LOWER(name) = ? LIMIT 1)
+`
+
+func (q *Queries) CheckHostelExists(ctx context.Context, name string) (int64, error) {
+	row := q.db.QueryRowContext(ctx, checkHostelExists, name)
+	var column_1 int64
+	err := row.Scan(&column_1)
+	return column_1, err
+}
+
+const checkInstitutionExists = `-- name: CheckInstitutionExists :one
+SELECT EXISTS(SELECT 1 FROM institutions WHERE slug = ? LIMIT 1)
+`
+
+func (q *Queries) CheckInstitutionExists(ctx context.Context, slug string) (int64, error) {
+	row := q.db.QueryRowContext(ctx, checkInstitutionExists, slug)
+	var column_1 int64
+	err := row.Scan(&column_1)
+	return column_1, err
+}
+
+const checkNeighborhoodExists = `-- name: CheckNeighborhoodExists :one
+SELECT EXISTS(SELECT 1 FROM neighborhoods WHERE LOWER(name) = ? LIMIT 1)
+`
+
+func (q *Queries) CheckNeighborhoodExists(ctx context.Context, name string) (int64, error) {
+	row := q.db.QueryRowContext(ctx, checkNeighborhoodExists, name)
+	var column_1 int64
+	err := row.Scan(&column_1)
+	return column_1, err
+}
+
+const checkUserExists = `-- name: CheckUserExists :one
+SELECT EXISTS(SELECT 1 FROM users WHERE email = ? LIMIT 1)
+`
+
+func (q *Queries) CheckUserExists(ctx context.Context, email string) (int64, error) {
+	row := q.db.QueryRowContext(ctx, checkUserExists, email)
+	var column_1 int64
+	err := row.Scan(&column_1)
+	return column_1, err
+}
+
 const createHostel = `-- name: CreateHostel :one
 INSERT INTO hostels (
     id, name, address, description, city, latitude, longitude,
@@ -801,15 +845,4 @@ func (q *Queries) ListInstitutions(ctx context.Context) ([]Institution, error) {
 		return nil, err
 	}
 	return items, nil
-}
-
-const userExists = `-- name: UserExists :one
-SELECT EXISTS(SELECT 1 FROM users WHERE email = ? LIMIT 1)
-`
-
-func (q *Queries) UserExists(ctx context.Context, email string) (int64, error) {
-	row := q.db.QueryRowContext(ctx, userExists, email)
-	var column_1 int64
-	err := row.Scan(&column_1)
-	return column_1, err
 }

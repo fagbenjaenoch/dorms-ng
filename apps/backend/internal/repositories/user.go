@@ -24,10 +24,10 @@ func NewUserRepository(db *sql.DB, logger *zerolog.Logger) UserRepository {
 	}
 }
 
-func (ur *UserRepository) UserExists(ctx context.Context, email string) (bool, error) {
-	exists, err := ur.Queries.UserExists(ctx, email)
+func (ur *UserRepository) CheckUserExists(ctx context.Context, email string) (bool, error) {
+	exists, err := ur.Queries.CheckUserExists(ctx, email)
 	if err != nil {
-		ur.Logger.Err(err).Msg("could not execute query")
+		ur.Logger.Err(err).Msg("could not execute check user exists query")
 		return false, err
 	}
 

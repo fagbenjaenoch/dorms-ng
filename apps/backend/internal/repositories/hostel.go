@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/database/models"
@@ -26,6 +27,14 @@ func NewHostelRepository(db *sql.DB, logger *zerolog.Logger) *HostelRepository {
 		},
 		db: db,
 	}
+}
+
+func (hr *HostelRepository) CheckHostelExists(ctx context.Context, name string) (bool, error) {
+	hostelExists, err := hr.BaseRepository.Queries.CheckHostelExists(ctx, strings.ToLower(name))
+	if err != nil {
+		return false, err
+	}
+	return hostelExists != 0, nil
 }
 
 func (hr *HostelRepository) CreateHostel(ctx context.Context, hostel dto.CreateHostel) (*models.Hostel, error) {

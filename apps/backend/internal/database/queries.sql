@@ -1,6 +1,3 @@
--- name: UserExists :one
-SELECT EXISTS(SELECT 1 FROM users WHERE email = ? LIMIT 1);
-
 -- name: CreateInstitution :one
 INSERT INTO institutions (
     id, name, acronym, latitude, longitude, city, slug
@@ -20,6 +17,10 @@ SELECT * FROM institutions;
 
 -- name: GetInstitutionBySlug :one
 SELECT * FROM institutions WHERE slug = ? LIMIT 1;
+
+-- name: CheckInstitutionExists :one
+SELECT EXISTS(SELECT 1 FROM institutions WHERE slug = ? LIMIT 1);
+
 
 -- name: CreateHostel :one
 INSERT INTO hostels (
@@ -46,6 +47,9 @@ SELECT * FROM hostels WHERE city = ? ORDER BY name;
 -- name: GetHostelsByInstitution :many
 SELECT hostels.* FROM hostels INNER JOIN neighborhoods ON hostels.neighborhood_id = neighborhoods.id WHERE neighborhoods.institution_id = ?;
 
+-- name: CheckHostelExists :one
+SELECT EXISTS(SELECT 1 FROM hostels WHERE LOWER(name) = ? LIMIT 1);
+
 -- name: CreateUser :one
 INSERT INTO users (
     id, full_name, email, role
@@ -54,11 +58,11 @@ INSERT INTO users (
 )
 RETURNING *;
 
+-- name: CheckUserExists :one
+SELECT EXISTS(SELECT 1 FROM users WHERE email = ? LIMIT 1);
+
 -- name: GetUserByEmail :one
 SELECT * FROM users WHERE email = ? LIMIT 1;
-
--- name: GetUserCredentialByProviderId :one
-SELECT * FROM user_credentials WHERE provider_id = ? LIMIT 1;
 
 -- name: CreateUserCredentials :one
 INSERT INTO user_credentials (
@@ -67,6 +71,10 @@ INSERT INTO user_credentials (
     ?, ?, ?, ?, ?
 )
 RETURNING *;
+
+-- name: GetUserCredentialByProviderId :one
+SELECT * FROM user_credentials WHERE provider_id = ? LIMIT 1;
+
 
 -- name: CreateNeighborhood :one
 INSERT INTO neighborhoods (
@@ -84,6 +92,9 @@ SELECT * FROM neighborhoods WHERE institution_id = ? ORDER BY name;
 
 -- name: GetAllNeighborhoods :many
 SELECT * FROM neighborhoods ORDER BY name;
+
+-- name: CheckNeighborhoodExists :one
+SELECT EXISTS(SELECT 1 FROM neighborhoods WHERE LOWER(name) = ? LIMIT 1);
 
 
 -- name: CreateSearchEntry :one

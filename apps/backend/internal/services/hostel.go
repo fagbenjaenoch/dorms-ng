@@ -31,6 +31,25 @@ func (s HostelService) CreateHostel(ctx context.Context, hostel dto.CreateHostel
 	ctx, span := hostelTracer.Start(ctx, "CreateHostel")
 	defer span.End()
 
+	hostelExists, err := s.repo.CheckHostelExists(ctx, hostel.Name)
+	if err != nil {
+		return dto.StructuredResponse{
+			Success: false,
+			Status:  http.StatusInternalServerError,
+			Message: "failed to check hostel exists",
+			Payload: nil,
+		}, err
+	}
+
+	if hostelExists {
+		return dto.StructuredResponse{
+			Success: false,
+			Status:  http.StatusConflict,
+			Message: "hostel already exists",
+			Payload: nil,
+		}, nil
+	}
+
 	h, err := s.repo.CreateHostel(ctx, hostel)
 	if err != nil {
 		return dto.StructuredResponse{
@@ -46,14 +65,16 @@ func (s HostelService) CreateHostel(ctx context.Context, hostel dto.CreateHostel
 		Status:  http.StatusCreated,
 		Message: "Hostel created successfully",
 		Payload: dto.Hostel{
-			Name:            h.Name,
-			City:            h.City.String,
-			Description:     h.Description.String,
-			Address:         h.Address.String,
-			Latitude:        h.Latitude,
-			Longitude:       h.Longitude,
-			PrimaryPhotoURL: h.PrimaryPhotoUrl.String,
-			Slug:            h.Slug,
+			Name:                h.Name,
+			City:                h.City.String,
+			Description:         h.Description.String,
+			Address:             h.Address.String,
+			Latitude:            h.Latitude,
+			Longitude:           h.Longitude,
+			PrimaryPhotoURL:     h.PrimaryPhotoUrl.String,
+			Slug:                h.Slug,
+			EstimatedPriceRange: h.EstimatedPriceRange.Float64,
+			IsVerified:          h.IsVerifiedByAdmin.Bool,
 		},
 	}, nil
 }

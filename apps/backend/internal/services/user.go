@@ -35,7 +35,7 @@ func (us *UserService) Signup(ctx context.Context, u dto.CreateUserWithPassword)
 	tracerCtx, span := userTracer.Start(ctx, "Signup")
 	defer span.End()
 
-	userExists, err := us.userRepo.UserExists(tracerCtx, u.Email)
+	userExists, err := us.userRepo.CheckUserExists(tracerCtx, u.Email)
 	if err != nil {
 		span.RecordError(err)
 		span.SetStatus(http.StatusInternalServerError, "check user exists error")
