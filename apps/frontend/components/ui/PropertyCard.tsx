@@ -5,6 +5,7 @@ import { FaBolt } from "react-icons/fa6";
 import { MapPin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import useMoneyFormat from "@/lib/hooks/useMoneyFormat";
 
 interface PropertyCardProps {
   price: number;
@@ -23,12 +24,7 @@ export default function PropertyCard({
   slug,
   isVerified,
 }: PropertyCardProps) {
-  const formatter = new Intl.NumberFormat("en-US", {
-    notation: "compact",
-    compactDisplay: "short",
-    maximumFractionDigits: 1,
-  });
-  const formattedPrice = formatter.format(price);
+  const formattedPrice = useMoneyFormat(price);
 
   return (
     <div className="group rounded-[2.5rem] overflow-hidden shadow-sm bg-white">

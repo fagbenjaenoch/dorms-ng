@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { fetchHostel } from "@/lib/api/hostel";
+import useMoneyFormat from "@/lib/hooks/useMoneyFormat";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import {
   BadgeCheck,
@@ -30,13 +31,15 @@ export default function HostelDetailsClient() {
 
   const { payload: hostel } = res;
 
+  const formattedPrice = useMoneyFormat(hostel.estimatedPriceRange);
+
   return (
-    <main className="max-w-7xl mx-auto p-4 pt-20 min-h-screen sm:px-6 lg:px-8">
+    <main className="max-w-7xl mx-auto py-20 min-h-screen sm:px-6 lg:px-8">
       <div className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tighter text-on-surface flex items-center gap-3">
             {hostel.name}
-            {hostel.is_verified && (
+            {hostel.isVerified && (
               <span className="inline-flex gap-1 items-center bg-primary-light text-primary text-sm font-bold px-3 py-1 rounded-full uppercase tracking-widest mt-2 md:mt-0">
                 <BadgeCheck size={15} />
                 Verified
@@ -123,7 +126,7 @@ export default function HostelDetailsClient() {
                 Estimated Price Range
               </p>
               <h3 className="text-4xl font-extrabold tracking-tighter text-on-surface">
-                ₦250k - ₦350k
+                ₦{formattedPrice}
                 <span className="text-lg font-medium tracking-normal">/ year</span>
               </h3>
             </div>
