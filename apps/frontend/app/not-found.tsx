@@ -13,7 +13,7 @@ export default function NotFound() {
         <DesktopNav />
         <MobileNav />
       </nav>
-      <main className="grow flex flex-col items-center justify-center px-6 pt-24 pb-12">
+      <main className="grow flex flex-col items-center justify-center px-6 py-24">
         <div className="max-w-4xl w-full flex flex-col items-center text-center">
           <div className="relative mb-8">
             <h1 className="text-[12rem] bg-clip-text text-transparent bg-linear-to-b from-primary-light to-primary-light/20 to-90% md:text-[16rem] font-black text-linear leading-none select-none">
