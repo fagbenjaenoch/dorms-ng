@@ -12,7 +12,7 @@ import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { CreateHostelListingData, createHostelListingSchema } from "@/lib/forms";
-import { defaultLngLat, LngLat, nigerianCities } from "@/lib/utils";
+import { cn, defaultLngLat, LngLat, nigerianCities } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Info,
@@ -25,6 +25,8 @@ import {
   Save,
   ShieldCheck,
   Camera,
+  UploadIcon,
+  X,
 } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import {
@@ -36,7 +38,7 @@ import {
   MarkerLabel,
 } from "../ui/map";
 import MapEventListener from "../MapEventListener";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { BiSolidBadgeCheck } from "react-icons/bi";
 import { Button } from "../ui/button";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -45,11 +47,16 @@ import { Switch } from "../ui/switch";
 import { createHostelListing } from "@/lib/api/hostel";
 import { fetchAllNeighborhoods } from "@/lib/api/neighborhood";
 import { Neighborhood } from "@/lib/dto";
+import { useDropzone } from "react-dropzone";
+import Image from "next/image";
+import ImageWithCancel from "./ImageWithCancel";
 
 export default function CreateHostelListingForm() {
   const mapRef = useRef<MapRef>(null);
   const formRef = useRef<HTMLFormElement>(null);
-  const [primaryPhoto, setPrimaryPhoto] = useState<File | null>(null);
+  const [primaryPhoto, setPrimaryPhoto] = useState<
+    (File & { preview: string }) | null
+  >(null);
   const form = useForm<CreateHostelListingData>({
     resolver: zodResolver(createHostelListingSchema),
     defaultValues: {
@@ -108,33 +115,55 @@ export default function CreateHostelListingForm() {
     }
   };
 
-  const handleDrag = (lngLat: LngLat) => {
+  const handleMapDrag = (lngLat: LngLat) => {
     setMarker({ lng: lngLat.lng, lat: lngLat.lat });
-  };
-
-  const handlePrimaryPhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setPrimaryPhoto(file);
-    }
   };
 
   const onSubmit = async (data: CreateHostelListingData) => {
     if (!primaryPhoto) {
-      toast.error("Please select a primary photo");
-      return;
+      throw new Error("Please select a primary photo");
     }
 
     const payload = await mutation.mutateAsync(data);
     if (!payload.success) {
-      toast.success("Could not create hostel");
-      return;
+      throw new Error("Could not create hostel");
     }
 
-    toast.success("Successfully created new hostel");
     form.reset();
     formRef.current?.reset();
   };
+
+  const handleDrop = useCallback((acceptedFiles: File[]) => {
+    if (acceptedFiles.length === 0) {
+      toast.error("we could not process this file");
+      return;
+    }
+
+    if (acceptedFiles.length > 1) {
+      toast.error("You can only drag and drop one file at a time");
+      return;
+    }
+
+    const imageFile = acceptedFiles[0];
+    const imageWithPreview = Object.assign(imageFile, {
+      preview: URL.createObjectURL(imageFile),
+    });
+
+    setPrimaryPhoto(imageWithPreview);
+  }, []);
+
+  const acceptedFileTypes = {
+    "image/jpeg": [".jpg", ".jpeg"],
+    "image/png": [".png"],
+    "image/webp": [".webp"],
+  };
+
+  const FILE_THRESHOLD = 5 * 1024 * 1024;
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop: handleDrop,
+    accept: acceptedFileTypes,
+  });
 
   return (
     <form
@@ -483,7 +512,7 @@ export default function CreateHostelListingForm() {
                 draggable
                 longitude={marker.lng}
                 latitude={marker.lat}
-                onDrag={handleDrag}
+                onDrag={handleMapDrag}
               >
                 <MarkerContent>
                   <MapPin
@@ -511,22 +540,43 @@ export default function CreateHostelListingForm() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="col-span-1 lg:col-span-2">
-            <Field>
-              <FieldLabel
-                htmlFor="primary-photo"
-                className="uppercase text-xs font-bold"
-              >
-                Primary Photo
-              </FieldLabel>
-              <Input
-                id="primary-photo"
-                name="primaryPhoto"
-                type="file"
-                className="w-full"
-                accept="image/*"
-                onChange={handlePrimaryPhotoChange}
+            {primaryPhoto != null ? (
+              <ImageWithCancel
+                previewUrl={primaryPhoto.preview}
+                altText="primary hostel photo"
+                onCancel={() => setPrimaryPhoto(null)}
               />
-            </Field>
+            ) : (
+              <Field>
+                <FieldLabel
+                  htmlFor="primary-photo"
+                  className="uppercase text-xs font-bold"
+                >
+                  Primary Photo
+                </FieldLabel>
+                <div
+                  className={cn(
+                    "w-40 h-40 border border-gray-400 rounded-lg grid place-items-center cursor-pointer",
+                    { "border-blue-500": isDragActive },
+                  )}
+                  {...getRootProps()}
+                >
+                  <Input
+                    {...getInputProps()}
+                    id="primary-photo"
+                    name="primaryPhoto"
+                    type="file"
+                    className="w-full"
+                    accept="image/*"
+                  />
+                  <div className="text-center text-gray-400">
+                    <UploadIcon className="w-8 h-8 inline-block" />
+                    <p>Select or drag and drop your files here</p>
+                    <small>{`(Images up to ${(FILE_THRESHOLD / (1024 * 1024)).toFixed(0)}MB)`}</small>
+                  </div>
+                </div>
+              </Field>
+            )}
           </div>
         </div>
       </section>
