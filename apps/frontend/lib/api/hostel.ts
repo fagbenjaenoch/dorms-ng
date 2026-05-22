@@ -30,15 +30,12 @@ export async function createHostelListing(
     body: JSON.stringify(dataWithPrimaryPhoto),
   });
 
-  try {
-    const response = await res.json();
-    if (!response.success) {
-      throw new Error(response.message);
-    }
-    return response as any as APIResponse<CreateHostelListingData>;
-  } catch (e) {
-    throw e;
+  const response = await res.json();
+  if (!response.success) {
+    throw new Error(response.message);
   }
+
+  return response as any as APIResponse<CreateHostelListingData>;
 }
 
 export async function fetchHostel(
