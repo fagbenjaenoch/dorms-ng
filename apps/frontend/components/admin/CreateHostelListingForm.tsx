@@ -48,7 +48,6 @@ import { createHostelListing } from "@/lib/api/hostel";
 import { fetchAllNeighborhoods } from "@/lib/api/neighborhood";
 import { Neighborhood } from "@/lib/dto";
 import { useDropzone } from "react-dropzone";
-import Image from "next/image";
 import ImageWithCancel from "./ImageWithCancel";
 
 export default function CreateHostelListingForm() {
@@ -92,7 +91,7 @@ export default function CreateHostelListingForm() {
       setMarker(defaultLngLat);
     },
     onError: (error) => {
-      toast.error(error.message);
+      toast.error(error.message ?? "Could not create hostel listing");
     },
   });
 
