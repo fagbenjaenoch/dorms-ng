@@ -29,6 +29,25 @@ func (s NeighborhoodService) CreateNeighborhood(ctx context.Context, neighborhoo
 	ctx, span := neighborhoodTracer.Start(ctx, "CreateNeighborhood")
 	defer span.End()
 
+	neighborhoodExists, err := s.repo.CheckNeighborhoodExists(ctx, neighborhood)
+	if err != nil {
+		return dto.StructuredResponse{
+			Success: false,
+			Status:  http.StatusInternalServerError,
+			Message: "failed to check neighborhood exists",
+			Payload: nil,
+		}, err
+	}
+
+	if neighborhoodExists {
+		return dto.StructuredResponse{
+			Success: false,
+			Status:  http.StatusConflict,
+			Message: "neighborhood already exists",
+			Payload: nil,
+		}, nil
+	}
+
 	n, err := s.repo.CreateNeighborhood(ctx, neighborhood)
 	if err != nil {
 		return dto.StructuredResponse{

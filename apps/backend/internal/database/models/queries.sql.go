@@ -33,11 +33,17 @@ func (q *Queries) CheckInstitutionExists(ctx context.Context, slug string) (int6
 }
 
 const checkNeighborhoodExists = `-- name: CheckNeighborhoodExists :one
-SELECT EXISTS(SELECT 1 FROM neighborhoods WHERE LOWER(name) = ? LIMIT 1)
+SELECT EXISTS(SELECT 1 FROM neighborhoods WHERE LOWER(name) = ? AND LOWER(city) = ? AND LOWER(institution) = ? LIMIT 1)
 `
 
-func (q *Queries) CheckNeighborhoodExists(ctx context.Context, name string) (int64, error) {
-	row := q.db.QueryRowContext(ctx, checkNeighborhoodExists, name)
+type CheckNeighborhoodExistsParams struct {
+	Name        string `json:"name"`
+	City        string `json:"city"`
+	Institution string `json:"institution"`
+}
+
+func (q *Queries) CheckNeighborhoodExists(ctx context.Context, arg CheckNeighborhoodExistsParams) (int64, error) {
+	row := q.db.QueryRowContext(ctx, checkNeighborhoodExists, arg.Name, arg.City, arg.Institution)
 	var column_1 int64
 	err := row.Scan(&column_1)
 	return column_1, err

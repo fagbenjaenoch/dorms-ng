@@ -94,7 +94,7 @@ SELECT * FROM neighborhoods WHERE institution_id = ? ORDER BY name;
 SELECT * FROM neighborhoods ORDER BY name;
 
 -- name: CheckNeighborhoodExists :one
-SELECT EXISTS(SELECT 1 FROM neighborhoods WHERE LOWER(name) = ? LIMIT 1);
+SELECT EXISTS(SELECT 1 FROM neighborhoods WHERE LOWER(name) = ? AND LOWER(city) = ? AND LOWER(institution) = ? LIMIT 1);
 
 
 -- name: CreateSearchEntry :one

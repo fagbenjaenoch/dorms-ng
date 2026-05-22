@@ -3,11 +3,11 @@ package repositories
 import (
 	"context"
 	"database/sql"
-	"fmt"
 	"strings"
 
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/database/models"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/utils"
 	"github.com/google/uuid"
 	"github.com/rs/zerolog"
 )
@@ -25,6 +25,22 @@ func NewNeighborhoodRepository(db *sql.DB, logger *zerolog.Logger) *Neighborhood
 		},
 		db: db,
 	}
+}
+
+func (nr *NeighborhoodRepository) CheckNeighborhoodExists(ctx context.Context, neighborhood dto.CreateNeighborhood) (bool, error) {
+	combinedName := utils.NormalizeNeighborhoodName(neighborhood)
+
+	neighborhoodExists, err := nr.BaseRepository.Queries.CheckNeighborhoodExists(ctx, models.CheckNeighborhoodExistsParams{
+		Name:        strings.ToLower(combinedName),
+		City:        strings.ToLower(neighborhood.City),
+		Institution: strings.ToLower(neighborhood.Institution),
+	})
+	if err != nil {
+		return false, err
+	}
+
+	nr.Logger.Debug().Bool("neighborhoodExists", neighborhoodExists != 0).Msg("neighborhoodExists")
+	return neighborhoodExists != 0, nil
 }
 
 func (nr *NeighborhoodRepository) CreateNeighborhood(ctx context.Context, neighborhood dto.CreateNeighborhood) (*models.Neighborhood, error) {
