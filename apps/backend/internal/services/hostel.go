@@ -86,13 +86,14 @@ func (s HostelService) GetHostel(ctx context.Context, slug string) (dto.Structur
 		Status:  http.StatusOK,
 		Message: "Hostel retrieved successfully",
 		Payload: dto.Hostel{
-			Name:            h.Name,
-			City:            h.City.String,
-			Description:     h.Description.String,
-			Address:         h.Address.String,
-			Latitude:        h.Latitude,
-			Longitude:       h.Longitude,
-			PrimaryPhotoURL: h.PrimaryPhotoUrl.String,
+			Name:                h.Name,
+			City:                h.City.String,
+			Description:         h.Description.String,
+			Address:             h.Address.String,
+			Latitude:            h.Latitude,
+			Longitude:           h.Longitude,
+			PrimaryPhotoURL:     h.PrimaryPhotoUrl.String,
+			EstimatedPriceRange: h.EstimatedPriceRange.Float64,
 		},
 	}, nil
 }
