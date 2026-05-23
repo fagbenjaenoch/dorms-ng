@@ -2,24 +2,20 @@ import { APIResponse, CreateInstitutionPayload, Institution } from "../dto";
 import { CreateInstitutionData } from "../forms";
 
 export async function createInstitution(data: CreateInstitutionData) {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/institutions`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      },
-    );
-    if (!res.ok) {
-      throw new Error("Failed to create institution");
-    }
-    return res.json() as any as APIResponse<CreateInstitutionPayload>;
-  } catch (error) {
-    throw new Error("Failed to create institution");
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/institutions`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  const response = await res.json();
+  if (!response.success) {
+    throw new Error(response.message);
   }
+
+  return response as any as APIResponse<CreateInstitutionPayload>;
 }
 
 export async function fetchInstitution(slug: string) {
