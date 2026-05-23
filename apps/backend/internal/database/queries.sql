@@ -19,7 +19,7 @@ SELECT * FROM institutions;
 SELECT * FROM institutions WHERE slug = ? LIMIT 1;
 
 -- name: CheckInstitutionExists :one
-SELECT EXISTS(SELECT 1 FROM institutions WHERE slug = ? LIMIT 1);
+SELECT EXISTS(SELECT 1 FROM institutions WHERE LOWER(name) = ? AND LOWER(city) = ? LIMIT 1);
 
 
 -- name: CreateHostel :one

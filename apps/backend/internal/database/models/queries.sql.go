@@ -22,11 +22,16 @@ func (q *Queries) CheckHostelExists(ctx context.Context, name string) (int64, er
 }
 
 const checkInstitutionExists = `-- name: CheckInstitutionExists :one
-SELECT EXISTS(SELECT 1 FROM institutions WHERE slug = ? LIMIT 1)
+SELECT EXISTS(SELECT 1 FROM institutions WHERE LOWER(name) = ? AND LOWER(city) = ? LIMIT 1)
 `
 
-func (q *Queries) CheckInstitutionExists(ctx context.Context, slug string) (int64, error) {
-	row := q.db.QueryRowContext(ctx, checkInstitutionExists, slug)
+type CheckInstitutionExistsParams struct {
+	Name string `json:"name"`
+	City string `json:"city"`
+}
+
+func (q *Queries) CheckInstitutionExists(ctx context.Context, arg CheckInstitutionExistsParams) (int64, error) {
+	row := q.db.QueryRowContext(ctx, checkInstitutionExists, arg.Name, arg.City)
 	var column_1 int64
 	err := row.Scan(&column_1)
 	return column_1, err

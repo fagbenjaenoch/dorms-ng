@@ -28,6 +28,19 @@ func NewInstitutionRepository(db *sql.DB, logger *zerolog.Logger) *InstitutionRe
 	}
 }
 
+func (ir *InstitutionRepository) CheckInstitutionExists(ctx context.Context, institution dto.CreateInstitution) (bool, error) {
+
+	institutionExists, err := ir.BaseRepository.Queries.CheckInstitutionExists(ctx, models.CheckInstitutionExistsParams{
+		Name: strings.ToLower(institution.Name),
+		City: strings.ToLower(institution.City),
+	})
+	if err != nil {
+		return false, err
+	}
+
+	return institutionExists != 0, nil
+}
+
 func (ir *InstitutionRepository) CreateInstitution(ctx context.Context, institution dto.CreateInstitution) (*models.Institution, error) {
 	tx, err := ir.db.Begin()
 	if err != nil {

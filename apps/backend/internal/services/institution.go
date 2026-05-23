@@ -30,6 +30,25 @@ func (s InstitutionService) CreateInstitution(ctx context.Context, institution d
 	ctx, span := institutionTracer.Start(ctx, "CreateInstitution")
 	defer span.End()
 
+	institutionExists, err := s.repo.CheckInstitutionExists(ctx, institution)
+	if err != nil {
+		return dto.StructuredResponse{
+			Success: false,
+			Status:  http.StatusInternalServerError,
+			Message: "failed to check if institution exists",
+			Payload: nil,
+		}, err
+	}
+
+	if institutionExists {
+		return dto.StructuredResponse{
+			Success: false,
+			Status:  http.StatusConflict,
+			Message: "institution already exists",
+			Payload: nil,
+		}, nil
+	}
+
 	i, err := s.repo.CreateInstitution(ctx, institution)
 	if err != nil {
 		return dto.StructuredResponse{

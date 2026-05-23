@@ -39,7 +39,6 @@ func (nr *NeighborhoodRepository) CheckNeighborhoodExists(ctx context.Context, n
 		return false, err
 	}
 
-	nr.Logger.Debug().Bool("neighborhoodExists", neighborhoodExists != 0).Msg("neighborhoodExists")
 	return neighborhoodExists != 0, nil
 }
 

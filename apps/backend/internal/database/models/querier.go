@@ -11,7 +11,7 @@ import (
 
 type Querier interface {
 	CheckHostelExists(ctx context.Context, name string) (int64, error)
-	CheckInstitutionExists(ctx context.Context, slug string) (int64, error)
+	CheckInstitutionExists(ctx context.Context, arg CheckInstitutionExistsParams) (int64, error)
 	CheckNeighborhoodExists(ctx context.Context, arg CheckNeighborhoodExistsParams) (int64, error)
 	CheckUserExists(ctx context.Context, email string) (int64, error)
 	CreateHostel(ctx context.Context, arg CreateHostelParams) (Hostel, error)
