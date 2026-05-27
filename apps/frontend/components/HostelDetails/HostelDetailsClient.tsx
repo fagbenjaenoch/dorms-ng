@@ -117,6 +117,7 @@ export default function HostelDetailsClient() {
             <h2 className="text-3xl font-bold text-on-surface mb-6">
               Location Overview
             </h2>
+            <p>Coming soon</p>
           </section>
         </div>
         <div className="lg:w-1/3">
