@@ -83,8 +83,8 @@ export default function HostelDetailsClient() {
         <div className="lg:w-2/3 space-y-12">
           <div className="bg-white rounded-2xl p-6 shadow-xs border border-gray-300 flex flex-wrap gap-8">
             <div className="flex items-center gap-4">
-              <div className="bg-primary-light p-3 rounded-xl text-primary">
-                <FaPersonWalking size={18} />
+              <div className="bg-primary p-2 py-3 rounded-xl">
+                <FaPersonWalking size={18} className="text-primary-light" />
               </div>
               <div>
                 <p className="text-sm text-gray-600 font-bold uppercase tracking-wider">
@@ -94,8 +94,8 @@ export default function HostelDetailsClient() {
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <div className="bg-secondary/20 p-3 rounded-xl text-secondary">
-                <Clock4 size={20} />
+              <div className="bg-secondary p-2 py-3 rounded-xl">
+                <Clock4 size={20} className="text-white" />
               </div>
               <div>
                 <p className="text-sm text-gray-600 font-bold uppercase tracking-wider">
