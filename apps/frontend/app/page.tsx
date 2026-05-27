@@ -19,8 +19,8 @@ export default function Home() {
       </nav>
 
       <main className="min-h-screen">
-        <div className="container flex gap-24 items-center">
-          <div className="flex flex-col gap-6 py-28">
+        <div className="container flex flex-col lg:flex-row gap-16 lg:gap-24 items-center">
+          <div className="flex flex-col gap-6 lg:py-28">
             <div className="flex items-center gap-1 bg-[#92febc] text-primary px-2 py-1 text-xs font-semibold w-fit tracking-wider rounded-full uppercase">
               <GoVerified /> Verified Nigerian student housing
             </div>
@@ -35,11 +35,12 @@ export default function Home() {
             </p>
             <LandingSearch />
           </div>
-          <div className="hidden lg:inline-block overflow-hidden rounded-2xl max-w-xl pointer-events-none">
+          <div className="lg:inline-block overflow-hidden rounded-2xl max-w-xl pointer-events-none">
             <Image
               src="/hero.webp"
-              width={250}
-              height={600}
+              width={300}
+              height={450}
+              className="w-100"
               alt="Students hanging out"
               loading="lazy"
             />
