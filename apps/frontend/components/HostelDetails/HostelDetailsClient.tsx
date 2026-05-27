@@ -46,7 +46,7 @@ export default function HostelDetailsClient() {
               </span>
             )}
           </h1>
-          <p className="text-lg flex items-center gap-1 mt-2 font-medium">
+          <p className="text-lg flex items-center gap-1 mt-2 font-medium text-muted-foreground">
             <MapPin className="text-primary" size={15} />
             {hostel.address}
           </p>
