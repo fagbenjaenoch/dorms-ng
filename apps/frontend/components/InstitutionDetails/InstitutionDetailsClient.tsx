@@ -79,7 +79,7 @@ export default function InstitutionDetailsClient() {
           </div>
         </div>
       </section>
-      <section className="py-24 px-8 bg-gray-200/80" id="hostels">
+      <section className="min-h-125 py-24 px-8 bg-gray-200/80" id="hostels">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
             <div>

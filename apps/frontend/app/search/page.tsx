@@ -12,11 +12,10 @@ import { placeSearch } from "@/lib/api/search";
 import { APIResponse, Place } from "@/lib/dto";
 import useDebounce from "@/lib/hooks/useDebounce";
 import { AreaTypeEnum, idParam, searchQueryParam, typeParam } from "@/lib/utils";
-import { QueryErrorResetBoundary, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { LucideListFilter, MapPin } from "lucide-react";
 import { useQueryState } from "nuqs";
 import { Suspense, useState } from "react";
-import { ErrorBoundary } from "react-error-boundary";
 
 export default function SearchPage() {
   const [searchTerm, setSearchTerm] = useQueryState(searchQueryParam, {
@@ -81,26 +80,35 @@ export default function SearchPage() {
                   clearSearch={clearSearch}
                   onClick={showDropdownOnClick}
                 />
-                {showDropdown && !!query.data?.payload?.length && (
-                  <div className="absolute top-full mt-3 left-0 w-full flex flex-col gap-2 bg-primary-foreground shadow-lg ring-1 ring-gray-500/5 p-2 rounded-xl">
-                    {query.data.payload.map((searchResult) => (
-                      <div
-                        className="cursor-pointer hover:bg-gray-500/10 p-2 rounded-md flex items-center gap-2 text-muted-foreground"
-                        key={searchResult.place_id}
-                        onClick={() =>
-                          handleSearchResultClick({
-                            type: searchResult.place_type,
-                            id: searchResult.place_id,
-                            name: searchResult.name,
-                          })
-                        }
-                      >
-                        <MapPin size={12} />
-                        <span className="text-sm">{searchResult.name}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                {showDropdown &&
+                  searchTerm.length > 0 &&
+                  query.isFetched &&
+                  (!!query.data?.payload?.length && query.data.payload.length > 0 ? (
+                    <div className="absolute top-full mt-3 left-0 w-full flex flex-col gap-2 bg-primary-foreground shadow-lg ring-1 ring-gray-500/5 p-2 rounded-xl">
+                      {query.data.payload.map((searchResult) => (
+                        <div
+                          className="cursor-pointer hover:bg-gray-500/10 p-2 rounded-md flex items-center gap-2 text-muted-foreground"
+                          key={searchResult.place_id}
+                          onClick={() =>
+                            handleSearchResultClick({
+                              type: searchResult.place_type,
+                              id: searchResult.place_id,
+                              name: searchResult.name,
+                            })
+                          }
+                        >
+                          <MapPin size={12} />
+                          <span className="text-sm">{searchResult.name}</span>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="absolute top-full mt-3 left-0 w-full flex flex-col gap-2 bg-primary-foreground shadow-lg ring-1 ring-gray-500/5 p-2 rounded-xl">
+                      <span className="p-2 rounded-md flex items-center gap-2 text-muted-foreground text-sm">
+                        No result found
+                      </span>
+                    </div>
+                  ))}
               </div>
 
               <Button variant="ghost">
