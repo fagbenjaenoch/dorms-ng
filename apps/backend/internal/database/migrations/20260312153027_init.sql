@@ -29,6 +29,7 @@ CREATE TABLE institutions (
   id TEXT NOT NULL PRIMARY KEY,
   name TEXT NOT NULL,
   acronym TEXT,
+  description TEXT,
   latitude REAL NOT NULL,  -- GPS coordinate for the main gate
   longitude REAL NOT NULL,
   slug TEXT UNIQUE NOT NULL,

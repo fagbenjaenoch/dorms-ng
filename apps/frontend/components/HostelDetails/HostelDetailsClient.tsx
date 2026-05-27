@@ -120,7 +120,7 @@ export default function HostelDetailsClient() {
           </section>
         </div>
         <div className="lg:w-1/3">
-          <div className="sticky top-32 rounded-[2rem] p-8 shadow-2xl border border-outline-variant/20">
+          <div className="rounded-[2rem] p-8 shadow-2xl border border-outline-variant/20">
             <div className="mb-8">
               <p className="text-sm font-bold uppercase tracking-widest mb-2">
                 Estimated Price Range
@@ -141,21 +141,23 @@ export default function HostelDetailsClient() {
               <Button
                 size="xl"
                 variant="outline"
-                className="w-full bg-surface text-on-surface py-4 rounded-xl font-bold text-lg hover:bg-surface-container transition-colors border border-outline-variant/50"
+                className="w-full py-4 rounded-xl font-bold text-lg transition-colors border border-outline-variant/50"
               >
                 Contact Host
               </Button>
             </div>
-            <div className="bg-gray-200 rounded-xl p-4 flex items-start gap-4">
-              <ShieldUserIcon size={20} className="text-primary shrink-0" />
-              <div>
-                <p className="font-bold text-on-surface">Verified by Admin</p>
-                <p className="text-sm text-on-surface-variant mt-1">
-                  This property has been physically inspected for safety and quality
-                  standards.
-                </p>
+            {hostel.isVerified && (
+              <div className="bg-gray-200 rounded-xl p-4 flex items-start gap-4">
+                <ShieldUserIcon size={20} className="text-primary shrink-0" />
+                <div>
+                  <p className="font-bold text-on-surface">Verified by Admin</p>
+                  <p className="text-sm mt-1">
+                    This property has been physically inspected for safety and
+                    quality standards.
+                  </p>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
