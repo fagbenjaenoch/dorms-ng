@@ -138,6 +138,12 @@ export const nigerianCities = [
   "Zaria",
 ] as const;
 
+export const navLinks = [
+  { title: "Find Hostels", href: "/search" },
+  { title: "How it works", href: "#" },
+  { title: "Support", href: "#" },
+];
+
 export type LngLat = {
   lng: number;
   lat: number;

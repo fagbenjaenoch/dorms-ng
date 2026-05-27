@@ -1,12 +1,7 @@
 import Link from "next/link";
 import BrandIcon from "./ui/BrandIcon";
 import { Button } from "./ui/button";
-
-const navLink = [
-  { title: "Find Hostels", href: "/search" },
-  { title: "How it works", href: "#" },
-  { title: "Support", href: "#" },
-];
+import { navLinks } from "@/lib/utils";
 
 export default function DesktopNav() {
   return (
@@ -16,7 +11,7 @@ export default function DesktopNav() {
           <BrandIcon />
         </Link>
         <div className="flex gap-4">
-          {navLink.map((link) => (
+          {navLinks.map((link) => (
             <Button className="text-base" variant="link" key={link.title}>
               <Link href={link.href} className="href">
                 {link.title}
