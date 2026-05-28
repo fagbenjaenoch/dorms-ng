@@ -1,8 +1,8 @@
 -- name: CreateInstitution :one
 INSERT INTO institutions (
-    id, name, acronym, latitude, longitude, city, slug
+    id, name, acronym, latitude, longitude, city, slug, description
 ) VALUES (
-    ?, ?, ?, ?, ?, ?, ?
+    ?, ?, ?, ?, ?, ?, ?, ?
 )
 RETURNING *;
 
