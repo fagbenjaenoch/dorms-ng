@@ -102,12 +102,13 @@ func (s InstitutionService) GetInstitution(ctx context.Context, slug string) (dt
 		Status:  http.StatusOK,
 		Message: "Institution retrieved successfully",
 		Payload: dto.Institution{
-			ID:        i.ID,
-			Name:      i.Name,
-			Acronym:   i.Acronym.String,
-			City:      i.City,
-			Latitude:  i.Latitude,
-			Longitude: i.Longitude,
+			ID:          i.ID,
+			Name:        i.Name,
+			Acronym:     i.Acronym.String,
+			City:        i.City,
+			Latitude:    i.Latitude,
+			Longitude:   i.Longitude,
+			Description: i.Description.String,
 		},
 	}, nil
 }
