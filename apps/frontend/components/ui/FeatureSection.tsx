@@ -1,6 +1,4 @@
-import { FaVideo } from "react-icons/fa";
 import { FaBolt } from "react-icons/fa6";
-import { HiSparkles } from "react-icons/hi2";
 import SectionHeading from "./SectionHeader";
 import FeatureCard from "./FeatureCard";
 import { RiVerifiedBadgeLine } from "react-icons/ri";
