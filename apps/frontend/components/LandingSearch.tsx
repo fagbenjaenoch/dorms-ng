@@ -12,6 +12,7 @@ import { APIResponse, SearchResult } from "@/lib/dto";
 import Link from "next/link";
 import { search } from "@/lib/api/search";
 import { EntityTypeToIcon } from "@/lib/utils/search";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "./ui/input-group";
 
 export default function LandingSearch() {
   const [searchTerm, setSearchTerm] = useQueryState(searchQueryParam, {
@@ -35,29 +36,24 @@ export default function LandingSearch() {
   };
 
   return (
-    <div className="relative shadow-lg ring-1 ring-gray-500/5 px-2 py-6 gap-4 max-w-3xl flex flex-col lg:flex-row lg:items-center rounded-2xl">
-      <div className="w-full px-4 flex items-center gap-3 bg-background rounded-xl">
-        <HiLocationMarker size={20} className="text-primary" />
-        <search className="w-full flex items-center">
-          <input
-            name="landing-search"
-            className=" text-gray-900 focus:outline-none w-full"
-            placeholder="Which hostel, university or city are you looking for?"
-            onChange={handleChange}
-            value={searchTerm}
-          />
-          <Button
-            variant="ghost"
-            className={cn(
-              "hidden hover:text-primary-background",
-              `${searchTerm?.length && "block"}`,
-            )}
-            onClick={clearSearch}
-          >
-            <X />
-          </Button>
-        </search>
-      </div>
+    <div className="relative">
+      <InputGroup size="xl" className="shadow-md">
+        <InputGroupInput
+          placeholder="Which hostel, university or city are you looking for?"
+          value={searchTerm}
+          onChange={handleChange}
+        />
+        <InputGroupAddon size="xl">
+          <HiLocationMarker size={20} className="text-primary" />
+        </InputGroupAddon>
+        {searchTerm.length > 0 && (
+          <InputGroupAddon align="inline-end">
+            <Button variant="ghost" onClick={clearSearch}>
+              <X />
+            </Button>
+          </InputGroupAddon>
+        )}
+      </InputGroup>
 
       {!!query.data?.payload?.length && (
         <div className="absolute z-50 top-full mt-3 left-0 w-full flex flex-col gap-2 bg-primary-foreground shadow-lg ring-1 ring-gray-500/5 p-2 rounded-xl">
