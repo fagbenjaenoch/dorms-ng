@@ -42,7 +42,7 @@ export default function LandingSearch() {
           <input
             name="landing-search"
             className=" text-gray-900 focus:outline-none w-full"
-            placeholder="Which University or City?"
+            placeholder="Which University or City are you looking for?"
             onChange={handleChange}
             value={searchTerm}
           />
