@@ -35,7 +35,7 @@ export default function LandingSearch() {
   };
 
   return (
-    <div className="relative shadow-lg ring-1 ring-gray-500/5 p-4 lg:p-2 gap-4 max-w-3xl flex flex-col lg:flex-row lg:items-center rounded-2xl">
+    <div className="relative shadow-lg ring-1 ring-gray-500/5 px-2 py-6 gap-4 max-w-3xl flex flex-col lg:flex-row lg:items-center rounded-2xl">
       <div className="w-full px-4 flex items-center gap-3 bg-background rounded-xl">
         <HiLocationMarker size={20} className="text-primary" />
         <search className="w-full flex items-center">
@@ -58,14 +58,6 @@ export default function LandingSearch() {
           </Button>
         </search>
       </div>
-
-      <Button
-        variant="secondary"
-        className="group text-primary-foreground text-base flex justify-center lg:justify-normal items-center gap-2 rounded-2xl py-4 px-8 cursor-pointer h-auto"
-      >
-        Search Now{" "}
-        <FiArrowRight className="group-hover:translate-x-1 transition-all" />
-      </Button>
 
       {!!query.data?.payload?.length && (
         <div className="absolute z-50 top-full mt-3 left-0 w-full flex flex-col gap-2 bg-primary-foreground shadow-lg ring-1 ring-gray-500/5 p-2 rounded-xl">
