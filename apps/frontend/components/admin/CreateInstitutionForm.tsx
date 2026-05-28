@@ -148,79 +148,83 @@ export default function CreateInstitutionForm({
             </Field>
           )}
         />
-      </FieldGroup>
-      <FieldGroup className="flex-col md:flex-row">
+        <div className="flex gap-4 flex-col md:flex-row">
+          <Controller
+            name="latitude"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel
+                  htmlFor="latitude"
+                  className="uppercase text-xs font-bold"
+                >
+                  Latitude (Main gate)
+                </FieldLabel>
+                <Input
+                  {...field}
+                  id="latitude"
+                  aria-invalid={fieldState.invalid}
+                  placeholder="6.54326533"
+                  className="input-bg"
+                  type="text"
+                  disabled
+                />
+                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+              </Field>
+            )}
+          />
+          <Controller
+            name="longitude"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel
+                  htmlFor="longitude"
+                  className="uppercase text-xs font-bold"
+                >
+                  Longitude (Main gate)
+                </FieldLabel>
+                <Input
+                  {...field}
+                  id="longitude"
+                  aria-invalid={fieldState.invalid}
+                  placeholder="6.54326533"
+                  className="input-bg"
+                  disabled
+                />
+                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+              </Field>
+            )}
+          />
+        </div>
+
         <Controller
-          name="latitude"
-          control={form.control}
-          render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor="latitude" className="uppercase text-xs font-bold">
-                Latitude (Main gate)
-              </FieldLabel>
-              <Input
-                {...field}
-                id="latitude"
-                aria-invalid={fieldState.invalid}
-                placeholder="6.54326533"
-                className="input-bg"
-                type="text"
-                disabled
-              />
-              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-            </Field>
-          )}
-        />
-        <Controller
-          name="longitude"
+          name="description"
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
               <FieldLabel
-                htmlFor="longitude"
+                htmlFor="address"
                 className="uppercase text-xs font-bold"
-              >
-                Longitude (Main gate)
-              </FieldLabel>
-              <Input
-                {...field}
-                id="longitude"
                 aria-invalid={fieldState.invalid}
-                placeholder="6.54326533"
-                className="input-bg"
-                disabled
+              >
+                Description
+              </FieldLabel>
+              <Textarea
+                {...field}
+                id="description"
+                aria-invalid={fieldState.invalid}
+                className="w-full rounded-xl border-none p-4 font-medium resize-y input-bg min-h-40"
+                placeholder="What do you like about the institution?"
+                rows={10}
               />
+
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}
         />
       </FieldGroup>
 
-      <Controller
-        name="description"
-        control={form.control}
-        render={({ field, fieldState }) => (
-          <Field data-invalid={fieldState.invalid}>
-            <FieldLabel
-              htmlFor="address"
-              className="uppercase text-xs font-bold"
-              aria-invalid={fieldState.invalid}
-            >
-              Description
-            </FieldLabel>
-            <Textarea
-              {...field}
-              id="description"
-              aria-invalid={fieldState.invalid}
-              className="w-full rounded-xl border-none p-4 font-medium resize-y input-bg min-h-40"
-              placeholder="What do you like about the institution?"
-              rows={10}
-            />
-
-            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-          </Field>
-        )}
-      />
       <div className="flex flex-col md:flex-row flex-wrap gap-4">
         <Button
           type="submit"
