@@ -44,6 +44,7 @@ export const createInstitutionSchema = z.object({
     .string()
     .min(2, "City name must be at least 2 characters")
     .max(100, "City name is too long"),
+  description: z.string().min(10, "Description is too short"),
 });
 
 export type CreateInstitutionData = z.infer<typeof createInstitutionSchema>;

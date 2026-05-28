@@ -20,6 +20,7 @@ import {
 import { nigerianCities } from "@/lib/utils";
 import { toast } from "sonner";
 import { createInstitution } from "@/lib/api/institution";
+import { Textarea } from "../ui/textarea";
 
 interface CreateInstitutionFormProps {
   lng: number;
@@ -38,6 +39,7 @@ export default function CreateInstitutionForm({
       latitude: 9.967,
       longitude: 8.606,
       city: "",
+      description: "",
     },
   });
 
@@ -193,6 +195,32 @@ export default function CreateInstitutionForm({
           )}
         />
       </FieldGroup>
+
+      <Controller
+        name="description"
+        control={form.control}
+        render={({ field, fieldState }) => (
+          <Field data-invalid={fieldState.invalid}>
+            <FieldLabel
+              htmlFor="address"
+              className="uppercase text-xs font-bold"
+              aria-invalid={fieldState.invalid}
+            >
+              Description
+            </FieldLabel>
+            <Textarea
+              {...field}
+              id="description"
+              aria-invalid={fieldState.invalid}
+              className="w-full rounded-xl border-none p-4 font-medium resize-y input-bg min-h-40"
+              placeholder="What do you like about the institution?"
+              rows={10}
+            />
+
+            {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+          </Field>
+        )}
+      />
       <div className="flex flex-col md:flex-row flex-wrap gap-4">
         <Button
           type="submit"
