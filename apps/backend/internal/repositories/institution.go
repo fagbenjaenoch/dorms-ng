@@ -58,6 +58,7 @@ func (ir *InstitutionRepository) CreateInstitution(ctx context.Context, institut
 	i.Longitude = institution.Longitude
 	i.City = institution.City
 	i.Slug = utils.GenerateSlug(institution.Acronym)
+	i.Description.String = institution.Description
 
 	ci, err := qtx.CreateInstitution(ctx, i)
 	if err != nil {
