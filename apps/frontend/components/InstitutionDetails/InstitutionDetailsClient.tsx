@@ -133,10 +133,9 @@ export default function InstitutionDetailsClient() {
                 <h2 className="text-3xl font-bold tracking-tight">Prime Location</h2>
               </div>
               <p className="mb-8 leading-relaxed">
-                UNILAG is situated in the vibrant Akoka-Yaba axis, perfectly
-                positioned between the Lagos mainland and the island. All our listed
-                hostels are strategically mapped to ensure you're never more than a
-                short walk or quick shuttle ride away from your faculty.
+                {institution.description.length > 0
+                  ? institution.description
+                  : "Institution Detail"}
               </p>
               <div className="space-y-4">
                 <div className="flex items-start gap-4 p-4 rounded-2xl bg-gray-200">
