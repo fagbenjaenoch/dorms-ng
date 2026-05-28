@@ -137,21 +137,22 @@ func (q *Queries) CreateHostel(ctx context.Context, arg CreateHostelParams) (Hos
 
 const createInstitution = `-- name: CreateInstitution :one
 INSERT INTO institutions (
-    id, name, acronym, latitude, longitude, city, slug
+    id, name, acronym, latitude, longitude, city, slug, description
 ) VALUES (
-    ?, ?, ?, ?, ?, ?, ?
+    ?, ?, ?, ?, ?, ?, ?, ?
 )
-RETURNING id, name, acronym, latitude, longitude, slug, created_at, updated_at, city
+RETURNING id, name, acronym, description, latitude, longitude, slug, created_at, updated_at, city
 `
 
 type CreateInstitutionParams struct {
-	ID        string         `json:"id"`
-	Name      string         `json:"name"`
-	Acronym   sql.NullString `json:"acronym"`
-	Latitude  float64        `json:"latitude"`
-	Longitude float64        `json:"longitude"`
-	City      string         `json:"city"`
-	Slug      string         `json:"slug"`
+	ID          string         `json:"id"`
+	Name        string         `json:"name"`
+	Acronym     sql.NullString `json:"acronym"`
+	Latitude    float64        `json:"latitude"`
+	Longitude   float64        `json:"longitude"`
+	City        string         `json:"city"`
+	Slug        string         `json:"slug"`
+	Description sql.NullString `json:"description"`
 }
 
 func (q *Queries) CreateInstitution(ctx context.Context, arg CreateInstitutionParams) (Institution, error) {
@@ -163,12 +164,14 @@ func (q *Queries) CreateInstitution(ctx context.Context, arg CreateInstitutionPa
 		arg.Longitude,
 		arg.City,
 		arg.Slug,
+		arg.Description,
 	)
 	var i Institution
 	err := row.Scan(
 		&i.ID,
 		&i.Name,
 		&i.Acronym,
+		&i.Description,
 		&i.Latitude,
 		&i.Longitude,
 		&i.Slug,
@@ -353,7 +356,7 @@ func (q *Queries) CreateUserCredentials(ctx context.Context, arg CreateUserCrede
 }
 
 const getAllInstitutions = `-- name: GetAllInstitutions :many
-SELECT id, name, acronym, latitude, longitude, slug, created_at, updated_at, city FROM institutions
+SELECT id, name, acronym, description, latitude, longitude, slug, created_at, updated_at, city FROM institutions
 `
 
 func (q *Queries) GetAllInstitutions(ctx context.Context) ([]Institution, error) {
@@ -369,6 +372,7 @@ func (q *Queries) GetAllInstitutions(ctx context.Context) ([]Institution, error)
 			&i.ID,
 			&i.Name,
 			&i.Acronym,
+			&i.Description,
 			&i.Latitude,
 			&i.Longitude,
 			&i.Slug,
@@ -619,7 +623,7 @@ func (q *Queries) GetHostelsByNeighborhood(ctx context.Context, neighborhoodID s
 }
 
 const getInstitutionById = `-- name: GetInstitutionById :one
-SELECT id, name, acronym, latitude, longitude, slug, created_at, updated_at, city FROM institutions WHERE id = ? LIMIT 1
+SELECT id, name, acronym, description, latitude, longitude, slug, created_at, updated_at, city FROM institutions WHERE id = ? LIMIT 1
 `
 
 func (q *Queries) GetInstitutionById(ctx context.Context, id string) (Institution, error) {
@@ -629,6 +633,7 @@ func (q *Queries) GetInstitutionById(ctx context.Context, id string) (Institutio
 		&i.ID,
 		&i.Name,
 		&i.Acronym,
+		&i.Description,
 		&i.Latitude,
 		&i.Longitude,
 		&i.Slug,
@@ -640,7 +645,7 @@ func (q *Queries) GetInstitutionById(ctx context.Context, id string) (Institutio
 }
 
 const getInstitutionBySlug = `-- name: GetInstitutionBySlug :one
-SELECT id, name, acronym, latitude, longitude, slug, created_at, updated_at, city FROM institutions WHERE slug = ? LIMIT 1
+SELECT id, name, acronym, description, latitude, longitude, slug, created_at, updated_at, city FROM institutions WHERE slug = ? LIMIT 1
 `
 
 func (q *Queries) GetInstitutionBySlug(ctx context.Context, slug string) (Institution, error) {
@@ -650,6 +655,7 @@ func (q *Queries) GetInstitutionBySlug(ctx context.Context, slug string) (Instit
 		&i.ID,
 		&i.Name,
 		&i.Acronym,
+		&i.Description,
 		&i.Latitude,
 		&i.Longitude,
 		&i.Slug,
@@ -822,7 +828,7 @@ func (q *Queries) GetUserCredentialByProviderId(ctx context.Context, providerID 
 }
 
 const listInstitutions = `-- name: ListInstitutions :many
-SELECT id, name, acronym, latitude, longitude, slug, created_at, updated_at, city FROM institutions ORDER BY name
+SELECT id, name, acronym, description, latitude, longitude, slug, created_at, updated_at, city FROM institutions ORDER BY name
 `
 
 func (q *Queries) ListInstitutions(ctx context.Context) ([]Institution, error) {
@@ -838,6 +844,7 @@ func (q *Queries) ListInstitutions(ctx context.Context) ([]Institution, error) {
 			&i.ID,
 			&i.Name,
 			&i.Acronym,
+			&i.Description,
 			&i.Latitude,
 			&i.Longitude,
 			&i.Slug,

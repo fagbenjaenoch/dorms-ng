@@ -39,15 +39,16 @@ type Hostel struct {
 }
 
 type Institution struct {
-	ID        string         `json:"id"`
-	Name      string         `json:"name"`
-	Acronym   sql.NullString `json:"acronym"`
-	Latitude  float64        `json:"latitude"`
-	Longitude float64        `json:"longitude"`
-	Slug      string         `json:"slug"`
-	CreatedAt time.Time      `json:"created_at"`
-	UpdatedAt time.Time      `json:"updated_at"`
-	City      string         `json:"city"`
+	ID          string         `json:"id"`
+	Name        string         `json:"name"`
+	Acronym     sql.NullString `json:"acronym"`
+	Description sql.NullString `json:"description"`
+	Latitude    float64        `json:"latitude"`
+	Longitude   float64        `json:"longitude"`
+	Slug        string         `json:"slug"`
+	CreatedAt   time.Time      `json:"created_at"`
+	UpdatedAt   time.Time      `json:"updated_at"`
+	City        string         `json:"city"`
 }
 
 type Neighborhood struct {
