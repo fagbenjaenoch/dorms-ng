@@ -21,7 +21,7 @@ export default function Home() {
       <main className="min-h-screen">
         <div className="container flex flex-col lg:flex-row gap-16 lg:gap-24 items-center">
           <div className="flex flex-col gap-6 lg:py-28">
-            <div className="flex items-center gap-1 bg-[#92febc] text-primary px-2 py-1 text-xs font-semibold w-fit tracking-wider rounded-full uppercase">
+            <div className="flex items-center gap-1 bg-primary-light text-primary px-2 py-1 text-xs font-semibold w-fit tracking-wider rounded-full uppercase">
               <GoVerified /> Verified Nigerian student housing
             </div>
             <h1 className="font-sans text-5xl lg:text-7xl tracking-tighter font-extrabold">
