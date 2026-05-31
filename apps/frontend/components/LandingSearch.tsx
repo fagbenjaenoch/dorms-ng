@@ -5,7 +5,7 @@ import { HiLocationMarker } from "react-icons/hi";
 import { Button } from "./ui/button";
 import useDebounce from "@/lib/hooks/useDebounce";
 import { useQuery } from "@tanstack/react-query";
-import { ChevronRight, X } from "lucide-react";
+import { ChevronRight, Search, X } from "lucide-react";
 import { cn, searchQueryParam } from "@/lib/utils";
 import { useQueryState } from "nuqs";
 import { APIResponse, SearchResult } from "@/lib/dto";
@@ -44,7 +44,7 @@ export default function LandingSearch() {
           onChange={handleChange}
         />
         <InputGroupAddon size="xl">
-          <HiLocationMarker size={20} className="text-primary" />
+          <Search size={20} className="text-primary" />
         </InputGroupAddon>
         {searchTerm.length > 0 && (
           <InputGroupAddon align="inline-end">
