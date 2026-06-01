@@ -16,7 +16,7 @@ import { useState } from "react";
 import { useClickOutside } from "@/lib/hooks/useClickOutside";
 
 export default function LandingSearch() {
-  const inputRef = useClickOutside<HTMLInputElement>(() => setShowDropdown(false));
+  const ref = useClickOutside<HTMLInputElement>(() => setShowDropdown(false));
   const [searchTerm, setSearchTerm] = useQueryState(searchQueryParam, {
     defaultValue: "",
   });
@@ -39,13 +39,12 @@ export default function LandingSearch() {
   };
 
   return (
-    <div className="relative">
+    <div className="relative" ref={ref}>
       <InputGroup size="xl" className="shadow-md">
         <InputGroupInput
           placeholder="Which hostel, university or city are you looking for?"
           value={searchTerm}
           onChange={handleChange}
-          ref={inputRef}
           onFocus={() => setShowDropdown(true)}
         />
         <InputGroupAddon size="xl">
