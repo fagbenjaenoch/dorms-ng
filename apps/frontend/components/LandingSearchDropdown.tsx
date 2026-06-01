@@ -56,7 +56,7 @@ export default function LandingSearchDropdown() {
       )}
       <section>
         <h3 className="text-sm text-muted-foreground font-bold uppercase tracking-widest text-outline mb-4">
-          Popular Institutions
+          Trending Institutions
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div className="group flex items-center gap-4 p-3 rounded-xl transition-colors cursor-pointer hover:bg-gray-100">
