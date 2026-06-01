@@ -11,10 +11,6 @@ export default function useRecentSearches(): {
   );
 
   const addSearch = (search: string) => {
-    if (recentSearches.length === 0) {
-      setRecentSearches([search]);
-      return;
-    }
     if (recentSearches.length === 10) {
       setRecentSearches([search, ...recentSearches.slice(0, 9)]);
       return;
