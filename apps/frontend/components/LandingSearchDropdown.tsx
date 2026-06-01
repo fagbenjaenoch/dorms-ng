@@ -7,12 +7,17 @@ import {
 } from "lucide-react";
 import { Button } from "./ui/button";
 import Link from "next/link";
+import useRecentSearches from "@/lib/hooks/useRecentSearches";
+import { useQueryState } from "nuqs";
+import { searchQueryParam } from "@/lib/utils";
 
 function HistoryItem({ name }: { name: string }) {
+  const [_, setSearchTerm] = useQueryState(searchQueryParam);
   return (
     <Button
       variant="ghost"
       className="flex items-center gap-2 px-4 py-2 rounded-xl transition-colors font-medium border bg-gray-100 text-muted-foreground hover:text-muted-foreground hover:bg-gray-200"
+      onClick={() => setSearchTerm(name)}
     >
       <History />
       {name}
@@ -33,18 +38,22 @@ function TrendingItem({ name }: { name: string }) {
 }
 
 export default function LandingSearchDropdown() {
+  const { recentSearches } = useRecentSearches();
+
   return (
     <div className="absolute top-full left-0 w-full mt-4 rounded-xl shadow-2xl bg-white border overflow-hidden z-30 p-6 flex flex-col gap-8">
-      <section>
-        <h3 className="text-sm text-muted-foreground font-bold uppercase tracking-widest text-outline mb-4">
-          Recent Searches
-        </h3>
-        <div className="flex flex-wrap gap-3">
-          {["unilag", "ilorin"].map((item, i) => (
-            <HistoryItem name={item} key={i} />
-          ))}
-        </div>
-      </section>
+      {recentSearches.length > 0 && (
+        <section>
+          <h3 className="text-sm text-muted-foreground font-bold uppercase tracking-widest text-outline mb-4">
+            Recent Searches
+          </h3>
+          <div className="flex flex-wrap gap-3">
+            {recentSearches.map((item, i) => (
+              <HistoryItem name={item} key={i} />
+            ))}
+          </div>
+        </section>
+      )}
       <section>
         <h3 className="text-sm text-muted-foreground font-bold uppercase tracking-widest text-outline mb-4">
           Popular Institutions

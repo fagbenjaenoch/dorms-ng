@@ -156,3 +156,5 @@ export const typeParam = "type";
 export const idParam = "id";
 
 export type AreaTypeEnum = "institution" | "neighborhood";
+
+export const recentSearchesKey = "recentSearches";

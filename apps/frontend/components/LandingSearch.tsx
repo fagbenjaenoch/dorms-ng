@@ -14,15 +14,16 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from "./ui/input-group";
 import LandingSearchDropdown from "./LandingSearchDropdown";
 import { useState } from "react";
 import { useClickOutside } from "@/lib/hooks/useClickOutside";
+import useRecentSearches from "@/lib/hooks/useRecentSearches";
 
 export default function LandingSearch() {
   const ref = useClickOutside<HTMLInputElement>(() => setShowDropdown(false));
   const [searchTerm, setSearchTerm] = useQueryState(searchQueryParam, {
     defaultValue: "",
   });
-  const [showDropdown, setShowDropdown] = useState(false);
-
   const debounceSearchTerm = useDebounce(searchTerm, 300);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const { addSearch } = useRecentSearches();
 
   const query = useQuery<APIResponse<SearchResult[]>>({
     queryKey: ["search", debounceSearchTerm],
@@ -72,6 +73,7 @@ export default function LandingSearch() {
                     ? `/search?${searchQueryParam}=${searchResult.entity}`
                     : `/${searchResult.entity_type}s/${searchResult.slug}`
                 }
+                onClick={() => addSearch(searchTerm)}
                 key={searchResult.entity_id}
               >
                 <div className="flex items-center gap-4">
