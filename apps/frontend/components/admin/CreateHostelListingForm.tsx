@@ -95,12 +95,12 @@ export default function CreateHostelListingForm() {
     },
   });
 
-  const query = useQuery({
+  const neighborhoodsQuery = useQuery({
     queryKey: ["fetchAllNeighborhoods"],
     queryFn: fetchAllNeighborhoods,
   });
 
-  const neighborhoods = query.data?.payload;
+  const neighborhoods = neighborhoodsQuery.data?.payload;
 
   const handleMapClick = (e) => {
     setMarker({ lng: e.lngLat.lng, lat: e.lngLat.lat });
@@ -124,9 +124,10 @@ export default function CreateHostelListingForm() {
       return;
     }
 
-    const payload = await mutation.mutateAsync(data);
+    await mutation.mutateAsync(data);
 
     form.reset();
+    // some fields are not controlled by react hook form
     formRef.current?.reset();
   };
 
