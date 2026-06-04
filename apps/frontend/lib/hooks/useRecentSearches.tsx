@@ -15,6 +15,12 @@ export default function useRecentSearches(): {
       setRecentSearches([search, ...recentSearches.slice(0, 9)]);
       return;
     }
+
+    if (recentSearches.includes(search)) {
+      let filteredSearches = recentSearches.filter((s) => s != search);
+      setRecentSearches([search, ...filteredSearches]);
+      return;
+    }
     setRecentSearches([search, ...recentSearches]);
   };
 
