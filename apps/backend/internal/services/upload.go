@@ -40,6 +40,7 @@ func (s *UploadService) GetPresignedURL(ctx context.Context, key string) (dto.St
 		Bucket:      &config.GetGlobalConfig().R2.Bucket,
 		Key:         aws.String(key),
 		IfNoneMatch: aws.String("*"),
+		ContentType: aws.String("image/jpeg"),
 	})
 	if err != nil {
 		s.Logger.Err(err).Msg("failed to generate presigned url")
