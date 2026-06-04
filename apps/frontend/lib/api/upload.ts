@@ -18,6 +18,7 @@ export async function uploadPhoto({
   const presignedUrlReqBody = {
     entity_name: entityName,
     entity_type: entityType,
+    file_name: primaryPhoto.name,
   };
 
   const presignedUrlReq = await fetch(
