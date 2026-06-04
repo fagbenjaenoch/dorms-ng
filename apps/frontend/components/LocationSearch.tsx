@@ -18,7 +18,7 @@ export default function LocationSearch({
   onClick,
 }: LocationSearchProps) {
   return (
-    <InputGroup>
+    <InputGroup size="lg">
       <InputGroupInput
         placeholder="Search locations..."
         value={searchTerm}
