@@ -69,9 +69,9 @@ func FormatValidationErrors(err error) ErrorResponse {
 	}
 }
 
-func GeneratePresignedURLKey(entityName, entityType string) string {
-	nameHash := GenerateHash(entityName)
-	return fmt.Sprintf("%s/%s/%s", strings.ToLower(entityType), strings.ToLower(strings.ReplaceAll(entityName, " ", "-")), nameHash)
+func GeneratePresignedURLKey(entityName, entityType, fileName string) string {
+	nameHash := GenerateHash(fileName)
+	return fmt.Sprintf("%ss/%s/%s", strings.ToLower(entityType), strings.ToLower(strings.ReplaceAll(entityName, " ", "-")), nameHash)
 }
 
 func GenerateSlug(stringInput ...string) string {

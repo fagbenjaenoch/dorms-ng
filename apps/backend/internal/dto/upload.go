@@ -3,6 +3,7 @@ package dto
 type PresignedURLRequest struct {
 	EntityType string `json:"entity_type"`
 	EntityName string `json:"entity_name"`
+	FileName   string `json:"file_name"`
 }
 
 type PresignedURLPayload struct {

@@ -38,7 +38,7 @@ func (h *UploadHandler) GetPresignedURL(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	key := utils.GeneratePresignedURLKey(req.EntityName, req.EntityType)
+	key := utils.GeneratePresignedURLKey(req.EntityName, req.EntityType, req.FileName)
 
 	res, err := h.UploadService.GetPresignedURL(r.Context(), key)
 	if err != nil {
