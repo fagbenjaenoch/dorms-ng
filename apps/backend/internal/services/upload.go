@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
@@ -41,6 +42,8 @@ func (s *UploadService) GetPresignedURL(ctx context.Context, key string) (dto.St
 		Key:         aws.String(key),
 		IfNoneMatch: aws.String("*"),
 		ContentType: aws.String("image/jpeg"),
+	}, func(po *s3.PresignOptions) {
+		po.Expires = 15 * time.Minute
 	})
 	if err != nil {
 		s.Logger.Err(err).Msg("failed to generate presigned url")
