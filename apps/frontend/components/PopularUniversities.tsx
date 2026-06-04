@@ -17,11 +17,12 @@ export default function PopularUniversities() {
       <div className="container px-32">
         <SectionHeading label="Popular Universities" description="Destinations" />
         <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4">
-          {popularUniversities.map((university) => (
+          {popularUniversities.map((university, i) => (
             <UniversityCard
               name={university.name}
               imageUrl={university.imageUrl}
               slug={university.slug}
+              key={i}
             />
           ))}
         </div>

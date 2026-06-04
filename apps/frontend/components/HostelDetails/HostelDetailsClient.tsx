@@ -17,12 +17,10 @@ import { notFound, useParams } from "next/navigation";
 import { useQueryState, parseAsBoolean } from "nuqs";
 import { FaPersonWalking } from "react-icons/fa6";
 import BackToSearchPageButton from "../BackToSearchPage";
+import { fromSearchPageParam } from "@/lib/utils";
 
 export default function HostelDetailsClient() {
-  const [fromSearchPage, setFromSearchPage] = useQueryState(
-    "from_search_page",
-    parseAsBoolean,
-  );
+  const [fromSearchPage, _] = useQueryState(fromSearchPageParam, parseAsBoolean);
 
   let { slug } = useParams();
   slug = slug as string;
@@ -42,8 +40,8 @@ export default function HostelDetailsClient() {
 
   return (
     <main className="max-w-7xl mx-auto py-20 min-h-screen sm:px-6 lg:px-8">
+      <div className="mb-4">{fromSearchPage && <BackToSearchPageButton />}</div>
       <div className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>{fromSearchPage && <BackToSearchPageButton />}</div>
         <div>
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tighter text-on-surface flex items-center gap-3">
             {hostel.name}

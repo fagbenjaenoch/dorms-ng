@@ -1,10 +1,11 @@
 "use client";
 
-import { AreaTypeEnum } from "@/lib/utils";
+import { AreaTypeEnum, fromSearchPageParam } from "@/lib/utils";
 import PropertyCard from "./ui/PropertyCard";
 import { fetchHostelsByArea } from "@/lib/api/hostel";
 import { APIResponse, Hostel } from "@/lib/dto";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import Link from "next/link";
 
 interface HostelResultProps {
   areaType: AreaTypeEnum;

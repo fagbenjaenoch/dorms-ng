@@ -6,6 +6,7 @@ import { MapPin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import useMoneyFormat from "@/lib/hooks/useMoneyFormat";
+import { fromSearchPageParam } from "@/lib/utils";
 
 interface PropertyCardProps {
   price: number;
@@ -74,7 +75,7 @@ export default function PropertyCard({
             24/7 Security
           </span>
         </div>
-        <Link href={`/hostels/${slug}`}>
+        <Link href={`/hostels/${slug}?${fromSearchPageParam}=true`}>
           <Button
             variant="ghost"
             size="xl"
