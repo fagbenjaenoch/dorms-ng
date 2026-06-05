@@ -49,6 +49,7 @@ import { fetchAllNeighborhoods } from "@/lib/api/neighborhood";
 import { Neighborhood } from "@/lib/dto";
 import { useDropzone } from "react-dropzone";
 import ImageWithCancel from "./ImageWithCancel";
+import ImageTile from "./ImageTile";
 
 export default function CreateHostelListingForm() {
   const mapRef = useRef<MapRef>(null);
@@ -143,8 +144,9 @@ export default function CreateHostelListingForm() {
     }
 
     const imageFile = acceptedFiles[0];
+    const previewUrl = URL.createObjectURL(imageFile);
     const imageWithPreview = Object.assign(imageFile, {
-      preview: URL.createObjectURL(imageFile),
+      preview: previewUrl,
     });
 
     setPrimaryPhoto(imageWithPreview);
@@ -539,7 +541,7 @@ export default function CreateHostelListingForm() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="col-span-1 lg:col-span-2">
             {primaryPhoto != null ? (
-              <ImageWithCancel
+              <ImageTile
                 previewUrl={primaryPhoto.preview}
                 altText="primary hostel photo"
                 onCancel={() => setPrimaryPhoto(null)}

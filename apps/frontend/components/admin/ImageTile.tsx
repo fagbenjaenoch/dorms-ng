@@ -1,17 +1,13 @@
 import { X } from "lucide-react";
 import Image from "next/image";
 
-interface ImageWithCancelProps {
+interface ImageTileProp {
   previewUrl: string;
   altText: string;
   onCancel: () => void;
 }
 
-export default function ImageWithCancel({
-  previewUrl,
-  altText,
-  onCancel,
-}: ImageWithCancelProps) {
+export default function ImageTile({ previewUrl, altText, onCancel }: ImageTileProp) {
   return (
     <div className="relative w-fit border border-gray-200">
       <Image
