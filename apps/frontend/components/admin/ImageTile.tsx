@@ -11,7 +11,7 @@ interface ImageTileProp {
 export default function ImageTile({ file, altText, onCancel }: ImageTileProp) {
   const [previewUrl, setPreviewUrl] = useState(
     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkWPjfDwAEfQHzbpFsPDAAAAAElFTkSuQmCC",
-  );
+  ); // defaults to gray base64 background
   useEffect(() => {
     const previewUrl = URL.createObjectURL(file);
     setPreviewUrl(previewUrl);
