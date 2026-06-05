@@ -1,6 +1,5 @@
 "use client";
 
-import ActiveSearchFilters from "@/components/ActiveSearchFilters";
 import QueryErrorBoundary from "@/components/error/QueryErrorBoundary";
 import HostelResults from "@/components/HostelResults";
 import HostelResultsError from "@/components/HostelResultsError";
@@ -65,7 +64,6 @@ export default function SearchPage() {
   return (
     <div className="bg-gray-100">
       <hr className="bg-muted-foreground" />
-      <ActiveSearchFilters />
       <main className="pt-12 pb-24 px-8 min-h-screen w-full mx-auto max-w-7xl">
         <div className="flex justify-between items-end">
           <div className="w-full">
