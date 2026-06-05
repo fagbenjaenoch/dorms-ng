@@ -1,5 +1,6 @@
 "use client";
 
+import posthog from "posthog-js";
 import { BusIcon, Compass, GraduationCap, MapIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import { MdTune } from "react-icons/md";
@@ -62,7 +63,13 @@ export default function InstitutionDetailsClient() {
                 variant="default"
                 size="xl"
                 className="px-8 py-4 flex items-center gap-2 text-primary-light"
-                onClick={() => scrollTo("#hostels")}
+                onClick={() => {
+                  scrollTo("#hostels");
+                  posthog.capture("institution_explore_hostels_clicked", {
+                    institution_name: institution.name,
+                    institution_slug: slug,
+                  });
+                }}
               >
                 <Compass />
                 Explore Nearby Hostels

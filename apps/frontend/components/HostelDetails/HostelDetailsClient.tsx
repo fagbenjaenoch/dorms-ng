@@ -1,5 +1,6 @@
 "use client";
 
+import posthog from "posthog-js";
 import { Button } from "@/components/ui/button";
 import { fetchHostel } from "@/lib/api/hostel";
 import useMoneyFormat from "@/lib/hooks/useMoneyFormat";
@@ -13,6 +14,7 @@ import {
   ShieldUserIcon,
 } from "lucide-react";
 import Image from "next/image";
+import { useEffect } from "react";
 import { notFound, useParams } from "next/navigation";
 import { useQueryState, parseAsBoolean } from "nuqs";
 import { FaPersonWalking } from "react-icons/fa6";
@@ -46,6 +48,15 @@ export default function HostelDetailsClient() {
 
   const formattedPrice = useMoneyFormat(hostel.estimatedPriceRange);
 
+  useEffect(() => {
+    posthog.capture("hostel_details_viewed", {
+      hostel_slug: slug,
+      hostel_name: hostel.name,
+      hostel_price: hostel.estimatedPriceRange,
+      is_verified: hostel.isVerified,
+    });
+  }, [slug]);
+
   return (
     <main className="max-w-7xl mx-auto py-20 min-h-screen sm:px-6 lg:px-8">
       <div className="mb-4">{fromSearchPage && <BackToSearchPageButton />}</div>
@@ -69,6 +80,7 @@ export default function HostelDetailsClient() {
           <Button
             variant="ghost"
             className="flex items-center gap-2 font-bold hover:text-primary transition-colors"
+            onClick={() => posthog.capture("hostel_shared", { hostel_slug: slug, hostel_name: hostel.name })}
           >
             <Share2 />
             Share
@@ -76,6 +88,7 @@ export default function HostelDetailsClient() {
           <Button
             variant="ghost"
             className="flex items-center gap-2 font-bold text-on-surface-variant hover:text-secondary transition-colors"
+            onClick={() => posthog.capture("hostel_saved", { hostel_slug: slug, hostel_name: hostel.name })}
           >
             <Heart />
             Save
@@ -84,16 +97,16 @@ export default function HostelDetailsClient() {
       </div>
 
       {photoUrls && (
-        <Carousel className="w-fit mx-auto">
-          <CarouselContent>
+        <Carousel>
+          <CarouselContent className="w-fit mx-auto">
             {photoUrls.map((url, index) => (
-              <CarouselItem key={index} className="mx-auto">
+              <CarouselItem key={index}>
                 <Image
                   width={300}
-                  height={300}
+                  height={200}
                   src={url}
                   alt={`${hostel.name} - ${index + 1}`}
-                  className="max-w-100 h-100 object-cover rounded-xl my-4 shadow-xl"
+                  className="object-cover rounded-xl my-4 shadow-xl"
                 />
               </CarouselItem>
             ))}
@@ -160,6 +173,7 @@ export default function HostelDetailsClient() {
                 size="xl"
                 variant="secondary"
                 className="w-full font-bold text-lg shadow-lg shadow-secondary/30"
+                onClick={() => posthog.capture("hostel_tour_requested", { hostel_slug: slug, hostel_name: hostel.name, hostel_price: hostel.estimatedPriceRange })}
               >
                 Request a Tour
               </Button>
@@ -167,6 +181,7 @@ export default function HostelDetailsClient() {
                 size="xl"
                 variant="outline"
                 className="w-full py-4 rounded-xl font-bold text-lg transition-colors border border-outline-variant/50"
+                onClick={() => posthog.capture("hostel_contact_host_clicked", { hostel_slug: slug, hostel_name: hostel.name })}
               >
                 Contact Host
               </Button>

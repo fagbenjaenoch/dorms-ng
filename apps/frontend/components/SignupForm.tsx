@@ -1,5 +1,6 @@
 "use client";
 
+import posthog from "posthog-js";
 import { SignupData, signupSchema } from "@/lib/forms";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
@@ -47,6 +48,8 @@ export default function SignupForm() {
   const handleSubmit = async (data: SignupData) => {
     const payload = await mutation.mutateAsync(data);
     if (payload?.success) {
+      posthog.identify(data.email, { name: data.fullname, email: data.email });
+      posthog.capture("user_signed_up", { name: data.fullname, email: data.email });
       router.push("/app");
     }
   };

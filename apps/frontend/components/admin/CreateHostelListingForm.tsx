@@ -1,5 +1,6 @@
 "use client";
 
+import posthog from "posthog-js";
 import {
   Combobox,
   ComboboxContent,
@@ -80,7 +81,14 @@ export default function CreateHostelListingForm() {
   const mutation = useMutation({
     mutationKey: ["createHostelListing"],
     mutationFn: (data: CreateHostelListingData) => createHostelListing(data, photos),
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
+      posthog.capture("hostel_listing_created", {
+        hostel_name: variables.name,
+        city: variables.city,
+        neighborhood: variables.neighborhood,
+        is_verified: variables.isVerified,
+        estimated_price: variables.estimatedPriceRange,
+      });
       toast.success("Hostel listing created successfully");
       form.reset();
       setPhotos(null);

@@ -1,5 +1,6 @@
 "use client";
 
+import posthog from "posthog-js";
 import { Button } from "./ui/button";
 import useDebounce from "@/lib/hooks/useDebounce";
 import { useQuery } from "@tanstack/react-query";
@@ -72,7 +73,14 @@ export default function LandingSearch() {
                   ? `/search?${searchQueryParam}=${searchResult.entity}`
                   : `/${searchResult.entity_type}s/${searchResult.slug}`
               }
-              onClick={() => addSearch(searchTerm)}
+              onClick={() => {
+                addSearch(searchTerm);
+                posthog.capture("search_result_clicked", {
+                  search_term: searchTerm,
+                  result_type: searchResult.entity_type,
+                  result_name: searchResult.entity,
+                });
+              }}
               key={searchResult.entity_id}
             >
               <div className="flex items-center gap-4">

@@ -1,3 +1,6 @@
+"use client";
+
+import posthog from "posthog-js";
 import { Button } from "./button";
 import { BiSolidBadgeCheck } from "react-icons/bi";
 import { PiShieldCheckeredFill } from "react-icons/pi";
@@ -75,7 +78,10 @@ export default function PropertyCard({
             24/7 Security
           </span>
         </div>
-        <Link href={`/hostels/${slug}?${fromSearchPageParam}=true`}>
+        <Link
+          href={`/hostels/${slug}?${fromSearchPageParam}=true`}
+          onClick={() => posthog.capture("hostel_card_clicked", { hostel_slug: slug, hostel_name: name, hostel_price: price, is_verified: isVerified })}
+        >
           <Button
             variant="ghost"
             size="xl"

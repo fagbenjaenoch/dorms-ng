@@ -1,3 +1,6 @@
+"use client";
+
+import posthog from "posthog-js";
 import Image from "next/image";
 import Link from "next/link";
 import { HTMLAttributes } from "react";
@@ -19,7 +22,10 @@ export default function UniversityCard({
       className="relative rounded-3xl overflow-hidden group cursor-pointer"
       {...props}
     >
-      <Link href={`/institutions/${slug}`}>
+      <Link
+        href={`/institutions/${slug}`}
+        onClick={() => posthog.capture("university_card_clicked", { university_name: name, university_slug: slug })}
+      >
         <Image
           src={imageUrl}
           alt={name}
