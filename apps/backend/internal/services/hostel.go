@@ -71,7 +71,7 @@ func (s HostelService) CreateHostel(ctx context.Context, hostel dto.CreateHostel
 			Address:             h.Address.String,
 			Latitude:            h.Latitude,
 			Longitude:           h.Longitude,
-			PrimaryPhotoURL:     h.PrimaryPhotoUrl.String,
+			PhotoURLs:           h.PhotoUrls.String,
 			Slug:                h.Slug,
 			EstimatedPriceRange: h.EstimatedPriceRange.Float64,
 			IsVerified:          h.IsVerifiedByAdmin.Bool,
@@ -113,7 +113,7 @@ func (s HostelService) GetHostel(ctx context.Context, slug string) (dto.Structur
 			Address:             h.Address.String,
 			Latitude:            h.Latitude,
 			Longitude:           h.Longitude,
-			PrimaryPhotoURL:     h.PrimaryPhotoUrl.String,
+			PhotoURLs:           h.PhotoUrls.String,
 			EstimatedPriceRange: h.EstimatedPriceRange.Float64,
 		},
 	}, nil
@@ -165,7 +165,7 @@ func (s HostelService) SearchHostels(ctx context.Context, searchType, id string)
 			Longitude:           v.Longitude,
 			Latitude:            v.Latitude,
 			Slug:                v.Slug,
-			PrimaryPhotoURL:     v.PrimaryPhotoUrl.String,
+			PhotoURLs:           v.PhotoUrls.String,
 			IsVerified:          v.IsVerifiedByAdmin.Bool,
 		})
 	}

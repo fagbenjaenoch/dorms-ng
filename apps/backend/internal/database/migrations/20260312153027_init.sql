@@ -48,21 +48,12 @@ CREATE TABLE hostels (
   neighborhood_id TEXT REFERENCES neighborhood(id),
   latitude REAL NOT NULL,
   longitude REAL NOT NULL,
-
-  -- Scraped/Sourced Data
   google_place_id TEXT UNIQUE,
-
-  -- Curated Trust Layer Insights
   estimated_price_range REAL,
-
-  -- Calculated Fields (Computed by your Go backend before inserting)
   distance_to_gate_km REAL,
-
   is_verified_by_admin BOOLEAN DEFAULT FALSE,
-  primary_photo_url TEXT,
-
+  photo_urls TEXT,
   slug TEXT UNIQUE NOT NULL,
-
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -77,7 +68,6 @@ CREATE TABLE neighborhoods (
     avg_price_1bed INTEGER,
     power_rating_insight TEXT,
 
-    -- Foreign Key Constraint
     FOREIGN KEY (institution_id) REFERENCES institutions(id) ON DELETE CASCADE
 );
 
