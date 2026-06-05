@@ -40,7 +40,7 @@ func DecodeJSONBody(w http.ResponseWriter, r *http.Request, body any) error {
 		WriteJSON(w, dto.StructuredResponse{
 			Success: false,
 			Status:  http.StatusBadRequest,
-			Message: err.Error(),
+			Message: "could not process message body",
 		})
 		return err
 	}
