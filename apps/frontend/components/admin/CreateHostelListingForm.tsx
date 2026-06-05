@@ -52,7 +52,6 @@ import ImageTile from "./ImageTile";
 export default function CreateHostelListingForm() {
   const mapRef = useRef<MapRef>(null);
   const formRef = useRef<HTMLFormElement>(null);
-  const [primaryPhoto, setPrimaryPhoto] = useState<UploadFile | null>(null);
   const [photos, setPhotos] = useState<UploadFile[] | null>(null);
   const form = useForm<CreateHostelListingData>({
     resolver: zodResolver(createHostelListingSchema),
@@ -81,11 +80,11 @@ export default function CreateHostelListingForm() {
   const mutation = useMutation({
     mutationKey: ["createHostelListing"],
     mutationFn: (data: CreateHostelListingData) =>
-      createHostelListing(data, primaryPhoto),
+      createHostelListing(data, photos ? photos[0] : null),
     onSuccess: () => {
       toast.success("Hostel listing created successfully");
       form.reset();
-      setPrimaryPhoto(null);
+      setPhotos(null);
       setMarker(defaultLngLat);
     },
     onError: (error) => {
@@ -117,8 +116,8 @@ export default function CreateHostelListingForm() {
   };
 
   const onSubmit = async (data: CreateHostelListingData) => {
-    if (!primaryPhoto) {
-      toast.error("Please select a primary photo");
+    if (!photos) {
+      toast.error("Please select a photo");
       return;
     }
 
@@ -136,7 +135,7 @@ export default function CreateHostelListingForm() {
     }
 
     if (acceptedFiles.length > 5) {
-      toast.error("You can only drag and drop five files at a time");
+      toast.error("You can only drag and drop at most 5 files at a time");
       return;
     }
 
@@ -146,7 +145,6 @@ export default function CreateHostelListingForm() {
     }));
 
     setPhotos(images);
-    setPrimaryPhoto(images[0]);
   }, []);
 
   const acceptedFileTypes = {
@@ -535,46 +533,47 @@ export default function CreateHostelListingForm() {
           <h2 className="text-2xl font-bold tracking-tight">Media</h2>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="col-span-1 lg:col-span-2">
-            {primaryPhoto != null ? (
+        <div className="flex gap-4">
+          {photos != null && photos.length > 0 ? (
+            photos.map((photo, i) => (
               <ImageTile
-                file={primaryPhoto.file}
-                altText="primary hostel photo"
-                onCancel={() => setPrimaryPhoto(null)}
+                key={i}
+                file={photo.file}
+                altText={`hostel photo ${i + 1}`}
+                onCancel={() => setPhotos(() => photos.filter((_, j) => j !== i))}
               />
-            ) : (
-              <Field>
-                <FieldLabel
-                  htmlFor="primary-photo"
-                  className="uppercase text-xs font-bold"
-                >
-                  Primary Photo
-                </FieldLabel>
-                <div
-                  className={cn(
-                    "w-40 h-40 border border-gray-400 rounded-lg grid place-items-center cursor-pointer",
-                    { "border-blue-500": isDragActive },
-                  )}
-                  {...getRootProps()}
-                >
-                  <Input
-                    {...getInputProps()}
-                    id="primary-photo"
-                    name="primaryPhoto"
-                    type="file"
-                    className="w-full"
-                    accept="image/*"
-                  />
-                  <div className="text-center text-gray-400">
-                    <UploadIcon className="w-8 h-8 inline-block" />
-                    <p>Select or drag and drop your files here</p>
-                    <small>{`(Images up to ${(FILE_THRESHOLD / (1024 * 1024)).toFixed(0)}MB)`}</small>
-                  </div>
+            ))
+          ) : (
+            <Field>
+              <FieldLabel
+                htmlFor="primary-photo"
+                className="uppercase text-xs font-bold"
+              >
+                Photos
+              </FieldLabel>
+              <div
+                className={cn(
+                  "w-40 h-40 border border-gray-400 rounded-lg grid place-items-center cursor-pointer",
+                  { "border-blue-500": isDragActive },
+                )}
+                {...getRootProps()}
+              >
+                <Input
+                  {...getInputProps()}
+                  id="primary-photo"
+                  name="primaryPhoto"
+                  type="file"
+                  className="w-full"
+                  accept="image/*"
+                />
+                <div className="text-center text-gray-400">
+                  <UploadIcon className="w-8 h-8 inline-block" />
+                  <p>Select or drag and drop your files here</p>
+                  <small>{`(Images up to ${(FILE_THRESHOLD / (1024 * 1024)).toFixed(0)}MB)`}</small>
                 </div>
-              </Field>
-            )}
-          </div>
+              </div>
+            </Field>
+          )}
         </div>
       </section>
 
