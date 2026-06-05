@@ -140,13 +140,13 @@ export default function CreateHostelListingForm() {
       return;
     }
 
-    const imagesWithPreview = acceptedFiles.map((file, i) => ({
+    const images = acceptedFiles.map((file, i) => ({
       file,
       isPrimary: i === 0,
     }));
 
-    setPhotos(imagesWithPreview);
-    setPrimaryPhoto(imagesWithPreview[0]);
+    setPhotos(images);
+    setPrimaryPhoto(images[0]);
   }, []);
 
   const acceptedFileTypes = {
