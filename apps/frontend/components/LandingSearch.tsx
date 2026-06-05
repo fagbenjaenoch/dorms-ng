@@ -40,6 +40,52 @@ export default function LandingSearch() {
     setSearchTerm(null);
   };
 
+  const renderDropdown = () => {
+    if (!showDropdown && !query.data) return null;
+    if (showDropdown && !query.data) return <LandingSearchDropdown />;
+    if (!query.data?.payload?.length)
+      return (
+        <div className="absolute z-50 top-full mt-3 left-0 w-full bg-primary-foreground shadow-lg ring-1 ring-gray-500/5 p-4 rounded-xl text-muted-foreground">
+          No matches found
+        </div>
+      );
+    return (
+      <div className="absolute z-50 top-full mt-3 left-0 w-full flex flex-col gap-2 bg-primary-foreground shadow-lg ring-1 ring-gray-500/5 p-2 rounded-xl">
+        {query.data.payload.map((searchResult) => (
+          <Link
+            className="group cursor-pointer hover:bg-gray-500/10 p-4 rounded-md flex items-center gap-2"
+            href={
+              searchResult.entity_type === "neighborhood"
+                ? `/search?${searchQueryParam}=${searchResult.entity}`
+                : `/${searchResult.entity_type}s/${searchResult.slug}`
+            }
+            onClick={() => {
+              addSearch(searchTerm);
+              posthog.capture("search_result_clicked", {
+                search_term: searchTerm,
+                result_type: searchResult.entity_type,
+                result_name: searchResult.entity,
+              });
+            }}
+            key={searchResult.entity_id}
+          >
+            <div className="flex items-center gap-4">
+              {EntityTypeToIcon[searchResult.entity_type]}
+              <div className="flex flex-col">
+                <span className="font-semibold">{searchResult.entity}</span>
+                <span className="text-muted-foreground">{searchResult.address}</span>
+              </div>
+            </div>
+            <ChevronRight
+              className="text-primary ml-auto group-hover:translate-x-1 transition-all"
+              size={15}
+            />
+          </Link>
+        ))}
+      </div>
+    );
+  };
+
   return (
     <div className="relative" ref={ref}>
       <InputGroup size="xl" className="shadow-md">
@@ -61,49 +107,7 @@ export default function LandingSearch() {
         )}
       </InputGroup>
 
-      {showDropdown && !query.data ? (
-        <LandingSearchDropdown />
-      ) : !!query.data?.payload?.length ? (
-        <div className="absolute z-50 top-full mt-3 left-0 w-full flex flex-col gap-2 bg-primary-foreground shadow-lg ring-1 ring-gray-500/5 p-2 rounded-xl">
-          {query.data.payload.map((searchResult) => (
-            <Link
-              className="group cursor-pointer hover:bg-gray-500/10 p-4 rounded-md flex items-center gap-2"
-              href={
-                searchResult.entity_type === "neighborhood"
-                  ? `/search?${searchQueryParam}=${searchResult.entity}`
-                  : `/${searchResult.entity_type}s/${searchResult.slug}`
-              }
-              onClick={() => {
-                addSearch(searchTerm);
-                posthog.capture("search_result_clicked", {
-                  search_term: searchTerm,
-                  result_type: searchResult.entity_type,
-                  result_name: searchResult.entity,
-                });
-              }}
-              key={searchResult.entity_id}
-            >
-              <div className="flex items-center gap-4">
-                {EntityTypeToIcon[searchResult.entity_type]}
-                <div className="flex flex-col">
-                  <span className="font-semibold">{searchResult.entity}</span>
-                  <span className="text-muted-foreground">
-                    {searchResult.address}
-                  </span>
-                </div>
-              </div>
-              <ChevronRight
-                className="text-primary ml-auto group-hover:translate-x-1 transition-all"
-                size={15}
-              />
-            </Link>
-          ))}
-        </div>
-      ) : (
-        <div className="absolute z-50 top-full mt-3 left-0 w-full bg-primary-foreground shadow-lg ring-1 ring-gray-500/5 p-4 rounded-xl text-muted-foreground">
-          No matches found
-        </div>
-      )}
+      {renderDropdown()}
     </div>
   );
 }
