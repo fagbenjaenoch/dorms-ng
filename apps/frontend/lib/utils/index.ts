@@ -162,5 +162,5 @@ export const recentSearchesKey = "recentSearches";
 
 export interface UploadFile {
   file: File;
-  preview: string;
+  isPrimary: boolean;
 }
