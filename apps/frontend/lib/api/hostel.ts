@@ -1,11 +1,11 @@
 import { APIResponse, Hostel } from "../dto";
 import { CreateHostelListingData } from "../forms";
-import { idParam, typeParam } from "../utils";
+import { idParam, typeParam, UploadFile } from "../utils";
 import { uploadPhoto } from "./upload";
 
 export async function createHostelListing(
   data: CreateHostelListingData,
-  primaryPhoto: File | null,
+  primaryPhoto: UploadFile | null,
 ) {
   if (!primaryPhoto) {
     throw new Error("Primary photo is required");
@@ -14,7 +14,7 @@ export async function createHostelListing(
   const publicUrl = await uploadPhoto({
     entityName: data.name,
     entityType: "hostel",
-    primaryPhoto,
+    primaryPhoto: primaryPhoto.file,
   });
 
   const dataWithPrimaryPhoto = {

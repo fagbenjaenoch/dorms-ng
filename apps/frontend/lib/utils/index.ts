@@ -159,3 +159,8 @@ export const fromSearchPageParam = "from_search_page";
 export type AreaTypeEnum = "institution" | "neighborhood";
 
 export const recentSearchesKey = "recentSearches";
+
+export interface UploadFile {
+  file: File;
+  preview: string;
+}

@@ -12,7 +12,7 @@ import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { CreateHostelListingData, createHostelListingSchema } from "@/lib/forms";
-import { cn, defaultLngLat, LngLat, nigerianCities } from "@/lib/utils";
+import { cn, defaultLngLat, LngLat, nigerianCities, UploadFile } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Info,
@@ -26,7 +26,6 @@ import {
   ShieldCheck,
   Camera,
   UploadIcon,
-  X,
 } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import {
@@ -48,15 +47,13 @@ import { createHostelListing } from "@/lib/api/hostel";
 import { fetchAllNeighborhoods } from "@/lib/api/neighborhood";
 import { Neighborhood } from "@/lib/dto";
 import { useDropzone } from "react-dropzone";
-import ImageWithCancel from "./ImageWithCancel";
 import ImageTile from "./ImageTile";
 
 export default function CreateHostelListingForm() {
   const mapRef = useRef<MapRef>(null);
   const formRef = useRef<HTMLFormElement>(null);
-  const [primaryPhoto, setPrimaryPhoto] = useState<
-    (File & { preview: string }) | null
-  >(null);
+  const [primaryPhoto, setPrimaryPhoto] = useState<UploadFile | null>(null);
+  const [photos, setPhotos] = useState<UploadFile[] | null>(null);
   const form = useForm<CreateHostelListingData>({
     resolver: zodResolver(createHostelListingSchema),
     defaultValues: {
@@ -143,13 +140,12 @@ export default function CreateHostelListingForm() {
       return;
     }
 
-    const imageFile = acceptedFiles[0];
-    const previewUrl = URL.createObjectURL(imageFile);
-    const imageWithPreview = Object.assign(imageFile, {
-      preview: previewUrl,
-    });
+    const imageFile = {
+      file: acceptedFiles[0],
+      preview: URL.createObjectURL(acceptedFiles[0]),
+    };
 
-    setPrimaryPhoto(imageWithPreview);
+    setPrimaryPhoto(imageFile);
   }, []);
 
   const acceptedFileTypes = {
