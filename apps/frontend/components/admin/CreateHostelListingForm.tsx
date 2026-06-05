@@ -79,8 +79,7 @@ export default function CreateHostelListingForm() {
 
   const mutation = useMutation({
     mutationKey: ["createHostelListing"],
-    mutationFn: (data: CreateHostelListingData) =>
-      createHostelListing(data, photos ? photos[0] : null),
+    mutationFn: (data: CreateHostelListingData) => createHostelListing(data, photos),
     onSuccess: () => {
       toast.success("Hostel listing created successfully");
       form.reset();

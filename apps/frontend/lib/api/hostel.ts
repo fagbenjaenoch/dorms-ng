@@ -5,21 +5,26 @@ import { uploadPhoto } from "./upload";
 
 export async function createHostelListing(
   data: CreateHostelListingData,
-  primaryPhoto: UploadFile | null,
+  photoUrls: UploadFile[] | null,
 ) {
-  if (!primaryPhoto) {
-    throw new Error("Primary photo is required");
+  if (!photoUrls || photoUrls.length === 0) {
+    throw new Error("Photo is required");
   }
 
-  const publicUrl = await uploadPhoto({
-    entityName: data.name,
-    entityType: "hostel",
-    primaryPhoto: primaryPhoto.file,
-  });
+  const photoPromises = photoUrls.map((photo) =>
+    uploadPhoto({
+      entityName: data.name,
+      entityType: "hostel",
+      primaryPhoto: photo.file,
+    }),
+  );
 
-  const dataWithPrimaryPhoto = {
+  const publicUrls = await Promise.all(photoPromises);
+  console.log(publicUrls);
+
+  const dataWithPhotos = {
     ...data,
-    primary_photo_url: publicUrl,
+    photo_urls: publicUrls,
   };
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/hostels`, {
@@ -27,7 +32,7 @@ export async function createHostelListing(
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(dataWithPrimaryPhoto),
+    body: JSON.stringify(dataWithPhotos),
   });
 
   const response = await res.json();

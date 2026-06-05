@@ -35,6 +35,7 @@ export default function HostelDetailsClient() {
   }
 
   const { payload: hostel } = res;
+  const photoUrls = hostel.photo_urls ? hostel.photo_urls.split(", ") : [];
 
   const formattedPrice = useMoneyFormat(hostel.estimatedPriceRange);
 
@@ -75,11 +76,11 @@ export default function HostelDetailsClient() {
         </div>
       </div>
 
-      {hostel.primary_photo_url && (
+      {photoUrls && (
         <Image
           width={600}
           height={800}
-          src={hostel.primary_photo_url}
+          src={photoUrls[0]}
           alt={hostel.name}
           className="w-full h-64 object-cover rounded-xl my-4 shadow-xl"
         />
