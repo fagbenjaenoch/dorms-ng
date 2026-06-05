@@ -18,6 +18,13 @@ import { useQueryState, parseAsBoolean } from "nuqs";
 import { FaPersonWalking } from "react-icons/fa6";
 import BackToSearchPageButton from "../BackToSearchPage";
 import { fromSearchPageParam } from "@/lib/utils";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from "../ui/carousel";
 
 export default function HostelDetailsClient() {
   const [fromSearchPage, _] = useQueryState(fromSearchPageParam, parseAsBoolean);
@@ -77,13 +84,23 @@ export default function HostelDetailsClient() {
       </div>
 
       {photoUrls && (
-        <Image
-          width={600}
-          height={800}
-          src={photoUrls[0]}
-          alt={hostel.name}
-          className="w-full h-64 object-cover rounded-xl my-4 shadow-xl"
-        />
+        <Carousel className="w-fit mx-auto">
+          <CarouselContent>
+            {photoUrls.map((url, index) => (
+              <CarouselItem key={index} className="mx-auto">
+                <Image
+                  width={300}
+                  height={300}
+                  src={url}
+                  alt={`${hostel.name} - ${index + 1}`}
+                  className="max-w-100 h-100 object-cover rounded-xl my-4 shadow-xl"
+                />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
       )}
 
       <div className="flex flex-col lg:flex-row gap-12">
