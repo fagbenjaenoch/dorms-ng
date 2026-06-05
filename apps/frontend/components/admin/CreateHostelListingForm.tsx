@@ -135,8 +135,8 @@ export default function CreateHostelListingForm() {
       return;
     }
 
-    if (acceptedFiles.length > 1) {
-      toast.error("You can only drag and drop one file at a time");
+    if (acceptedFiles.length > 5) {
+      toast.error("You can only drag and drop five files at a time");
       return;
     }
 
