@@ -1,13 +1,26 @@
 import { X } from "lucide-react";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 
 interface ImageTileProp {
-  previewUrl: string;
+  file: File;
   altText: string;
   onCancel: () => void;
 }
 
-export default function ImageTile({ previewUrl, altText, onCancel }: ImageTileProp) {
+export default function ImageTile({ file, altText, onCancel }: ImageTileProp) {
+  const [previewUrl, setPreviewUrl] = useState(
+    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkWPjfDwAEfQHzbpFsPDAAAAAElFTkSuQmCC",
+  );
+  useEffect(() => {
+    const previewUrl = URL.createObjectURL(file);
+    setPreviewUrl(previewUrl);
+
+    return () => {
+      URL.revokeObjectURL(previewUrl);
+    };
+  }, [file]);
+
   return (
     <div className="relative w-fit border border-gray-200">
       <Image

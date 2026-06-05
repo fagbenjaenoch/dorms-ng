@@ -140,12 +140,13 @@ export default function CreateHostelListingForm() {
       return;
     }
 
-    const imageFile = {
-      file: acceptedFiles[0],
-      preview: URL.createObjectURL(acceptedFiles[0]),
-    };
+    const imagesWithPreview = acceptedFiles.map((file, i) => ({
+      file,
+      isPrimary: i === 0,
+    }));
 
-    setPrimaryPhoto(imageFile);
+    setPhotos(imagesWithPreview);
+    setPrimaryPhoto(imagesWithPreview[0]);
   }, []);
 
   const acceptedFileTypes = {
@@ -538,7 +539,7 @@ export default function CreateHostelListingForm() {
           <div className="col-span-1 lg:col-span-2">
             {primaryPhoto != null ? (
               <ImageTile
-                previewUrl={primaryPhoto.preview}
+                file={primaryPhoto.file}
                 altText="primary hostel photo"
                 onCancel={() => setPrimaryPhoto(null)}
               />
