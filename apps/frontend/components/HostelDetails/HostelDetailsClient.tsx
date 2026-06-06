@@ -13,8 +13,7 @@ import {
   Share2,
   ShieldUserIcon,
 } from "lucide-react";
-import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { notFound, useParams } from "next/navigation";
 import { useQueryState, parseAsBoolean } from "nuqs";
 import { FaPersonWalking } from "react-icons/fa6";
@@ -59,7 +58,7 @@ export default function HostelDetailsClient() {
   }, [slug]);
 
   return (
-    <main className="max-w-7xl mx-auto py-20 min-h-screen sm:px-6 lg:px-8">
+    <main className="max-w-7xl mx-auto py-20 px-4 min-h-screen sm:px-6 lg:px-8">
       <div className="mb-4">{fromSearchPage && <BackToSearchPageButton />}</div>
       <div className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
@@ -81,7 +80,12 @@ export default function HostelDetailsClient() {
           <Button
             variant="ghost"
             className="flex items-center gap-2 font-bold hover:text-primary transition-colors"
-            onClick={() => posthog.capture("hostel_shared", { hostel_slug: slug, hostel_name: hostel.name })}
+            onClick={() =>
+              posthog.capture("hostel_shared", {
+                hostel_slug: slug,
+                hostel_name: hostel.name,
+              })
+            }
           >
             <Share2 />
             Share
@@ -89,7 +93,12 @@ export default function HostelDetailsClient() {
           <Button
             variant="ghost"
             className="flex items-center gap-2 font-bold text-on-surface-variant hover:text-secondary transition-colors"
-            onClick={() => posthog.capture("hostel_saved", { hostel_slug: slug, hostel_name: hostel.name })}
+            onClick={() =>
+              posthog.capture("hostel_saved", {
+                hostel_slug: slug,
+                hostel_name: hostel.name,
+              })
+            }
           >
             <Heart />
             Save
@@ -160,7 +169,13 @@ export default function HostelDetailsClient() {
                 size="xl"
                 variant="secondary"
                 className="w-full font-bold text-lg shadow-lg shadow-secondary/30"
-                onClick={() => posthog.capture("hostel_tour_requested", { hostel_slug: slug, hostel_name: hostel.name, hostel_price: hostel.estimatedPriceRange })}
+                onClick={() =>
+                  posthog.capture("hostel_tour_requested", {
+                    hostel_slug: slug,
+                    hostel_name: hostel.name,
+                    hostel_price: hostel.estimatedPriceRange,
+                  })
+                }
               >
                 Request a Tour
               </Button>
@@ -168,7 +183,12 @@ export default function HostelDetailsClient() {
                 size="xl"
                 variant="outline"
                 className="w-full py-4 rounded-xl font-bold text-lg transition-colors border border-outline-variant/50"
-                onClick={() => posthog.capture("hostel_contact_host_clicked", { hostel_slug: slug, hostel_name: hostel.name })}
+                onClick={() =>
+                  posthog.capture("hostel_contact_host_clicked", {
+                    hostel_slug: slug,
+                    hostel_name: hostel.name,
+                  })
+                }
               >
                 Contact Host
               </Button>
