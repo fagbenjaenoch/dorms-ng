@@ -21,3 +21,13 @@ tasks:
     cmds:
       - goose -dir internal/database/migrations sqlite3 {{.DB_URL}} up
     silent: true
+  rollback:
+    desc: Rollback the database
+    cmds:
+      - goose -dir internal/database/migrations sqlite3 {{.DB_URL}} down
+    silent: true
+  db-reset:
+    desc: Reset the database
+    cmds:
+      - goose -dir internal/database/migrations sqlite3 {{.DB_URL}} reset
+    silent: true
