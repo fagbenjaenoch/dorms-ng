@@ -20,13 +20,8 @@ import { useQueryState, parseAsBoolean } from "nuqs";
 import { FaPersonWalking } from "react-icons/fa6";
 import BackToSearchPageButton from "../BackToSearchPage";
 import { fromSearchPageParam } from "@/lib/utils";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselPrevious,
-  CarouselNext,
-} from "../ui/carousel";
+
+import ImageCarousel from "../ImageCarousel";
 
 export default function HostelDetailsClient() {
   const [fromSearchPage, _] = useQueryState(fromSearchPageParam, parseAsBoolean);
@@ -45,6 +40,12 @@ export default function HostelDetailsClient() {
 
   const { payload: hostel } = res;
   const photoUrls = hostel.photo_urls ? hostel.photo_urls.split(", ") : [];
+  const photoUrlObjects = useMemo(() => {
+    return photoUrls.map((url, index) => ({
+      url,
+      alt: `${hostel.name} - ${index + 1}`,
+    }));
+  }, [photoUrls, hostel.name]);
 
   const formattedPrice = useMoneyFormat(hostel.estimatedPriceRange);
 
@@ -97,23 +98,9 @@ export default function HostelDetailsClient() {
       </div>
 
       {photoUrls && (
-        <Carousel>
-          <CarouselContent className="w-fit mx-auto">
-            {photoUrls.map((url, index) => (
-              <CarouselItem key={index}>
-                <Image
-                  width={300}
-                  height={200}
-                  src={url}
-                  alt={`${hostel.name} - ${index + 1}`}
-                  className="object-cover rounded-xl my-4 shadow-xl"
-                />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
+        <div className="mb-6">
+          <ImageCarousel photos={photoUrlObjects} />
+        </div>
       )}
 
       <div className="flex flex-col lg:flex-row gap-12">
