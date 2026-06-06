@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+version: "3"
+
+vars:
+  DB_URL: internal/database/data.db
+
+tasks:
+  dev:
+    desc: Run the development server
+    cmds:
+      - air
+    silent: true
+  generate-sql:
+    desc: Generate SQLC bindings
+    cmds:
+      - sqlc generate
+    silent: true
+  migrate:
+    desc: Run database migrations
+    cmds:
+      - goose -dir internal/database/migrations sqlite3 {{.DB_URL}} up
+    silent: true
