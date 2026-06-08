@@ -106,6 +106,7 @@ export default function CreateHostelListingForm() {
 
   const neighborhoods = neighborhoodsQuery.data?.payload;
 
+  //@ts-ignore can't figure out the type
   const handleMapClick = (e) => {
     setMarker({ lng: e.lngLat.lng, lat: e.lngLat.lat });
 

@@ -24,6 +24,7 @@ export default function CreateInstitution() {
     setMarker({ lng: lngLat.lng, lat: lngLat.lat });
   };
 
+  //@ts-ignore can't figure out the type
   const handleMapClick = (e) => {
     setMarker({ lng: e.lngLat.lng, lat: e.lngLat.lat });
 

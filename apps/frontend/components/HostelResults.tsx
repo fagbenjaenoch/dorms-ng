@@ -5,7 +5,6 @@ import PropertyCard from "./ui/PropertyCard";
 import { fetchHostelsByArea } from "@/lib/api/hostel";
 import { APIResponse, Hostel } from "@/lib/dto";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import Link from "next/link";
 
 interface HostelResultProps {
   areaType: AreaTypeEnum;
@@ -41,14 +40,7 @@ export default function HostelResults({
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {hostels.map(
               (
-                {
-                  name,
-                  address,
-                  estimatedPriceRange,
-                  primary_photo_url,
-                  slug,
-                  isVerified,
-                },
+                { name, address, estimatedPriceRange, photo_urls, slug, isVerified },
                 i,
               ) => (
                 <PropertyCard
@@ -56,7 +48,7 @@ export default function HostelResults({
                   name={name}
                   location={address}
                   price={estimatedPriceRange}
-                  imageUrl={primary_photo_url}
+                  imageUrl={photo_urls?.[0]}
                   slug={slug}
                   isVerified={isVerified}
                 />

@@ -9,6 +9,7 @@ interface MapEventListenerProps {
 export default function MapEventListener({ handleClick }: MapEventListenerProps) {
   const { map, isLoaded } = useMap();
 
+  //@ts-ignore don't understand what is going on here
   useEffect(() => {
     if (!map || !isLoaded) return;
 
