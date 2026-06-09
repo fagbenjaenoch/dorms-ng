@@ -37,12 +37,14 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${dmSans.variable} antialiased selection:bg-primary selection:text-primary-foreground`}
       >
-        <QueryProvider>
-          <Suspense fallback={null}>
-            {children}
-            <Toaster />
-          </Suspense>
-        </QueryProvider>
+        <NuqsAdapter>
+          <QueryProvider>
+            <Suspense fallback={null}>
+              {children}
+              <Toaster />
+            </Suspense>
+          </QueryProvider>
+        </NuqsAdapter>
       </body>
     </html>
   );
