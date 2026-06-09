@@ -20,6 +20,11 @@ type Config struct {
 	Observability Observability `koanf:"observability" validate:"required"`
 	Auth          Auth          `koanf:"auth" validate:"required"`
 	R2            R2            `koanf:"r2" validate:"required"`
+	DB            DB            `koanf:"db" validate:"required"`
+}
+
+type DB struct {
+	URI string `koanf:"uri" validate:"required"`
 }
 
 type Primary struct {

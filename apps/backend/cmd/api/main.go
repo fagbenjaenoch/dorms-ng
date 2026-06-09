@@ -26,7 +26,7 @@ func main() {
 
 	logger := logger.New(cfg)
 
-	db, reg, err := database.New(&logger)
+	db, reg, err := database.New(cfg, &logger)
 	if err != nil {
 		logger.Err(err).Msg("failed to connect to database")
 		os.Exit(1)
