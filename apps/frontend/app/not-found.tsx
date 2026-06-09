@@ -1,5 +1,3 @@
-"use client";
-
 import DesktopNav from "@/components/DesktopNav";
 import MobileNav from "@/components/MobileNav";
 import { Button } from "@/components/ui/button";
@@ -22,12 +20,9 @@ export default function NotFound() {
           </div>
           <div className="space-y-6 max-w-2xl">
             <div className="space-y-2">
-              <h2 className="text-4xl md:text-6xl font-extrabold text-primary tracking-tight">
-                Page Not Found
-              </h2>
-              <p className="text-secondary text-xl font-semibold uppercase tracking-widest">
+              <h2 className="text-3xl md:text-5xl font-extrabold text-primary tracking-tight">
                 We couldn't find that link
-              </p>
+              </h2>
             </div>
             <p className="leading-relaxed">
               The page you're looking for might have been moved, deleted, or perhaps
