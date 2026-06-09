@@ -6,9 +6,9 @@ import (
 	pkgError "errors"
 	"fmt"
 	"net/http"
-	"os"
 	"strings"
 
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/config"
 	"github.com/go-playground/validator/v10"
 )
 
@@ -21,7 +21,8 @@ const (
 )
 
 func IsProduction() bool {
-	return os.Getenv("ENV") == "production"
+	config := config.GetGlobalConfig()
+	return config.Primary.Env == "production"
 }
 
 type ValidationError struct {
