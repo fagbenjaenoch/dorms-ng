@@ -30,3 +30,7 @@ tasks:
     desc: Reset the database
     cmds:
       - goose -dir internal/database/migrations sqlite3 {{.DB_URL}} reset
+  tidy:
+    desc: clean up go mod
+    cmds:
+      - go mod tidy
