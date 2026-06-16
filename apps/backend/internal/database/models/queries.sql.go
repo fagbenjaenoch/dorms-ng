@@ -11,18 +11,18 @@ import (
 )
 
 const checkHostelExists = `-- name: CheckHostelExists :one
-SELECT EXISTS(SELECT 1 FROM hostels WHERE LOWER(name) = ? LIMIT 1)
+SELECT EXISTS(SELECT 1 FROM hostels WHERE LOWER(name) = LOWER($1))
 `
 
-func (q *Queries) CheckHostelExists(ctx context.Context, name string) (int64, error) {
+func (q *Queries) CheckHostelExists(ctx context.Context, name string) (bool, error) {
 	row := q.db.QueryRowContext(ctx, checkHostelExists, name)
-	var column_1 int64
-	err := row.Scan(&column_1)
-	return column_1, err
+	var exists bool
+	err := row.Scan(&exists)
+	return exists, err
 }
 
 const checkInstitutionExists = `-- name: CheckInstitutionExists :one
-SELECT EXISTS(SELECT 1 FROM institutions WHERE LOWER(name) = ? AND LOWER(city) = ? LIMIT 1)
+SELECT EXISTS(SELECT 1 FROM institutions WHERE LOWER(name) = LOWER($1) AND LOWER(city) = LOWER($2))
 `
 
 type CheckInstitutionExistsParams struct {
@@ -30,15 +30,15 @@ type CheckInstitutionExistsParams struct {
 	City string `json:"city"`
 }
 
-func (q *Queries) CheckInstitutionExists(ctx context.Context, arg CheckInstitutionExistsParams) (int64, error) {
+func (q *Queries) CheckInstitutionExists(ctx context.Context, arg CheckInstitutionExistsParams) (bool, error) {
 	row := q.db.QueryRowContext(ctx, checkInstitutionExists, arg.Name, arg.City)
-	var column_1 int64
-	err := row.Scan(&column_1)
-	return column_1, err
+	var exists bool
+	err := row.Scan(&exists)
+	return exists, err
 }
 
 const checkNeighborhoodExists = `-- name: CheckNeighborhoodExists :one
-SELECT EXISTS(SELECT 1 FROM neighborhoods WHERE LOWER(name) = ? AND LOWER(city) = ? AND LOWER(institution) = ? LIMIT 1)
+SELECT EXISTS(SELECT 1 FROM neighborhoods WHERE LOWER(name) = LOWER($1) AND LOWER(city) = LOWER($2) AND LOWER(institution) = LOWER($3))
 `
 
 type CheckNeighborhoodExistsParams struct {
@@ -47,22 +47,22 @@ type CheckNeighborhoodExistsParams struct {
 	Institution string `json:"institution"`
 }
 
-func (q *Queries) CheckNeighborhoodExists(ctx context.Context, arg CheckNeighborhoodExistsParams) (int64, error) {
+func (q *Queries) CheckNeighborhoodExists(ctx context.Context, arg CheckNeighborhoodExistsParams) (bool, error) {
 	row := q.db.QueryRowContext(ctx, checkNeighborhoodExists, arg.Name, arg.City, arg.Institution)
-	var column_1 int64
-	err := row.Scan(&column_1)
-	return column_1, err
+	var exists bool
+	err := row.Scan(&exists)
+	return exists, err
 }
 
 const checkUserExists = `-- name: CheckUserExists :one
-SELECT EXISTS(SELECT 1 FROM users WHERE email = ? LIMIT 1)
+SELECT EXISTS(SELECT 1 FROM users WHERE email = $1)
 `
 
-func (q *Queries) CheckUserExists(ctx context.Context, email string) (int64, error) {
+func (q *Queries) CheckUserExists(ctx context.Context, email string) (bool, error) {
 	row := q.db.QueryRowContext(ctx, checkUserExists, email)
-	var column_1 int64
-	err := row.Scan(&column_1)
-	return column_1, err
+	var exists bool
+	err := row.Scan(&exists)
+	return exists, err
 }
 
 const createHostel = `-- name: CreateHostel :one
@@ -71,7 +71,9 @@ INSERT INTO hostels (
     google_place_id, estimated_price_range, neighborhood, neighborhood_id,
     distance_to_gate_km, is_verified_by_admin, photo_urls, slug
 ) VALUES (
-    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+    $1, $2, $3, $4, $5, $6, $7,
+    $8, $9, $10, $11,
+    $12, $13, $14, $15
 )
 RETURNING id, name, address, description, city, neighborhood, neighborhood_id, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, photo_urls, slug, created_at, updated_at
 `
@@ -139,7 +141,7 @@ const createInstitution = `-- name: CreateInstitution :one
 INSERT INTO institutions (
     id, name, acronym, latitude, longitude, city, slug, description
 ) VALUES (
-    ?, ?, ?, ?, ?, ?, ?, ?
+    $1, $2, $3, $4, $5, $6, $7, $8
 )
 RETURNING id, name, acronym, description, latitude, longitude, slug, created_at, updated_at, city
 `
@@ -186,7 +188,7 @@ const createNeighborhood = `-- name: CreateNeighborhood :one
 INSERT INTO neighborhoods (
     id, institution, institution_id, name, city, avg_price_self_con, avg_price_1bed, power_rating_insight
 ) VALUES (
-    ?, ?, ?, ?, ?, ?, ?, ?
+    $1, $2, $3, $4, $5, $6, $7, $8
 )
 RETURNING id, name, institution, institution_id, city, avg_price_self_con, avg_price_1bed, power_rating_insight
 `
@@ -197,8 +199,8 @@ type CreateNeighborhoodParams struct {
 	InstitutionID      string         `json:"institution_id"`
 	Name               string         `json:"name"`
 	City               string         `json:"city"`
-	AvgPriceSelfCon    sql.NullInt64  `json:"avg_price_self_con"`
-	AvgPrice1bed       sql.NullInt64  `json:"avg_price_1bed"`
+	AvgPriceSelfCon    sql.NullInt32  `json:"avg_price_self_con"`
+	AvgPrice1bed       sql.NullInt32  `json:"avg_price_1bed"`
 	PowerRatingInsight sql.NullString `json:"power_rating_insight"`
 }
 
@@ -229,8 +231,8 @@ func (q *Queries) CreateNeighborhood(ctx context.Context, arg CreateNeighborhood
 
 const createPlaceSearchEntry = `-- name: CreatePlaceSearchEntry :one
 INSERT INTO place_search (place_id, place_type, name)
-VALUES (?, ?, ?)
-RETURNING place_id, place_type, name
+VALUES ($1, $2, $3)
+RETURNING place_id, place_type, name, created_at
 `
 
 type CreatePlaceSearchEntryParams struct {
@@ -242,23 +244,28 @@ type CreatePlaceSearchEntryParams struct {
 func (q *Queries) CreatePlaceSearchEntry(ctx context.Context, arg CreatePlaceSearchEntryParams) (PlaceSearch, error) {
 	row := q.db.QueryRowContext(ctx, createPlaceSearchEntry, arg.PlaceID, arg.PlaceType, arg.Name)
 	var i PlaceSearch
-	err := row.Scan(&i.PlaceID, &i.PlaceType, &i.Name)
+	err := row.Scan(
+		&i.PlaceID,
+		&i.PlaceType,
+		&i.Name,
+		&i.CreatedAt,
+	)
 	return i, err
 }
 
 const createSearchEntry = `-- name: CreateSearchEntry :one
 INSERT INTO global_search (entity_id, entity_type, entity, search_text, slug, address)
-VALUES (?, ?, ?, ?, ?, ?)
-RETURNING entity_id, entity_type, entity, slug, address, search_text
+VALUES ($1, $2, $3, $4, $5, $6)
+RETURNING entity_id, entity_type, entity, slug, address, search_text, created_at
 `
 
 type CreateSearchEntryParams struct {
-	EntityID   string `json:"entity_id"`
-	EntityType string `json:"entity_type"`
-	Entity     string `json:"entity"`
-	SearchText string `json:"search_text"`
-	Slug       string `json:"slug"`
-	Address    string `json:"address"`
+	EntityID   string         `json:"entity_id"`
+	EntityType string         `json:"entity_type"`
+	Entity     string         `json:"entity"`
+	SearchText sql.NullString `json:"search_text"`
+	Slug       string         `json:"slug"`
+	Address    sql.NullString `json:"address"`
 }
 
 func (q *Queries) CreateSearchEntry(ctx context.Context, arg CreateSearchEntryParams) (GlobalSearch, error) {
@@ -278,6 +285,7 @@ func (q *Queries) CreateSearchEntry(ctx context.Context, arg CreateSearchEntryPa
 		&i.Slug,
 		&i.Address,
 		&i.SearchText,
+		&i.CreatedAt,
 	)
 	return i, err
 }
@@ -286,7 +294,7 @@ const createUser = `-- name: CreateUser :one
 INSERT INTO users (
     id, full_name, email, role
 ) VALUES (
-    ?, ?, ?, ?
+    $1, $2, $3, $4
 )
 RETURNING id, email, full_name, role, created_at, updated_at
 `
@@ -321,7 +329,7 @@ const createUserCredentials = `-- name: CreateUserCredentials :one
 INSERT INTO user_credentials (
     id, user_id, provider, provider_id, password_hash
 ) VALUES (
-    ?, ?, ?, ?, ?
+    $1, $2, $3, $4, $5
 )
 RETURNING id, user_id, provider, provider_id, password_hash, created_at, updated_at
 `
@@ -430,7 +438,7 @@ func (q *Queries) GetAllNeighborhoods(ctx context.Context) ([]Neighborhood, erro
 }
 
 const getHostel = `-- name: GetHostel :one
-SELECT id, name, address, description, city, neighborhood, neighborhood_id, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, photo_urls, slug, created_at, updated_at FROM hostels WHERE id = ? LIMIT 1
+SELECT id, name, address, description, city, neighborhood, neighborhood_id, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, photo_urls, slug, created_at, updated_at FROM hostels WHERE id = $1 LIMIT 1
 `
 
 func (q *Queries) GetHostel(ctx context.Context, id string) (Hostel, error) {
@@ -459,7 +467,7 @@ func (q *Queries) GetHostel(ctx context.Context, id string) (Hostel, error) {
 }
 
 const getHostelBySlug = `-- name: GetHostelBySlug :one
-SELECT id, name, address, description, city, neighborhood, neighborhood_id, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, photo_urls, slug, created_at, updated_at FROM hostels WHERE slug = ? LIMIT 1
+SELECT id, name, address, description, city, neighborhood, neighborhood_id, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, photo_urls, slug, created_at, updated_at FROM hostels WHERE slug = $1 LIMIT 1
 `
 
 func (q *Queries) GetHostelBySlug(ctx context.Context, slug string) (Hostel, error) {
@@ -488,7 +496,7 @@ func (q *Queries) GetHostelBySlug(ctx context.Context, slug string) (Hostel, err
 }
 
 const getHostelsByCity = `-- name: GetHostelsByCity :many
-SELECT id, name, address, description, city, neighborhood, neighborhood_id, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, photo_urls, slug, created_at, updated_at FROM hostels WHERE city = ? ORDER BY name
+SELECT id, name, address, description, city, neighborhood, neighborhood_id, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, photo_urls, slug, created_at, updated_at FROM hostels WHERE city = $1 ORDER BY name
 `
 
 func (q *Queries) GetHostelsByCity(ctx context.Context, city sql.NullString) ([]Hostel, error) {
@@ -533,7 +541,7 @@ func (q *Queries) GetHostelsByCity(ctx context.Context, city sql.NullString) ([]
 }
 
 const getHostelsByInstitution = `-- name: GetHostelsByInstitution :many
-SELECT hostels.id, hostels.name, hostels.address, hostels.description, hostels.city, hostels.neighborhood, hostels.neighborhood_id, hostels.latitude, hostels.longitude, hostels.google_place_id, hostels.estimated_price_range, hostels.distance_to_gate_km, hostels.is_verified_by_admin, hostels.photo_urls, hostels.slug, hostels.created_at, hostels.updated_at FROM hostels INNER JOIN neighborhoods ON hostels.neighborhood_id = neighborhoods.id WHERE neighborhoods.institution_id = ?
+SELECT hostels.id, hostels.name, hostels.address, hostels.description, hostels.city, hostels.neighborhood, hostels.neighborhood_id, hostels.latitude, hostels.longitude, hostels.google_place_id, hostels.estimated_price_range, hostels.distance_to_gate_km, hostels.is_verified_by_admin, hostels.photo_urls, hostels.slug, hostels.created_at, hostels.updated_at FROM hostels INNER JOIN neighborhoods ON hostels.neighborhood_id = neighborhoods.id WHERE neighborhoods.institution_id = $1
 `
 
 func (q *Queries) GetHostelsByInstitution(ctx context.Context, institutionID string) ([]Hostel, error) {
@@ -578,7 +586,7 @@ func (q *Queries) GetHostelsByInstitution(ctx context.Context, institutionID str
 }
 
 const getHostelsByNeighborhood = `-- name: GetHostelsByNeighborhood :many
-SELECT id, name, address, description, city, neighborhood, neighborhood_id, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, photo_urls, slug, created_at, updated_at FROM hostels WHERE neighborhood_id = ? ORDER BY name
+SELECT id, name, address, description, city, neighborhood, neighborhood_id, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, photo_urls, slug, created_at, updated_at FROM hostels WHERE neighborhood_id = $1 ORDER BY name
 `
 
 func (q *Queries) GetHostelsByNeighborhood(ctx context.Context, neighborhoodID sql.NullString) ([]Hostel, error) {
@@ -623,7 +631,7 @@ func (q *Queries) GetHostelsByNeighborhood(ctx context.Context, neighborhoodID s
 }
 
 const getInstitutionById = `-- name: GetInstitutionById :one
-SELECT id, name, acronym, description, latitude, longitude, slug, created_at, updated_at, city FROM institutions WHERE id = ? LIMIT 1
+SELECT id, name, acronym, description, latitude, longitude, slug, created_at, updated_at, city FROM institutions WHERE id = $1 LIMIT 1
 `
 
 func (q *Queries) GetInstitutionById(ctx context.Context, id string) (Institution, error) {
@@ -645,7 +653,7 @@ func (q *Queries) GetInstitutionById(ctx context.Context, id string) (Institutio
 }
 
 const getInstitutionBySlug = `-- name: GetInstitutionBySlug :one
-SELECT id, name, acronym, description, latitude, longitude, slug, created_at, updated_at, city FROM institutions WHERE slug = ? LIMIT 1
+SELECT id, name, acronym, description, latitude, longitude, slug, created_at, updated_at, city FROM institutions WHERE slug = $1 LIMIT 1
 `
 
 func (q *Queries) GetInstitutionBySlug(ctx context.Context, slug string) (Institution, error) {
@@ -667,7 +675,7 @@ func (q *Queries) GetInstitutionBySlug(ctx context.Context, slug string) (Instit
 }
 
 const getNeighborhoodById = `-- name: GetNeighborhoodById :one
-SELECT id, name, institution, institution_id, city, avg_price_self_con, avg_price_1bed, power_rating_insight FROM neighborhoods WHERE id = ? LIMIT 1
+SELECT id, name, institution, institution_id, city, avg_price_self_con, avg_price_1bed, power_rating_insight FROM neighborhoods WHERE id = $1 LIMIT 1
 `
 
 func (q *Queries) GetNeighborhoodById(ctx context.Context, id string) (Neighborhood, error) {
@@ -687,7 +695,7 @@ func (q *Queries) GetNeighborhoodById(ctx context.Context, id string) (Neighborh
 }
 
 const getNeighborhoodsByInstitution = `-- name: GetNeighborhoodsByInstitution :many
-SELECT id, name, institution, institution_id, city, avg_price_self_con, avg_price_1bed, power_rating_insight FROM neighborhoods WHERE institution_id = ? ORDER BY name
+SELECT id, name, institution, institution_id, city, avg_price_self_con, avg_price_1bed, power_rating_insight FROM neighborhoods WHERE institution_id = $1 ORDER BY name
 `
 
 func (q *Queries) GetNeighborhoodsByInstitution(ctx context.Context, institutionID string) ([]Neighborhood, error) {
@@ -723,18 +731,29 @@ func (q *Queries) GetNeighborhoodsByInstitution(ctx context.Context, institution
 }
 
 const getPlaceSearchEntry = `-- name: GetPlaceSearchEntry :many
-SELECT place_id, place_type, name FROM place_search WHERE name MATCH ? ORDER BY rank LIMIT 5
+SELECT place_id, place_type, name
+FROM place_search
+WHERE name ILIKE '%' || $1 || '%'
+   OR similarity(name, $1) > 0.3
+ORDER BY similarity(name, $1) DESC
+LIMIT 5
 `
 
-func (q *Queries) GetPlaceSearchEntry(ctx context.Context, name string) ([]PlaceSearch, error) {
+type GetPlaceSearchEntryRow struct {
+	PlaceID   string `json:"place_id"`
+	PlaceType string `json:"place_type"`
+	Name      string `json:"name"`
+}
+
+func (q *Queries) GetPlaceSearchEntry(ctx context.Context, name sql.NullString) ([]GetPlaceSearchEntryRow, error) {
 	rows, err := q.db.QueryContext(ctx, getPlaceSearchEntry, name)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []PlaceSearch{}
+	items := []GetPlaceSearchEntryRow{}
 	for rows.Next() {
-		var i PlaceSearch
+		var i GetPlaceSearchEntryRow
 		if err := rows.Scan(&i.PlaceID, &i.PlaceType, &i.Name); err != nil {
 			return nil, err
 		}
@@ -750,18 +769,23 @@ func (q *Queries) GetPlaceSearchEntry(ctx context.Context, name string) ([]Place
 }
 
 const getSearchEntry = `-- name: GetSearchEntry :many
-SELECT entity_id, entity_type, entity, slug, address FROM global_search WHERE search_text MATCH ? ORDER BY rank LIMIT 5
+SELECT entity_id, entity_type, entity, slug, address
+FROM global_search
+WHERE search_text ILIKE '%' || $1 || '%'
+   OR similarity(search_text, $1) > 0.3
+ORDER BY similarity(search_text, $1) DESC
+LIMIT 5
 `
 
 type GetSearchEntryRow struct {
-	EntityID   string `json:"entity_id"`
-	EntityType string `json:"entity_type"`
-	Entity     string `json:"entity"`
-	Slug       string `json:"slug"`
-	Address    string `json:"address"`
+	EntityID   string         `json:"entity_id"`
+	EntityType string         `json:"entity_type"`
+	Entity     string         `json:"entity"`
+	Slug       string         `json:"slug"`
+	Address    sql.NullString `json:"address"`
 }
 
-func (q *Queries) GetSearchEntry(ctx context.Context, searchText string) ([]GetSearchEntryRow, error) {
+func (q *Queries) GetSearchEntry(ctx context.Context, searchText sql.NullString) ([]GetSearchEntryRow, error) {
 	rows, err := q.db.QueryContext(ctx, getSearchEntry, searchText)
 	if err != nil {
 		return nil, err
@@ -791,7 +815,7 @@ func (q *Queries) GetSearchEntry(ctx context.Context, searchText string) ([]GetS
 }
 
 const getUserByEmail = `-- name: GetUserByEmail :one
-SELECT id, email, full_name, role, created_at, updated_at FROM users WHERE email = ? LIMIT 1
+SELECT id, email, full_name, role, created_at, updated_at FROM users WHERE email = $1 LIMIT 1
 `
 
 func (q *Queries) GetUserByEmail(ctx context.Context, email string) (User, error) {
@@ -809,7 +833,7 @@ func (q *Queries) GetUserByEmail(ctx context.Context, email string) (User, error
 }
 
 const getUserCredentialByProviderId = `-- name: GetUserCredentialByProviderId :one
-SELECT id, user_id, provider, provider_id, password_hash, created_at, updated_at FROM user_credentials WHERE provider_id = ? LIMIT 1
+SELECT id, user_id, provider, provider_id, password_hash, created_at, updated_at FROM user_credentials WHERE provider_id = $1 LIMIT 1
 `
 
 func (q *Queries) GetUserCredentialByProviderId(ctx context.Context, providerID string) (UserCredential, error) {

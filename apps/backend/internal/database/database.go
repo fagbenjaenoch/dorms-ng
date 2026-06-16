@@ -6,7 +6,7 @@ import (
 
 	"github.com/XSAM/otelsql"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/config"
-	_ "github.com/mattn/go-sqlite3"
+	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/pressly/goose/v3"
 	"github.com/rs/zerolog"
 	"go.opentelemetry.io/otel/metric"
@@ -17,9 +17,9 @@ import (
 var embedMigration embed.FS
 
 func new(config *config.Config, logger *zerolog.Logger) (*sql.DB, metric.Registration, error) {
-	db, err := otelsql.Open("sqlite3", config.DB.URI, otelsql.WithAttributes(
-		semconv.DBSystemNameSQLite,
-		semconv.DBNamespace("data.db"),
+	db, err := otelsql.Open("pgx", config.DB.URI, otelsql.WithAttributes(
+		semconv.DBSystemNamePostgreSQL,
+		semconv.DBNamespace("dorms-ng"),
 	),
 	)
 	if err != nil {
@@ -27,8 +27,8 @@ func new(config *config.Config, logger *zerolog.Logger) (*sql.DB, metric.Registr
 	}
 
 	reg, err := otelsql.RegisterDBStatsMetrics(db, otelsql.WithAttributes(
-		semconv.DBSystemNameSQLite,
-		semconv.DBNamespace("data.db"),
+		semconv.DBSystemNamePostgreSQL,
+		semconv.DBNamespace("dorms-ng"),
 	))
 	if err != nil {
 		return nil, nil, err
@@ -45,7 +45,7 @@ func new(config *config.Config, logger *zerolog.Logger) (*sql.DB, metric.Registr
 func Initialize(config *config.Config, logger *zerolog.Logger) (*sql.DB, metric.Registration, error) {
 	goose.SetBaseFS(embedMigration)
 
-	if err := goose.SetDialect("sqlite"); err != nil {
+	if err := goose.SetDialect("pgx"); err != nil {
 		panic(err)
 	}
 
