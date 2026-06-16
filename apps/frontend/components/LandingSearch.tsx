@@ -77,7 +77,7 @@ export default function LandingSearch() {
               </div>
             </div>
             <ChevronRight
-              className="text-primary ml-auto group-hover:translate-x-1 transition-all"
+              className="shrink-0 text-primary ml-auto group-hover:translate-x-1 transition-all"
               size={15}
             />
           </Link>
