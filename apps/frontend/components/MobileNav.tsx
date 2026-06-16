@@ -15,7 +15,7 @@ export default function MobileNav() {
     setNavActive((prev) => !prev);
   };
   return (
-    <div className="flex lg:hidden p-8 justify-between">
+    <div className="flex lg:hidden p-4 lg:p-8 justify-between">
       <Link href="/">
         <BrandIcon />
       </Link>
