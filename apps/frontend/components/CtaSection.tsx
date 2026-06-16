@@ -15,11 +15,11 @@ export default function CtaSection() {
               Ready to Secure Your Dream Hostel?
             </h2>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href="/search">
+              <Link href="/search" className="block w-full sm:w-auto">
                 <Button
                   variant="secondary"
                   size="xl"
-                  className="w-full sm:w-auto bg-secondary text-primary-foreground rounded-2xl font-black text-lg shadow-xl hover:bg-secondary-dim transition-all"
+                  className="w-full rounded-2xl font-black text-lg shadow-xl transition-all"
                 >
                   Find a Hostel Now
                 </Button>
