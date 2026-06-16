@@ -31,14 +31,14 @@ func NewInstitutionRepository(db *sql.DB, logger *zerolog.Logger) *InstitutionRe
 func (ir *InstitutionRepository) CheckInstitutionExists(ctx context.Context, institution dto.CreateInstitution) (bool, error) {
 
 	institutionExists, err := ir.BaseRepository.Queries.CheckInstitutionExists(ctx, models.CheckInstitutionExistsParams{
-		Name: strings.ToLower(institution.Name),
-		City: strings.ToLower(institution.City),
+		Name: institution.Name,
+		City: institution.City,
 	})
 	if err != nil {
 		return false, err
 	}
 
-	return institutionExists != 0, nil
+	return institutionExists, nil
 }
 
 func (ir *InstitutionRepository) CreateInstitution(ctx context.Context, institution dto.CreateInstitution) (*models.Institution, error) {
@@ -69,9 +69,9 @@ func (ir *InstitutionRepository) CreateInstitution(ctx context.Context, institut
 		EntityID:   ci.ID,
 		EntityType: "institution",
 		Entity:     ci.Name,
-		SearchText: fmt.Sprintf("%s, %s, %s", ci.Name, ci.City, ci.Acronym.String),
+		SearchText: sql.NullString{String: fmt.Sprintf("%s, %s, %s", ci.Name, ci.City, ci.Acronym.String), Valid: true},
 		Slug:       ci.Slug,
-		Address:    ci.City,
+		Address:    sql.NullString{String: ci.City, Valid: true},
 	}
 
 	_, err = qtx.CreateSearchEntry(ctx, searchEntry)

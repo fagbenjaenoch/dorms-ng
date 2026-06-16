@@ -31,7 +31,7 @@ func (ur *UserRepository) CheckUserExists(ctx context.Context, email string) (bo
 		return false, err
 	}
 
-	return exists != 0, nil
+	return exists, nil
 }
 
 func (ur *UserRepository) CreateUserWithPassword(ctx context.Context, user dto.CreateUserWithPassword) (*models.User, error) {
