@@ -10,12 +10,13 @@ import (
 )
 
 type GlobalSearch struct {
-	EntityID   string `json:"entity_id"`
-	EntityType string `json:"entity_type"`
-	Entity     string `json:"entity"`
-	Slug       string `json:"slug"`
-	Address    string `json:"address"`
-	SearchText string `json:"search_text"`
+	EntityID   string         `json:"entity_id"`
+	EntityType string         `json:"entity_type"`
+	Entity     string         `json:"entity"`
+	Slug       string         `json:"slug"`
+	Address    sql.NullString `json:"address"`
+	SearchText sql.NullString `json:"search_text"`
+	CreatedAt  time.Time      `json:"created_at"`
 }
 
 type Hostel struct {
@@ -57,15 +58,16 @@ type Neighborhood struct {
 	Institution        string         `json:"institution"`
 	InstitutionID      string         `json:"institution_id"`
 	City               string         `json:"city"`
-	AvgPriceSelfCon    sql.NullInt64  `json:"avg_price_self_con"`
-	AvgPrice1bed       sql.NullInt64  `json:"avg_price_1bed"`
+	AvgPriceSelfCon    sql.NullInt32  `json:"avg_price_self_con"`
+	AvgPrice1bed       sql.NullInt32  `json:"avg_price_1bed"`
 	PowerRatingInsight sql.NullString `json:"power_rating_insight"`
 }
 
 type PlaceSearch struct {
-	PlaceID   string `json:"place_id"`
-	PlaceType string `json:"place_type"`
-	Name      string `json:"name"`
+	PlaceID   string    `json:"place_id"`
+	PlaceType string    `json:"place_type"`
+	Name      string    `json:"name"`
+	CreatedAt time.Time `json:"created_at"`
 }
 
 type User struct {
