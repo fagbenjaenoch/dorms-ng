@@ -33,11 +33,21 @@ func (ss *SearchService) Search(ctx context.Context, searchQuery string) (dto.St
 		}, err
 	}
 
+	searchResults := make([]dto.SearchResult, len(*res))
+
+	for i, entry := range *res {
+		searchResults[i].EntityID = entry.EntityID
+		searchResults[i].EntityType = entry.EntityType
+		searchResults[i].Entity = entry.Entity
+		searchResults[i].Slug = entry.Slug
+		searchResults[i].Address = entry.Address.String
+	}
+
 	return dto.StructuredResponse{
 		Success: true,
 		Status:  http.StatusOK,
 		Message: "successfully searched query",
-		Payload: res,
+		Payload: searchResults,
 	}, nil
 }
 

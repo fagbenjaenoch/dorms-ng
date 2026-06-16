@@ -34,7 +34,7 @@ func (hr *HostelRepository) CheckHostelExists(ctx context.Context, name string) 
 	if err != nil {
 		return false, err
 	}
-	return hostelExists != 0, nil
+	return hostelExists, nil
 }
 
 func (hr *HostelRepository) CreateHostel(ctx context.Context, hostel dto.CreateHostel) (*models.Hostel, error) {
@@ -72,9 +72,9 @@ func (hr *HostelRepository) CreateHostel(ctx context.Context, hostel dto.CreateH
 		EntityID:   ch.ID,
 		EntityType: "hostel",
 		Entity:     ch.Name,
-		SearchText: fmt.Sprintf("%s, %s, %s", h.Name, h.Address.String, h.City.String),
+		SearchText: sql.NullString{String: fmt.Sprintf("%s, %s, %s", h.Name, h.Address.String, h.City.String), Valid: true},
 		Slug:       h.Slug,
-		Address:    ch.Address.String,
+		Address:    sql.NullString{String: ch.Address.String, Valid: true},
 	}
 
 	_, err = qtx.CreateSearchEntry(ctx, searchEntry)

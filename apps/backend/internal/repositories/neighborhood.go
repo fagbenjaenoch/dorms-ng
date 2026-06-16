@@ -3,7 +3,6 @@ package repositories
 import (
 	"context"
 	"database/sql"
-	"strings"
 
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/database/models"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
@@ -31,15 +30,15 @@ func (nr *NeighborhoodRepository) CheckNeighborhoodExists(ctx context.Context, n
 	combinedName := utils.NormalizeNeighborhoodName(neighborhood)
 
 	neighborhoodExists, err := nr.BaseRepository.Queries.CheckNeighborhoodExists(ctx, models.CheckNeighborhoodExistsParams{
-		Name:        strings.ToLower(combinedName),
-		City:        strings.ToLower(neighborhood.City),
-		Institution: strings.ToLower(neighborhood.Institution),
+		Name:        combinedName,
+		City:        neighborhood.City,
+		Institution: neighborhood.Institution,
 	})
 	if err != nil {
 		return false, err
 	}
 
-	return neighborhoodExists != 0, nil
+	return neighborhoodExists, nil
 }
 
 func (nr *NeighborhoodRepository) CreateNeighborhood(ctx context.Context, neighborhood dto.CreateNeighborhood) (*models.Neighborhood, error) {
@@ -71,8 +70,8 @@ func (nr *NeighborhoodRepository) CreateNeighborhood(ctx context.Context, neighb
 		EntityID:   cn.ID,
 		Entity:     cn.Name,
 		EntityType: "neighborhood",
-		SearchText: combinedName,
-		Address:    address,
+		SearchText: sql.NullString{String: combinedName, Valid: true},
+		Address:    sql.NullString{String: address, Valid: true},
 	}
 
 	nr.Logger.Debug().Str("institution", cn.Institution).Msg("creating neighborhood search entry")
