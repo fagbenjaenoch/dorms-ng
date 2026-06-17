@@ -41,8 +41,11 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${dmSans.variable} antialiased selection:bg-primary selection:text-primary-foreground`}
       >
-        <PostHogProvider clientOptions={{ api_host: "/ingest" }} bootstrapFlags>
-          <PostHogPageView />
+        <PostHogProvider
+          apiKey={process.env.NEXT_PUBLIC_POSTHOG_KEY!}
+          clientOptions={{ api_host: "/ingest" }}
+          bootstrapFlags
+        >
           <NuqsAdapter>
             <QueryProvider>
               <Suspense fallback={null}>
