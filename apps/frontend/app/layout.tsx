@@ -44,7 +44,6 @@ export default function RootLayout({
         <PostHogProvider
           apiKey={process.env.NEXT_PUBLIC_POSTHOG_KEY!}
           clientOptions={{ api_host: "/ingest" }}
-          bootstrapFlags
         >
           <NuqsAdapter>
             <QueryProvider>
