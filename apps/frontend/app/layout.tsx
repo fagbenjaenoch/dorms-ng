@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/sonner";
 import QueryProvider from "./QueryProvider";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { Suspense } from "react";
+import { PostHogPageView, PostHogProvider } from "@posthog/next";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -40,14 +41,17 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${dmSans.variable} antialiased selection:bg-primary selection:text-primary-foreground`}
       >
-        <NuqsAdapter>
-          <QueryProvider>
-            <Suspense fallback={null}>
-              {children}
-              <Toaster />
-            </Suspense>
-          </QueryProvider>
-        </NuqsAdapter>
+        <PostHogProvider clientOptions={{ api_host: "/ingest" }} bootstrapFlags>
+          <PostHogPageView />
+          <NuqsAdapter>
+            <QueryProvider>
+              <Suspense fallback={null}>
+                {children}
+                <Toaster />
+              </Suspense>
+            </QueryProvider>
+          </NuqsAdapter>
+        </PostHogProvider>
       </body>
     </html>
   );
