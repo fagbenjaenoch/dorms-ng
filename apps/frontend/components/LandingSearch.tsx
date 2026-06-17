@@ -42,7 +42,8 @@ export default function LandingSearch() {
 
   const renderDropdown = () => {
     if (!showDropdown && !query.data) return null;
-    if (showDropdown && !query.data) return <LandingSearchDropdown />;
+    if (showDropdown && !query.data && !query.isFetching)
+      return <LandingSearchDropdown />;
     if (!query.data?.payload?.length)
       return (
         <div className="absolute z-50 top-full mt-3 left-0 w-full bg-primary-foreground shadow-lg ring-1 ring-gray-500/5 p-4 rounded-xl text-muted-foreground">
