@@ -72,7 +72,7 @@ export default function HostelDetailsClient() {
             )}
           </h1>
           <p className="text-lg flex items-center gap-1 mt-2 font-medium text-muted-foreground">
-            <MapPin className="text-primary" size={15} />
+            <MapPin className="text-primary shrink-0" size={15} />
             {hostel.address}
           </p>
         </div>
