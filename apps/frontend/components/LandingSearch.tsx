@@ -44,7 +44,7 @@ export default function LandingSearch() {
     if (!showDropdown && !query.data) return null;
     if (showDropdown && !query.data && !query.isFetching)
       return <LandingSearchDropdown />;
-    if (!query.data?.payload?.length)
+    if (!query.data?.payload?.length && !query.isFetching)
       return (
         <div className="absolute z-50 top-full mt-3 left-0 w-full bg-primary-foreground shadow-lg ring-1 ring-gray-500/5 p-4 rounded-xl text-muted-foreground">
           No matches found
@@ -52,7 +52,7 @@ export default function LandingSearch() {
       );
     return (
       <div className="absolute z-50 top-full mt-3 left-0 w-full flex flex-col gap-2 bg-primary-foreground shadow-lg ring-1 ring-gray-500/5 p-2 rounded-xl">
-        {query.data.payload.map((searchResult) => (
+        {query?.data?.payload.map((searchResult) => (
           <Link
             className="group cursor-pointer hover:bg-gray-500/10 p-4 rounded-md flex items-center gap-2"
             href={
