@@ -34,26 +34,26 @@ export default function InstitutionDetailsClient() {
       <section className="relative px-8 py-12 pb-32 max-w-7xl mx-auto overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-7 z-10">
-            <div className="inline-flex items-center uppercase gap-2 px-3 py-1 bg-tertiary text-amber-800 rounded-full text-xs font-black tracking-widest mb-6">
+            <div className="inline-flex items-center uppercase gap-2 px-2 lg:px-3 py-1 bg-tertiary text-amber-800 rounded-full text-xs font-black tracking-widest mb-6">
               <GraduationCap size={14} />
               Top Tier Institution
             </div>
-            <h1 className="text-4xl md:text-5xl font-extrabold tracking-tighter leading-none mb-4">
+            <h1 className="text-3xl md:text-5xl font-extrabold tracking-tighter leading-none mb-4">
               {institution?.name}
             </h1>
-            <p className="text-2xl font-bold text-muted-foreground mb-8 tracking-tight">
+            <p className="text-xl lg:text-2xl font-bold text-muted-foreground mb-8 tracking-tight">
               {institution?.acronym} • {institution?.city}
             </p>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-10">
-              <div className="bg-muted-foreground/10 p-6 rounded-[2rem] transition-colors duration-300">
+              <div className="bg-muted-foreground/10 p-3 lg:p-6 rounded-[2rem] transition-colors duration-300">
                 <p className="text-3xl font-bold text-primary">124+</p>
                 <p className="text-sm font-medium">Affiliated Hostels</p>
               </div>
-              <div className="bg-muted-foreground/10 p-6 rounded-[2rem] transition-colors duration-300">
+              <div className="bg-muted-foreground/10 p-3 lg:p-6 rounded-[2rem] transition-colors duration-300">
                 <p className="text-3xl font-bold text-secondary">55k+</p>
                 <p className="text-sm font-medium">Student Population</p>
               </div>
-              <div className="bg-muted-foreground/10 p-6 rounded-[2rem] transition-colors duration-300">
+              <div className="bg-muted-foreground/10 p-3 lg:p-6 rounded-[2rem] transition-colors duration-300">
                 <p className="text-3xl font-bold">4.8</p>
                 <p className="text-sm font-medium">Safety Rating</p>
               </div>
