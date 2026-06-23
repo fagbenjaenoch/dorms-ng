@@ -30,27 +30,27 @@ export default function Footer() {
   return (
     <footer className="bg-primary text-white pt-10 md:pt-20 pb-10">
       <div className="max-w-7xl mx-auto px-8">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-12 mb-16">
           <div className="md:col-span-4">
             <Link href="/">
-              <BrandIcon className="text-2xl mb-6 font-black" />
+              <BrandIcon className="text-2xl mb-6 font-bold" />
             </Link>
-            <p className="text-primary-light/50 text-sm leading-relaxed max-w-xs">
+            <p className="text-primary-light/50 text-xs md:text-sm leading-relaxed max-w-xs">
               Empowering Nigerian students with seamless access to secure, verified,
               and affordable housing solutions nationwide.
             </p>
           </div>
-          <div className="md:col-span-8 grid grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="text-xs md:text-sm md:col-span-8 grid grid-cols-2 lg:grid-cols-3 gap-8">
             {Object.entries(footerData).map(([section, items]) => (
               <div key={section}>
-                <h4 className="text-xs font-black uppercase tracking-widest text-orange-500 mb-6">
+                <h4 className="font-black uppercase tracking-widest text-orange-500 mb-3 md:mb-6">
                   {section}
                 </h4>
-                <ul className="space-y-4">
+                <ul className="space-y-2 md:space-y-4">
                   {items.map((item) => (
                     <li key={item.title}>
                       <Link
-                        className="text-sm text-primary-light/50 hover:text-white transition-colors duration-200"
+                        className="text-primary-light/50 hover:text-white transition-colors duration-200"
                         href={item.href}
                       >
                         {item.title}
@@ -63,7 +63,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-primary-light/50 text-[10px] font-medium tracking-wider uppercase">
+          <p className="text-primary-light/50 text-xs font-medium tracking-wider uppercase">
             © {getCurrentYear()} Hostel.ng. All rights reserved. Built for Nigerian
             Students.
           </p>
