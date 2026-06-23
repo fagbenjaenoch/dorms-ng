@@ -62,7 +62,7 @@ export default function HostelDetailsClient() {
       <div className="mb-4">{fromSearchPage && <BackToSearchPageButton />}</div>
       <div className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tighter text-on-surface flex items-center gap-3">
+          <h1 className="text-3xl md:text-5xl font-extrabold tracking-tighter text-on-surface flex items-center gap-3">
             {hostel.name}
             {hostel.isVerified && (
               <span className="inline-flex gap-1 items-center bg-primary-light text-primary text-sm font-bold px-3 py-1 rounded-full uppercase tracking-widest mt-2 md:mt-0">
@@ -71,7 +71,7 @@ export default function HostelDetailsClient() {
               </span>
             )}
           </h1>
-          <p className="text-lg flex items-center gap-1 mt-2 font-medium text-muted-foreground">
+          <p className="text-sm lg:text-lg flex items-center gap-1 mt-2 font-medium text-muted-foreground">
             <MapPin className="text-primary shrink-0" size={15} />
             {hostel.address}
           </p>
@@ -114,16 +114,16 @@ export default function HostelDetailsClient() {
 
       <div className="flex flex-col lg:flex-row gap-12">
         <div className="lg:w-2/3 space-y-12">
-          <div className="bg-white rounded-2xl p-6 shadow-xs border border-gray-300 flex flex-wrap gap-8">
-            <div className="flex items-center gap-4">
+          <div className="bg-white rounded-2xl p-6 shadow-xs border border-gray-300 flex flex-wrap gap-8 text-sm lg:text-lg">
+            <div className="flex items-center gap-4 ">
               <div className="bg-primary p-2 py-3 rounded-xl">
                 <FaPersonWalking size={18} className="text-primary-light" />
               </div>
               <div>
-                <p className="text-sm text-gray-600 font-bold uppercase tracking-wider">
+                <p className="text-gray-600 font-bold uppercase">
                   Distance to Campus
                 </p>
-                <p className="text-xl font-bold">0.8km to Main Gate</p>
+                <p className="font-bold">0.8km to Main Gate</p>
               </div>
             </div>
             <div className="flex items-center gap-4">
@@ -131,15 +131,13 @@ export default function HostelDetailsClient() {
                 <Clock4 size={20} className="text-white" />
               </div>
               <div>
-                <p className="text-sm text-gray-600 font-bold uppercase tracking-wider">
-                  Commute Time
-                </p>
-                <p className="text-xl font-bold">10 mins walk</p>
+                <p className="text-gray-600 font-bold uppercase">Commute Time</p>
+                <p className="font-bold">10 mins walk</p>
               </div>
             </div>
           </div>
           <section>
-            <h2 className="text-3xl font-bold text-on-surface mb-6">
+            <h2 className="text-xl md:text-3xl font-bold text-on-surface mb-6">
               About this <span className="text-primary">hostel</span>
             </h2>
             <div className="prose prose-lg font-body">{hostel.description}</div>
@@ -147,7 +145,7 @@ export default function HostelDetailsClient() {
 
           <hr className="border-t border-outline-variant/20" />
           <section>
-            <h2 className="text-3xl font-bold text-on-surface mb-6">
+            <h2 className="text-xl md:text-3xl font-bold text-on-surface mb-6">
               Location Overview
             </h2>
             <p>Coming soon</p>
@@ -159,7 +157,7 @@ export default function HostelDetailsClient() {
               <p className="text-sm font-bold uppercase tracking-widest mb-2">
                 Estimated Price Range
               </p>
-              <h3 className="text-4xl font-extrabold tracking-tighter text-on-surface">
+              <h3 className="text-xl md:text-4xl font-extrabold tracking-tighter text-on-surface">
                 ₦{formattedPrice}
                 <span className="text-lg font-medium tracking-normal">/ year</span>
               </h3>
@@ -168,7 +166,7 @@ export default function HostelDetailsClient() {
               <Button
                 size="xl"
                 variant="secondary"
-                className="w-full font-bold text-lg shadow-lg shadow-secondary/30"
+                className="w-full font-bold md:text-lg shadow-lg shadow-secondary/30"
                 onClick={() =>
                   posthog.capture("hostel_tour_requested", {
                     hostel_slug: slug,
@@ -182,7 +180,7 @@ export default function HostelDetailsClient() {
               <Button
                 size="xl"
                 variant="outline"
-                className="w-full py-4 rounded-xl font-bold text-lg transition-colors border border-outline-variant/50"
+                className="w-full py-4 rounded-xl font-bold md:text-lg transition-colors border border-outline-variant/50"
                 onClick={() =>
                   posthog.capture("hostel_contact_host_clicked", {
                     hostel_slug: slug,
@@ -197,7 +195,7 @@ export default function HostelDetailsClient() {
               <div className="bg-gray-200 rounded-xl p-4 flex items-start gap-4">
                 <ShieldUserIcon size={20} className="text-primary shrink-0" />
                 <div>
-                  <p className="font-bold text-on-surface">Verified by Admin</p>
+                  <p className="font-bold">Verified by Admin</p>
                   <p className="text-sm mt-1">
                     This property has been physically inspected for safety and
                     quality standards.
