@@ -101,7 +101,7 @@ export default function SearchPage() {
                       ))}
                     </div>
                   ) : (
-                    <div className="absolute top-full mt-3 left-0 w-full flex flex-col gap-2 bg-primary-foreground shadow-lg ring-1 ring-gray-500/5 p-2 rounded-xl">
+                    <div className="absolute z-999 top-full mt-3 left-0 w-full flex flex-col gap-2 bg-primary-foreground shadow-lg ring-1 ring-gray-500/5 p-2 rounded-xl">
                       <span className="p-2 rounded-md flex items-center gap-2 text-muted-foreground text-sm">
                         No matches found
                       </span>
