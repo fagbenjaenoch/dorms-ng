@@ -40,7 +40,7 @@ export default function PropertyCard({
           alt={name}
           src={imageUrl}
         />
-        <div className="absolute top-4 left-4 bg-tertiary text-on-tertiary-container px-4 py-1 rounded-full font-bold text-[10px] tracking-widest shadow-lg uppercase">
+        <div className="absolute top-4 left-4 bg-tertiary px-4 py-1 rounded-full font-bold text-xs tracking-widest shadow-lg uppercase">
           Self-Contain
         </div>
         {isVerified && (
@@ -50,20 +50,20 @@ export default function PropertyCard({
           </div>
         )}
       </div>
-      <div className="p-8">
+      <div className="px-8 pb-8 pt-4">
         <div className="flex justify-between items-start mb-4">
           <div>
-            <h3 className="text-xl font-bold mb-1">{name}</h3>
-            <p className="text-sm flex items-start gap-1 text-muted-foreground">
+            <h3 className="md:text-xl font-bold mb-1">{name}</h3>
+            <p className="text-xs md:text-sm flex items-start gap-1 text-muted-foreground">
               <MapPin className="shrink-0" size={12} />
               <span className="leading-snug max-w-60 line-clamp-2">{location}</span>
             </p>
           </div>
           <div className="text-right shrink-0">
-            <p className="text-2xl font-bold text-primary leading-none">
+            <p className="md:text-2xl font-bold text-primary leading-none">
               ₦{formattedPrice}
             </p>
-            <p className="text-[10px] font-bold uppercase tracking-tighter">
+            <p className="text-xs font-bold uppercase tracking-tighter">
               per session
             </p>
           </div>
@@ -80,7 +80,14 @@ export default function PropertyCard({
         </div>
         <Link
           href={`/hostels/${slug}?${fromSearchPageParam}=true`}
-          onClick={() => posthog.capture("hostel_card_clicked", { hostel_slug: slug, hostel_name: name, hostel_price: price, is_verified: isVerified })}
+          onClick={() =>
+            posthog.capture("hostel_card_clicked", {
+              hostel_slug: slug,
+              hostel_name: name,
+              hostel_price: price,
+              is_verified: isVerified,
+            })
+          }
         >
           <Button
             variant="ghost"
