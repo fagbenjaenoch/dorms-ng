@@ -33,7 +33,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-12 mb-16">
           <div className="md:col-span-4">
             <Link href="/">
-              <BrandIcon className="text-2xl mb-6 font-bold" />
+              <BrandIcon className="text-lg md:text-2xl mb-6 font-bold" />
             </Link>
             <p className="text-primary-light/50 text-xs md:text-sm leading-relaxed max-w-xs">
               Empowering Nigerian students with seamless access to secure, verified,
@@ -43,7 +43,7 @@ export default function Footer() {
           <div className="text-xs md:text-sm md:col-span-8 grid grid-cols-2 lg:grid-cols-3 gap-8">
             {Object.entries(footerData).map(([section, items]) => (
               <div key={section}>
-                <h4 className="font-black uppercase tracking-widest text-orange-500 mb-3 md:mb-6">
+                <h4 className="text-bold md:font-black uppercase tracking-widest text-orange-500 mb-3 md:mb-6">
                   {section}
                 </h4>
                 <ul className="space-y-2 md:space-y-4">
