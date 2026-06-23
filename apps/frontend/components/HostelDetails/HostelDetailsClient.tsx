@@ -58,7 +58,7 @@ export default function HostelDetailsClient() {
   }, [slug]);
 
   return (
-    <main className="max-w-7xl mx-auto py-20 px-4 min-h-screen sm:px-6 lg:px-8">
+    <main className="max-w-7xl mx-auto py-10 sm:py-20 px-4 min-h-screen sm:px-6 lg:px-8">
       <div className="mb-4">{fromSearchPage && <BackToSearchPageButton />}</div>
       <div className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
