@@ -18,8 +18,8 @@ export default function FeatureCard({
       <div className={`w-14 h-14 grid place-items-center ${iconBg} rounded-2xl`}>
         <Icon className="shrink-0" size={20} />
       </div>
-      <h3 className="font-bold text-xl">{title}</h3>
-      <p className="text-foreground/70">{description}</p>
+      <h3 className="font-bold md:text-xl">{title}</h3>
+      <p className="text-foreground/70 text-xs md:text-base">{description}</p>
     </div>
   );
 }
