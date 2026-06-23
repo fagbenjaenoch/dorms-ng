@@ -67,7 +67,7 @@ export default function SearchPage() {
       <main className="pt-12 pb-24 px-8 min-h-screen w-full mx-auto max-w-7xl">
         <div className="flex justify-between items-end">
           <div className="w-full">
-            <h1 className="font-headline text-4xl md:text-5xl font-black tracking-tighter mb-10">
+            <h1 className="font-headline text-3xl md:text-5xl font-black tracking-tighter mb-10">
               Discover <span className="text-primary">places</span>
             </h1>
             <div className="flex items-center justify-between">
