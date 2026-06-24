@@ -30,7 +30,7 @@ export default function Footer() {
   return (
     <footer className="bg-primary text-white pt-10 md:pt-20 pb-10">
       <div className="max-w-7xl mx-auto px-8">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-12 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
           <div className="md:col-span-4">
             <Link href="/">
               <BrandIcon className="text-lg md:text-2xl mb-6 font-bold" />
