@@ -19,7 +19,7 @@ export default function FeatureCard({
         <Icon className="shrink-0" size={20} />
       </div>
       <h3 className="font-bold md:text-xl">{title}</h3>
-      <p className="text-foreground/70 text-sm md:text-base">{description}</p>
+      <p className="text-foreground/70">{description}</p>
     </div>
   );
 }
