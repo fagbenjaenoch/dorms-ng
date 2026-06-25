@@ -77,7 +77,7 @@ export default function LandingSearch() {
                 {EntityTypeToIcon[searchResult.entity_type]}
                 <div className="flex flex-col">
                   <span className="font-semibold">{searchResult.entity}</span>
-                  <span className="text-muted-foreground">
+                  <span className="text-muted-foreground line-clamp-2">
                     {searchResult.address}
                   </span>
                 </div>
