@@ -28,7 +28,7 @@ export default function PropertyCard({
   slug,
   isVerified,
 }: PropertyCardProps) {
-  const formattedPrice = useMoneyFormat(price);
+  const formattedPrice = useMoneyFormat().format(price);
 
   return (
     <div className="group rounded-[2.5rem] overflow-hidden shadow-sm bg-white">
@@ -61,7 +61,7 @@ export default function PropertyCard({
           </div>
           <div className="text-right shrink-0">
             <p className="md:text-2xl font-bold text-primary leading-none">
-              ₦{formattedPrice}
+              {formattedPrice}
             </p>
             <p className="text-xs font-bold uppercase tracking-tighter">
               per session
