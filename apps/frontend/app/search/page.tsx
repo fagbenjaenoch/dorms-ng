@@ -4,7 +4,7 @@ import QueryErrorBoundary from "@/components/error/QueryErrorBoundary";
 import HostelResults from "@/components/HostelResults";
 import HostelResultsError from "@/components/HostelResultsError";
 import LocationSearch from "@/components/LocationSearch";
-import { Button } from "@/components/ui/button";
+import SearchFilters from "@/components/SearchFilters";
 import Footer from "@/components/ui/Footer";
 import PropertyCardSkeleton from "@/components/ui/PropertyCardSkeleton";
 import { placeSearch } from "@/lib/api/search";
@@ -12,7 +12,7 @@ import { APIResponse, Place } from "@/lib/dto";
 import useDebounce from "@/lib/hooks/useDebounce";
 import { AreaTypeEnum, idParam, searchQueryParam, typeParam } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
-import { LucideListFilter, MapPin } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { useQueryState } from "nuqs";
 import { Suspense, useState } from "react";
 
@@ -82,7 +82,7 @@ export default function SearchPage() {
                   searchTerm.length > 0 &&
                   query.isFetched &&
                   (!!query.data?.payload?.length && query.data.payload.length > 0 ? (
-                    <div className="absolute top-full mt-3 left-0 w-full flex flex-col gap-2 bg-primary-foreground shadow-lg ring-1 ring-gray-500/5 p-2 rounded-xl">
+                    <div className="absolute z-3 top-full mt-3 left-0 w-full flex flex-col gap-2 bg-primary-foreground shadow-lg ring-1 ring-gray-500/5 p-2 rounded-xl">
                       {query.data.payload.map((searchResult) => (
                         <div
                           className="cursor-pointer hover:bg-gray-500/10 p-2 rounded-md flex items-center gap-2 text-muted-foreground"
@@ -101,7 +101,7 @@ export default function SearchPage() {
                       ))}
                     </div>
                   ) : (
-                    <div className="absolute z-999 top-full mt-3 left-0 w-full flex flex-col gap-2 bg-primary-foreground shadow-lg ring-1 ring-gray-500/5 p-2 rounded-xl">
+                    <div className="absolute z-3 top-full mt-3 left-0 w-full flex flex-col gap-2 bg-primary-foreground shadow-lg ring-1 ring-gray-500/5 p-2 rounded-xl">
                       <span className="p-2 rounded-md flex items-center gap-2 text-muted-foreground text-sm">
                         No matches found
                       </span>
@@ -109,10 +109,7 @@ export default function SearchPage() {
                   ))}
               </div>
 
-              <Button variant="ghost">
-                <LucideListFilter />
-                Filters
-              </Button>
+              <SearchFilters />
             </div>
           </div>
         </div>
