@@ -63,7 +63,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-primary-light/50 text-xs font-medium tracking-wider uppercase">
+          <p className="text-primary-light/50 text-xs font-medium tracking-wider">
             © {getCurrentYear()} Hostel.ng. All rights reserved. Built for Nigerian
             Students.
           </p>
