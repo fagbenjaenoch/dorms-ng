@@ -33,7 +33,10 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
           <div className="md:col-span-4">
             <Link href="/">
-              <BrandIcon className="text-lg md:text-2xl mb-6 font-bold" />
+              <BrandIcon
+                className="text-lg md:text-2xl mb-6 font-bold"
+                variant="orange"
+              />
             </Link>
             <p className="text-primary-light/50 text-sm leading-relaxed max-w-xs">
               Empowering Nigerian students with seamless access to secure, verified,
