@@ -74,7 +74,7 @@ export default function SearchPage() {
               <div className="relative flex-1 max-w-xl">
                 <LocationSearch
                   searchTerm={searchTerm}
-                  handleChange={(e) => setSearchTerm(e.target.value)}
+                  handleChange={e => setSearchTerm(e.target.value)}
                   clearSearch={clearSearch}
                   onClick={showDropdownOnClick}
                 />
@@ -83,7 +83,7 @@ export default function SearchPage() {
                   query.isFetched &&
                   (!!query.data?.payload?.length && query.data.payload.length > 0 ? (
                     <div className="absolute z-3 top-full mt-3 left-0 w-full flex flex-col gap-2 bg-primary-foreground shadow-lg ring-1 ring-gray-500/5 p-2 rounded-xl">
-                      {query.data.payload.map((searchResult) => (
+                      {query.data.payload.map(searchResult => (
                         <div
                           className="cursor-pointer hover:bg-gray-500/10 p-2 rounded-md flex items-center gap-2 text-muted-foreground"
                           key={searchResult.place_id}

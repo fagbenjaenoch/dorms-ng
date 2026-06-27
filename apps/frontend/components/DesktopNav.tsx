@@ -11,7 +11,7 @@ export default function DesktopNav() {
           <BrandIcon />
         </Link>
         <div className="flex gap-4">
-          {navLinks.map((link) => (
+          {navLinks.map(link => (
             <Button className="text-base" variant="link" key={link.title}>
               <Link href={link.href} className="href">
                 {link.title}

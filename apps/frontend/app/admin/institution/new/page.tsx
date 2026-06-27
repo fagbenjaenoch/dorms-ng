@@ -25,7 +25,7 @@ export default function CreateInstitution() {
   };
 
   //@ts-ignore can't figure out the type
-  const handleMapClick = (e) => {
+  const handleMapClick = e => {
     setMarker({ lng: e.lngLat.lng, lat: e.lngLat.lat });
 
     if (mapRef.current) {
@@ -48,9 +48,8 @@ export default function CreateInstitution() {
               Create <span className="text-primary">Institution</span>
             </h1>
             <p className="font-medium">
-              Register a new academic institution to the Emerald Horizon directory.
-              Ensure geographic coordinates are accurate for students to find hostels
-              nearby.
+              Register a new academic institution to the Emerald Horizon directory. Ensure
+              geographic coordinates are accurate for students to find hostels nearby.
             </p>
           </div>
         </div>
@@ -65,8 +64,8 @@ export default function CreateInstitution() {
               <div className="relative z-10">
                 <h3 className="text-xl font-bold mb-2">Did you know?</h3>
                 <p className="text-sm leading-relaxed max-w-sm">
-                  Correct coordinates ensure that our hostel recommendations stay
-                  within a 15-minute walking distance for students.
+                  Correct coordinates ensure that our hostel recommendations stay within a
+                  15-minute walking distance for students.
                 </p>
               </div>
               <BiSolidBadgeCheck
@@ -93,10 +92,7 @@ export default function CreateInstitution() {
                   onDrag={handleDrag}
                 >
                   <MarkerContent>
-                    <MapPin
-                      className="cursor-move fill-red-500 stroke-white"
-                      size={28}
-                    />
+                    <MapPin className="cursor-move fill-red-500 stroke-white" size={28} />
                     <MarkerLabel position="bottom" className="text-white">
                       Drag this!
                     </MarkerLabel>
@@ -108,19 +104,14 @@ export default function CreateInstitution() {
 
             <div className="bg-primary rounded-[2.5rem] p-10 text-white relative overflow-hidden shadow-xl shadow-primary/20">
               <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -translate-y-20 translate-x-20 transition-transform duration-700" />
-              <h4 className="text-2xl font-bold mb-6 relative z-10">
-                Quality Assurance
-              </h4>
+              <h4 className="text-2xl font-bold mb-6 relative z-10">Quality Assurance</h4>
               <ul className="space-y-4 relative z-10">
                 {[
                   "Auto-geocoding validation",
                   "High-res aerial imagery",
                   "Street view integration",
                 ].map((text, i) => (
-                  <li
-                    key={i}
-                    className="flex items-center gap-3 text-sm font-medium"
-                  >
+                  <li key={i} className="flex items-center gap-3 text-sm font-medium">
                     <CheckCircle2 className="text-tertiary" size={20} />
                     <span className="opacity-90">{text}</span>
                   </li>

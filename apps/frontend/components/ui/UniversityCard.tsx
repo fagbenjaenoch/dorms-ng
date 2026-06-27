@@ -18,13 +18,15 @@ export default function UniversityCard({
   ...props
 }: UniversityCardProps & HTMLAttributes<HTMLDivElement>) {
   return (
-    <div
-      className="relative rounded-3xl overflow-hidden group cursor-pointer"
-      {...props}
-    >
+    <div className="relative rounded-3xl overflow-hidden group cursor-pointer" {...props}>
       <Link
         href={`/institutions/${slug}`}
-        onClick={() => posthog.capture("university_card_clicked", { university_name: name, university_slug: slug })}
+        onClick={() =>
+          posthog.capture("university_card_clicked", {
+            university_name: name,
+            university_slug: slug,
+          })
+        }
       >
         <Image
           src={imageUrl}

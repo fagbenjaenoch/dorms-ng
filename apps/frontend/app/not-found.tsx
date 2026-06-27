@@ -25,8 +25,8 @@ export default function NotFound() {
               </h2>
             </div>
             <p className="leading-relaxed">
-              The page you're looking for might have been moved, deleted, or perhaps
-              the address was entered incorrectly. Let's get you back on track.
+              The page you're looking for might have been moved, deleted, or perhaps the
+              address was entered incorrectly. Let's get you back on track.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
               <Link href="/">

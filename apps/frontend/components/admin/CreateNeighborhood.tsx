@@ -39,7 +39,7 @@ export default function CreateNeighborhoodForm() {
       toast.success("Created Neighbourhood Successfully");
       form.reset();
     },
-    onError: (error) => {
+    onError: error => {
       toast.error(error.message);
     },
   });
@@ -96,10 +96,7 @@ export default function CreateNeighborhoodForm() {
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel
-                  htmlFor="institution"
-                  className="uppercase text-xs font-bold"
-                >
+                <FieldLabel htmlFor="institution" className="uppercase text-xs font-bold">
                   Institution
                 </FieldLabel>
 

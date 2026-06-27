@@ -33,8 +33,8 @@ export default function HostelResults({
           {showInsight && (
             <p className="mt-3 text-sm text-muted-foreground mb-15">
               Showing {hostelQuery.data?.payload.length} result
-              {hostelQuery.data?.payload.length !== 1 ? "s" : ""} matching your
-              criteria within <b>{areaName}</b>
+              {hostelQuery.data?.payload.length !== 1 ? "s" : ""} matching your criteria
+              within <b>{areaName}</b>
             </p>
           )}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

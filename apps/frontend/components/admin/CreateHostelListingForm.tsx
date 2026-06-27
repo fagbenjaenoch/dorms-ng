@@ -76,7 +76,7 @@ export default function CreateHostelListingForm() {
   useEffect(() => {
     form.setValue("longitude", marker.lng);
     form.setValue("latitude", marker.lat);
-  }, [marker]);
+  }, [form, marker]);
 
   const mutation = useMutation({
     mutationKey: ["createHostelListing"],
@@ -94,7 +94,7 @@ export default function CreateHostelListingForm() {
       setPhotos(null);
       setMarker(defaultLngLat);
     },
-    onError: (error) => {
+    onError: error => {
       toast.error(error.message ?? "Could not create hostel listing");
     },
   });
@@ -107,7 +107,7 @@ export default function CreateHostelListingForm() {
   const neighborhoods = neighborhoodsQuery.data?.payload;
 
   //@ts-ignore can't figure out the type
-  const handleMapClick = (e) => {
+  const handleMapClick = e => {
     setMarker({ lng: e.lngLat.lng, lat: e.lngLat.lat });
 
     if (mapRef.current) {
@@ -172,6 +172,7 @@ export default function CreateHostelListingForm() {
     <form
       id="create-hostel-listing"
       className="space-y-8"
+      // eslint-disable-next-line react-hooks/refs
       onSubmit={form.handleSubmit(onSubmit)}
       ref={formRef}
     >
@@ -216,10 +217,7 @@ export default function CreateHostelListingForm() {
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel
-                      htmlFor="city"
-                      className="uppercase text-xs font-bold"
-                    >
+                    <FieldLabel htmlFor="city" className="uppercase text-xs font-bold">
                       City
                     </FieldLabel>
 
@@ -233,7 +231,7 @@ export default function CreateHostelListingForm() {
                       <ComboboxContent>
                         <ComboboxEmpty>No city found.</ComboboxEmpty>
                         <ComboboxList>
-                          {(item) => (
+                          {item => (
                             <ComboboxItem
                               key={item}
                               value={item}
@@ -245,9 +243,7 @@ export default function CreateHostelListingForm() {
                         </ComboboxList>
                       </ComboboxContent>
                     </Combobox>
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>
                 )}
               />
@@ -288,9 +284,7 @@ export default function CreateHostelListingForm() {
                         </ComboboxList>
                       </ComboboxContent>
                     </Combobox>
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>
                 )}
               />
@@ -418,9 +412,7 @@ export default function CreateHostelListingForm() {
                       type="text"
                       disabled
                     />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>
                 )}
               />
@@ -443,9 +435,7 @@ export default function CreateHostelListingForm() {
                       className="input-bg"
                       disabled
                     />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>
                 )}
               />
@@ -470,9 +460,7 @@ export default function CreateHostelListingForm() {
                       className="input-bg"
                       disabled
                     />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>
                 )}
               />
@@ -481,10 +469,7 @@ export default function CreateHostelListingForm() {
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel
-                      htmlFor="eta"
-                      className="uppercase text-xs font-bold"
-                    >
+                    <FieldLabel htmlFor="eta" className="uppercase text-xs font-bold">
                       ETA (mins)
                     </FieldLabel>
                     <Input
@@ -494,9 +479,7 @@ export default function CreateHostelListingForm() {
                       className="input-bg"
                       disabled
                     />
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
+                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>
                 )}
               />
@@ -518,10 +501,7 @@ export default function CreateHostelListingForm() {
                 onDrag={handleMapDrag}
               >
                 <MarkerContent>
-                  <MapPin
-                    className="cursor-move fill-red-500 stroke-white"
-                    size={28}
-                  />
+                  <MapPin className="cursor-move fill-red-500 stroke-white" size={28} />
                   <MarkerLabel position="bottom" className="text-white">
                     Drag this!
                   </MarkerLabel>
@@ -553,10 +533,7 @@ export default function CreateHostelListingForm() {
             ))
           ) : (
             <Field>
-              <FieldLabel
-                htmlFor="primary-photo"
-                className="uppercase text-xs font-bold"
-              >
+              <FieldLabel htmlFor="primary-photo" className="uppercase text-xs font-bold">
                 Photos
               </FieldLabel>
               <div
@@ -590,9 +567,7 @@ export default function CreateHostelListingForm() {
           <div className="w-10 h-10 bg-tertiary text-on-tertiary rounded-xl flex items-center justify-center">
             <ShieldCheck size={24} />
           </div>
-          <h2 className="text-2xl font-bold tracking-tight">
-            Marketplace Verification
-          </h2>
+          <h2 className="text-2xl font-bold tracking-tight">Marketplace Verification</h2>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -627,9 +602,7 @@ export default function CreateHostelListingForm() {
               Google Rating
             </FieldLabel>
             <div className="flex items-center gap-3 pt-1">
-              <span className="text-3xl font-black text-primary leading-none">
-                4.8
-              </span>
+              <span className="text-3xl font-black text-primary leading-none">4.8</span>
               <div className="flex text-tertiary">
                 <Star size={18} fill="currentColor" strokeWidth={0} />
                 <Star size={18} fill="currentColor" strokeWidth={0} />
@@ -649,8 +622,8 @@ export default function CreateHostelListingForm() {
                 <h4 className="font-bold text-lg">Verified Property</h4>
                 <div className="flex items-center justify-between gap-4">
                   <p className="text-xs text-primary-light leading-snug lg:leading-normal">
-                    This means we trust this validity of this propery for the
-                    forseeable future
+                    This means we trust this validity of this propery for the forseeable
+                    future
                   </p>
                   <Controller
                     name="isVerified"
