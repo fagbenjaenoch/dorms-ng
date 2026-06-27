@@ -1,3 +1,49 @@
 cd apps/frontend
 
-bun run check-push
+CHANGED_FILES=$(git diff --name-only HEAD origin/$(git branch --show-current) 2>/dev/null || git diff --name-only HEAD)
+
+# Determine what checks to run
+NEED_TYPE_CHECK=false
+NEED_TEST=false
+NEED_BUILD=false
+
+if echo "$CHANGED_FILES" | grep -qE '\.(ts|tsx)$'; then
+  NEED_TYPE_CHECK=true
+  echo "🔍 TypeScript files changed - will run type-check"
+fi
+
+if echo "$CHANGED_FILES" | grep -qE '\.(test|spec)\.(js|jsx|ts|tsx)$' || echo "$CHANGED_FILES" | grep -qE '^__tests__/'; then
+  NEED_TEST=true
+  echo "🧪 Test files changed - will run tests"
+elif echo "$CHANGED_FILES" | grep -qE '\.(js|jsx|ts|tsx)$'; then
+  NEED_TEST=true
+  echo "🧪 Source files changed - will run tests"
+fi
+
+if echo "$CHANGED_FILES" | grep -qE '\.(js|jsx|ts|tsx|css|scss)$' || echo "$CHANGED_FILES" | grep -qE '(package\.json|bun\.lockb|next\.config|tsconfig\.json)'; then
+  NEED_BUILD=true
+  echo "🏗️  Build-related files changed - will run build check"
+fi
+
+# Run checks based on what changed
+if [ "$NEED_TYPE_CHECK" = true ]; then
+  echo "🔍 Running type check..."
+  bun run type-check || exit 1
+else
+  echo "⏭️  Skipping type check (no TypeScript changes)"
+fi
+
+if [ "$NEED_TEST" = true ]; then
+  echo "🧪 Running tests..."
+  # Run only tests related to changed files if possible
+  bun test --bail --findRelatedTests $CHANGED_FILES || exit 1
+else
+  echo "⏭️  Skipping tests (no code changes)"
+fi
+
+if [ "$NEED_BUILD" = true ]; then
+  echo "🏗️  Running build check..."
+  bun run build || exit 1
+else
+  echo "⏭️  Skipping build (no build-related changes)"
+fi
