@@ -46,13 +46,14 @@ export default function HostelDetailsClient() {
     }));
   }, [photoUrls, hostel.name]);
 
-  const formattedPrice = useMoneyFormat(hostel.estimatedPriceRange);
+  const ngnFormatter = useMoneyFormat();
+  const formattedPrice = ngnFormatter.format(hostel.estimatedPriceRange);
 
   useEffect(() => {
     posthog.capture("hostel_details_viewed", {
       hostel_slug: slug,
       hostel_name: hostel.name,
-      hostel_price: hostel.estimatedPriceRange,
+      hostel_price: formattedPrice,
       is_verified: hostel.isVerified,
     });
   }, [slug]);
