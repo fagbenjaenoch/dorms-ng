@@ -2,7 +2,11 @@ import SectionHeading from "./ui/SectionHeader";
 import UniversityCard from "./ui/UniversityCard";
 
 const popularUniversities = [
-  { name: "University of Ilorin", imageUrl: "/unilorin.webp", slug: "unilorin" },
+  {
+    name: "University of Ilorin",
+    imageUrl: "/unilorin.webp",
+    slug: "unilorin",
+  },
   { name: "University of Ibadan", imageUrl: "/ui.webp", slug: "ui" },
   { name: "University of Lagos", imageUrl: "/unilag.webp", slug: "unilag" },
   {

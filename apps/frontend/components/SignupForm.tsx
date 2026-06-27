@@ -49,7 +49,10 @@ export default function SignupForm() {
     const payload = await mutation.mutateAsync(data);
     if (payload?.success) {
       posthog.identify(data.email, { name: data.fullname, email: data.email });
-      posthog.capture("user_signed_up", { name: data.fullname, email: data.email });
+      posthog.capture("user_signed_up", {
+        name: data.fullname,
+        email: data.email,
+      });
       router.push("/app");
     }
   };

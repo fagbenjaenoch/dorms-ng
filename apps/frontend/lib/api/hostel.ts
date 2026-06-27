@@ -11,7 +11,7 @@ export async function createHostelListing(
     throw new Error("Photo is required");
   }
 
-  const photoPromises = photoUrls.map((photo) =>
+  const photoPromises = photoUrls.map(photo =>
     uploadPhoto({
       entityName: data.name,
       entityType: "hostel",
@@ -43,9 +43,7 @@ export async function createHostelListing(
   return response as any as APIResponse<CreateHostelListingData>;
 }
 
-export async function fetchHostel(
-  slug: string,
-): Promise<APIResponse<Hostel> | null> {
+export async function fetchHostel(slug: string): Promise<APIResponse<Hostel> | null> {
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/v1/hostels/${slug}`,

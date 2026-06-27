@@ -12,7 +12,7 @@ export default function MobileNav() {
   const [navActive, setNavActive] = useState(false);
 
   const toggleNav = () => {
-    setNavActive((prev) => !prev);
+    setNavActive(prev => !prev);
   };
   return (
     <div className="flex lg:hidden p-4 lg:p-8 justify-between">
@@ -31,7 +31,7 @@ export default function MobileNav() {
           </div>
 
           <div className="mt-20 flex flex-col gap-y-8">
-            {navLinks.map((link) => (
+            {navLinks.map(link => (
               <Button className="text-base" variant="link" key={link.title}>
                 <Link href={link.href} className="href">
                   {link.title}

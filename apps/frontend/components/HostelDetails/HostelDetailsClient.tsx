@@ -5,14 +5,7 @@ import { Button } from "@/components/ui/button";
 import { fetchHostel } from "@/lib/api/hostel";
 import useMoneyFormat from "@/lib/hooks/useMoneyFormat";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import {
-  BadgeCheck,
-  Clock4,
-  Heart,
-  MapPin,
-  Share2,
-  ShieldUserIcon,
-} from "lucide-react";
+import { BadgeCheck, Clock4, Heart, MapPin, Share2, ShieldUserIcon } from "lucide-react";
 import { useEffect, useMemo } from "react";
 import { notFound, useParams } from "next/navigation";
 import { useQueryState, parseAsBoolean } from "nuqs";
@@ -38,7 +31,7 @@ export default function HostelDetailsClient() {
   }
 
   const { payload: hostel } = res;
-  const photoUrls = hostel.photo_urls ? hostel.photo_urls.split(", ") : [];
+  const photoUrls = hostel.photo_urls.split(", ");
   const photoUrlObjects = useMemo(() => {
     return photoUrls.map((url, index) => ({
       url,
@@ -56,7 +49,7 @@ export default function HostelDetailsClient() {
       hostel_price: formattedPrice,
       is_verified: hostel.isVerified,
     });
-  }, [slug]);
+  }, [slug, hostel.name, formattedPrice, hostel.isVerified]);
 
   return (
     <main className="max-w-7xl mx-auto py-10 sm:py-20 px-4 min-h-screen sm:px-6 lg:px-8">
@@ -121,9 +114,7 @@ export default function HostelDetailsClient() {
                 <FaPersonWalking size={18} className="text-primary-light" />
               </div>
               <div>
-                <p className="text-gray-600 font-bold uppercase">
-                  Distance to Campus
-                </p>
+                <p className="text-gray-600 font-bold uppercase">Distance to Campus</p>
                 <p className="font-bold">0.8km to Main Gate</p>
               </div>
             </div>
@@ -198,8 +189,8 @@ export default function HostelDetailsClient() {
                 <div>
                   <p className="font-bold">Verified by Admin</p>
                   <p className="text-sm mt-1">
-                    This property has been physically inspected for safety and
-                    quality standards.
+                    This property has been physically inspected for safety and quality
+                    standards.
                   </p>
                 </div>
               </div>

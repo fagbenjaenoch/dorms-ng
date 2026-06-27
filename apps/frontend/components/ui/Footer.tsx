@@ -39,8 +39,8 @@ export default function Footer() {
               />
             </Link>
             <p className="text-primary-light/50 text-sm leading-relaxed max-w-xs">
-              Empowering Nigerian students with seamless access to secure, verified,
-              and affordable housing solutions nationwide.
+              Empowering Nigerian students with seamless access to secure, verified, and
+              affordable housing solutions nationwide.
             </p>
           </div>
           <div className="text-sm md:col-span-8 grid grid-cols-2 lg:grid-cols-3 gap-8">
@@ -50,7 +50,7 @@ export default function Footer() {
                   {section}
                 </h4>
                 <ul className="space-y-2 md:space-y-4">
-                  {items.map((item) => (
+                  {items.map(item => (
                     <li key={item.title}>
                       <Link
                         className="text-primary-light/50 hover:text-white transition-colors duration-200"

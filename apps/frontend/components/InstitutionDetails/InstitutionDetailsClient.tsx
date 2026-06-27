@@ -15,6 +15,7 @@ import QueryErrorBoundary from "../error/QueryErrorBoundary";
 import HostelResults from "../HostelResults";
 import HostelResultsError from "../HostelResultsError";
 import PropertyCardSkeleton from "../ui/PropertyCardSkeleton";
+import Image from "next/image";
 
 export default function InstitutionDetailsClient() {
   let { slug } = useParams();
@@ -91,8 +92,7 @@ export default function InstitutionDetailsClient() {
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
             <div>
               <h2 className="text-4xl font-extrabold tracking-tight mb-2">
-                Hostels near{" "}
-                <span className="text-primary">{institution?.acronym}</span>
+                Hostels near <span className="text-primary">{institution?.acronym}</span>
               </h2>
               <p className="font-medium text-lg text-muted-foreground">
                 Verified student housing within 2km of the campus gate.
@@ -171,18 +171,17 @@ export default function InstitutionDetailsClient() {
             </div>
             <div className="lg:col-span-2 relative min-h-[500px]">
               <div className="w-full h-full relative overflow-hidden">
-                <img
+                <Image
                   className="w-full h-full object-cover"
                   data-location="Lagos, Nigeria"
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuCuxjCUrNAD1BiGxZOx6qtD7ADIW90zJnEUlLNMxYByrYcZqmfKvlI2NKCWKOgfyWp8aUcZvnOa_NLpUh3MDCKfx1oAJthRZIa9nn5KdZb4Uq1HPUbGvPgmDbChYeTzKmS-gN6cwN6n4rEtMcoQbik05B4WKgr4mOD1RnGHtw2F95xzPVvCaXwsB_HSppe9_LNfuqzS6zFDNcEfgz4vIEKN05-HuQNbWUaVwdB0YAPkNdUZKAAjdSsoDOVKenLNXl7pp59nLqkc6n5E"
+                  alt="profile image"
                 />
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                   <div className="relative">
                     <div className="w-12 h-12 bg-primary rounded-full animate-ping absolute inset-0 opacity-20"></div>
                     <div className="relative w-12 h-12 bg-primary rounded-full border-4 border-white flex items-center justify-center shadow-lg">
-                      <span className="material-symbols-outlined text-white">
-                        school
-                      </span>
+                      <span className="material-symbols-outlined text-white">school</span>
                     </div>
                   </div>
                 </div>

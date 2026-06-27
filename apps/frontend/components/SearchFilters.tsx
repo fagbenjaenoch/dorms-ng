@@ -42,9 +42,7 @@ export default function SearchFilters() {
         </SheetHeader>
         <div className="px-4 flex flex-col gap-4">
           <div>
-            <Label className="text-lg font-bold">
-              Price Range: {minMax.join(", ")}
-            </Label>
+            <Label className="text-lg font-bold">Price Range: {minMax.join(", ")}</Label>
             <div className="relative w-full">
               <span className="absolute left-0 -top-5 text-xs text-muted-foreground">
                 {formatter.format(minPrice)}
@@ -56,7 +54,7 @@ export default function SearchFilters() {
                 className="my-6"
                 defaultValue={defaultPriceRange}
                 value={minMax}
-                onValueChange={(value) => setMinMax(value as number[])}
+                onValueChange={value => setMinMax(value as number[])}
                 min={minPrice}
                 max={maxPrice}
                 step={1}

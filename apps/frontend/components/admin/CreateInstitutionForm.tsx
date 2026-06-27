@@ -27,10 +27,7 @@ interface CreateInstitutionFormProps {
   lat: number;
 }
 
-export default function CreateInstitutionForm({
-  lng,
-  lat,
-}: CreateInstitutionFormProps) {
+export default function CreateInstitutionForm({ lng, lat }: CreateInstitutionFormProps) {
   const form = useForm<CreateInstitutionData>({
     resolver: zodResolver(createInstitutionSchema),
     defaultValues: {
@@ -46,7 +43,7 @@ export default function CreateInstitutionForm({
   useEffect(() => {
     form.setValue("latitude", lat);
     form.setValue("longitude", lng);
-  }, [lng, lat]);
+  }, [form, lng, lat]);
 
   const mutation = useMutation({
     mutationKey: ["createInstitution"],
@@ -55,7 +52,7 @@ export default function CreateInstitutionForm({
       toast.success("Created Institution Successfully");
       form.reset();
     },
-    onError: (error) => {
+    onError: error => {
       toast.error(error.message);
     },
   });
@@ -132,7 +129,7 @@ export default function CreateInstitutionForm({
                 <ComboboxContent>
                   <ComboboxEmpty>No city found.</ComboboxEmpty>
                   <ComboboxList>
-                    {(item) => (
+                    {item => (
                       <ComboboxItem
                         key={item}
                         value={item}
@@ -154,10 +151,7 @@ export default function CreateInstitutionForm({
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel
-                  htmlFor="latitude"
-                  className="uppercase text-xs font-bold"
-                >
+                <FieldLabel htmlFor="latitude" className="uppercase text-xs font-bold">
                   Latitude (Main gate)
                 </FieldLabel>
                 <Input
@@ -178,10 +172,7 @@ export default function CreateInstitutionForm({
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel
-                  htmlFor="longitude"
-                  className="uppercase text-xs font-bold"
-                >
+                <FieldLabel htmlFor="longitude" className="uppercase text-xs font-bold">
                   Longitude (Main gate)
                 </FieldLabel>
                 <Input

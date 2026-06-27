@@ -1,0 +1,3 @@
+cd apps/frontend
+
+bun run check-push

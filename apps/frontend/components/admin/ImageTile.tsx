@@ -14,6 +14,7 @@ export default function ImageTile({ file, altText, onCancel }: ImageTileProp) {
   ); // defaults to gray base64 background
   useEffect(() => {
     const previewUrl = URL.createObjectURL(file);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setPreviewUrl(previewUrl);
 
     return () => {
@@ -23,13 +24,7 @@ export default function ImageTile({ file, altText, onCancel }: ImageTileProp) {
 
   return (
     <div className="relative w-fit border border-gray-200">
-      <Image
-        width={150}
-        height={150}
-        src={previewUrl}
-        alt={altText}
-        objectFit="cover"
-      />
+      <Image width={150} height={150} src={previewUrl} alt={altText} objectFit="cover" />
       <div
         className="absolute top-[-3] right-[-3] bg-white rounded-full shadow-lg cursor-pointer"
         onClick={onCancel}

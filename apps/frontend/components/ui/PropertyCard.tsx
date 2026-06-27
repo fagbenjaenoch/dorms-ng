@@ -63,9 +63,7 @@ export default function PropertyCard({
             <p className="md:text-2xl font-bold text-primary leading-none">
               {formattedPrice}
             </p>
-            <p className="text-xs font-bold uppercase tracking-tighter">
-              per session
-            </p>
+            <p className="text-xs font-bold uppercase tracking-tighter">per session</p>
           </div>
         </div>
         <div className="flex gap-3 mb-6 text-muted-foreground">
