@@ -4,7 +4,6 @@
 .vscode/
 .zed/
 *.log
-.env*
 
 # --- Docker & Environment ---
 .env
