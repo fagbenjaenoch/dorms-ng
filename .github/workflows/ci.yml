@@ -1,4 +1,4 @@
-name: Fronted
+name: Frontend
 
 on:
   push:
