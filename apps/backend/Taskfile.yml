@@ -10,6 +10,10 @@ tasks:
     desc: Run the development server
     cmds:
       - air
+  test:
+    desc: Run tests
+    cmds:
+      - go test -v ./...
   build:
     desc: Build the application
     cmds:
