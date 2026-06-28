@@ -65,7 +65,7 @@ bun install
 # copy and paste only this line in your terminal
 touch .env
 
-# copy an and past the following in your env file
+# copy an and paste the following in your env file
 NEXT_PUBLIC_API_URL="http://localhost:8000"
 NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
 NEXT_PUBLIC_POSTHOG_KEY=<your-posthog-key>
