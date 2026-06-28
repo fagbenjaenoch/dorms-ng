@@ -1,4 +1,4 @@
-name: Frontend
+name: CI
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [main, staging, mvp]
 
 jobs:
-  validate:
+  validate-frontend:
     runs-on: ubuntu-latest
 
     steps:
