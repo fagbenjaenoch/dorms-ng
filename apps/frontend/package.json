@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "prepare": "cd ../../ && husky apps/frontend/.husky",
+    "setup-hooks": "cd ../../ && husky apps/frontend/.husky",
     "type-check": "tsc --noEmit",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
