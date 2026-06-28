@@ -68,11 +68,13 @@ export default function SearchFilters() {
         </div>
         <SheetFooter>
           <Button type="submit">Apply Filters</Button>
-          <SheetClose>
-            <Button variant="outline" className="w-full">
-              Close
-            </Button>
-          </SheetClose>
+          <SheetClose
+            render={
+              <Button variant="outline" className="w-full">
+                Close
+              </Button>
+            }
+          ></SheetClose>
         </SheetFooter>
       </SheetContent>
     </Sheet>
