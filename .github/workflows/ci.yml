@@ -28,7 +28,7 @@ jobs:
         run: cd apps/frontend && bun run lint
 
       - name: Test
-        run: cd apps/frontend && bun test
+        run: cd apps/frontend && bun run test
 
       - name: Build
         run: cd apps/frontend && bun run build
