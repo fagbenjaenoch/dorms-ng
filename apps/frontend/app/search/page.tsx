@@ -15,6 +15,7 @@ import { useQuery } from "@tanstack/react-query";
 import { MapPin } from "lucide-react";
 import { useQueryState } from "nuqs";
 import { Suspense, useState } from "react";
+import { FaMagnifyingGlass } from "react-icons/fa6";
 
 export default function SearchPage() {
   const [searchTerm, setSearchTerm] = useQueryState(searchQueryParam, {
@@ -133,7 +134,8 @@ export default function SearchPage() {
             </Suspense>
           </QueryErrorBoundary>
         ) : (
-          <div className="flex flex-col items-center mt-20">
+          <div className="flex flex-col items-center mt-20 text-muted-foreground">
+            <FaMagnifyingGlass size={30} className="mb-4" />
             <h2>Nothing to see here</h2>
             <p>Start typing in the search bar to see results</p>
           </div>
