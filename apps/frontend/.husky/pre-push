@@ -36,7 +36,8 @@ fi
 if [ "$NEED_TEST" = true ]; then
   echo "🧪 Running tests..."
   # Run only tests related to changed files if possible
-  bun test --bail --findRelatedTests $CHANGED_FILES || exit 1
+  # bun test --bail --findRelatedTests $CHANGED_FILES || exit 1
+  bun run test
 else
   echo "⏭️  Skipping tests (no code changes)"
 fi
