@@ -16,6 +16,7 @@ import { Slider } from "./ui/slider";
 import { useCallback, useState } from "react";
 import useMoneyFormat from "@/lib/hooks/useMoneyFormat";
 import { useQueryStates } from "nuqs";
+import { BsFillCircleFill } from "react-icons/bs";
 
 const defaultPriceRange = [200_000, 300_000];
 const maxPrice = 5_000_000;
@@ -68,6 +69,7 @@ export default function SearchFilters() {
   const formatter = useMoneyFormat("standard");
   const [minMax, setMinMax] = useState(defaultPriceRange);
   const [open, setOpen] = useState(false);
+  const [isDirty, setIsDirty] = useState(false);
   const [appliedFilters, setAppliedFilters] = useQueryStates(filterParsers, {
     history: "push",
     shallow: false,
@@ -82,6 +84,7 @@ export default function SearchFilters() {
   const handleSortByChange = useCallback(
     (value: SortOption) => {
       setDraftFilters({ ...draftFilters, sortBy: value });
+      setIsDirty(true);
     },
     [draftFilters, setDraftFilters],
   );
@@ -94,6 +97,7 @@ export default function SearchFilters() {
         minPrice: value?.[0] ?? null,
         maxPrice: value?.[1] ?? null,
       });
+      setIsDirty(true);
     },
     [draftFilters, setDraftFilters, setMinMax],
   );
@@ -101,6 +105,7 @@ export default function SearchFilters() {
   const handleIsVerifiedChange = useCallback(
     (value: boolean) => {
       setDraftFilters({ ...draftFilters, isVerified: value });
+      setIsDirty(true);
     },
     [draftFilters, setDraftFilters],
   );
@@ -113,6 +118,7 @@ export default function SearchFilters() {
       isVerified: draftFilters.isVerified,
     });
     setOpen(false);
+    setIsDirty(prev => prev !== false);
   }, [draftFilters, setAppliedFilters]);
 
   const resetFilters = useCallback(() => {
@@ -123,13 +129,17 @@ export default function SearchFilters() {
       isVerified: false,
     });
     setMinMax(defaultPriceRange);
+    setIsDirty(false);
   }, [setDraftFilters, setMinMax]);
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger
         render={
-          <Button variant="ghost" onClick={() => setOpen(true)}>
+          <Button variant="ghost" onClick={() => setOpen(true)} className="relative">
+            {isDirty && (
+              <span className="absolute top-1 right-0 w-2 h-2 bg-primary rounded-full"></span>
+            )}
             <LucideListFilter />
             Filters
           </Button>
