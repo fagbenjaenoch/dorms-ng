@@ -35,7 +35,7 @@ export default function SearchFilters() {
       ></SheetTrigger>
       <SheetContent>
         <SheetHeader>
-          <div className="flex gap-2 justify-between w-[65%]">
+          <div className="flex gap-2 items-center justify-between w-[65%]">
             <Button variant="ghost">Clear Filters</Button>
             <SheetTitle className="text-xl font-bold text-center">Filter</SheetTitle>
           </div>
