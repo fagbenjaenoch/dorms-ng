@@ -41,7 +41,16 @@ export default function SearchFilters() {
             <SheetTitle className="text-xl font-bold text-center">Filter</SheetTitle>
           </div>
         </SheetHeader>
-        <div className="px-4 flex flex-col gap-4">
+        <div className="px-4 space-y-12">
+          <div>
+            <Label className="font-semibold text-lg">Sort By</Label>
+            <div className="flex gap-4">
+              <Button size="lg">Price: High to Low</Button>
+              <Button size="lg" variant="neutral" className="bg-muted">
+                Price: Low to High
+              </Button>
+            </div>
+          </div>
           <div>
             <Label className="text-lg font-semibold">Price Range</Label>
             <div className="flex gap-4 mb-10">
