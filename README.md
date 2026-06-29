@@ -2,7 +2,7 @@
 
 A full-stack application that serves as a trust layer for Nigerian students looking for hostels in unfamiliar campus environments.
 
-## 🏠 About The Project
+## About The Project
 
 Finding accommodation as a student in a new campus environment can be challenging and risky. This app solves that problem by providing a transparent marketplace where students can:
 
@@ -13,14 +13,14 @@ Finding accommodation as a student in a new campus environment can be challengin
 
 The platform combines modern web technologies to create a seamless experience for both students and hostel providers.
 
-## ✨ Key Features
+## Key Features
 
 - **Trust Layer**: Verified listings to prevent misleading information
 - **Virtual Tours**: Interactive room previews
 - **Detailed Listings**: Complete amenity information and contact details
 - **Student-Focused**: Specifically designed for Nigerian university students
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Frontend
 - **Framework**: Next.js
@@ -39,7 +39,7 @@ The platform combines modern web technologies to create a seamless experience fo
 - [New Relic](https://newrelic.com)
 - [Posthog](https://posthog.com)
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - [Bun](https://bun.sh/) (for frontend)
@@ -91,9 +91,9 @@ docker-compose up
 
 **Without Docker**
 - Frontend: `bun run dev`
-- Backend: `go run main.go`
+- Backend: `task dev`
 
-## 🏗️ Project Structure
+## Project Structure
 
 ```
 hostel-marketplace-app/
@@ -106,7 +106,7 @@ hostel-marketplace-app/
 └── README.md
 ```
 
-## 🔧 Development
+## Development
 
 ### Frontend (with Bun)
 ```bash
@@ -141,11 +141,11 @@ bun add -d [dev-package-name]
 go get [package-name]
 ```
 
-## 📦 Deployment
+## Deployment
 
 The application is configured for deployment on Vercel (frontend) with a containerized backend. The CI/CD pipeline (GitHub Actions) handles automated builds and tests. Bun's fast startup time makes it an excellent choice for serverless deployment environments.
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
@@ -155,16 +155,16 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## 📝 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 👤 Author
+## Author
 
 **Enoch Fagbenja**
 - GitHub: [@fagbenjaenoch](https://github.com/fagbenjaenoch)
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - Built with the goal of simplifying student housing in Nigeria
 - Inspired by Airbnb's trust and transparency model
