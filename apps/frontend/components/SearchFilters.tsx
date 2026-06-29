@@ -18,7 +18,7 @@ import useMoneyFormat from "@/lib/hooks/useMoneyFormat";
 
 const defaultPriceRange = [200_000, 300_000];
 const maxPrice = 5_000_000;
-const minPrice = 20_000;
+const minPrice = 0;
 
 export default function SearchFilters() {
   const formatter = useMoneyFormat("standard");
@@ -43,9 +43,27 @@ export default function SearchFilters() {
         </SheetHeader>
         <div className="px-4 flex flex-col gap-4">
           <div>
-            <Label className="text-lg font-bold">
-              Price Range: {minMax.map(m => formatter.format(m)).join(", ")}
-            </Label>
+            <Label className="text-lg font-semibold">Price Range</Label>
+            <div className="flex gap-4 mb-10">
+              <div className="bg-muted rounded-xl p-3 font-semibold">
+                <p className="text-muted-foreground">Min (₦)</p>
+                <input
+                  type="number"
+                  className="w-full focus:outline-none text-lg"
+                  value={minMax[0]}
+                  onChange={e => setMinMax(prev => [Number(e.target.value), prev[1]])}
+                />
+              </div>
+              <div className="bg-muted rounded-xl p-3 font-semibold">
+                <p className="text-muted-foreground">Max (₦)</p>
+                <input
+                  type="number"
+                  className="w-full focus:outline-none text-lg"
+                  value={minMax[1]}
+                  onChange={e => setMinMax(prev => [prev[0], Number(e.target.value)])}
+                />
+              </div>
+            </div>
             <div className="relative w-full">
               <span className="absolute left-0 -top-5 text-xs text-muted-foreground">
                 {formatter.format(minPrice)}
@@ -65,7 +83,7 @@ export default function SearchFilters() {
             </div>
           </div>
           <Field orientation="horizontal">
-            <FieldLabel className="font-bold text-lg">Verfied listings</FieldLabel>
+            <FieldLabel className="font-semibold text-lg">Verfied listings</FieldLabel>
             <Checkbox className="w-5 h-5" />
           </Field>
         </div>
