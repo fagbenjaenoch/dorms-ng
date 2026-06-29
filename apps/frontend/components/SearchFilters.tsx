@@ -16,10 +16,11 @@ import { Slider } from "./ui/slider";
 import { useState } from "react";
 import useMoneyFormat from "@/lib/hooks/useMoneyFormat";
 
+const defaultPriceRange = [200_000, 300_000];
+const maxPrice = 5_000_000;
+const minPrice = 20_000;
+
 export default function SearchFilters() {
-  const defaultPriceRange = [200_000, 300_000];
-  const maxPrice = 10_000_000;
-  const minPrice = 20_000;
   const formatter = useMoneyFormat("standard");
   const [minMax, setMinMax] = useState(defaultPriceRange);
 
@@ -42,7 +43,9 @@ export default function SearchFilters() {
         </SheetHeader>
         <div className="px-4 flex flex-col gap-4">
           <div>
-            <Label className="text-lg font-bold">Price Range: {minMax.join(", ")}</Label>
+            <Label className="text-lg font-bold">
+              Price Range: {minMax.map(m => formatter.format(m)).join(", ")}
+            </Label>
             <div className="relative w-full">
               <span className="absolute left-0 -top-5 text-xs text-muted-foreground">
                 {formatter.format(minPrice)}
@@ -57,7 +60,7 @@ export default function SearchFilters() {
                 onValueChange={value => setMinMax(value as number[])}
                 min={minPrice}
                 max={maxPrice}
-                step={1}
+                step={100}
               />
             </div>
           </div>
