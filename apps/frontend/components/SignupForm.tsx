@@ -72,7 +72,7 @@ export default function SignupForm() {
               >
                 Full Name
               </FieldLabel>
-              <InputGroup>
+              <InputGroup size={"lg"}>
                 <InputGroupInput
                   {...field}
                   id="email"
@@ -95,7 +95,7 @@ export default function SignupForm() {
               <FieldLabel htmlFor="email" className="uppercase text-xs">
                 Email
               </FieldLabel>
-              <InputGroup>
+              <InputGroup size={"lg"}>
                 <InputGroupInput
                   {...field}
                   id="email"
@@ -119,7 +119,7 @@ export default function SignupForm() {
               <FieldLabel htmlFor="password" className="uppercase text-xs">
                 Password
               </FieldLabel>
-              <InputGroup>
+              <InputGroup size={"lg"}>
                 <InputGroupInput
                   {...field}
                   id="password"

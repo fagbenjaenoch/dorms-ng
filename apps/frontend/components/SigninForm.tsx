@@ -63,7 +63,7 @@ export default function SigninForm() {
               <FieldLabel htmlFor="email" className="uppercase text-xs">
                 Email
               </FieldLabel>
-              <InputGroup>
+              <InputGroup size="lg">
                 <InputGroupInput
                   {...field}
                   id="email"
@@ -87,7 +87,7 @@ export default function SigninForm() {
               <FieldLabel htmlFor="password" className="uppercase text-xs">
                 Password
               </FieldLabel>
-              <InputGroup>
+              <InputGroup size={"lg"}>
                 <InputGroupInput
                   {...field}
                   id="password"
