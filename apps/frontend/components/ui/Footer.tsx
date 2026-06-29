@@ -66,10 +66,11 @@ export default function Footer() {
           </div>
         </div>
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-primary-light/50 text-xs font-medium tracking-wider">
-            © {getCurrentYear()} Hostel.ng. All rights reserved. Built for Nigerian
-            Students.
-          </p>
+          <div className="text-primary-light/50 text-xs font-medium tracking-wider flex gap-2">
+            <p>© {getCurrentYear()} Hostel.ng</p>
+            <p>All rights reserved</p>
+            <p>Built for Nigerian Students</p>
+          </div>
           <div className="flex gap-6">
             <Link
               className="text-primary-light/60 hover:text-orange-500 transition-colors duration-300"
