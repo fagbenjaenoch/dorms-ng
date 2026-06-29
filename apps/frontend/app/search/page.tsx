@@ -9,6 +9,7 @@ import Footer from "@/components/ui/Footer";
 import PropertyCardSkeleton from "@/components/ui/PropertyCardSkeleton";
 import { placeSearch } from "@/lib/api/search";
 import { APIResponse, Place } from "@/lib/dto";
+import { useClickOutside } from "@/lib/hooks/useClickOutside";
 import useDebounce from "@/lib/hooks/useDebounce";
 import { AreaTypeEnum, idParam, searchQueryParam, typeParam } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
@@ -28,6 +29,8 @@ export default function SearchPage() {
     defaultValue: "",
   });
   const [showDropdown, setShowDropdown] = useState(searchTerm.length > 0);
+
+  const ref = useClickOutside<HTMLInputElement>(() => setShowDropdown(false));
 
   const debounceSearchTerm = useDebounce(searchTerm, 300);
 
@@ -72,7 +75,7 @@ export default function SearchPage() {
               Discover <span className="text-primary">places</span>
             </h1>
             <div className="flex items-center justify-between">
-              <div className="relative flex-1 max-w-xl">
+              <div className="relative flex-1 max-w-xl" ref={ref}>
                 <LocationSearch
                   searchTerm={searchTerm}
                   handleChange={e => setSearchTerm(e.target.value)}
