@@ -13,22 +13,123 @@ import { Label } from "./ui/label";
 import { Field, FieldLabel } from "./ui/field";
 import { Checkbox } from "./ui/checkbox";
 import { Slider } from "./ui/slider";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import useMoneyFormat from "@/lib/hooks/useMoneyFormat";
+import { useQueryStates } from "nuqs";
 
 const defaultPriceRange = [200_000, 300_000];
 const maxPrice = 5_000_000;
 const minPrice = 0;
 
+type SortOption = "price-asc" | "price-desc";
+
+const filterParsers = {
+  sortBy: {
+    defaultValue: "price-asc" as SortOption,
+    parse: (value: string): SortOption => {
+      const validOptions: SortOption[] = ["price-asc", "price-desc"];
+      return validOptions.includes(value as SortOption)
+        ? (value as SortOption)
+        : "price-asc";
+    },
+    serialize: (value: SortOption) => value,
+  },
+  minPrice: {
+    defaultValue: minPrice,
+    parse: (value: string) => {
+      const parsed = parseInt(value);
+      return isNaN(parsed) ? null : parsed;
+    },
+    serialize: (value: number | null) => (value === null ? "" : value.toString()),
+  },
+  maxPrice: {
+    defaultValue: maxPrice,
+    parse: (value: string) => {
+      const parsed = parseInt(value);
+      return isNaN(parsed) ? null : parsed;
+    },
+    serialize: (value: number | null) => (value === null ? "" : value.toString()),
+  },
+  isVerified: {
+    defaultValue: false,
+    parse: (value: string) => value === "true",
+    serialize: (value: boolean) => value.toString(),
+  },
+};
+
+interface DraftFilters {
+  sortBy: SortOption;
+  minPrice: number | null;
+  maxPrice: number | null;
+  isVerified: boolean;
+}
+
 export default function SearchFilters() {
   const formatter = useMoneyFormat("standard");
   const [minMax, setMinMax] = useState(defaultPriceRange);
+  const [open, setOpen] = useState(false);
+  const [appliedFilters, setAppliedFilters] = useQueryStates(filterParsers, {
+    history: "push",
+    shallow: false,
+  });
+  const [draftFilters, setDraftFilters] = useState<DraftFilters>({
+    sortBy: appliedFilters.sortBy ?? "price-asc",
+    minPrice: appliedFilters.minPrice ?? null,
+    maxPrice: appliedFilters.maxPrice ?? null,
+    isVerified: appliedFilters.isVerified ?? false,
+  });
+
+  const handleSortByChange = useCallback(
+    (value: SortOption) => {
+      setDraftFilters({ ...draftFilters, sortBy: value });
+    },
+    [draftFilters, setDraftFilters],
+  );
+
+  const handlePriceRangeChange = useCallback(
+    (value: number[] | null) => {
+      setMinMax(value !== null ? value : defaultPriceRange);
+      setDraftFilters({
+        ...draftFilters,
+        minPrice: value?.[0] ?? null,
+        maxPrice: value?.[1] ?? null,
+      });
+    },
+    [draftFilters, setDraftFilters, setMinMax],
+  );
+
+  const handleIsVerifiedChange = useCallback(
+    (value: boolean) => {
+      setDraftFilters({ ...draftFilters, isVerified: value });
+    },
+    [draftFilters, setDraftFilters],
+  );
+
+  const applyFilters = useCallback(() => {
+    setAppliedFilters({
+      sortBy: draftFilters.sortBy,
+      minPrice: draftFilters.minPrice,
+      maxPrice: draftFilters.maxPrice,
+      isVerified: draftFilters.isVerified,
+    });
+    setOpen(false);
+  }, [draftFilters, setAppliedFilters]);
+
+  const resetFilters = useCallback(() => {
+    setDraftFilters({
+      sortBy: "price-asc",
+      minPrice: null,
+      maxPrice: null,
+      isVerified: false,
+    });
+    setMinMax(defaultPriceRange);
+  }, [setDraftFilters, setMinMax]);
 
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger
         render={
-          <Button variant="ghost">
+          <Button variant="ghost" onClick={() => setOpen(true)}>
             <LucideListFilter />
             Filters
           </Button>
@@ -37,7 +138,9 @@ export default function SearchFilters() {
       <SheetContent>
         <SheetHeader>
           <div className="flex gap-2 items-center justify-between w-[65%]">
-            <Button variant="ghost">Clear Filters</Button>
+            <Button variant="ghost" onClick={resetFilters}>
+              Clear Filters
+            </Button>
             <SheetTitle className="text-xl font-bold text-center">Filter</SheetTitle>
           </div>
         </SheetHeader>
@@ -45,8 +148,18 @@ export default function SearchFilters() {
           <div>
             <Label className="font-semibold text-lg">Sort By</Label>
             <div className="flex gap-4">
-              <Button size="lg">Price: High to Low</Button>
-              <Button size="lg" variant="neutral" className="bg-muted">
+              <Button
+                size="lg"
+                variant={draftFilters.sortBy === "price-desc" ? "default" : "neutral"}
+                onClick={() => handleSortByChange("price-desc")}
+              >
+                Price: High to Low
+              </Button>
+              <Button
+                size="lg"
+                variant={draftFilters.sortBy === "price-asc" ? "default" : "neutral"}
+                onClick={() => handleSortByChange("price-asc")}
+              >
                 Price: Low to High
               </Button>
             </div>
@@ -59,8 +172,10 @@ export default function SearchFilters() {
                 <input
                   type="number"
                   className="w-full focus:outline-none text-lg"
-                  value={minMax[0]}
-                  onChange={e => setMinMax(prev => [Number(e.target.value), prev[1]])}
+                  value={draftFilters.minPrice ?? minMax[0]}
+                  onChange={e =>
+                    handlePriceRangeChange([Number(e.target.value), minMax[1]])
+                  }
                 />
               </div>
               <div className="bg-muted rounded-xl p-3 font-semibold">
@@ -68,8 +183,10 @@ export default function SearchFilters() {
                 <input
                   type="number"
                   className="w-full focus:outline-none text-lg"
-                  value={minMax[1]}
-                  onChange={e => setMinMax(prev => [prev[0], Number(e.target.value)])}
+                  value={draftFilters.maxPrice ?? minMax[1]}
+                  onChange={e =>
+                    handlePriceRangeChange([minMax[0], Number(e.target.value)])
+                  }
                 />
               </div>
             </div>
@@ -84,7 +201,7 @@ export default function SearchFilters() {
                 className="my-6"
                 defaultValue={defaultPriceRange}
                 value={minMax}
-                onValueChange={value => setMinMax(value as number[])}
+                onValueChange={value => handlePriceRangeChange(value as number[])}
                 min={minPrice}
                 max={maxPrice}
                 step={100}
@@ -93,11 +210,17 @@ export default function SearchFilters() {
           </div>
           <Field orientation="horizontal">
             <FieldLabel className="font-semibold text-lg">Verfied listings</FieldLabel>
-            <Checkbox className="w-5 h-5" />
+            <Checkbox
+              className="w-5 h-5"
+              checked={draftFilters.isVerified ?? false}
+              onCheckedChange={handleIsVerifiedChange}
+            />
           </Field>
         </div>
         <SheetFooter>
-          <Button type="submit">Apply Filters</Button>
+          <Button type="submit" onClick={applyFilters}>
+            Apply Filters
+          </Button>
           <SheetClose
             render={
               <Button variant="outline" className="w-full">
