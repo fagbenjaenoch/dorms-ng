@@ -62,8 +62,8 @@ export default function SearchFilters() {
             </div>
           </div>
           <Field orientation="horizontal">
-            <FieldLabel>Verfied listings</FieldLabel>
-            <Checkbox />
+            <FieldLabel className="font-bold text-lg">Verfied listings</FieldLabel>
+            <Checkbox className="w-5 h-5" />
           </Field>
         </div>
         <SheetFooter>
