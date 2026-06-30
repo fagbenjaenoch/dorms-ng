@@ -71,12 +71,12 @@ export async function fetchHostelsByArea(
     );
 
     if (!response.ok) {
-      throw new Error("Failed to fetch hostels by type");
+      throw new Error("Failed to fetch hostels by area");
     }
 
     return response.json() as any as APIResponse<Hostel[]>;
   } catch (error) {
     console.error(error);
-    throw new Error("Failed to fetch hostels by type");
+    throw new Error("Failed to fetch hostels by area");
   }
 }

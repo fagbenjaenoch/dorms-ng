@@ -1,8 +1,6 @@
 import { APIResponse, Place, SearchResult } from "../dto";
 import { searchQueryParam } from "../utils";
 
-type TypeEnum = "institution" | "neighborhood";
-
 export async function search(
   query: string,
   { signal }: { signal: AbortSignal },
@@ -34,9 +32,9 @@ export async function placeSearch(
       signal,
     });
 
-    if (!res.json) throw new Error("could not search item");
+    if (!res.json) throw new Error("could not search place");
     return res.json();
   } catch (err) {
-    throw new Error("could not search item");
+    throw new Error("could not search place");
   }
 }
