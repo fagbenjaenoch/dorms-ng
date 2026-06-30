@@ -16,7 +16,6 @@ import { Slider } from "./ui/slider";
 import { useCallback, useState } from "react";
 import useMoneyFormat from "@/lib/hooks/useMoneyFormat";
 import { useQueryStates } from "nuqs";
-import { BsFillCircleFill } from "react-icons/bs";
 
 const defaultPriceRange = [200_000, 300_000];
 const maxPrice = 5_000_000;
