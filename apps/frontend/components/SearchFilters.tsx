@@ -16,49 +16,14 @@ import { Slider } from "./ui/slider";
 import { useCallback, useState } from "react";
 import useMoneyFormat from "@/lib/hooks/useMoneyFormat";
 import { useQueryStates } from "nuqs";
+import { hostelFilterParsers, SortByValue } from "@/lib/api/filter";
 
 const defaultPriceRange = [200_000, 300_000];
 const maxPrice = 5_000_000;
 const minPrice = 0;
 
-type SortOption = "price-asc" | "price-desc";
-
-const filterParsers = {
-  sortBy: {
-    defaultValue: "price-asc" as SortOption,
-    parse: (value: string): SortOption => {
-      const validOptions: SortOption[] = ["price-asc", "price-desc"];
-      return validOptions.includes(value as SortOption)
-        ? (value as SortOption)
-        : "price-asc";
-    },
-    serialize: (value: SortOption) => value,
-  },
-  minPrice: {
-    defaultValue: minPrice,
-    parse: (value: string) => {
-      const parsed = parseInt(value);
-      return isNaN(parsed) ? null : parsed;
-    },
-    serialize: (value: number | null) => (value === null ? "" : value.toString()),
-  },
-  maxPrice: {
-    defaultValue: maxPrice,
-    parse: (value: string) => {
-      const parsed = parseInt(value);
-      return isNaN(parsed) ? null : parsed;
-    },
-    serialize: (value: number | null) => (value === null ? "" : value.toString()),
-  },
-  isVerified: {
-    defaultValue: false,
-    parse: (value: string) => value === "true",
-    serialize: (value: boolean) => value.toString(),
-  },
-};
-
 interface DraftFilters {
-  sortBy: SortOption;
+  sortBy: SortByValue;
   minPrice: number | null;
   maxPrice: number | null;
   isVerified: boolean;
@@ -69,19 +34,19 @@ export default function SearchFilters() {
   const [minMax, setMinMax] = useState(defaultPriceRange);
   const [open, setOpen] = useState(false);
   const [isDirty, setIsDirty] = useState(false);
-  const [appliedFilters, setAppliedFilters] = useQueryStates(filterParsers, {
+  const [appliedFilters, setAppliedFilters] = useQueryStates(hostelFilterParsers, {
     history: "push",
     shallow: false,
   });
   const [draftFilters, setDraftFilters] = useState<DraftFilters>({
-    sortBy: appliedFilters.sortBy ?? "price-asc",
+    sortBy: (appliedFilters.sortBy as SortByValue) ?? ("price-asc" as const),
     minPrice: appliedFilters.minPrice ?? null,
     maxPrice: appliedFilters.maxPrice ?? null,
     isVerified: appliedFilters.isVerified ?? false,
   });
 
   const handleSortByChange = useCallback(
-    (value: SortOption) => {
+    (value: SortByValue) => {
       setDraftFilters({ ...draftFilters, sortBy: value });
       setIsDirty(true);
     },

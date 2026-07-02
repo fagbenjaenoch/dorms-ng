@@ -7,32 +7,29 @@ import LocationSearch from "@/components/LocationSearch";
 import SearchFilters from "@/components/SearchFilters";
 import Footer from "@/components/ui/Footer";
 import PropertyCardSkeleton from "@/components/ui/PropertyCardSkeleton";
+import { AreaType, hostelFilterParsers } from "@/lib/api/filter";
 import { placeSearch } from "@/lib/api/search";
 import { APIResponse, Place } from "@/lib/dto";
 import { useClickOutside } from "@/lib/hooks/useClickOutside";
 import useDebounce from "@/lib/hooks/useDebounce";
-import { AreaTypeEnum, idParam, searchQueryParam, typeParam } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { MapPin } from "lucide-react";
-import { useQueryState } from "nuqs";
+import { useQueryStates } from "nuqs";
 import { Suspense, useState } from "react";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 
 export default function SearchPage() {
-  const [searchTerm, setSearchTerm] = useQueryState(searchQueryParam, {
-    defaultValue: "",
+  const [hostelFilters, setHostelFilters] = useQueryStates(hostelFilterParsers, {
+    history: "push",
   });
-  const [areaType, setAreaType] = useQueryState(typeParam, {
-    defaultValue: "",
-  });
-  const [areaId, setAreaId] = useQueryState(idParam, {
-    defaultValue: "",
-  });
-  const [showDropdown, setShowDropdown] = useState(searchTerm.length > 0);
+
+  const [showDropdown, setShowDropdown] = useState(
+    hostelFilters.searchTerm && hostelFilters.searchTerm.length > 0,
+  );
 
   const ref = useClickOutside<HTMLInputElement>(() => setShowDropdown(false));
 
-  const debounceSearchTerm = useDebounce(searchTerm, 300);
+  const debounceSearchTerm = useDebounce(hostelFilters.searchTerm, 300);
 
   const query = useQuery<APIResponse<Place[]>>({
     queryKey: ["placeSearch", debounceSearchTerm],
@@ -41,9 +38,11 @@ export default function SearchPage() {
   });
 
   const clearSearch = () => {
-    setSearchTerm(null);
-    setAreaType(null);
-    setAreaId(null);
+    setHostelFilters({
+      searchTerm: null,
+      areaType: null,
+      areaId: null,
+    });
   };
 
   const handleSearchResultClick = ({
@@ -51,14 +50,16 @@ export default function SearchPage() {
     id,
     name,
   }: {
-    type: string;
+    type: AreaType;
     id: string;
     name: string;
   }) => {
-    setAreaType(type);
-    setAreaId(id);
+    setHostelFilters({
+      areaType: type,
+      areaId: id,
+      searchTerm: name,
+    });
     setShowDropdown(false);
-    setSearchTerm(name);
   };
 
   const showDropdownOnClick = (e: React.MouseEvent<HTMLInputElement>) => {
@@ -77,13 +78,13 @@ export default function SearchPage() {
             <div className="flex items-center justify-between">
               <div className="relative flex-1 max-w-xl" ref={ref}>
                 <LocationSearch
-                  searchTerm={searchTerm}
-                  handleChange={e => setSearchTerm(e.target.value)}
+                  searchTerm={hostelFilters.searchTerm ? hostelFilters.searchTerm : ""}
+                  handleChange={e => setHostelFilters({ searchTerm: e.target.value })}
                   clearSearch={clearSearch}
                   onClick={showDropdownOnClick}
                 />
                 {showDropdown &&
-                  searchTerm.length > 0 &&
+                  hostelFilters.searchTerm &&
                   query.isFetched &&
                   (!!query.data?.payload?.length && query.data.payload.length > 0 ? (
                     <div className="absolute z-3 top-full mt-3 left-0 w-full flex flex-col gap-2 bg-primary-foreground shadow-lg ring-1 ring-gray-500/5 p-2 rounded-xl">
@@ -93,7 +94,7 @@ export default function SearchPage() {
                           key={searchResult.place_id}
                           onClick={() =>
                             handleSearchResultClick({
-                              type: searchResult.place_type,
+                              type: searchResult.place_type as AreaType,
                               id: searchResult.place_id,
                               name: searchResult.name,
                             })
@@ -117,7 +118,10 @@ export default function SearchPage() {
             </div>
           </div>
         </div>
-        {areaType.length > 0 ? (
+        {hostelFilters.areaType &&
+        hostelFilters.areaId &&
+        hostelFilters.searchTerm &&
+        hostelFilters.areaType.length > 0 ? (
           <QueryErrorBoundary errorFallback={HostelResultsError}>
             <Suspense
               fallback={
@@ -129,9 +133,9 @@ export default function SearchPage() {
               }
             >
               <HostelResults
-                areaType={areaType as AreaTypeEnum}
-                areaId={areaId}
-                areaName={searchTerm}
+                areaType={hostelFilters.areaType as AreaType}
+                areaId={hostelFilters.areaId}
+                areaName={hostelFilters.searchTerm}
                 showInsight
               />
             </Suspense>
