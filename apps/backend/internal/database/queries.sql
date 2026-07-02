@@ -41,13 +41,13 @@ SELECT * FROM hostels WHERE id = @id LIMIT 1;
 SELECT * FROM hostels WHERE slug = @slug LIMIT 1;
 
 -- name: GetHostelsByNeighborhood :many
-SELECT * FROM hostels WHERE neighborhood_id = @neighborhood_id ORDER BY name;
+SELECT * FROM hostels WHERE neighborhood_id = @neighborhood_id ORDER BY name LIMIT $1 OFFSET $2;
 
 -- name: GetHostelsByCity :many
 SELECT * FROM hostels WHERE city = @city ORDER BY name;
 
 -- name: GetHostelsByInstitution :many
-SELECT hostels.* FROM hostels INNER JOIN neighborhoods ON hostels.neighborhood_id = neighborhoods.id WHERE neighborhoods.institution_id = @institution_id;
+SELECT hostels.* FROM hostels INNER JOIN neighborhoods ON hostels.neighborhood_id = neighborhoods.id WHERE neighborhoods.institution_id = @institution_id LIMIT $1 OFFSET $2;
 
 -- name: CheckHostelExists :one
 SELECT EXISTS(SELECT 1 FROM hostels WHERE LOWER(name) = LOWER(@name));

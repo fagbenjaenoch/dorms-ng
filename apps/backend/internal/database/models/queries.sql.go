@@ -541,11 +541,17 @@ func (q *Queries) GetHostelsByCity(ctx context.Context, city sql.NullString) ([]
 }
 
 const getHostelsByInstitution = `-- name: GetHostelsByInstitution :many
-SELECT hostels.id, hostels.name, hostels.address, hostels.description, hostels.city, hostels.neighborhood, hostels.neighborhood_id, hostels.latitude, hostels.longitude, hostels.google_place_id, hostels.estimated_price_range, hostels.distance_to_gate_km, hostels.is_verified_by_admin, hostels.photo_urls, hostels.slug, hostels.created_at, hostels.updated_at FROM hostels INNER JOIN neighborhoods ON hostels.neighborhood_id = neighborhoods.id WHERE neighborhoods.institution_id = $1
+SELECT hostels.id, hostels.name, hostels.address, hostels.description, hostels.city, hostels.neighborhood, hostels.neighborhood_id, hostels.latitude, hostels.longitude, hostels.google_place_id, hostels.estimated_price_range, hostels.distance_to_gate_km, hostels.is_verified_by_admin, hostels.photo_urls, hostels.slug, hostels.created_at, hostels.updated_at FROM hostels INNER JOIN neighborhoods ON hostels.neighborhood_id = neighborhoods.id WHERE neighborhoods.institution_id = $3 LIMIT $1 OFFSET $2
 `
 
-func (q *Queries) GetHostelsByInstitution(ctx context.Context, institutionID string) ([]Hostel, error) {
-	rows, err := q.db.QueryContext(ctx, getHostelsByInstitution, institutionID)
+type GetHostelsByInstitutionParams struct {
+	Limit         int32  `json:"limit"`
+	Offset        int32  `json:"offset"`
+	InstitutionID string `json:"institution_id"`
+}
+
+func (q *Queries) GetHostelsByInstitution(ctx context.Context, arg GetHostelsByInstitutionParams) ([]Hostel, error) {
+	rows, err := q.db.QueryContext(ctx, getHostelsByInstitution, arg.Limit, arg.Offset, arg.InstitutionID)
 	if err != nil {
 		return nil, err
 	}
@@ -586,11 +592,17 @@ func (q *Queries) GetHostelsByInstitution(ctx context.Context, institutionID str
 }
 
 const getHostelsByNeighborhood = `-- name: GetHostelsByNeighborhood :many
-SELECT id, name, address, description, city, neighborhood, neighborhood_id, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, photo_urls, slug, created_at, updated_at FROM hostels WHERE neighborhood_id = $1 ORDER BY name
+SELECT id, name, address, description, city, neighborhood, neighborhood_id, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, photo_urls, slug, created_at, updated_at FROM hostels WHERE neighborhood_id = $3 ORDER BY name LIMIT $1 OFFSET $2
 `
 
-func (q *Queries) GetHostelsByNeighborhood(ctx context.Context, neighborhoodID sql.NullString) ([]Hostel, error) {
-	rows, err := q.db.QueryContext(ctx, getHostelsByNeighborhood, neighborhoodID)
+type GetHostelsByNeighborhoodParams struct {
+	Limit          int32          `json:"limit"`
+	Offset         int32          `json:"offset"`
+	NeighborhoodID sql.NullString `json:"neighborhood_id"`
+}
+
+func (q *Queries) GetHostelsByNeighborhood(ctx context.Context, arg GetHostelsByNeighborhoodParams) ([]Hostel, error) {
+	rows, err := q.db.QueryContext(ctx, getHostelsByNeighborhood, arg.Limit, arg.Offset, arg.NeighborhoodID)
 	if err != nil {
 		return nil, err
 	}

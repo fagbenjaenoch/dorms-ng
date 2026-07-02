@@ -22,7 +22,7 @@ func RegisterV1Routes(s *server.Server) *chi.Mux {
 	hostelHandler := handlers.NewHostelHandler(s)
 	v1Router.Get("/hostels/{slug}", hostelHandler.GetHostel)
 	v1Router.With(middleware.ValidateRequestPayload[dto.CreateHostel]).Post("/hostels", hostelHandler.CreateHostel)
-	v1Router.Get("/hostels/search", hostelHandler.SearchHostels)
+	v1Router.With(middleware.Pagination).Get("/hostels/search", hostelHandler.SearchHostels)
 
 	// institution routes
 	institutionHandler := handlers.NewInstitutionHandler(s)

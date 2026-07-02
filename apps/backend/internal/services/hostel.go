@@ -8,6 +8,7 @@ import (
 
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/database/models"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/middleware"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/repositories"
 	"github.com/rs/zerolog"
 	"go.opentelemetry.io/otel"
@@ -119,14 +120,18 @@ func (s HostelService) GetHostel(ctx context.Context, slug string) (dto.Structur
 	}, nil
 }
 
-func (s HostelService) SearchHostels(ctx context.Context, searchType, id string) (dto.StructuredResponse, error) {
+func (s HostelService) SearchHostels(ctx context.Context, searchType, id string, paginationParams *middleware.PaginationParams) (dto.StructuredResponse, error) {
 	var res []models.Hostel
 	var err error
 
 	switch searchType {
 	case "institution":
 		s.Logger.Debug().Msg("Searching hostels by institution")
-		res, err = s.repo.Queries.GetHostelsByInstitution(ctx, id)
+		res, err = s.repo.Queries.GetHostelsByInstitution(ctx, models.GetHostelsByInstitutionParams{
+			Limit:         int32(paginationParams.Limit),
+			Offset:        int32(paginationParams.Offset),
+			InstitutionID: id,
+		})
 		if err != nil {
 			return dto.StructuredResponse{
 				Message: "could not find hostels",
@@ -136,8 +141,11 @@ func (s HostelService) SearchHostels(ctx context.Context, searchType, id string)
 
 	case "neighborhood":
 		s.Logger.Debug().Msg("Searching hostels by neighborhood")
-		q := sql.NullString{String: id, Valid: true}
-		res, err = s.repo.Queries.GetHostelsByNeighborhood(ctx, q)
+		res, err = s.repo.Queries.GetHostelsByNeighborhood(ctx, models.GetHostelsByNeighborhoodParams{
+			Limit:          int32(paginationParams.Limit),
+			Offset:         int32(paginationParams.Offset),
+			NeighborhoodID: sql.NullString{String: id, Valid: true},
+		})
 		if err != nil {
 			return dto.StructuredResponse{
 				Message: "could not find hostels",

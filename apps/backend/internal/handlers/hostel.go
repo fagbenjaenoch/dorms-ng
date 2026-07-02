@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/middleware"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/server"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/services"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/utils"
@@ -68,10 +69,17 @@ func (h *HostelHandler) GetHostel(w http.ResponseWriter, r *http.Request) {
 func (h *HostelHandler) SearchHostels(w http.ResponseWriter, r *http.Request) {
 	typ := r.URL.Query().Get(utils.TypeParam.String())
 	id := r.URL.Query().Get(utils.IdParam.String())
+	pagination := middleware.GetPaginationParams(r.Context())
 
-	h.server.Logger.Debug().Str("typ", typ).Str("id", id).Msg("search hostels")
+	h.server.Logger.Debug().
+		Str("typ", typ).
+		Str("id", id).
+		Int("page", pagination.Page).
+		Str("sortBy", pagination.SortBy).
+		Int("minPrice", pagination.MinPrice).
+		Msg("searching hostels")
 
-	res, err := h.service.SearchHostels(r.Context(), typ, id)
+	res, err := h.service.SearchHostels(r.Context(), typ, id, pagination)
 	if err != nil {
 		msg := "failed to search hostels"
 		h.server.Logger.Err(err).Msg(msg)
