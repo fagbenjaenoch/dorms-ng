@@ -164,3 +164,11 @@ export interface UploadFile {
   file: File;
   isPrimary: boolean;
 }
+
+export const defaultFilters = {
+  sortBy: "price-asc",
+  minPrice: 20_000,
+  maxPrice: 5_000_000,
+  page: 1,
+  limit: 10,
+};
