@@ -18,7 +18,7 @@ tasks:
     desc: Build the application
     cmds:
       - go build -o main ./cmd/api/main.go
-  generate-sql:
+  sqlc:
     desc: Generate SQLC bindings
     cmds:
       - sqlc generate
