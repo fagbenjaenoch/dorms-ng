@@ -166,9 +166,10 @@ export interface UploadFile {
 }
 
 export const defaultFilters = {
-  sortBy: "price-asc",
+  sortBy: "price-asc" as const,
   minPrice: 20_000,
   maxPrice: 5_000_000,
+  isVerfied: false,
   page: 1,
   limit: 10,
 };
