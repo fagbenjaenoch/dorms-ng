@@ -176,6 +176,8 @@ export default function InstitutionDetailsClient() {
                   data-location="Lagos, Nigeria"
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuCuxjCUrNAD1BiGxZOx6qtD7ADIW90zJnEUlLNMxYByrYcZqmfKvlI2NKCWKOgfyWp8aUcZvnOa_NLpUh3MDCKfx1oAJthRZIa9nn5KdZb4Uq1HPUbGvPgmDbChYeTzKmS-gN6cwN6n4rEtMcoQbik05B4WKgr4mOD1RnGHtw2F95xzPVvCaXwsB_HSppe9_LNfuqzS6zFDNcEfgz4vIEKN05-HuQNbWUaVwdB0YAPkNdUZKAAjdSsoDOVKenLNXl7pp59nLqkc6n5E"
                   alt="profile image"
+                  width={100}
+                  height={100}
                 />
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                   <div className="relative">
