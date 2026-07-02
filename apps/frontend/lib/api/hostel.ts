@@ -1,6 +1,7 @@
 import { APIResponse, Hostel } from "../dto";
 import { CreateHostelListingData } from "../forms";
 import { idParam, typeParam, UploadFile } from "../utils";
+import { PaginationOptions, paginationSerializer } from "./pagination";
 import { uploadPhoto } from "./upload";
 
 export async function createHostelListing(
@@ -64,10 +65,15 @@ export async function fetchHostel(slug: string): Promise<APIResponse<Hostel> | n
 export async function fetchHostelsByArea(
   areaType: string,
   areaId: string,
+  paginationOptions: PaginationOptions,
 ): Promise<APIResponse<Hostel[]>> {
   try {
+    const paginationParams = paginationSerializer({
+      page: paginationOptions.page,
+      limit: paginationOptions.limit,
+    });
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/hostels/search?${typeParam}=${areaType}&${idParam}=${areaId}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/hostels/search?${typeParam}=${areaType}&${idParam}=${areaId}&${paginationParams.replace("?", "")}`,
     );
 
     if (!response.ok) {
