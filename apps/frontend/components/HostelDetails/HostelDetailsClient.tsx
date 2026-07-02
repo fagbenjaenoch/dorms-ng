@@ -150,7 +150,7 @@ export default function HostelDetailsClient() {
                 Estimated Price Range
               </p>
               <h3 className="text-2xl md:text-4xl font-extrabold tracking-tighter text-on-surface">
-                ₦{formattedPrice}
+                {formattedPrice}
                 <span className="text-lg font-medium tracking-normal">/ year</span>
               </h3>
             </div>
