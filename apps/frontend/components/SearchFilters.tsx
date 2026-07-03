@@ -118,7 +118,7 @@ export default function SearchFilters() {
             <SheetTitle className="text-xl font-bold text-center">Filter</SheetTitle>
           </div>
         </SheetHeader>
-        <div className="px-4 space-y-12">
+        <div className="px-6 md:px-4 space-y-12">
           <div>
             <Label className="font-semibold text-lg">Sort By</Label>
             <div className="flex gap-4">
