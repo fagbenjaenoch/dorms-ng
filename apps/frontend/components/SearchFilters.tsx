@@ -36,7 +36,6 @@ export default function SearchFilters() {
   const [isDirty, setIsDirty] = useState(false);
   const [appliedFilters, setAppliedFilters] = useQueryStates(hostelFilterParsers, {
     history: "push",
-    shallow: false,
   });
   const [draftFilters, setDraftFilters] = useState<DraftFilters>({
     sortBy: (appliedFilters.sortBy as SortByValue) ?? ("price-asc" as const),
