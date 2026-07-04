@@ -49,7 +49,7 @@ export default function HostelResults({
           {showInsight && (
             <p className="mt-3 text-sm text-muted-foreground mb-15">
               Showing {hostelQuery.data?.payload.length} result
-              {hostelQuery.data?.payload.length !== 1 ? "s" : ""} matching your criteria
+              {hostelQuery.data?.payload.length > 1 ? "s" : ""} matching your criteria
               within <b>{areaName}</b>
             </p>
           )}
