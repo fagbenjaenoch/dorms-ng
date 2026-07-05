@@ -70,6 +70,7 @@ func (h *HostelHandler) SearchHostels(w http.ResponseWriter, r *http.Request) {
 	typ := r.URL.Query().Get(utils.AreaTypeParam.String())
 	id := r.URL.Query().Get(utils.AreaParam.String())
 	pagination := middleware.GetPaginationParams(r.Context())
+	hostelFilters := middleware.GetHostelFilterParams(r.Context())
 
 	h.server.Logger.Debug().
 		Str("typ", typ).
