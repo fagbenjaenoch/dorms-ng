@@ -1,6 +1,12 @@
 import { APIResponse, Hostel } from "../dto";
 import { CreateHostelListingData } from "../forms";
-import { idParam, typeParam, UploadFile } from "../utils";
+import { UploadFile } from "../utils";
+import {
+  AreaOptions,
+  areaSerializer,
+  HostelFilterOptions,
+  hostelFilterSerializer,
+} from "./filter";
 import { PaginationOptions, paginationSerializer } from "./pagination";
 import { uploadPhoto } from "./upload";
 
@@ -62,18 +68,34 @@ export async function fetchHostel(slug: string): Promise<APIResponse<Hostel> | n
   }
 }
 
-export async function fetchHostelsByArea(
-  areaType: string,
-  areaId: string,
-  paginationOptions: PaginationOptions,
-): Promise<APIResponse<Hostel[]>> {
+export async function fetchHostelsByArea({
+  areaFilters,
+  hostelFilters,
+  paginationFilters,
+}: {
+  areaFilters: AreaOptions;
+  hostelFilters: HostelFilterOptions;
+  paginationFilters: PaginationOptions;
+}): Promise<APIResponse<Hostel[]>> {
   try {
     const paginationParams = paginationSerializer({
-      page: paginationOptions.page,
-      limit: paginationOptions.limit,
+      page: paginationFilters.page,
+      limit: paginationFilters.limit,
+    });
+
+    const areaParams = areaSerializer({
+      areaType: areaFilters.areaType,
+      areaId: areaFilters.areaId,
+    });
+
+    const hostelFilterParams = hostelFilterSerializer({
+      sortBy: hostelFilters.sortBy,
+      minPrice: hostelFilters.minPrice,
+      maxPrice: hostelFilters.maxPrice,
+      isVerified: hostelFilters.isVerified,
     });
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/hostels/search?${typeParam}=${areaType}&${idParam}=${areaId}&${paginationParams.replace("?", "")}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/hostels/search${areaParams}&${hostelFilterParams.replace("?", "")}&${paginationParams.replace("?", "")}`,
     );
 
     if (!response.ok) {
@@ -82,7 +104,6 @@ export async function fetchHostelsByArea(
 
     return response.json() as any as APIResponse<Hostel[]>;
   } catch (error) {
-    console.error(error);
     throw new Error("Failed to fetch hostels by area");
   }
 }

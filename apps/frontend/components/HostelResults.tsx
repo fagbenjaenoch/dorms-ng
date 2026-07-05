@@ -6,7 +6,7 @@ import { APIResponse, Hostel } from "@/lib/dto";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useQueryStates } from "nuqs";
 import { paginationSerializerObject } from "@/lib/api/pagination";
-import { AreaType, hostelFilterParsers } from "@/lib/api/filter";
+import { areaFilterParsers, AreaType, hostelFilterParsers } from "@/lib/api/filter";
 import { useEffect } from "react";
 
 interface HostelResultProps {
@@ -31,9 +31,12 @@ export default function HostelResults({
   const [hostelFilters, setHostelFilters] = useQueryStates(hostelFilterParsers, {
     history: "push",
   });
+  const [areaFilters, setAreaFilters] = useQueryStates(areaFilterParsers, {
+    history: "push",
+  });
   const hostelQuery = useSuspenseQuery<APIResponse<Hostel[]>>({
     queryKey: ["hostels", areaId],
-    queryFn: () => fetchHostelsByArea(areaType, areaId, paginationFilters),
+    queryFn: () => fetchHostelsByArea({ areaFilters, hostelFilters, paginationFilters }),
   });
 
   const hostels = hostelQuery.data?.payload;
