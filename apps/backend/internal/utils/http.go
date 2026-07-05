@@ -16,9 +16,9 @@ func (q QueryParam) String() string {
 }
 
 const (
-	SearchParam QueryParam = "q"
-	IdParam     QueryParam = "id"
-	TypeParam   QueryParam = "type"
+	SearchParam   QueryParam = "q"
+	AreaParam     QueryParam = "areaId"
+	AreaTypeParam QueryParam = "areaType"
 )
 
 func WriteJSON(w http.ResponseWriter, response dto.StructuredResponse) {
