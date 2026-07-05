@@ -120,7 +120,7 @@ func (s HostelService) GetHostel(ctx context.Context, slug string) (dto.Structur
 	}, nil
 }
 
-func (s HostelService) SearchHostels(ctx context.Context, searchType, id string, paginationParams *middleware.PaginationParams) (dto.StructuredResponse, error) {
+func (s HostelService) SearchHostels(ctx context.Context, searchType, id string, filters *middleware.HostelFilterParams, paginationParams *middleware.PaginationParams) (dto.StructuredResponse, error) {
 	var res []models.Hostel
 	var err error
 
@@ -130,6 +130,8 @@ func (s HostelService) SearchHostels(ctx context.Context, searchType, id string,
 		res, err = s.repo.Queries.GetHostelsByInstitution(ctx, models.GetHostelsByInstitutionParams{
 			Limit:         int32(paginationParams.Limit),
 			Offset:        int32(paginationParams.Offset),
+			MinPrice:      sql.NullFloat64{Float64: float64(filters.MinPrice), Valid: true},
+			MaxPrice:      sql.NullFloat64{Float64: float64(filters.MaxPrice), Valid: true},
 			InstitutionID: id,
 		})
 		if err != nil {
@@ -144,6 +146,8 @@ func (s HostelService) SearchHostels(ctx context.Context, searchType, id string,
 		res, err = s.repo.Queries.GetHostelsByNeighborhood(ctx, models.GetHostelsByNeighborhoodParams{
 			Limit:          int32(paginationParams.Limit),
 			Offset:         int32(paginationParams.Offset),
+			MinPrice:       sql.NullFloat64{Float64: float64(filters.MinPrice), Valid: true},
+			MaxPrice:       sql.NullFloat64{Float64: float64(filters.MaxPrice), Valid: true},
 			NeighborhoodID: sql.NullString{String: id, Valid: true},
 		})
 		if err != nil {
