@@ -67,19 +67,20 @@ func (h *HostelHandler) GetHostel(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *HostelHandler) SearchHostels(w http.ResponseWriter, r *http.Request) {
-	typ := r.URL.Query().Get(utils.TypeParam.String())
-	id := r.URL.Query().Get(utils.IdParam.String())
+	typ := r.URL.Query().Get(utils.AreaTypeParam.String())
+	id := r.URL.Query().Get(utils.AreaParam.String())
 	pagination := middleware.GetPaginationParams(r.Context())
 
 	h.server.Logger.Debug().
 		Str("typ", typ).
 		Str("id", id).
 		Int("page", pagination.Page).
-		Str("sortBy", pagination.SortBy).
-		Int("minPrice", pagination.MinPrice).
+		Str("sortBy", hostelFilters.SortBy).
+		Int("minPrice", hostelFilters.MinPrice).
+		Int("maxPrice", hostelFilters.MaxPrice).
 		Msg("searching hostels")
 
-	res, err := h.service.SearchHostels(r.Context(), typ, id, pagination)
+	res, err := h.service.SearchHostels(r.Context(), typ, id, hostelFilters, pagination)
 	if err != nil {
 		msg := "failed to search hostels"
 		h.server.Logger.Err(err).Msg(msg)
