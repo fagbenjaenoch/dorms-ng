@@ -13,8 +13,8 @@ export default function HostelResultsError({
 }: HostelResultsErrorProps) {
   return (
     <div className="mx-auto max-w-3xl flex flex-col items-center gap-1 mt-20 p-4 text-muted-foreground">
-      <BsHouseSlashFill size={30} className="mb-4" />
-      <h1 className="text-lg font-bold">Could not get hostel results</h1>
+      <BsHouseSlashFill size={35} className="mb-4" />
+      <h1 className="text-lg">Could not get hostel results</h1>
       <Button
         onClick={resetErrorBoundary}
         size="xl"
