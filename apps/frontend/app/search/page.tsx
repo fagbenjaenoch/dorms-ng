@@ -7,7 +7,7 @@ import LocationSearch from "@/components/LocationSearch";
 import SearchFilters from "@/components/SearchFilters";
 import Footer from "@/components/ui/Footer";
 import PropertyCardSkeleton from "@/components/ui/PropertyCardSkeleton";
-import { AreaType, hostelFilterParsers } from "@/lib/api/filter";
+import { areaFilterParsers, AreaType, hostelFilterParsers } from "@/lib/api/filter";
 import { placeSearch } from "@/lib/api/search";
 import { APIResponse, Place } from "@/lib/dto";
 import { useClickOutside } from "@/lib/hooks/useClickOutside";
@@ -22,14 +22,16 @@ export default function SearchPage() {
   const [hostelFilters, setHostelFilters] = useQueryStates(hostelFilterParsers, {
     history: "push",
   });
-
+  const [areaFilters, setAreaFilters] = useQueryStates(areaFilterParsers, {
+    history: "push",
+  });
   const [showDropdown, setShowDropdown] = useState(
-    hostelFilters.searchTerm && hostelFilters.searchTerm.length > 0,
+    areaFilters.searchTerm && areaFilters.searchTerm.length > 0,
   );
 
   const ref = useClickOutside<HTMLInputElement>(() => setShowDropdown(false));
 
-  const debounceSearchTerm = useDebounce(hostelFilters.searchTerm, 300);
+  const debounceSearchTerm = useDebounce(areaFilters.searchTerm, 300);
 
   const query = useQuery<APIResponse<Place[]>>({
     queryKey: ["placeSearch", debounceSearchTerm],
@@ -38,7 +40,7 @@ export default function SearchPage() {
   });
 
   const clearSearch = () => {
-    setHostelFilters({
+    setAreaFilters({
       searchTerm: null,
       areaType: null,
       areaId: null,
@@ -54,7 +56,7 @@ export default function SearchPage() {
     id: string;
     name: string;
   }) => {
-    setHostelFilters({
+    setAreaFilters({
       areaType: type,
       areaId: id,
       searchTerm: name,
@@ -78,13 +80,13 @@ export default function SearchPage() {
             <div className="flex items-center justify-between">
               <div className="relative flex-1 max-w-xl" ref={ref}>
                 <LocationSearch
-                  searchTerm={hostelFilters.searchTerm ? hostelFilters.searchTerm : ""}
-                  handleChange={e => setHostelFilters({ searchTerm: e.target.value })}
+                  searchTerm={areaFilters.searchTerm ? areaFilters.searchTerm : ""}
+                  handleChange={e => setAreaFilters({ searchTerm: e.target.value })}
                   clearSearch={clearSearch}
                   onClick={showDropdownOnClick}
                 />
                 {showDropdown &&
-                  hostelFilters.searchTerm &&
+                  areaFilters.searchTerm &&
                   query.isFetched &&
                   (!!query.data?.payload?.length && query.data.payload.length > 0 ? (
                     <div className="absolute z-3 top-full mt-3 left-0 w-full flex flex-col gap-2 bg-primary-foreground shadow-lg ring-1 ring-gray-500/5 p-2 rounded-xl">
@@ -118,10 +120,10 @@ export default function SearchPage() {
             </div>
           </div>
         </div>
-        {hostelFilters.areaType &&
-        hostelFilters.areaId &&
-        hostelFilters.searchTerm &&
-        hostelFilters.areaType.length > 0 ? (
+        {areaFilters.areaType &&
+        areaFilters.areaId &&
+        areaFilters.searchTerm &&
+        areaFilters.areaType.length > 0 ? (
           <QueryErrorBoundary errorFallback={HostelResultsError}>
             <Suspense
               fallback={
@@ -133,9 +135,9 @@ export default function SearchPage() {
               }
             >
               <HostelResults
-                areaType={hostelFilters.areaType as AreaType}
-                areaId={hostelFilters.areaId}
-                areaName={hostelFilters.searchTerm}
+                areaType={areaFilters.areaType as AreaType}
+                areaId={areaFilters.areaId}
+                areaName={areaFilters.searchTerm}
                 showInsight
               />
             </Suspense>

@@ -3,6 +3,7 @@ import {
   parseAsInteger,
   parseAsBoolean,
   parseAsString,
+  createSerializer,
 } from "nuqs";
 import { defaultFilters } from "../utils";
 
@@ -17,7 +18,24 @@ export const hostelFilterParsers = {
   minPrice: parseAsInteger.withDefault(defaultFilters.minPrice),
   maxPrice: parseAsInteger.withDefault(defaultFilters.maxPrice),
   isVerified: parseAsBoolean.withDefault(false),
+};
+export const hostelFilterSerializer = createSerializer(hostelFilterParsers);
+
+export type HostelFilterOptions = {
+  sortBy: SortByValue;
+  minPrice: number;
+  maxPrice: number;
+  isVerified: boolean;
+};
+
+export const areaFilterParsers = {
   searchTerm: parseAsString,
   areaType: parseAsStringLiteral(areaTypes),
   areaId: parseAsString,
+};
+export const areaSerializer = createSerializer(areaFilterParsers);
+
+export type AreaOptions = {
+  areaType: AreaType | null;
+  areaId: string | null;
 };
