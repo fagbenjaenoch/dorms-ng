@@ -95,7 +95,7 @@ export async function fetchHostelsByArea({
       isVerified: hostelFilters.isVerified,
     });
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/hostels/search${areaParams}&${hostelFilterParams.replace("?", "")}&${paginationParams.replace("?", "")}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/v1/hostels/search${areaParams}${hostelFilterParams && "&" + hostelFilterParams.replace("?", "")}${paginationParams && "&" + paginationParams.replace("?", "")}`,
     );
 
     if (!response.ok) {
