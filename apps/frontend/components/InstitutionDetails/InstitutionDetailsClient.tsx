@@ -128,7 +128,7 @@ export default function InstitutionDetailsClient() {
             <Suspense
               fallback={
                 <div className="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {Array.from({ length: 10 }).map((_, i) => (
+                  {Array.from({ length: 5 }).map((_, i) => (
                     <PropertyCardSkeleton key={i} />
                   ))}
                 </div>
