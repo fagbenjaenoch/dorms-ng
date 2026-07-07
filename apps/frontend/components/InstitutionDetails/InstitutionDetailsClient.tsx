@@ -16,15 +16,31 @@ import HostelResults from "../HostelResults";
 import HostelResultsError from "../HostelResultsError";
 import PropertyCardSkeleton from "../ui/PropertyCardSkeleton";
 import Image from "next/image";
-import { areaFilterParsers } from "@/lib/api/filter";
+import { areaFilterParsers, hostelFilterParsers } from "@/lib/api/filter";
 import { useQueryStates } from "nuqs";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+
+const items = [
+  { label: "Sort by", value: null },
+  { label: "Price: Low to High", value: "price-asc" as const },
+  { label: "Price: High to Low", value: "price-desc" as const },
+];
 
 export default function InstitutionDetailsClient() {
   let { slug } = useParams();
   slug = slug as string;
 
   const [areaFilters, setAreaFilters] = useQueryStates(areaFilterParsers, {});
-
+  const [hostelFilters, setHostelFilters] = useQueryStates(hostelFilterParsers, {
+    history: "push",
+  });
   const institutionQuery = useSuspenseQuery({
     queryKey: ["institution", slug],
     queryFn: () => fetchInstitution(slug),
@@ -114,19 +130,24 @@ export default function InstitutionDetailsClient() {
                 Verified student housing within 2km of the campus gate.
               </p>
             </div>
-            <div className="flex gap-2">
-              <Button
-                variant="ghost"
-                className="p-3 rounded-xl shadow-sm bg-white text-black hover:bg-gray-100 transition-colors"
-              >
-                <MdTune size={25} />
-              </Button>
-              <select className="border-none rounded-xl font-bold px-6 py-3 shadow-sm focus:ring-primary bg-white">
-                <option>Price: Low to High</option>
-                <option>Closest to Gate</option>
-                <option>Highest Rated</option>
-              </select>
-            </div>
+            <Select items={items}>
+              <SelectTrigger className="w-full bg-white max-w-48">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {items.map(item => (
+                    <SelectItem
+                      key={item.value}
+                      value={item.value}
+                      onClick={() => setHostelFilters({ sortBy: item.value })}
+                    >
+                      {item.label}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
           </div>
           <QueryErrorBoundary errorFallback={HostelResultsError}>
             <Suspense
