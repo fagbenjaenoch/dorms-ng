@@ -23,24 +23,28 @@ export default function InstitutionDetailsClient() {
   let { slug } = useParams();
   slug = slug as string;
 
-  const [areaFilters, setAreaFilters] = useQueryStates(areaFilterParsers, {
-    history: "push",
-  });
+  const [areaFilters, setAreaFilters] = useQueryStates(areaFilterParsers, {});
 
-  const query = useSuspenseQuery({
+  const institutionQuery = useSuspenseQuery({
     queryKey: ["institution", slug],
     queryFn: () => fetchInstitution(slug),
   });
 
   useEffect(() => {
-    if (!query.data) return;
+    if (!institutionQuery.data) return;
 
-    setAreaFilters({ areaId: query.data?.payload.id, areaType: "institution" });
-  }, [query.data, setAreaFilters]);
+    setAreaFilters({
+      areaId: institutionQuery.data?.payload.id,
+      areaType: "institution",
+    });
+  }, [institutionQuery.data, setAreaFilters]);
 
-  if (!query.data) return notFound();
+  if (!institutionQuery.data) return notFound();
 
-  const { payload: institution } = query.data;
+  const { payload: institution } = institutionQuery.data;
+
+  const renderLoadingSkeleton = () =>
+    Array.from({ length: 5 }).map((_, i) => <PropertyCardSkeleton key={i} />);
 
   return (
     <main className="pt-20">
@@ -128,9 +132,7 @@ export default function InstitutionDetailsClient() {
             <Suspense
               fallback={
                 <div className="mt-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <PropertyCardSkeleton key={i} />
-                  ))}
+                  {renderLoadingSkeleton()}
                 </div>
               }
             >
