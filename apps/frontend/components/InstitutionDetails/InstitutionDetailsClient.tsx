@@ -58,15 +58,15 @@ export default function InstitutionDetailsClient() {
               {institution?.acronym} • {institution?.city}
             </p>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-10">
-              <div className="bg-muted-foreground/10 p-3 lg:p-6 rounded-[2rem] transition-colors duration-300">
+              <div className="bg-muted-foreground/10 p-4 lg:p-6 rounded-[2rem] transition-colors duration-300">
                 <p className="text-3xl font-bold text-primary">124+</p>
                 <p className="text-sm font-medium">Affiliated Hostels</p>
               </div>
-              <div className="bg-muted-foreground/10 p-3 lg:p-6 rounded-[2rem] transition-colors duration-300">
+              <div className="bg-muted-foreground/10 p-4 lg:p-6 rounded-[2rem] transition-colors duration-300">
                 <p className="text-3xl font-bold text-secondary">55k+</p>
                 <p className="text-sm font-medium">Student Population</p>
               </div>
-              <div className="bg-muted-foreground/10 p-3 lg:p-6 rounded-[2rem] transition-colors duration-300">
+              <div className="bg-muted-foreground/10 p-4 lg:p-6 rounded-[2rem] transition-colors duration-300">
                 <p className="text-3xl font-bold">4.8</p>
                 <p className="text-sm font-medium">Safety Rating</p>
               </div>
