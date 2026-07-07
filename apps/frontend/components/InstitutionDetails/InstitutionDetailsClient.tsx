@@ -10,21 +10,33 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { notFound, useParams } from "next/navigation";
 import { fetchInstitution } from "@/lib/api/institution";
 import { scrollTo } from "@/lib/utils";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import QueryErrorBoundary from "../error/QueryErrorBoundary";
 import HostelResults from "../HostelResults";
 import HostelResultsError from "../HostelResultsError";
 import PropertyCardSkeleton from "../ui/PropertyCardSkeleton";
 import Image from "next/image";
+import { areaFilterParsers } from "@/lib/api/filter";
+import { useQueryStates } from "nuqs";
 
 export default function InstitutionDetailsClient() {
   let { slug } = useParams();
   slug = slug as string;
 
+  const [areaFilters, setAreaFilters] = useQueryStates(areaFilterParsers, {
+    history: "push",
+  });
+
   const query = useSuspenseQuery({
     queryKey: ["institution", slug],
     queryFn: () => fetchInstitution(slug),
   });
+
+  useEffect(() => {
+    if (!query.data) return;
+
+    setAreaFilters({ areaId: query.data?.payload.id, areaType: "institution" });
+  }, [query.data, setAreaFilters]);
 
   if (!query.data) return notFound();
 
@@ -122,11 +134,7 @@ export default function InstitutionDetailsClient() {
                 </div>
               }
             >
-              <HostelResults
-                areaType={"institution"}
-                areaId={institution.id}
-                areaName={institution.name}
-              />
+              <HostelResults areaName={institution.name} />
             </Suspense>
           </QueryErrorBoundary>
         </div>

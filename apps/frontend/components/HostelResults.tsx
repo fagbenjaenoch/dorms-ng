@@ -10,18 +10,11 @@ import { areaFilterParsers, AreaType, hostelFilterParsers } from "@/lib/api/filt
 import { useEffect } from "react";
 
 interface HostelResultProps {
-  areaType: AreaType;
-  areaId: string;
   areaName: string;
   showInsight?: boolean;
 }
 
-export default function HostelResults({
-  areaType,
-  areaId,
-  areaName,
-  showInsight,
-}: HostelResultProps) {
+export default function HostelResults({ areaName, showInsight }: HostelResultProps) {
   const [paginationFilters, setPaginationFilters] = useQueryStates(
     paginationSerializerObject,
     {
@@ -35,7 +28,7 @@ export default function HostelResults({
     history: "push",
   });
   const hostelQuery = useSuspenseQuery<APIResponse<Hostel[]>>({
-    queryKey: ["hostels", areaId],
+    queryKey: ["hostels", areaFilters.areaId],
     queryFn: () => fetchHostelsByArea({ areaFilters, hostelFilters, paginationFilters }),
   });
 

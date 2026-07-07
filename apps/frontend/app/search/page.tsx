@@ -134,12 +134,7 @@ export default function SearchPage() {
                 </div>
               }
             >
-              <HostelResults
-                areaType={areaFilters.areaType as AreaType}
-                areaId={areaFilters.areaId}
-                areaName={areaFilters.searchTerm}
-                showInsight
-              />
+              <HostelResults areaName={areaFilters.searchTerm} showInsight />
             </Suspense>
           </QueryErrorBoundary>
         ) : (
