@@ -23,9 +23,37 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Hostel Marketplace App",
+  metadataBase: new URL("https://dorms.ng"),
+  title: {
+    default: "Dorms.ng - Nigeria's student hostel discovery and verification platform",
+    template: "%s | Dorms.ng",
+  },
   description:
-    "It acts as a trust layer for students trying to find hostels in an unfamiliar environment.",
+    "Discover and verify over 10,000 student hostels in Nigeria's student hostel discovery and verification platform.",
+  keywords: ["student hostel", "hostel discovery", "hostel verification", "Nigeria"],
+  authors: [{ name: "Dorms.ng" }],
+  creator: "Enoch Fagbenja",
+  publisher: "Dorms.ng",
+  formatDetection: {
+    email: false,
+    address: false,
+    date: false,
+  },
+  openGraph: {
+    type: "website",
+    url: "https://dorms.ng",
+    title: "Dorms.ng - Nigeria's student hostel discovery and verification platform",
+    description:
+      "Discover and verify over 10,000 student hostels in Nigeria's student hostel discovery and verification platform.",
+    images: [
+      {
+        url: "https://dorms.ng/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Dorms.ng",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
