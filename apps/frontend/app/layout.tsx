@@ -45,6 +45,7 @@ export const metadata: Metadata = {
     title: "Dorms.ng - Nigeria's student hostel discovery and verification platform",
     description:
       "Discover and verify over 10,000 student hostels in Nigeria's student hostel discovery and verification platform.",
+    siteName: "Dorms.ng",
     images: [
       {
         url: "https://dorms.ng/og-image.png",
@@ -54,6 +55,13 @@ export const metadata: Metadata = {
         type: "image/png",
       },
     ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Dorms.ng - Student hostel discovery and verification platform",
+    description:
+      "Discover and verify over 10,000 student hostels in Nigeria's student hostel discovery and verification platform.",
+    images: ["https://dorms.ng/og-image.png"],
   },
 };
 
