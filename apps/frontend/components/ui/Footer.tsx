@@ -7,7 +7,7 @@ import { FaAt } from "react-icons/fa6";
 
 const footerData = {
   "For Students": [
-    { title: "Find a Hostel", href: "#" },
+    { title: "Find a Hostel", href: "/search" },
     { title: "Student Discounts", href: "#" },
     { title: "Safety Guidelines", href: "#" },
     { title: "Move-in Checklist", href: "#" },
