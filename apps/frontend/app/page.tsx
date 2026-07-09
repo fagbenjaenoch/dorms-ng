@@ -9,6 +9,8 @@ import CtaSection from "@/components/CtaSection";
 import Footer from "@/components/ui/Footer";
 import { GoVerified } from "react-icons/go";
 import Image from "next/image";
+import Link from "next/link";
+import { ShieldCheckIcon } from "lucide-react";
 
 export default function Home() {
   return (
@@ -34,6 +36,13 @@ export default function Home() {
               inspected it. What you see is exactly what you get.
             </p>
             <LandingSearch />
+            <Link
+              className="text-primary underline text-sm flex items-center gap-1"
+              href="/"
+            >
+              <ShieldCheckIcon size={13} className="inline-block" /> See how verification
+              works
+            </Link>
           </div>
           <div className="lg:inline-block overflow-hidden rounded-2xl max-w-xl pointer-events-none">
             <Image
