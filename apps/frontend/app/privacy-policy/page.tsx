@@ -14,7 +14,6 @@ export default function Page() {
           <h1 className="font-headline text-3xl md:text-5xl font-black tracking-tighter mb-10">
             <span className="text-primary">Dorms.ng</span> Privacy Policy
           </h1>
-          <p>Effective Date: 8th July, 2026</p>
           <p>Last Updated: 9th July, 2026</p>
         </div>
         <section className="mb-8">
@@ -143,8 +142,8 @@ export default function Page() {
             access, loss, or destruction.
           </p>
           <p>
-            Breach Notification: In the unlikely event of a personal data breach that
-            poses a risk to your rights and freedoms, we will notify the Nigeria Data
+            <b>Breach Notification:</b> In the unlikely event of a personal data breach
+            that poses a risk to your rights and freedoms, we will notify the Nigeria Data
             Protection Commission (NDPC) within 72 hours of becoming aware of the breach,
             and we will notify you directly as required by the NDPA.
           </p>
@@ -199,18 +198,9 @@ export default function Page() {
           </h2>
           <p>
             If you have any questions about this Privacy Policy, wish to exercise your
-            data subject rights, or want to file a complaint, please contact our Data
-            Protection Officer:
+            data subject rights, or want to file a complaint, please contact us at:
           </p>
-          <p>
-            <b>Data Protection Officer: [Insert DPO Name or Title]</b>
-          </p>
-          <p>
-            <b>Email: [Insert DPO Email, e.g., privacy@dorms.ng or dpo@dorms.ng]</b>
-          </p>
-          <p>
-            <b>Physical Address: [Insert Registered Business Address in Nigeria]</b>
-          </p>
+          <b>privacy@dorms.ng </b>{" "}
           <p>
             If you feel that your data rights have been violated and we have not
             adequately addressed your concerns, you have the right to lodge a formal
