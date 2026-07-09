@@ -16,7 +16,7 @@ const footerData = {
     { title: "About Us", href: "#" },
     { title: "Contact Us", href: "#" },
     { title: "Privacy Policy", href: "/privacy-policy" },
-    { title: "Terms of Service", href: "#" },
+    { title: "Terms of Service", href: "/terms-of-service" },
   ],
   Partners: [
     { title: "List a Property", href: "#" },
