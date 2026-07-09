@@ -54,8 +54,8 @@ export default function Page() {
           </p>
           <p className="mb-8">
             Our mission is simple: to bring absolute transparency, safety, and peace of
-            mind to off-campus student housing. No scams. No fake pictures. Just real
-            hostels for real students.
+            mind to both on-campus and off-campus student housing. No scams. No fake
+            pictures. Just real hostels for real students.
           </p>
         </section>
       </div>
