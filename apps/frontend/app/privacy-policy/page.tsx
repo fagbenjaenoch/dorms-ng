@@ -1,6 +1,14 @@
+import DesktopNav from "@/components/DesktopNav";
+import MobileNav from "@/components/MobileNav";
+import Footer from "@/components/ui/Footer";
+
 export default function Page() {
   return (
     <div>
+      <>
+        <DesktopNav />
+        <MobileNav />
+      </>
       <h1>Dorms.ng Privacy Policy</h1>
       <p>Effective Date: [Insert Date]</p>
       <p>Last Updated: [Insert Date]</p>
@@ -167,6 +175,7 @@ export default function Page() {
         addressed your concerns, you have the right to lodge a formal complaint with the
         Nigeria Data Protection Commission (NDPC).
       </p>
+      <Footer />
     </div>
   );
 }
