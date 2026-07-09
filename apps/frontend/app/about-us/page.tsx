@@ -12,7 +12,7 @@ export default function Page() {
       <div className="container leading-relaxed">
         <div className="mb-20">
           <h1 className="font-headline text-3xl md:text-5xl font-black tracking-tighter mb-10">
-            Our Story
+            <span className="text-primary">Our</span> Story
           </h1>
         </div>
         <section>
