@@ -13,7 +13,7 @@ const footerData = {
     { title: "Move-in Checklist", href: "#" },
   ],
   Company: [
-    { title: "About Us", href: "#" },
+    { title: "About Us", href: "/about-us" },
     { title: "Contact Us", href: "#" },
     { title: "Privacy Policy", href: "/privacy-policy" },
     { title: "Terms of Service", href: "/terms-of-service" },
