@@ -19,8 +19,8 @@ export default function NotFound() {
             </h1>
           </div>
           <p>
-            We are working on this feature and we don't want to spoil the suprise until
-            it's perfect
+            We are working on this feature and we want the best experience for you. Keep
+            an eye out for it.
           </p>
         </div>
       </main>
