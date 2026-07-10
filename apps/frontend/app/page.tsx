@@ -10,8 +10,11 @@ import Footer from "@/components/ui/Footer";
 import { GoVerified } from "react-icons/go";
 import Image from "next/image";
 import Link from "next/link";
-import { ShieldCheckIcon } from "lucide-react";
+import { SearchIcon, ShieldCheckIcon } from "lucide-react";
 import { RoughNotation } from "react-rough-notation";
+import SectionHeading from "@/components/ui/SectionHeader";
+import FeatureCard from "@/components/ui/FeatureCard";
+import { MdTune } from "react-icons/md";
 
 export default function Home() {
   return (
@@ -68,6 +71,36 @@ export default function Home() {
             trekking, deceptive agents, non-existent properties, and the dreaded "what I
             ordered vs. what I got." We do the groundwork so you don't have to.
           </p>
+        </div>
+      </section>
+      <section>
+        <div className="container pb-20">
+          <SectionHeading
+            label="Find Exactly What You Need, Fast."
+            description="The Experience"
+          />
+          <p className="mb-8">
+            Enter your institution and instantly unlock the best off-campus housing around
+            you. Whether you need a private self-con, a shared room, or proximity to the
+            school gate, our smart filters let you discover the perfect space that fits
+            your budget and lifestyle.
+          </p>
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-8 lg:gap-4">
+            <FeatureCard
+              title="Campus-Centric Search"
+              description="Tailored exclusively for institutions across Nigeria."
+              Icon={<SearchIcon className="shrink-0" size={20} />}
+              className="bg-muted"
+            />
+
+            <FeatureCard
+              title="Smart Filters"
+              description="Sort by price, distance to campus, and amenities (water, power, security)."
+              Icon={<MdTune className="shrink-0" size={20} />}
+              className="bg-muted"
+              // iconBg="bg-sky-300/50"
+            />
+          </div>
         </div>
       </section>
       <PopularUniversities />

@@ -8,24 +8,21 @@ export default function FeatureSection() {
   return (
     <section className="bg-muted-foreground/10">
       <div className="container pb-20">
-        <SectionHeading
-          label="Built for Nigerian Students"
-          description="The Experience"
-        />
+        <SectionHeading label="Built for Nigerian Students" description="The Audience" />
         <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-8 lg:gap-4">
           <FeatureCard
             title="Strict Verification"
             description="No more 'ghost' properties. Every hostel listed
           undergoes a physical 24-point check by our
           campus ambassadors."
-            Icon={RiVerifiedBadgeLine}
+            Icon={<RiVerifiedBadgeLine className="shrink-0" size={20} />}
             iconBg="bg-fuchsia-500/20"
           />
 
           <FeatureCard
             title="Power & Water Audit"
             description="We provide real data on average daily electricity hours and water availability for every neighborhood"
-            Icon={FaBolt}
+            Icon={<FaBolt className="shrink-0" size={20} />}
             iconBg="bg-sky-300/50"
           />
 
@@ -35,7 +32,7 @@ export default function FeatureSection() {
          Access student-friendly payment plans and
          roommate-matching services to split costs
          effectively."
-            Icon={BiWallet}
+            Icon={<BiWallet className="shrink-0" size={20} />}
             iconBg="bg-amber-500/50"
           />
         </div>

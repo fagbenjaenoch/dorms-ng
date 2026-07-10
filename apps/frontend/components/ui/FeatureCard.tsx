@@ -1,10 +1,11 @@
-import { IconType } from "react-icons";
+import { cn } from "@/lib/utils";
 
 interface FeatureCardProps {
   title: string;
   description: string;
-  Icon: IconType;
-  iconBg: string;
+  Icon: React.ReactNode;
+  iconBg?: string;
+  className?: string;
 }
 
 export default function FeatureCard({
@@ -12,11 +13,12 @@ export default function FeatureCard({
   description,
   Icon,
   iconBg,
+  className,
 }: FeatureCardProps) {
   return (
-    <div className="bg-white p-8 rounded-3xl space-y-6">
+    <div className={cn(`bg-white p-8 rounded-3xl space-y-6`, className)}>
       <div className={`w-14 h-14 grid place-items-center ${iconBg} rounded-2xl`}>
-        <Icon className="shrink-0" size={20} />
+        {Icon}
       </div>
       <h3 className="font-bold md:text-xl">{title}</h3>
       <p className="text-foreground/70">{description}</p>
