@@ -6,7 +6,7 @@ import { BiWallet } from "react-icons/bi";
 
 export default function FeatureSection() {
   return (
-    <section className="bg-muted">
+    <section className="bg-muted-foreground/10">
       <div className="container pb-20">
         <SectionHeading label="Built for Nigerian Students" description="The Audience" />
         <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-8 lg:gap-4">

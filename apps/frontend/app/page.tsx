@@ -90,14 +90,14 @@ export default function Home() {
               title="Campus-Centric Search"
               description="Tailored exclusively for institutions across Nigeria."
               Icon={<SearchIcon className="shrink-0" size={20} />}
-              className="bg-muted"
+              className="bg-muted-foreground/10"
             />
 
             <FeatureCard
               title="Smart Filters"
               description="Sort by price, distance to campus, and amenities (water, power, security)."
               Icon={<MdTune className="shrink-0" size={20} />}
-              className="bg-muted"
+              className="bg-muted-foreground/10"
               // iconBg="bg-sky-300/50"
             />
           </div>
