@@ -115,7 +115,6 @@ export default function Home() {
               Icon={
                 <span className="font-extrabold text-2xl text-muted-foreground">1</span>
               }
-              className="bg-muted-foreground/10"
             />
 
             <FeatureCard
@@ -124,7 +123,6 @@ export default function Home() {
               Icon={
                 <span className="font-extrabold text-2xl text-muted-foreground">2</span>
               }
-              className="bg-muted-foreground/10"
               // iconBg="bg-sky-300/50"
             />
 
@@ -134,7 +132,6 @@ export default function Home() {
               Icon={
                 <span className="font-extrabold text-2xl text-muted-foreground">3</span>
               }
-              className="bg-muted-foreground/10"
               // iconBg="bg-sky-300/50"
             />
           </div>
