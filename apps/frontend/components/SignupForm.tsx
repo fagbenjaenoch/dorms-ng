@@ -5,7 +5,6 @@ import { SignupData, signupSchema } from "@/lib/forms";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { Field, FieldError, FieldGroup, FieldLabel } from "./ui/field";
-import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { toast } from "sonner";
@@ -15,9 +14,12 @@ import { APIResponse, BaseAuthPayload } from "@/lib/dto";
 import { KeyRound, MailIcon } from "lucide-react";
 import { InputGroup, InputGroupInput, InputGroupAddon } from "./ui/input-group";
 import { BsPerson } from "react-icons/bs";
+import { Checkbox } from "./ui/checkbox";
+import { useState } from "react";
 
 export default function SignupForm() {
   const router = useRouter();
+  const [hasConsented, setHasConsented] = useState(false);
   const form = useForm<SignupData>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -135,22 +137,35 @@ export default function SignupForm() {
             </Field>
           )}
         />
-        <p>
-          I agree to the{" "}
-          <Link href="#" className="text-primary underline underline-offset-2">
-            Terms of Service
-          </Link>{" "}
-          and{" "}
-          <Link href="#" className="text-primary underline underline-offset-2">
-            Student Safety Policy
-          </Link>
-          .
-        </p>
+        <div className="flex gap-2 items-center">
+          <Checkbox
+            className="border-gray-300 w-5 h-5"
+            onCheckedChange={setHasConsented}
+          />
+          <p>
+            I agree to the{" "}
+            <Link
+              href="/term-of-service"
+              className="text-primary underline underline-offset-2"
+            >
+              Terms of Service
+            </Link>{" "}
+            and{" "}
+            <Link
+              href="/privacy-policy"
+              className="text-primary underline underline-offset-2"
+            >
+              Privacy Policy
+            </Link>
+            .
+          </p>
+        </div>
       </FieldGroup>
       <Button
         className="mt-6 text-white w-full py-8 text-base "
         type="submit"
         form="signup-form"
+        disabled={!hasConsented}
       >
         Create Account
       </Button>
