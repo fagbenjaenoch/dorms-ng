@@ -54,7 +54,7 @@ export default function Home() {
               src="/hero.webp"
               width={300}
               height={450}
-              className="w-100"
+              className="w-100 hidden md:block"
               alt="Students hanging out"
               loading="lazy"
             />
