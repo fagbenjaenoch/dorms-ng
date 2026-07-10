@@ -132,7 +132,7 @@ export default function InstitutionDetailsClient() {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
             <div>
-              <h2 className="text-4xl font-extrabold tracking-tight mb-2">
+              <h2 className="text-2xl lg:text-4xl font-extrabold tracking-tight mb-2">
                 Hostels near <span className="text-primary">{institution?.acronym}</span>
               </h2>
               <p className="font-medium text-lg text-muted-foreground">
