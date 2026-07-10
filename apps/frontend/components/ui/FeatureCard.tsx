@@ -16,7 +16,7 @@ export default function FeatureCard({
   className,
 }: FeatureCardProps) {
   return (
-    <div className={cn(`bg-white p-8 rounded-3xl space-y-6`, className)}>
+    <div className={cn(`bg-white p-8 rounded-3xl space-y-3 lg:space-y-6`, className)}>
       <div className={`w-14 h-14 grid place-items-center ${iconBg} rounded-2xl`}>
         {Icon}
       </div>
