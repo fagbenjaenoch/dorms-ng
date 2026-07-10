@@ -193,9 +193,7 @@ export default function Page() {
           </ul>
         </section>
         <section className="mb-8">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4">
-            Contact Us and Data Protection Officer (DPO)
-          </h2>
+          <h2 className="text-2xl md:text-3xl font-bold mb-4">Contact Us</h2>
           <p>
             If you have any questions about this Privacy Policy, wish to exercise your
             data subject rights, or want to file a complaint, please contact us at:
