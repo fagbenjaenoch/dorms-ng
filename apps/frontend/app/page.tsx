@@ -89,14 +89,14 @@ export default function Home() {
             <FeatureCard
               title="Campus-Centric Search"
               description="Tailored exclusively for institutions across Nigeria."
-              Icon={<SearchIcon className="shrink-0" size={20} />}
+              Icon={<SearchIcon className="shrink-0" size={30} />}
               className="bg-muted-foreground/10"
             />
 
             <FeatureCard
               title="Smart Filters"
               description="Sort by price, distance to campus, and amenities (water, power, security)."
-              Icon={<MdTune className="shrink-0" size={20} />}
+              Icon={<MdTune className="shrink-0" size={30} />}
               className="bg-muted-foreground/10"
               // iconBg="bg-sky-300/50"
             />
@@ -112,14 +112,18 @@ export default function Home() {
             <FeatureCard
               title="Search Your School."
               description="Enter your institution to discover available hostels in the surrounding area."
-              Icon={<span className="font-extrabold">1</span>}
+              Icon={
+                <span className="font-extrabold text-2xl text-muted-foreground">1</span>
+              }
               className="bg-muted-foreground/10"
             />
 
             <FeatureCard
               title="Look for the Badge."
               description="Filter for 'Verified' properties to guarantee safety, accuracy, and peace of mind."
-              Icon={<span className="font-extrabold">2</span>}
+              Icon={
+                <span className="font-extrabold text-2xl text-muted-foreground">2</span>
+              }
               className="bg-muted-foreground/10"
               // iconBg="bg-sky-300/50"
             />
@@ -127,7 +131,9 @@ export default function Home() {
             <FeatureCard
               title="Secure Your Space."
               description="Connect with vetted caretakers and book your new home with confidence."
-              Icon={<span className="font-extrabold">3</span>}
+              Icon={
+                <span className="font-extrabold text-2xl text-muted-foreground">3</span>
+              }
               className="bg-muted-foreground/10"
               // iconBg="bg-sky-300/50"
             />
