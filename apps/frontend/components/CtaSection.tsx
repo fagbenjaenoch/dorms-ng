@@ -24,12 +24,6 @@ export default function CtaSection() {
                   Find a Hostel Now
                 </Button>
               </Link>
-              <Button
-                size="xl"
-                className="w-full sm:w-auto text-primary-light bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl font-black text-lg hover:bg-white/20 transition-all"
-              >
-                Talk to an Agent
-              </Button>
             </div>
           </div>
         </div>
