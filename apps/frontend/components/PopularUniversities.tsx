@@ -17,9 +17,9 @@ const popularUniversities = [
 ];
 export default function PopularUniversities() {
   return (
-    <section className="bg-muted-foreground/10">
+    <section className="bg-muted">
       <div className="container px-32">
-        <SectionHeading label="Popular Universities" description="Destinations" />
+        <SectionHeading label="Popular Universities" description="Find your school" />
         <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4">
           {popularUniversities.map((university, i) => (
             <UniversityCard
