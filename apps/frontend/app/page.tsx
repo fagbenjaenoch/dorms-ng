@@ -104,6 +104,36 @@ export default function Home() {
         </div>
       </section>
       <FeatureSection />
+      <section>
+        <div className="container pb-20">
+          <SectionHeading label="How it works" description="" />
+
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-8 lg:gap-4">
+            <FeatureCard
+              title="Search Your School."
+              description="Enter your institution to discover available hostels in the surrounding area."
+              Icon={<span className="font-extrabold">1</span>}
+              className="bg-muted-foreground/10"
+            />
+
+            <FeatureCard
+              title="Look for the Badge."
+              description="Filter for 'Verified' properties to guarantee safety, accuracy, and peace of mind."
+              Icon={<span className="font-extrabold">2</span>}
+              className="bg-muted-foreground/10"
+              // iconBg="bg-sky-300/50"
+            />
+
+            <FeatureCard
+              title="Secure Your Space."
+              description="Connect with vetted caretakers and book your new home with confidence."
+              Icon={<span className="font-extrabold">3</span>}
+              className="bg-muted-foreground/10"
+              // iconBg="bg-sky-300/50"
+            />
+          </div>
+        </div>
+      </section>
       <PopularUniversities />
       <CtaSection />
       <Footer />
