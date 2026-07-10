@@ -11,6 +11,7 @@ import { GoVerified } from "react-icons/go";
 import Image from "next/image";
 import Link from "next/link";
 import { ShieldCheckIcon } from "lucide-react";
+import SectionHeading from "@/components/ui/SectionHeader";
 
 export default function Home() {
   return (
@@ -20,7 +21,7 @@ export default function Home() {
         <MobileNav />
       </nav>
 
-      <main className="min-h-screen">
+      <section className="min-h-screen">
         <div className="container flex flex-col lg:flex-row gap-16 lg:gap-24 items-center">
           <div className="flex flex-col gap-6 lg:pb-28 lg:pt-10">
             <div className="flex items-center gap-1 bg-primary-light text-primary px-2 py-1 text-xs font-semibold w-fit tracking-wider rounded-full uppercase">
@@ -55,7 +56,16 @@ export default function Home() {
             />
           </div>
         </div>
-      </main>
+      </section>
+      <section className="bg-primary-light">
+        <div className="container px-32 py-40">
+          <p className="text-primary tracking-tighter text-xl lg:text-2xl font-bold text-center">
+            Finding a hostel shouldn't feel like a gamble. Say goodbye to endless
+            trekking, deceptive agents, non-existent properties, and the dreaded "what I
+            ordered vs. what I got." We do the groundwork so you don't have to.
+          </p>
+        </div>
+      </section>
       <PopularUniversities />
       <FeatureSection />
       <CtaSection />
