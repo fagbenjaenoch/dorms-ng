@@ -34,7 +34,7 @@ export default function Footer() {
           <div className="md:col-span-4">
             <Link href="/">
               <BrandIcon
-                className="text-lg md:text-2xl mb-6 font-bold"
+                className="text-lg md:text-2xl mb-6 font-extrabold"
                 variant="orange"
               />
             </Link>
