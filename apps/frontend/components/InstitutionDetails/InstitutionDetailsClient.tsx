@@ -1,21 +1,19 @@
 "use client";
 
 import posthog from "posthog-js";
-import { BusIcon, Compass, GraduationCap, MapIcon } from "lucide-react";
+import { BusIcon, Compass, GraduationCap, MapIcon, MapPin } from "lucide-react";
 import { Button } from "../ui/button";
-import { MdTune } from "react-icons/md";
 import { FaPersonWalking } from "react-icons/fa6";
 import { PiMapPinArea } from "react-icons/pi";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { notFound, useParams } from "next/navigation";
 import { fetchInstitution } from "@/lib/api/institution";
 import { scrollTo } from "@/lib/utils";
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useRef } from "react";
 import QueryErrorBoundary from "../error/QueryErrorBoundary";
 import HostelResults from "../HostelResults";
 import HostelResultsError from "../HostelResultsError";
 import PropertyCardSkeleton from "../ui/PropertyCardSkeleton";
-import Image from "next/image";
 import { areaFilterParsers, hostelFilterParsers } from "@/lib/api/filter";
 import { useQueryStates } from "nuqs";
 import {
@@ -26,6 +24,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import {
+  Map,
+  MapControls,
+  MapMarker,
+  MapRef,
+  MarkerContent,
+  MarkerLabel,
+} from "../ui/map";
+import MapEventListener from "../MapEventListener";
 
 const items = [
   { label: "Sort by", value: null },
@@ -36,6 +43,8 @@ const items = [
 export default function InstitutionDetailsClient() {
   let { slug } = useParams();
   slug = slug as string;
+
+  const mapRef = useRef<MapRef>(null);
 
   const [areaFilters, setAreaFilters] = useQueryStates(areaFilterParsers, {});
   const [hostelFilters, setHostelFilters] = useQueryStates(hostelFilterParsers, {
@@ -168,7 +177,7 @@ export default function InstitutionDetailsClient() {
             <div className="lg:col-span-1 p-10 flex flex-col justify-center">
               <div className="flex items-center gap-3 mb-4 text-primary">
                 <PiMapPinArea size={20} />
-                <h2 className="text-3xl font-bold tracking-tight">Prime Location</h2>
+                <h2 className="text-3xl font-bold tracking-tight">Location</h2>
               </div>
               <p className="mb-8 leading-relaxed">
                 {institution.description.length > 0
@@ -182,9 +191,7 @@ export default function InstitutionDetailsClient() {
                   </div>
                   <div>
                     <h4 className="font-bold">5-10 Min Walk</h4>
-                    <p className="text-xs text-muted-foreground">
-                      Akoka &amp; Abule-Oja Gate Area
-                    </p>
+                    <p className="text-xs text-muted-foreground">University Gate Area</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4 p-4 rounded-2xl bg-gray-200">
@@ -194,7 +201,7 @@ export default function InstitutionDetailsClient() {
                   <div>
                     <h4 className="font-bold">15 Min Shuttle</h4>
                     <p className="text-xs text-muted-foreground">
-                      Onike &amp; Iwaya Neighborhoods
+                      Off-campus Neighborhoods
                     </p>
                   </div>
                 </div>
@@ -202,32 +209,31 @@ export default function InstitutionDetailsClient() {
             </div>
             <div className="lg:col-span-2 relative min-h-[500px]">
               <div className="w-full h-full relative overflow-hidden">
-                <Image
-                  className="w-full h-full object-cover"
-                  data-location="Lagos, Nigeria"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuCuxjCUrNAD1BiGxZOx6qtD7ADIW90zJnEUlLNMxYByrYcZqmfKvlI2NKCWKOgfyWp8aUcZvnOa_NLpUh3MDCKfx1oAJthRZIa9nn5KdZb4Uq1HPUbGvPgmDbChYeTzKmS-gN6cwN6n4rEtMcoQbik05B4WKgr4mOD1RnGHtw2F95xzPVvCaXwsB_HSppe9_LNfuqzS6zFDNcEfgz4vIEKN05-HuQNbWUaVwdB0YAPkNdUZKAAjdSsoDOVKenLNXl7pp59nLqkc6n5E"
-                  alt="profile image"
-                  width={100}
-                  height={100}
-                />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                  <div className="relative">
-                    <div className="w-12 h-12 bg-primary rounded-full animate-ping absolute inset-0 opacity-20"></div>
-                    <div className="relative w-12 h-12 bg-primary rounded-full border-4 border-white flex items-center justify-center shadow-lg">
-                      <span className="material-symbols-outlined text-white">school</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="absolute top-[40%] left-[30%] w-8 h-8 bg-secondary rounded-full border-2 border-white flex items-center justify-center shadow-md hover:scale-125 transition-transform cursor-pointer">
-                  <span className="material-symbols-outlined text-white text-[16px]">
-                    home
-                  </span>
-                </div>
-                <div className="absolute top-[60%] left-[45%] w-8 h-8 bg-secondary rounded-full border-2 border-white flex items-center justify-center shadow-md hover:scale-125 transition-transform cursor-pointer">
-                  <span className="material-symbols-outlined text-white text-[16px]">
-                    home
-                  </span>
-                </div>
+                <Map
+                  ref={mapRef}
+                  center={[institution.longitude, institution.latitude]}
+                  zoom={4.2}
+                  theme="light"
+                >
+                  <MapControls
+                    position="top-right"
+                    showLocate
+                    showCompass
+                    showFullscreen
+                    showZoom
+                  />
+                  <MapMarker
+                    longitude={institution.longitude}
+                    latitude={institution.latitude}
+                  >
+                    <MarkerContent>
+                      <MapPin
+                        className="cursor-move fill-red-500 stroke-white"
+                        size={28}
+                      />
+                    </MarkerContent>
+                  </MapMarker>
+                </Map>
               </div>
             </div>
           </div>
