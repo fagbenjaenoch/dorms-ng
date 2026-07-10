@@ -1,8 +1,6 @@
 import DesktopNav from "@/components/DesktopNav";
 import MobileNav from "@/components/MobileNav";
-import { Button } from "@/components/ui/button";
 import Footer from "@/components/ui/Footer";
-import Link from "next/link";
 
 export default function NotFound() {
   return (
