@@ -17,8 +17,7 @@ export default function Page() {
         </div>
         <section>
           <p className="mb-8">
-            Finding a decent hostel off-campus shouldn't be the hardest class you take at
-            university.
+            Finding a decent hostel on-campus or off-campus shouldn't be left to chance.
           </p>
 
           <p className="mb-8">
