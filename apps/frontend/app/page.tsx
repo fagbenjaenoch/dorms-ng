@@ -11,7 +11,7 @@ import { GoVerified } from "react-icons/go";
 import Image from "next/image";
 import Link from "next/link";
 import { ShieldCheckIcon } from "lucide-react";
-import SectionHeading from "@/components/ui/SectionHeader";
+import { RoughNotation } from "react-rough-notation";
 
 export default function Home() {
   return (
@@ -28,12 +28,16 @@ export default function Home() {
               <GoVerified /> Verified Nigerian student housing
             </div>
             <h1 className="font-sans text-5xl lg:text-6xl tracking-tighter font-extrabold">
-              Discover <span className="text-primary">campus</span> <br />
-              hostels you can actually trust.
+              Discover campus hostels you can actually{" "}
+              <span className="text-primary">
+                <RoughNotation type="underline" color="#006a3d" padding={-5} show animate>
+                  trust .
+                </RoughNotation>
+              </span>
             </h1>
             <p className="text-muted-foreground max-w-xl">
               Stop guessing. Search hundreds of hostels near your institution with zero
-              stress. If it’s on Dorms.ng with a Verified badge, we’ve physically
+              stress. If it's on Dorms.ng with a Verified badge, we've physically
               inspected it. What you see is exactly what you get.
             </p>
             <LandingSearch />
