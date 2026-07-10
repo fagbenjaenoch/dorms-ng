@@ -23,7 +23,7 @@ export default function Home() {
 
       <section className="min-h-screen">
         <div className="container flex flex-col lg:flex-row gap-16 lg:gap-24 items-center">
-          <div className="flex flex-col gap-6 lg:pb-28 lg:pt-10">
+          <div className="flex flex-col gap-6 lg:pb-28 lg:pt-10 max-w-prose">
             <div className="flex items-center gap-1 bg-primary-light text-primary px-2 py-1 text-xs font-semibold w-fit tracking-wider rounded-full uppercase">
               <GoVerified /> Verified Nigerian student housing
             </div>
