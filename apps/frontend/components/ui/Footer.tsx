@@ -8,9 +8,9 @@ import { FaAt } from "react-icons/fa6";
 const footerData = {
   "For Students": [
     { title: "Find a Hostel", href: "/search" },
-    { title: "Student Discounts", href: "#" },
-    { title: "Safety Guidelines", href: "#" },
-    { title: "Move-in Checklist", href: "#" },
+    { title: "Student Discounts", href: "/coming-soon" },
+    { title: "Safety Guidelines", href: "/coming-soon" },
+    { title: "Move-in Checklist", href: "/coming-soon" },
   ],
   Company: [
     { title: "About Us", href: "/about-us" },
@@ -19,10 +19,10 @@ const footerData = {
     { title: "Terms of Service", href: "/terms-of-service" },
   ],
   Partners: [
-    { title: "List a Property", href: "#" },
-    { title: "Hostel Owners", href: "#" },
-    { title: "University Partners", href: "#" },
-    { title: "Brand Ambassadors", href: "#" },
+    { title: "List a Property", href: "/coming-soon" },
+    { title: "Hostel Owners", href: "/coming-soon" },
+    { title: "University Partners", href: "/coming-soon" },
+    { title: "Brand Ambassadors", href: "/coming-soon" },
   ],
 };
 
