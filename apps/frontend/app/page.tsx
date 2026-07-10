@@ -103,8 +103,8 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <PopularUniversities />
       <FeatureSection />
+      <PopularUniversities />
       <CtaSection />
       <Footer />
     </div>
