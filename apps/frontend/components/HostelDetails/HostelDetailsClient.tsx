@@ -167,20 +167,6 @@ export default function HostelDetailsClient() {
               <Button
                 size="xl"
                 variant="secondary"
-                className="w-full font-bold md:text-lg shadow-lg shadow-secondary/30"
-                onClick={() =>
-                  posthog.capture("hostel_tour_requested", {
-                    hostel_slug: slug,
-                    hostel_name: hostel.name,
-                    hostel_price: hostel.estimatedPriceRange,
-                  })
-                }
-              >
-                Request a Tour
-              </Button>
-              <Button
-                size="xl"
-                variant="outline"
                 className="w-full py-4 rounded-xl font-bold md:text-lg transition-colors border border-outline-variant/50"
                 onClick={() =>
                   posthog.capture("hostel_contact_host_clicked", {
