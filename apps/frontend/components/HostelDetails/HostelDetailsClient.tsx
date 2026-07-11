@@ -75,12 +75,14 @@ export default function HostelDetailsClient() {
           </p>
         </div>
         <div className="flex gap-4">
-          <Link
-            href={`https://maps.google.com/?q=${hostel.address}`}
-            className="text-sm flex items-center gap-1 px-2 py-1 bg-muted-foreground/10 rounded-lg hover:bg-muted-foreground/20 transition-colors"
-          >
-            View on Google maps
-            <Image src="/gmap-26.webp" alt="Google Maps" width={16} height={16} />
+          <Link href={`https://maps.google.com/?q=${hostel.address}`}>
+            <Button
+              variant="neutral"
+              className="bg-muted-foreground/20 hover:bg-muted-foreground/30"
+            >
+              View on Google maps
+              <Image src="/gmap-26.webp" alt="Google Maps" width={16} height={16} />
+            </Button>
           </Link>
           <Button
             variant="ghost"
