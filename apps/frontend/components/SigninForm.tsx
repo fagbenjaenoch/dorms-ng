@@ -5,7 +5,6 @@ import { LoginData, loginSchema } from "@/lib/forms";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { Field, FieldError, FieldGroup, FieldLabel } from "./ui/field";
-import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";

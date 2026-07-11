@@ -12,6 +12,7 @@ import { useQueryState, parseAsBoolean } from "nuqs";
 import { FaPersonWalking } from "react-icons/fa6";
 import BackToSearchPageButton from "../BackToSearchPage";
 import { fromSearchPageParam } from "@/lib/utils";
+import { useShare } from "@/lib/hooks/useShare";
 
 import ImageCarousel from "../ImageCarousel";
 import Link from "next/link";
@@ -19,6 +20,7 @@ import Image from "next/image";
 
 export default function HostelDetailsClient() {
   const [fromSearchPage, _] = useQueryState(fromSearchPageParam, parseAsBoolean);
+  const { share } = useShare();
 
   let { slug } = useParams();
   slug = slug as string;
@@ -83,12 +85,19 @@ export default function HostelDetailsClient() {
           <Button
             variant="ghost"
             className="flex items-center gap-2 font-bold hover:text-primary transition-colors"
-            onClick={() =>
+            onClick={() => {
+              if (share) {
+                share({
+                  title: hostel.name,
+                  text: hostel.description,
+                  url: window.location.href,
+                });
+              }
               posthog.capture("hostel_shared", {
                 hostel_slug: slug,
                 hostel_name: hostel.name,
-              })
-            }
+              });
+            }}
           >
             <Share2 />
             Share
