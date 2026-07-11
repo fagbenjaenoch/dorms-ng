@@ -45,6 +45,17 @@ export default function HostelDetailsClient() {
   const isHostelSaved =
     savedHostels.find(hostel => hostel._id === hostel._id) !== undefined;
 
+  const handleSaveHostel = () => {
+    if (isSaved) {
+      removeHostel(hostel._id);
+      toast.success("Hostel removed successfully");
+    } else {
+      saveHostel(hostel);
+      toast.success("Hostel saved successfully");
+    }
+    setIsSaved(!isSaved);
+  };
+
   const photoUrls = hostel.photo_urls.split(", ");
   const photoUrlObjects = useMemo(() => {
     return photoUrls.map((url, index) => ({
@@ -89,7 +100,10 @@ export default function HostelDetailsClient() {
           </p>
         </div>
         <div className="flex gap-4">
-          <Link href={`https://maps.google.com/?q=${hostel.address}`}>
+          <Link
+            href={`https://maps.google.com/?q=${encodeURIComponent(hostel.name)},${encodeURIComponent(hostel.address)}`}
+            target="_blank"
+          >
             <Button
               variant="neutral"
               className="bg-muted-foreground/20 hover:bg-muted-foreground/30"
@@ -122,14 +136,7 @@ export default function HostelDetailsClient() {
             variant="ghost"
             className="flex items-center gap-2 font-bold text-secondary hover:text-secondary transition-colors"
             onClick={() => {
-              if (isSaved) {
-                removeHostel(hostel._id);
-                toast.success("Hostel removed successfully");
-              } else {
-                saveHostel(hostel);
-                toast.success("Hostel saved successfully");
-              }
-              setIsSaved(!isSaved);
+              handleSaveHostel();
               posthog.capture("hostel_saved", {
                 hostel_slug: slug,
                 hostel_name: hostel.name,
