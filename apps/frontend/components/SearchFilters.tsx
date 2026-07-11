@@ -182,7 +182,7 @@ export default function SearchFilters() {
             </div>
           </div>
           <Field orientation="horizontal">
-            <FieldLabel className="font-semibold text-lg">Verfied listings</FieldLabel>
+            <FieldLabel className="font-semibold text-lg">Verified listings</FieldLabel>
             <Checkbox
               className="w-5 h-5"
               checked={draftFilters.isVerified ?? false}
