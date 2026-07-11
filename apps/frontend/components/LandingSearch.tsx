@@ -44,7 +44,7 @@ export default function LandingSearch() {
     if (!showDropdown && !query.data) return null;
     if (showDropdown && !query.data && !query.isFetching)
       return <LandingSearchDropdown />;
-    if (query.isFetched && query?.data?.payload.length === 0)
+    if (query.isFetched && query.data?.payload && query?.data?.payload.length === 0)
       return (
         <div className="absolute z-50 top-full mt-3 left-0 w-full bg-primary-foreground shadow-lg ring-1 ring-gray-500/5 p-4 rounded-xl text-muted-foreground">
           No matches found
