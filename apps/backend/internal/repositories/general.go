@@ -22,7 +22,7 @@ func NewSearchRepository(db *sql.DB, logger *zerolog.Logger) *SearchRepository {
 }
 
 func (sr *SearchRepository) Search(ctx context.Context, searchQuery string) (*[]models.GetSearchEntryRow, error) {
-	res, err := sr.Queries.GetSearchEntry(ctx, sql.NullString{String: searchQuery, Valid: true})
+	res, err := sr.Queries.GetSearchEntry(ctx, searchQuery)
 	if err != nil {
 		return nil, err
 	}

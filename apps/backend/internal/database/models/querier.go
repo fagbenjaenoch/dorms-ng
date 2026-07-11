@@ -33,7 +33,7 @@ type Querier interface {
 	GetNeighborhoodById(ctx context.Context, id string) (Neighborhood, error)
 	GetNeighborhoodsByInstitution(ctx context.Context, institutionID string) ([]Neighborhood, error)
 	GetPlaceSearchEntry(ctx context.Context, name sql.NullString) ([]GetPlaceSearchEntryRow, error)
-	GetSearchEntry(ctx context.Context, searchText sql.NullString) ([]GetSearchEntryRow, error)
+	GetSearchEntry(ctx context.Context, searchText string) ([]GetSearchEntryRow, error)
 	GetUserByEmail(ctx context.Context, email string) (User, error)
 	GetUserCredentialByProviderId(ctx context.Context, providerID string) (UserCredential, error)
 	ListInstitutions(ctx context.Context) ([]Institution, error)

@@ -797,11 +797,12 @@ func (q *Queries) GetPlaceSearchEntry(ctx context.Context, name sql.NullString) 
 }
 
 const getSearchEntry = `-- name: GetSearchEntry :many
-SELECT entity_id, entity_type, entity, slug, address
+SELECT entity_id, entity_type, entity, slug, address,
+       similarity(search_text, $1) AS relevance
 FROM global_search
-WHERE search_text ILIKE '%' || $1 || '%'
-   OR similarity(search_text, $1) > 0.3
-ORDER BY similarity(search_text, $1) DESC
+WHERE search_text % $1  -- Uses GIN index efficiently
+   OR entity % $1       -- Search in entity too
+ORDER BY relevance DESC
 LIMIT 5
 `
 
@@ -811,9 +812,10 @@ type GetSearchEntryRow struct {
 	Entity     string         `json:"entity"`
 	Slug       string         `json:"slug"`
 	Address    sql.NullString `json:"address"`
+	Relevance  float32        `json:"relevance"`
 }
 
-func (q *Queries) GetSearchEntry(ctx context.Context, searchText sql.NullString) ([]GetSearchEntryRow, error) {
+func (q *Queries) GetSearchEntry(ctx context.Context, searchText string) ([]GetSearchEntryRow, error) {
 	rows, err := q.db.QueryContext(ctx, getSearchEntry, searchText)
 	if err != nil {
 		return nil, err
@@ -828,6 +830,7 @@ func (q *Queries) GetSearchEntry(ctx context.Context, searchText sql.NullString)
 			&i.Entity,
 			&i.Slug,
 			&i.Address,
+			&i.Relevance,
 		); err != nil {
 			return nil, err
 		}

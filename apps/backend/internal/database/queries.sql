@@ -107,11 +107,12 @@ VALUES (@entity_id, @entity_type, @entity, @search_text, @slug, @address)
 RETURNING *;
 
 -- name: GetSearchEntry :many
-SELECT entity_id, entity_type, entity, slug, address
+SELECT entity_id, entity_type, entity, slug, address,
+       similarity(search_text, @search_text) AS relevance
 FROM global_search
-WHERE search_text ILIKE '%' || @search_text || '%'
-   OR similarity(search_text, @search_text) > 0.3
-ORDER BY similarity(search_text, @search_text) DESC
+WHERE search_text % @search_text  -- Uses GIN index efficiently
+   OR entity % @search_text       -- Search in entity too
+ORDER BY relevance DESC
 LIMIT 5;
 
 -- name: CreatePlaceSearchEntry :one
