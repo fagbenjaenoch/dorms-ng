@@ -1,24 +1,16 @@
-"use client";
-import React from "react";
-import posthog from "posthog-js";
-import { PostHogProvider } from "@posthog/react";
-import { useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { PostHogProvider } from "@posthog/next";
 
 export function PHProvider({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
-  const isAdmin = pathname.startsWith("/admin");
-
-  useEffect(() => {
-    posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
-      api_host: "https://us.i.posthog.com",
-      defaults: "2026-01-30",
-    });
-  }, []);
-
-  if (isAdmin) {
+  if (process.env.NODE_ENV !== "production") {
     return <>{children}</>;
   }
 
-  return <PostHogProvider client={posthog}>{children}</PostHogProvider>;
+  return (
+    <PostHogProvider
+      apiKey={process.env.NEXT_PUBLIC_POSTHOG_KEY!}
+      clientOptions={{ api_host: "/ingest" }}
+    >
+      {children}
+    </PostHogProvider>
+  );
 }
