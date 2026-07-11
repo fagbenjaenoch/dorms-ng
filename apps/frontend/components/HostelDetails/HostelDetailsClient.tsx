@@ -13,14 +13,21 @@ import { FaPersonWalking } from "react-icons/fa6";
 import BackToSearchPageButton from "../BackToSearchPage";
 import { fromSearchPageParam } from "@/lib/utils";
 import { useShare } from "@/lib/hooks/useShare";
+import { useSaveHostel } from "@/lib/hooks/useSaveHostel";
+import { useState } from "react";
+import { toast } from "sonner";
 
 import ImageCarousel from "../ImageCarousel";
 import Link from "next/link";
 import Image from "next/image";
+import { BsHeartFill } from "react-icons/bs";
 
 export default function HostelDetailsClient() {
   const [fromSearchPage, _] = useQueryState(fromSearchPageParam, parseAsBoolean);
   const { share } = useShare();
+
+  const { savedHostels, saveHostel, removeHostel } = useSaveHostel();
+  const [isSaved, setIsSaved] = useState(false);
 
   let { slug } = useParams();
   slug = slug as string;
@@ -35,6 +42,9 @@ export default function HostelDetailsClient() {
   }
 
   const { payload: hostel } = res;
+  const isHostelSaved =
+    savedHostels.find(hostel => hostel._id === hostel._id) !== undefined;
+
   const photoUrls = hostel.photo_urls.split(", ");
   const photoUrlObjects = useMemo(() => {
     return photoUrls.map((url, index) => ({
@@ -45,6 +55,10 @@ export default function HostelDetailsClient() {
 
   const ngnFormatter = useMoneyFormat();
   const formattedPrice = ngnFormatter.format(hostel.estimatedPriceRange);
+
+  useEffect(() => {
+    setIsSaved(isHostelSaved);
+  }, [isHostelSaved]);
 
   useEffect(() => {
     posthog.capture("hostel_details_viewed", {
@@ -106,16 +120,24 @@ export default function HostelDetailsClient() {
           </Button>
           <Button
             variant="ghost"
-            className="flex items-center gap-2 font-bold text-on-surface-variant hover:text-secondary transition-colors"
-            onClick={() =>
+            className="flex items-center gap-2 font-bold text-secondary hover:text-secondary transition-colors"
+            onClick={() => {
+              if (isSaved) {
+                removeHostel(hostel._id);
+                toast.success("Hostel removed successfully");
+              } else {
+                saveHostel(hostel);
+                toast.success("Hostel saved successfully");
+              }
+              setIsSaved(!isSaved);
               posthog.capture("hostel_saved", {
                 hostel_slug: slug,
                 hostel_name: hostel.name,
-              })
-            }
+              });
+            }}
           >
-            <Heart />
-            Save
+            {isSaved ? <BsHeartFill /> : <Heart />}
+            {isSaved ? "Saved" : "Save"}
           </Button>
         </div>
       </div>
