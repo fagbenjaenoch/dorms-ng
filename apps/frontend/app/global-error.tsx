@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function GlobalError({
   error,
@@ -22,11 +23,12 @@ export default function GlobalError({
           <Button onClick={() => unstable_retry()}>Try again</Button>
           <p>
             Please{" "}
-            <a
+            <Link
               href={`mailto:fagbenjaenoch73@gmail.com?subject=Error%20on%20Hostel%20Marketplace%20App&body=Please%20include%20a%20description%20of%20what%20you%20were%20doing%20when%20the%20error%20occurred`}
+              className="text-primary underline"
             >
               contact
-            </a>{" "}
+            </Link>{" "}
             our support if the error persists
           </p>
         </div>
