@@ -212,7 +212,7 @@ export default function InstitutionDetailsClient() {
                 <Map
                   ref={mapRef}
                   center={[institution.longitude, institution.latitude]}
-                  zoom={4.2}
+                  zoom={12}
                   theme="light"
                 >
                   <MapControls
