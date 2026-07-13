@@ -72,8 +72,8 @@ export default function InstitutionDetailsClient() {
     Array.from({ length: 5 }).map((_, i) => <PropertyCardSkeleton key={i} />);
 
   return (
-    <main className="pt-20">
-      <section className="relative px-8 py-12 pb-32 max-w-7xl mx-auto overflow-hidden">
+    <main>
+      <section className="relative container py-24 min-h-screen">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-7 z-10">
             <div className="inline-flex items-center uppercase gap-2 px-2 lg:px-3 py-1 bg-tertiary text-amber-800 rounded-full text-xs font-black tracking-widest mb-6">
@@ -171,7 +171,7 @@ export default function InstitutionDetailsClient() {
           </QueryErrorBoundary>
         </div>
       </section>
-      <section className="py-24 px-8 max-w-7xl mx-auto" id="map">
+      <section className="container py-24" id="map">
         <div className="rounded-[3rem] overflow-hidden shadow-xl border border-outline-variant/20">
           <div className="grid grid-cols-1 lg:grid-cols-3">
             <div className="lg:col-span-1 p-10 flex flex-col justify-center border border-r">
