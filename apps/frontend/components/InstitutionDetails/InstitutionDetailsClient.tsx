@@ -174,7 +174,7 @@ export default function InstitutionDetailsClient() {
       <section className="py-24 px-8 max-w-7xl mx-auto" id="map">
         <div className="rounded-[3rem] overflow-hidden shadow-xl border border-outline-variant/20">
           <div className="grid grid-cols-1 lg:grid-cols-3">
-            <div className="lg:col-span-1 p-10 flex flex-col justify-center">
+            <div className="lg:col-span-1 p-10 flex flex-col justify-center border border-r">
               <div className="flex items-center gap-3 mb-4 text-primary">
                 <PiMapPinArea size={20} />
                 <h2 className="text-3xl font-bold tracking-tight">Location</h2>
