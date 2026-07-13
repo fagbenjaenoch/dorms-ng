@@ -79,7 +79,7 @@ export default function Footer() {
             </Link>
             <Link
               className="text-primary-light/60 hover:text-orange-500 transition-colors duration-300"
-              href="#"
+              href={`mailto:fagbenjaenoch73@gmail.com?subject=${encodeURIComponent("From Dorms.ng")}&body=${encodeURIComponent("What do you like about Dorms.ng?")}`}
             >
               <FaAt size={15} />
             </Link>
