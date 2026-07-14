@@ -7,6 +7,8 @@ package models
 import (
 	"database/sql"
 	"time"
+
+	"github.com/sqlc-dev/pqtype"
 )
 
 type GlobalSearch struct {
@@ -20,23 +22,24 @@ type GlobalSearch struct {
 }
 
 type Hostel struct {
-	ID                  string          `json:"id"`
-	Name                string          `json:"name"`
-	Address             sql.NullString  `json:"address"`
-	Description         sql.NullString  `json:"description"`
-	City                sql.NullString  `json:"city"`
-	Neighborhood        sql.NullString  `json:"neighborhood"`
-	NeighborhoodID      sql.NullString  `json:"neighborhood_id"`
-	Latitude            float64         `json:"latitude"`
-	Longitude           float64         `json:"longitude"`
-	GooglePlaceID       sql.NullString  `json:"google_place_id"`
-	EstimatedPriceRange sql.NullFloat64 `json:"estimated_price_range"`
-	DistanceToGateKm    sql.NullFloat64 `json:"distance_to_gate_km"`
-	IsVerifiedByAdmin   sql.NullBool    `json:"is_verified_by_admin"`
-	PhotoUrls           sql.NullString  `json:"photo_urls"`
-	Slug                string          `json:"slug"`
-	CreatedAt           time.Time       `json:"created_at"`
-	UpdatedAt           time.Time       `json:"updated_at"`
+	ID                  string                `json:"id"`
+	Name                string                `json:"name"`
+	Address             sql.NullString        `json:"address"`
+	Description         sql.NullString        `json:"description"`
+	City                sql.NullString        `json:"city"`
+	Neighborhood        sql.NullString        `json:"neighborhood"`
+	NeighborhoodID      sql.NullString        `json:"neighborhood_id"`
+	Latitude            float64               `json:"latitude"`
+	Longitude           float64               `json:"longitude"`
+	GooglePlaceID       sql.NullString        `json:"google_place_id"`
+	EstimatedPriceRange sql.NullFloat64       `json:"estimated_price_range"`
+	DistanceToGateKm    sql.NullFloat64       `json:"distance_to_gate_km"`
+	IsVerifiedByAdmin   sql.NullBool          `json:"is_verified_by_admin"`
+	PhotoUrls           sql.NullString        `json:"photo_urls"`
+	Slug                string                `json:"slug"`
+	CreatedAt           time.Time             `json:"created_at"`
+	UpdatedAt           time.Time             `json:"updated_at"`
+	Amenities           pqtype.NullRawMessage `json:"amenities"`
 }
 
 type Institution struct {
