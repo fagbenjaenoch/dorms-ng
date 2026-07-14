@@ -12,6 +12,7 @@ type CreateHostel struct {
 	Longitude           float64  `json:"longitude" validate:"required,min=-180,max=180"`
 	PhotoURLs           []string `json:"photo_urls" validate:"required"`
 	IsVerified          bool     `json:"isVerified" validate:"required"`
+	Amenities           string   `json:"amenities" validate:"required"`
 }
 
 type Hostel struct {
@@ -26,4 +27,5 @@ type Hostel struct {
 	PhotoURLs           string  `json:"photo_urls"`
 	Slug                string  `json:"slug"`
 	IsVerified          bool    `json:"isVerified"`
+	Amenities           string  `json:"amenities"`
 }
