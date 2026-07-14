@@ -6,7 +6,7 @@ import { APIResponse, Hostel } from "@/lib/dto";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useQueryStates } from "nuqs";
 import { paginationSerializerObject } from "@/lib/api/pagination";
-import { areaFilterParsers, AreaType, hostelFilterParsers } from "@/lib/api/filter";
+import { areaFilterParsers, hostelFilterParsers } from "@/lib/api/filter";
 import { useEffect } from "react";
 
 interface HostelResultProps {

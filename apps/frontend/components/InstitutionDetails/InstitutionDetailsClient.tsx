@@ -24,15 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import {
-  Map,
-  MapControls,
-  MapMarker,
-  MapRef,
-  MarkerContent,
-  MarkerLabel,
-} from "../ui/map";
-import MapEventListener from "../MapEventListener";
+import { Map, MapControls, MapMarker, MapRef, MarkerContent } from "../ui/map";
 
 const items = [
   { label: "Sort by", value: null },
