@@ -87,13 +87,6 @@ export default function CreateHostelListingForm() {
     mutationKey: ["createHostelListing"],
     mutationFn: (data: CreateHostelListingData) => createHostelListing(data, photos),
     onSuccess: (_, variables) => {
-      posthog.capture("hostel_listing_created", {
-        hostel_name: variables.name,
-        city: variables.city,
-        neighborhood: variables.neighborhood,
-        is_verified: variables.isVerified,
-        estimated_price: variables.estimatedPriceRange,
-      });
       toast.success("Hostel listing created successfully");
       form.reset();
       setPhotos(null);
