@@ -3,6 +3,7 @@ package utils
 import (
 	"crypto/sha1"
 	"encoding/base64"
+	"encoding/json"
 	pkgError "errors"
 	"fmt"
 	"net/http"
@@ -10,6 +11,7 @@ import (
 
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/config"
 	"github.com/go-playground/validator/v10"
+	"github.com/sqlc-dev/pqtype"
 )
 
 type contextKey string
@@ -99,4 +101,37 @@ func SkipTelemetry(r *http.Request) bool {
 	}
 
 	return true
+}
+
+func StringsToNullRawMessage(strings []string) (pqtype.NullRawMessage, error) {
+	var result pqtype.NullRawMessage
+
+	if len(strings) == 0 {
+		result.Valid = false
+		return result, nil
+	}
+
+	// Marshal the array to JSON
+	jsonData, err := json.Marshal(strings)
+	if err != nil {
+		return result, err
+	}
+
+	result.RawMessage = jsonData
+	result.Valid = true
+
+	return result, nil
+}
+
+func NullRawMessageToStrings(nrm pqtype.NullRawMessage) []string {
+	if !nrm.Valid {
+		return nil
+	}
+
+	var result []string
+	if err := json.Unmarshal(nrm.RawMessage, &result); err != nil {
+		return nil
+	}
+
+	return result
 }
