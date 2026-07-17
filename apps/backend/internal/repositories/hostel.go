@@ -62,6 +62,12 @@ func (hr *HostelRepository) CreateHostel(ctx context.Context, hostel dto.CreateH
 	h.Description = sql.NullString{String: hostel.Description, Valid: true}
 	h.Slug = utils.GenerateSlug(hostel.Name, fmt.Sprintf("%d", time.Now().Unix()))
 
+	amenities, err := utils.StringsToNullRawMessage(hostel.Amenities)
+	if err != nil {
+		return nil, err
+	}
+	h.Amenities = amenities
+
 	hr.Logger.Debug().Str("hostel slug", h.Slug).Msg("generated hostel slug")
 
 	ch, err := qtx.CreateHostel(ctx, h)

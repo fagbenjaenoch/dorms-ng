@@ -10,6 +10,7 @@ import (
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/middleware"
 	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/repositories"
+	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/utils"
 	"github.com/rs/zerolog"
 	"go.opentelemetry.io/otel"
 )
@@ -76,6 +77,7 @@ func (s HostelService) CreateHostel(ctx context.Context, hostel dto.CreateHostel
 			Slug:                h.Slug,
 			EstimatedPriceRange: h.EstimatedPriceRange.Float64,
 			IsVerified:          h.IsVerifiedByAdmin.Bool,
+			Amenities:           utils.NullRawMessageToStrings(h.Amenities),
 		},
 	}, nil
 }
@@ -116,6 +118,7 @@ func (s HostelService) GetHostel(ctx context.Context, slug string) (dto.Structur
 			Longitude:           h.Longitude,
 			PhotoURLs:           h.PhotoUrls.String,
 			EstimatedPriceRange: h.EstimatedPriceRange.Float64,
+			Amenities:           utils.NullRawMessageToStrings(h.Amenities),
 		},
 	}, nil
 }
@@ -179,6 +182,7 @@ func (s HostelService) SearchHostels(ctx context.Context, searchType, id string,
 			Slug:                v.Slug,
 			PhotoURLs:           v.PhotoUrls.String,
 			IsVerified:          v.IsVerifiedByAdmin.Bool,
+			Amenities:           utils.NullRawMessageToStrings(v.Amenities),
 		})
 	}
 
