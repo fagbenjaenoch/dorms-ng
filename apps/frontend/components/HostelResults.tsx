@@ -52,7 +52,15 @@ export default function HostelResults({ areaName, showInsight }: HostelResultPro
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {hostels.map(
               (
-                { name, address, estimatedPriceRange, photo_urls, slug, isVerified },
+                {
+                  name,
+                  address,
+                  estimatedPriceRange,
+                  photo_urls,
+                  slug,
+                  isVerified,
+                  amenities,
+                },
                 i,
               ) => (
                 <PropertyCard
@@ -63,6 +71,7 @@ export default function HostelResults({ areaName, showInsight }: HostelResultPro
                   imageUrl={photo_urls.split(", ")?.[0]}
                   slug={slug}
                   isVerified={isVerified}
+                  amenities={amenities}
                 />
               ),
             )}
