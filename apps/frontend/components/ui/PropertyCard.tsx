@@ -52,12 +52,12 @@ export default function PropertyCard({
           </div>
         )}
       </div>
-      <div className="px-8 pb-8 pt-4">
+      <div className="px-8 pb-8 pt-4 flex flex-col">
         <div className="flex justify-between items-start mb-4">
           <div>
             <h3 className="md:text-xl font-bold mb-1">{name}</h3>
             <p className="text-xs md:text-sm flex items-start gap-1 text-muted-foreground">
-              <MapPin className="shrink-0" size={12} />
+              <MapPin className="shrink-0 hidden lg:block" size={12} />
               <span className="leading-snug max-w-60 line-clamp-2">{location}</span>
             </p>
           </div>
@@ -99,7 +99,7 @@ export default function PropertyCard({
           <Button
             variant="ghost"
             size="xl"
-            className="w-full py-4 rounded-2xl font-bold bg-primary/10"
+            className="w-full py-4 rounded-2xl font-bold bg-primary/10 self-end"
           >
             View Details
           </Button>
