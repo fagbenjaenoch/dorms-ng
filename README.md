@@ -172,4 +172,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Live Demo**: [hostel-marketplace-app.vercel.app](https://hostel-marketplace-app.vercel.app)
+**Live Demo**: [dorms.ng](https://dorms.ng)
