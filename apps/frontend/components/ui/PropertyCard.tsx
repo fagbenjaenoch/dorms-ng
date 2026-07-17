@@ -18,6 +18,7 @@ interface PropertyCardProps {
   imageUrl: string;
   slug: string;
   isVerified: boolean;
+  amenities: string[];
 }
 
 export default function PropertyCard({
@@ -27,6 +28,7 @@ export default function PropertyCard({
   imageUrl,
   slug,
   isVerified,
+  amenities,
 }: PropertyCardProps) {
   const formattedPrice = useMoneyFormat().format(price);
 
@@ -66,15 +68,22 @@ export default function PropertyCard({
             <p className="text-xs font-bold uppercase tracking-tighter">per session</p>
           </div>
         </div>
-        <div className="flex gap-3 mb-6 text-muted-foreground">
-          <span className="px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1 bg-gray-200">
-            <FaBolt />
-            Prepaid Meter
-          </span>
-          <span className="px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1 bg-gray-200">
-            <PiShieldCheckeredFill size={13} />
-            24/7 Security
-          </span>
+        <div className="flex flex-wrap align-items-center gap-3 mb-6 text-muted-foreground">
+          {amenities &&
+            amenities.slice(0, 5).map((amenity, index) => (
+              <span
+                key={index}
+                className="shrink-0 px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1 bg-gray-200"
+              >
+                {amenity}
+              </span>
+            ))}
+
+          {amenities && amenities.length > 5 && (
+            <span className="shrink-0 px-3 py-1 rounded-lg text-xs font-bold flex items-center gap-1 bg-gray-200">
+              ...more
+            </span>
+          )}
         </div>
         <Link
           href={`/hostels/${slug}?${fromSearchPageParam}=true`}
