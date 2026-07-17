@@ -27,11 +27,12 @@ export async function createHostelListing(
   );
 
   const publicUrls = await Promise.all(photoPromises);
-  console.log(publicUrls);
 
-  const dataWithPhotos = {
+  const dataWithPhotosAndAmenities = {
     ...data,
     photo_urls: publicUrls,
+    is_verified: data.isVerified,
+    amenities: data.amenities.map(amenity => amenity.text),
   };
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/hostels`, {
@@ -39,7 +40,7 @@ export async function createHostelListing(
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(dataWithPhotos),
+    body: JSON.stringify(dataWithPhotosAndAmenities),
   });
 
   const response = await res.json();
