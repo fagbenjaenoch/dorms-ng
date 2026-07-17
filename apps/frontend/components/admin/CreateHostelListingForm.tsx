@@ -27,8 +27,10 @@ import {
   ShieldCheck,
   Camera,
   UploadIcon,
+  Home,
 } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
+import { Tag, TagInput } from "emblor";
 import {
   Map,
   MapControls,
@@ -69,9 +71,12 @@ export default function CreateHostelListingForm() {
       latitude: defaultLngLat.lat,
       longitude: defaultLngLat.lng,
       distanceKm: 0,
+      amenities: [],
     },
   });
   const [marker, setMarker] = useState(defaultLngLat);
+  const [tags, setTags] = useState<Tag[]>([]);
+  const [activeTagIndex, setActiveTagIndex] = useState<number | null>(null);
 
   useEffect(() => {
     form.setValue("longitude", marker.lng);
@@ -92,6 +97,7 @@ export default function CreateHostelListingForm() {
       toast.success("Hostel listing created successfully");
       form.reset();
       setPhotos(null);
+      //TODO: route to the hostel listing page
       setMarker(defaultLngLat);
     },
     onError: error => {
@@ -641,6 +647,44 @@ export default function CreateHostelListingForm() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="p-6 sm:p-8 rounded-[2rem] shadow-lg border border-gray-300/50">
+        <div className="flex items-center gap-3 mb-8">
+          <div className="w-10 h-10 bg-primary-container text-on-primary-container rounded-xl flex items-center justify-center">
+            <Home size={24} />
+          </div>
+          <h2 className="text-2xl font-bold tracking-tight">Amenities</h2>
+        </div>
+
+        <div>
+          <Controller
+            name="amenities"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <TagInput
+                  {...field}
+                  placeholder="What amenities does the hostel have?"
+                  className="w-full h-full flex flex-col shadow-none rounded-none"
+                  tags={tags}
+                  setTags={newTags => {
+                    setTags(newTags);
+                    form.setValue("amenities", newTags as [Tag, ...Tag[]]);
+                  }}
+                  activeTagIndex={activeTagIndex}
+                  setActiveTagIndex={setActiveTagIndex}
+                  inlineTags={false}
+                  inputFieldPosition="bottom"
+                  direction="row"
+                  variant="primary"
+                  shape="pill"
+                />
+                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+              </Field>
+            )}
+          />
         </div>
       </section>
 

@@ -39,6 +39,7 @@ export interface Hostel {
   isVerified: boolean;
   photo_urls: string;
   slug: string;
+  amenities: string[];
 }
 
 export type Place = {

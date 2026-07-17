@@ -78,6 +78,14 @@ export const createHostelListingSchema = z.object({
   etaMins: z.coerce.number<number>().min(0, "Required"),
   googlePlaceId: z.string(),
   isVerified: z.boolean("Field must be a valid boolean i.e True or False"),
+  amenities: z
+    .array(
+      z.object({
+        id: z.string(),
+        text: z.string(),
+      }),
+    )
+    .min(1, "Amenities are required"),
 });
 
 export type CreateHostelListingData = z.infer<typeof createHostelListingSchema>;
