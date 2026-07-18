@@ -169,7 +169,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Built with the goal of simplifying student housing in Nigeria
 - Inspired by Airbnb's trust and transparency model
 - Bun runtime for faster development and production performance
-
----
-
-**Live Demo**: [dorms.ng](https://dorms.ng)
