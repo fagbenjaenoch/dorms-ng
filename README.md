@@ -65,18 +65,18 @@ bun install
 cp .env.example .env
 ```
 
-3. Install backend dependencies
+4. Install backend dependencies
 ```bash
 cd ../backend
 go mod download
 ```
 
-4. Set up environment variables
+5. Set up environment variables
 ```bash
 cp .env.example .env
 ```
 
-5. Run the development servers
+6. Run the development servers
 
 **With Docker (recommended)**
 ```bash
