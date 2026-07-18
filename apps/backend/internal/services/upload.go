@@ -2,9 +2,7 @@ package services
 
 import (
 	"context"
-	"fmt"
 	"net/http"
-	"os"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -58,7 +56,7 @@ func (s *UploadService) GetPresignedURL(ctx context.Context, key string) (dto.St
 	}
 
 	uploadUrl := presignResult.URL
-	publicUrl := fmt.Sprintf("%s/%s", os.Getenv("R2_DEV_URL"), key)
+	publicUrl := key
 
 	return dto.StructuredResponse{
 		Success: true,
@@ -66,7 +64,7 @@ func (s *UploadService) GetPresignedURL(ctx context.Context, key string) (dto.St
 		Status:  http.StatusOK,
 		Payload: dto.UploadURLPayload{
 			UploadURL: uploadUrl,
-			PublicURL: publicUrl,
+			Key:       publicUrl,
 		},
 	}, nil
 }

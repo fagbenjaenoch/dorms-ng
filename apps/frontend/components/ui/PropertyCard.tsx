@@ -40,7 +40,7 @@ export default function PropertyCard({
           height={200}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
           alt={name}
-          src={imageUrl}
+          src={process.env.NEXT_PUBLIC_R2_URL + imageUrl}
         />
         <div className="absolute top-4 left-4 bg-tertiary px-4 py-1 rounded-full font-bold text-xs tracking-widest shadow-lg uppercase">
           Self-Contain

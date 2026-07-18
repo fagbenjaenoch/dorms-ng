@@ -37,7 +37,7 @@ export async function uploadPhoto({
 
   const presignedUrlRes = (await presignedUrlReq.json()) as any as APIResponse<{
     upload_url: string;
-    public_url: string;
+    key: string;
   }>;
 
   const uploadReq = await fetch(presignedUrlRes.payload.upload_url, {
@@ -52,5 +52,5 @@ export async function uploadPhoto({
     throw new Error("Failed to upload primary photo");
   }
 
-  return presignedUrlRes.payload.public_url;
+  return presignedUrlRes.payload.key;
 }
