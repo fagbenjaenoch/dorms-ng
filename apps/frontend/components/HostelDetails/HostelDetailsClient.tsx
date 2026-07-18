@@ -59,7 +59,7 @@ export default function HostelDetailsClient() {
   const photoUrls = hostel.photo_urls.split(", ");
   const photoUrlObjects = useMemo(() => {
     return photoUrls.map((url, index) => ({
-      url,
+      url: process.env.NEXT_PUBLIC_R2_URL + url,
       alt: `${hostel.name} - ${index + 1}`,
     }));
   }, [photoUrls, hostel.name]);
