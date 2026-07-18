@@ -145,7 +145,7 @@ export default function SignupForm() {
           <p>
             I agree to the{" "}
             <Link
-              href="/term-of-service"
+              href="/terms-of-service"
               className="text-primary underline underline-offset-2"
             >
               Terms of Service
