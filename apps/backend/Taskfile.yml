@@ -3,7 +3,7 @@
 version: "3"
 
 vars:
-  DB_URL: internal/database/data.db
+  DB_URL: postgres://enoch:enoch1234@localhost:5432/dorms_ng?sslmode=disable
 
 tasks:
   dev:
@@ -25,15 +25,15 @@ tasks:
   migrate:
     desc: Run database migrations
     cmds:
-      - goose -dir internal/database/migrations sqlite3 {{.DB_URL}} up
+      - goose -dir internal/database/migrations postgres {{.DB_URL}} up
   rollback:
     desc: Rollback the database
     cmds:
-      - goose -dir internal/database/migrations sqlite3 {{.DB_URL}} down
+      - goose -dir internal/database/migrations postgres {{.DB_URL}} down
   db-reset:
     desc: Reset the database
     cmds:
-      - goose -dir internal/database/migrations sqlite3 {{.DB_URL}} reset
+      - goose -dir internal/database/migrations postgres {{.DB_URL}} reset
   tidy:
     desc: clean up go mod
     cmds:
