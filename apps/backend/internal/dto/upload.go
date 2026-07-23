@@ -12,5 +12,5 @@ type PresignedURLPayload struct {
 
 type UploadURLPayload struct {
 	UploadURL string `json:"upload_url"`
-	Key       string `json:"public_url"`
+	Key       string `json:"key"`
 }
