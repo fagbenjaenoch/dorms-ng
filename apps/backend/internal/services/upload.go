@@ -56,7 +56,6 @@ func (s *UploadService) GetPresignedURL(ctx context.Context, key string) (dto.St
 	}
 
 	uploadUrl := presignResult.URL
-	publicUrl := key
 
 	return dto.StructuredResponse{
 		Success: true,
@@ -64,7 +63,7 @@ func (s *UploadService) GetPresignedURL(ctx context.Context, key string) (dto.St
 		Status:  http.StatusOK,
 		Payload: dto.UploadURLPayload{
 			UploadURL: uploadUrl,
-			Key:       publicUrl,
+			Key:       key,
 		},
 	}, nil
 }
