@@ -109,7 +109,13 @@ export default function HostelDetailsClient() {
               className="bg-muted-foreground/20 hover:bg-muted-foreground/30"
             >
               View on Google maps
-              <Image src="/gmap-26.webp" alt="Google Maps" width={16} height={16} />
+              <Image
+                src="/gmap-26.webp"
+                alt="Google Maps"
+                width={16}
+                height={16}
+                loading="lazy"
+              />
             </Button>
           </Link>
           <Button
