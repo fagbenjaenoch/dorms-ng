@@ -12,7 +12,7 @@ export default function Page() {
       <div className="container leading-relaxed">
         <div className="mb-20">
           <h1 className="font-headline text-3xl md:text-5xl font-black tracking-tighter mb-10">
-            <span className="text-primary">Dorms.ng</span> Privacy Policy
+            Privacy Policy
           </h1>
           <p>Last Updated: 9th July, 2026</p>
         </div>

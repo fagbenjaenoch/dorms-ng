@@ -140,7 +140,7 @@ export const nigerianCities = [
 
 export const navLinks = [
   { title: "Find Hostels", href: "/search" },
-  { title: "About Us", href: "/about-us" },
+  { title: "About Us", href: "/about" },
   { title: "Support", href: "#" },
 ];
 
