@@ -7,7 +7,7 @@ import (
 	s3Config "github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/config"
+	"github.com/fagbenjaenoch/dorms-ng/internal/config"
 )
 
 type R2 struct {

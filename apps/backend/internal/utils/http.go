@@ -6,7 +6,7 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
+	"github.com/fagbenjaenoch/dorms-ng/internal/dto"
 )
 
 type QueryParam string

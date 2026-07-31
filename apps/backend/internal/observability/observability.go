@@ -5,8 +5,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/server"
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/utils"
+	"github.com/fagbenjaenoch/dorms-ng/internal/server"
+	"github.com/fagbenjaenoch/dorms-ng/internal/utils"
 	hostMetrics "go.opentelemetry.io/contrib/instrumentation/host"
 	runtimeMetrics "go.opentelemetry.io/contrib/instrumentation/runtime"
 	"go.opentelemetry.io/otel"

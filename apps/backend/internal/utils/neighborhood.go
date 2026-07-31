@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
+	"github.com/fagbenjaenoch/dorms-ng/internal/dto"
 )
 
 func GetNeighborhoodAddress(neighborhood dto.CreateNeighborhood) string {

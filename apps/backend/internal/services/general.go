@@ -5,8 +5,8 @@ import (
 	"database/sql"
 	"net/http"
 
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/repositories"
+	"github.com/fagbenjaenoch/dorms-ng/internal/dto"
+	"github.com/fagbenjaenoch/dorms-ng/internal/repositories"
 	"github.com/rs/zerolog"
 )
 

@@ -4,8 +4,8 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/utils"
+	"github.com/fagbenjaenoch/dorms-ng/internal/dto"
+	"github.com/fagbenjaenoch/dorms-ng/internal/utils"
 	"github.com/go-playground/validator/v10"
 	"go.opentelemetry.io/otel/attribute"
 )

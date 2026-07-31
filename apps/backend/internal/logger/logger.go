@@ -4,8 +4,8 @@ import (
 	"io"
 	"os"
 
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/config"
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/utils"
+	"github.com/fagbenjaenoch/dorms-ng/internal/config"
+	"github.com/fagbenjaenoch/dorms-ng/internal/utils"
 	"github.com/rs/zerolog"
 	"go.opentelemetry.io/contrib/bridges/otelzerolog"
 )

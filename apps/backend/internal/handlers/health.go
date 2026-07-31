@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/server"
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/utils"
+	"github.com/fagbenjaenoch/dorms-ng/internal/dto"
+	"github.com/fagbenjaenoch/dorms-ng/internal/server"
+	"github.com/fagbenjaenoch/dorms-ng/internal/utils"
 )
 
 type HealthHandler struct {

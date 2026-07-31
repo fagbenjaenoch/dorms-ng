@@ -50,7 +50,7 @@ The platform combines modern web technologies to create a seamless experience fo
 
 1. Clone the repository
 ```bash
-git clone https://github.com/fagbenjaenoch/hostel-marketplace-app.git
+git clone https://github.com/fagbenjaenoch/dorms-ng.git
 cd hostel-marketplace-app
 ```
 

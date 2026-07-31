@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/config"
+	"github.com/fagbenjaenoch/dorms-ng/internal/config"
 	"github.com/rs/zerolog"
 )
 

@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/auth"
+	"github.com/fagbenjaenoch/dorms-ng/internal/auth"
 )
 
 func TestJWTSigning(t *testing.T) {

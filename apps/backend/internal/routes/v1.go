@@ -1,10 +1,10 @@
 package routes
 
 import (
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/handlers"
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/middleware"
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/server"
+	"github.com/fagbenjaenoch/dorms-ng/internal/dto"
+	"github.com/fagbenjaenoch/dorms-ng/internal/handlers"
+	"github.com/fagbenjaenoch/dorms-ng/internal/middleware"
+	"github.com/fagbenjaenoch/dorms-ng/internal/server"
 	"github.com/go-chi/chi/v5"
 )
 

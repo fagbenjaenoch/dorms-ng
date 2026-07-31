@@ -1,7 +1,7 @@
 package handlers
 
 import (
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/server"
+	"github.com/fagbenjaenoch/dorms-ng/internal/server"
 )
 
 type BaseHandler struct {

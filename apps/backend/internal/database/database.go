@@ -5,7 +5,7 @@ import (
 	"embed"
 
 	"github.com/XSAM/otelsql"
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/config"
+	"github.com/fagbenjaenoch/dorms-ng/internal/config"
 	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/pressly/goose/v3"
 	"github.com/rs/zerolog"

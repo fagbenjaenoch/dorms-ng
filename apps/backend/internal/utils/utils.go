@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/config"
+	"github.com/fagbenjaenoch/dorms-ng/internal/config"
 	"github.com/go-playground/validator/v10"
 	"github.com/sqlc-dev/pqtype"
 )

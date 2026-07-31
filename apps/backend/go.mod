@@ -1,4 +1,4 @@
-module github.com/fagbenjaenoch/hostel-marketplace-app
+module github.com/fagbenjaenoch/dorms-ng
 
 go 1.25.7
 

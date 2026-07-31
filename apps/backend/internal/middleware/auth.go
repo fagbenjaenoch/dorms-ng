@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/auth"
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/config"
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/utils"
+	"github.com/fagbenjaenoch/dorms-ng/internal/auth"
+	"github.com/fagbenjaenoch/dorms-ng/internal/config"
+	"github.com/fagbenjaenoch/dorms-ng/internal/dto"
+	"github.com/fagbenjaenoch/dorms-ng/internal/utils"
 	"go.opentelemetry.io/otel/attribute"
 )
 

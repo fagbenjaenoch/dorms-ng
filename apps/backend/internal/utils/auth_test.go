@@ -3,7 +3,7 @@ package utils_test
 import (
 	"testing"
 
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/utils"
+	"github.com/fagbenjaenoch/dorms-ng/internal/utils"
 )
 
 func TestPasswordHashing(t *testing.T) {

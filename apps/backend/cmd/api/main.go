@@ -8,12 +8,12 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/config"
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/database"
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/logger"
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/observability"
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/routes"
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/server"
+	"github.com/fagbenjaenoch/dorms-ng/internal/config"
+	"github.com/fagbenjaenoch/dorms-ng/internal/database"
+	"github.com/fagbenjaenoch/dorms-ng/internal/logger"
+	"github.com/fagbenjaenoch/dorms-ng/internal/observability"
+	"github.com/fagbenjaenoch/dorms-ng/internal/routes"
+	"github.com/fagbenjaenoch/dorms-ng/internal/server"
 )
 
 const DefaultContextTimeout = 10

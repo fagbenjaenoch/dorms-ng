@@ -3,12 +3,12 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/auth"
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/observability"
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/server"
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/services"
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/utils"
+	"github.com/fagbenjaenoch/dorms-ng/internal/auth"
+	"github.com/fagbenjaenoch/dorms-ng/internal/dto"
+	"github.com/fagbenjaenoch/dorms-ng/internal/observability"
+	"github.com/fagbenjaenoch/dorms-ng/internal/server"
+	"github.com/fagbenjaenoch/dorms-ng/internal/services"
+	"github.com/fagbenjaenoch/dorms-ng/internal/utils"
 )
 
 type UserHandler struct {

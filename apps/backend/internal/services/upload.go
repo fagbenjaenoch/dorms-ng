@@ -7,8 +7,8 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/config"
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
+	"github.com/fagbenjaenoch/dorms-ng/internal/config"
+	"github.com/fagbenjaenoch/dorms-ng/internal/dto"
 	"github.com/rs/zerolog"
 	"go.opentelemetry.io/otel"
 )

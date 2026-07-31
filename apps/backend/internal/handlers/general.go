@@ -3,9 +3,9 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/server"
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/services"
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/utils"
+	"github.com/fagbenjaenoch/dorms-ng/internal/server"
+	"github.com/fagbenjaenoch/dorms-ng/internal/services"
+	"github.com/fagbenjaenoch/dorms-ng/internal/utils"
 )
 
 type GeneralHandler struct {

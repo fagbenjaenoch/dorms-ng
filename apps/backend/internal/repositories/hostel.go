@@ -7,10 +7,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/database/models"
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/dto"
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/middleware"
-	"github.com/fagbenjaenoch/hostel-marketplace-app/internal/utils"
+	"github.com/fagbenjaenoch/dorms-ng/internal/database/models"
+	"github.com/fagbenjaenoch/dorms-ng/internal/dto"
+	"github.com/fagbenjaenoch/dorms-ng/internal/middleware"
+	"github.com/fagbenjaenoch/dorms-ng/internal/utils"
 	"github.com/google/uuid"
 	"github.com/rs/zerolog"
 )
