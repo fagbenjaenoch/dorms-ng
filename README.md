@@ -1,4 +1,4 @@
-# Hostel Marketplace App
+# Dorms.ng
 
 A full-stack application that serves as a trust layer for Nigerian students looking for hostels in unfamiliar campus environments.
 
