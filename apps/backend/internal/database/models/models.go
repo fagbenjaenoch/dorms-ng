@@ -53,6 +53,7 @@ type Institution struct {
 	CreatedAt   time.Time      `json:"created_at"`
 	UpdatedAt   time.Time      `json:"updated_at"`
 	City        string         `json:"city"`
+	State       string         `json:"state"`
 }
 
 type Neighborhood struct {
@@ -64,6 +65,7 @@ type Neighborhood struct {
 	AvgPriceSelfCon    sql.NullInt32  `json:"avg_price_self_con"`
 	AvgPrice1bed       sql.NullInt32  `json:"avg_price_1bed"`
 	PowerRatingInsight sql.NullString `json:"power_rating_insight"`
+	State              string         `json:"state"`
 }
 
 type PlaceSearch struct {

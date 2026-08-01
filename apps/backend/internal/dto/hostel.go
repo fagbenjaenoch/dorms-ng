@@ -4,7 +4,6 @@ type CreateHostel struct {
 	Name                string   `json:"name" validate:"required,min=2,max=100"`
 	Address             string   `json:"address" validate:"required,min=2,max=255"`
 	Description         string   `json:"description" validate:"required,min=10,max=4000"`
-	City                string   `json:"city" validate:"required,min=2,max=100"`
 	Neighborhood        string   `json:"neighborhood" validate:"required,min=2,max=100"`
 	NeighborhoodID      string   `json:"neighborhoodId" validate:"required,uuid"`
 	EstimatedPriceRange float64  `json:"estimatedPriceRange" validate:"required"`
@@ -19,7 +18,6 @@ type Hostel struct {
 	Name                string   `json:"name"`
 	Address             string   `json:"address"`
 	Description         string   `json:"description"`
-	City                string   `json:"city"`
 	Neighborhood        string   `json:"neighborhood"`
 	EstimatedPriceRange float64  `json:"estimatedPriceRange"`
 	Latitude            float64  `json:"latitude"`

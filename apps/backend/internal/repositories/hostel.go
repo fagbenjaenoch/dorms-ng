@@ -50,7 +50,6 @@ func (hr *HostelRepository) CreateHostel(ctx context.Context, hostel dto.CreateH
 	var h models.CreateHostelParams
 	h.ID = uuid.New().String()
 	h.Name = hostel.Name
-	h.City = sql.NullString{String: hostel.City, Valid: true}
 	h.Neighborhood = sql.NullString{String: hostel.Neighborhood, Valid: true}
 	h.NeighborhoodID = sql.NullString{String: hostel.NeighborhoodID, Valid: true}
 	h.Address = sql.NullString{String: hostel.Address, Valid: true}
@@ -79,7 +78,8 @@ func (hr *HostelRepository) CreateHostel(ctx context.Context, hostel dto.CreateH
 		EntityID:   ch.ID,
 		EntityType: "hostel",
 		Entity:     ch.Name,
-		SearchText: sql.NullString{String: fmt.Sprintf("%s, %s, %s", h.Name, h.Address.String, h.City.String), Valid: true},
+		// TODO: add neighborhood info to hostel search text
+		SearchText: sql.NullString{String: fmt.Sprintf("%s, %s", h.Name, h.Address.String), Valid: true},
 		Slug:       h.Slug,
 		Address:    sql.NullString{String: ch.Address.String, Valid: true},
 	}

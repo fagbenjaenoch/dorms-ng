@@ -68,7 +68,6 @@ func (s HostelService) CreateHostel(ctx context.Context, hostel dto.CreateHostel
 		Message: "Hostel created successfully",
 		Payload: dto.Hostel{
 			Name:                h.Name,
-			City:                h.City.String,
 			Description:         h.Description.String,
 			Address:             h.Address.String,
 			Latitude:            h.Latitude,
@@ -111,7 +110,6 @@ func (s HostelService) GetHostel(ctx context.Context, slug string) (dto.Structur
 		Message: "Hostel retrieved successfully",
 		Payload: dto.Hostel{
 			Name:                h.Name,
-			City:                h.City.String,
 			Description:         h.Description.String,
 			Address:             h.Address.String,
 			Latitude:            h.Latitude,
@@ -174,7 +172,6 @@ func (s HostelService) SearchHostels(ctx context.Context, searchType, id string,
 			Name:                v.Name,
 			Address:             v.Address.String,
 			Description:         v.Description.String,
-			City:                v.City.String,
 			Neighborhood:        v.Neighborhood.String,
 			EstimatedPriceRange: v.EstimatedPriceRange.Float64,
 			Longitude:           v.Longitude,

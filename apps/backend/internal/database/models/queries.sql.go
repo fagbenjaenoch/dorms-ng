@@ -69,13 +69,13 @@ func (q *Queries) CheckUserExists(ctx context.Context, email string) (bool, erro
 
 const createHostel = `-- name: CreateHostel :one
 INSERT INTO hostels (
-    id, name, address, description, city, latitude, longitude,
+    id, name, address, description, latitude, longitude,
     google_place_id, estimated_price_range, neighborhood, neighborhood_id,
     distance_to_gate_km, is_verified_by_admin, photo_urls, slug, amenities
 ) VALUES (
-    $1, $2, $3, $4, $5, $6, $7,
-    $8, $9, $10, $11,
-    $12, $13, $14, $15, $16
+    $1, $2, $3, $4, $5, $6,
+    $7, $8, $9, $10,
+    $11, $12, $13, $14, $15
 )
 RETURNING id, name, address, description, city, neighborhood, neighborhood_id, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, photo_urls, slug, created_at, updated_at, amenities
 `
@@ -85,7 +85,6 @@ type CreateHostelParams struct {
 	Name                string                `json:"name"`
 	Address             sql.NullString        `json:"address"`
 	Description         sql.NullString        `json:"description"`
-	City                sql.NullString        `json:"city"`
 	Latitude            float64               `json:"latitude"`
 	Longitude           float64               `json:"longitude"`
 	GooglePlaceID       sql.NullString        `json:"google_place_id"`
@@ -105,7 +104,6 @@ func (q *Queries) CreateHostel(ctx context.Context, arg CreateHostelParams) (Hos
 		arg.Name,
 		arg.Address,
 		arg.Description,
-		arg.City,
 		arg.Latitude,
 		arg.Longitude,
 		arg.GooglePlaceID,
@@ -144,11 +142,11 @@ func (q *Queries) CreateHostel(ctx context.Context, arg CreateHostelParams) (Hos
 
 const createInstitution = `-- name: CreateInstitution :one
 INSERT INTO institutions (
-    id, name, acronym, latitude, longitude, city, slug, description
+    id, name, acronym, latitude, longitude, state, city, slug, description
 ) VALUES (
-    $1, $2, $3, $4, $5, $6, $7, $8
+    $1, $2, $3, $4, $5, $6, $7, $8, $9
 )
-RETURNING id, name, acronym, description, latitude, longitude, slug, created_at, updated_at, city
+RETURNING id, name, acronym, description, latitude, longitude, slug, created_at, updated_at, city, state
 `
 
 type CreateInstitutionParams struct {
@@ -157,6 +155,7 @@ type CreateInstitutionParams struct {
 	Acronym     sql.NullString `json:"acronym"`
 	Latitude    float64        `json:"latitude"`
 	Longitude   float64        `json:"longitude"`
+	State       string         `json:"state"`
 	City        string         `json:"city"`
 	Slug        string         `json:"slug"`
 	Description sql.NullString `json:"description"`
@@ -169,6 +168,7 @@ func (q *Queries) CreateInstitution(ctx context.Context, arg CreateInstitutionPa
 		arg.Acronym,
 		arg.Latitude,
 		arg.Longitude,
+		arg.State,
 		arg.City,
 		arg.Slug,
 		arg.Description,
@@ -185,17 +185,18 @@ func (q *Queries) CreateInstitution(ctx context.Context, arg CreateInstitutionPa
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.City,
+		&i.State,
 	)
 	return i, err
 }
 
 const createNeighborhood = `-- name: CreateNeighborhood :one
 INSERT INTO neighborhoods (
-    id, institution, institution_id, name, city, avg_price_self_con, avg_price_1bed, power_rating_insight
+    id, institution, institution_id, name, city, state, avg_price_self_con, avg_price_1bed, power_rating_insight
 ) VALUES (
-    $1, $2, $3, $4, $5, $6, $7, $8
+    $1, $2, $3, $4, $5, $6, $7, $8, $9
 )
-RETURNING id, name, institution, institution_id, city, avg_price_self_con, avg_price_1bed, power_rating_insight
+RETURNING id, name, institution, institution_id, city, avg_price_self_con, avg_price_1bed, power_rating_insight, state
 `
 
 type CreateNeighborhoodParams struct {
@@ -204,6 +205,7 @@ type CreateNeighborhoodParams struct {
 	InstitutionID      string         `json:"institution_id"`
 	Name               string         `json:"name"`
 	City               string         `json:"city"`
+	State              string         `json:"state"`
 	AvgPriceSelfCon    sql.NullInt32  `json:"avg_price_self_con"`
 	AvgPrice1bed       sql.NullInt32  `json:"avg_price_1bed"`
 	PowerRatingInsight sql.NullString `json:"power_rating_insight"`
@@ -216,6 +218,7 @@ func (q *Queries) CreateNeighborhood(ctx context.Context, arg CreateNeighborhood
 		arg.InstitutionID,
 		arg.Name,
 		arg.City,
+		arg.State,
 		arg.AvgPriceSelfCon,
 		arg.AvgPrice1bed,
 		arg.PowerRatingInsight,
@@ -230,6 +233,7 @@ func (q *Queries) CreateNeighborhood(ctx context.Context, arg CreateNeighborhood
 		&i.AvgPriceSelfCon,
 		&i.AvgPrice1bed,
 		&i.PowerRatingInsight,
+		&i.State,
 	)
 	return i, err
 }
@@ -369,7 +373,7 @@ func (q *Queries) CreateUserCredentials(ctx context.Context, arg CreateUserCrede
 }
 
 const getAllInstitutions = `-- name: GetAllInstitutions :many
-SELECT id, name, acronym, description, latitude, longitude, slug, created_at, updated_at, city FROM institutions
+SELECT id, name, acronym, description, latitude, longitude, slug, created_at, updated_at, city, state FROM institutions
 `
 
 func (q *Queries) GetAllInstitutions(ctx context.Context) ([]Institution, error) {
@@ -392,6 +396,7 @@ func (q *Queries) GetAllInstitutions(ctx context.Context) ([]Institution, error)
 			&i.CreatedAt,
 			&i.UpdatedAt,
 			&i.City,
+			&i.State,
 		); err != nil {
 			return nil, err
 		}
@@ -407,7 +412,7 @@ func (q *Queries) GetAllInstitutions(ctx context.Context) ([]Institution, error)
 }
 
 const getAllNeighborhoods = `-- name: GetAllNeighborhoods :many
-SELECT id, name, institution, institution_id, city, avg_price_self_con, avg_price_1bed, power_rating_insight FROM neighborhoods ORDER BY name
+SELECT id, name, institution, institution_id, city, avg_price_self_con, avg_price_1bed, power_rating_insight, state FROM neighborhoods ORDER BY name
 `
 
 func (q *Queries) GetAllNeighborhoods(ctx context.Context) ([]Neighborhood, error) {
@@ -428,6 +433,7 @@ func (q *Queries) GetAllNeighborhoods(ctx context.Context) ([]Neighborhood, erro
 			&i.AvgPriceSelfCon,
 			&i.AvgPrice1bed,
 			&i.PowerRatingInsight,
+			&i.State,
 		); err != nil {
 			return nil, err
 		}
@@ -669,7 +675,7 @@ func (q *Queries) GetHostelsByNeighborhood(ctx context.Context, arg GetHostelsBy
 }
 
 const getInstitutionById = `-- name: GetInstitutionById :one
-SELECT id, name, acronym, description, latitude, longitude, slug, created_at, updated_at, city FROM institutions WHERE id = $1 LIMIT 1
+SELECT id, name, acronym, description, latitude, longitude, slug, created_at, updated_at, city, state FROM institutions WHERE id = $1 LIMIT 1
 `
 
 func (q *Queries) GetInstitutionById(ctx context.Context, id string) (Institution, error) {
@@ -686,12 +692,13 @@ func (q *Queries) GetInstitutionById(ctx context.Context, id string) (Institutio
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.City,
+		&i.State,
 	)
 	return i, err
 }
 
 const getInstitutionBySlug = `-- name: GetInstitutionBySlug :one
-SELECT id, name, acronym, description, latitude, longitude, slug, created_at, updated_at, city FROM institutions WHERE slug = $1 LIMIT 1
+SELECT id, name, acronym, description, latitude, longitude, slug, created_at, updated_at, city, state FROM institutions WHERE slug = $1 LIMIT 1
 `
 
 func (q *Queries) GetInstitutionBySlug(ctx context.Context, slug string) (Institution, error) {
@@ -708,12 +715,13 @@ func (q *Queries) GetInstitutionBySlug(ctx context.Context, slug string) (Instit
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.City,
+		&i.State,
 	)
 	return i, err
 }
 
 const getNeighborhoodById = `-- name: GetNeighborhoodById :one
-SELECT id, name, institution, institution_id, city, avg_price_self_con, avg_price_1bed, power_rating_insight FROM neighborhoods WHERE id = $1 LIMIT 1
+SELECT id, name, institution, institution_id, city, avg_price_self_con, avg_price_1bed, power_rating_insight, state FROM neighborhoods WHERE id = $1 LIMIT 1
 `
 
 func (q *Queries) GetNeighborhoodById(ctx context.Context, id string) (Neighborhood, error) {
@@ -728,12 +736,13 @@ func (q *Queries) GetNeighborhoodById(ctx context.Context, id string) (Neighborh
 		&i.AvgPriceSelfCon,
 		&i.AvgPrice1bed,
 		&i.PowerRatingInsight,
+		&i.State,
 	)
 	return i, err
 }
 
 const getNeighborhoodsByInstitution = `-- name: GetNeighborhoodsByInstitution :many
-SELECT id, name, institution, institution_id, city, avg_price_self_con, avg_price_1bed, power_rating_insight FROM neighborhoods WHERE institution_id = $1 ORDER BY name
+SELECT id, name, institution, institution_id, city, avg_price_self_con, avg_price_1bed, power_rating_insight, state FROM neighborhoods WHERE institution_id = $1 ORDER BY name
 `
 
 func (q *Queries) GetNeighborhoodsByInstitution(ctx context.Context, institutionID string) ([]Neighborhood, error) {
@@ -754,6 +763,7 @@ func (q *Queries) GetNeighborhoodsByInstitution(ctx context.Context, institution
 			&i.AvgPriceSelfCon,
 			&i.AvgPrice1bed,
 			&i.PowerRatingInsight,
+			&i.State,
 		); err != nil {
 			return nil, err
 		}
@@ -893,7 +903,7 @@ func (q *Queries) GetUserCredentialByProviderId(ctx context.Context, providerID 
 }
 
 const listInstitutions = `-- name: ListInstitutions :many
-SELECT id, name, acronym, description, latitude, longitude, slug, created_at, updated_at, city FROM institutions ORDER BY name
+SELECT id, name, acronym, description, latitude, longitude, slug, created_at, updated_at, city, state FROM institutions ORDER BY name
 `
 
 func (q *Queries) ListInstitutions(ctx context.Context) ([]Institution, error) {
@@ -916,6 +926,7 @@ func (q *Queries) ListInstitutions(ctx context.Context) ([]Institution, error) {
 			&i.CreatedAt,
 			&i.UpdatedAt,
 			&i.City,
+			&i.State,
 		); err != nil {
 			return nil, err
 		}

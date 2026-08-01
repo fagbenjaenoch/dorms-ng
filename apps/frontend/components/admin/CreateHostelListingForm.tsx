@@ -13,7 +13,7 @@ import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { CreateHostelListingData, createHostelListingSchema } from "@/lib/forms";
-import { cn, defaultLngLat, LngLat, nigerianCities, UploadFile } from "@/lib/utils";
+import { cn, defaultLngLat, LngLat, UploadFile } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Info,
@@ -61,7 +61,6 @@ export default function CreateHostelListingForm() {
     defaultValues: {
       name: "",
       description: "",
-      city: "",
       neighborhood: "",
       estimatedPriceRange: 0,
       address: "",
@@ -211,41 +210,6 @@ export default function CreateHostelListingForm() {
             />
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <Controller
-                name="city"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="city" className="uppercase text-xs font-bold">
-                      City
-                    </FieldLabel>
-
-                    <Combobox id="city" items={nigerianCities}>
-                      <ComboboxInput
-                        {...field}
-                        className="input-bg h-12 rounded-md"
-                        placeholder="Select a city"
-                        showClear={true}
-                      />
-                      <ComboboxContent>
-                        <ComboboxEmpty>No city found.</ComboboxEmpty>
-                        <ComboboxList>
-                          {item => (
-                            <ComboboxItem
-                              key={item}
-                              value={item}
-                              onClick={() => field.onChange(item)}
-                            >
-                              {item}
-                            </ComboboxItem>
-                          )}
-                        </ComboboxList>
-                      </ComboboxContent>
-                    </Combobox>
-                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                  </Field>
-                )}
-              />
               <Controller
                 name="neighborhood"
                 control={form.control}

@@ -1,8 +1,8 @@
 -- name: CreateInstitution :one
 INSERT INTO institutions (
-    id, name, acronym, latitude, longitude, city, slug, description
+    id, name, acronym, latitude, longitude, state, city, slug, description
 ) VALUES (
-    @id, @name, @acronym, @latitude, @longitude, @city, @slug, @description
+    @id, @name, @acronym, @latitude, @longitude, @state, @city, @slug, @description
 )
 RETURNING *;
 
@@ -24,11 +24,11 @@ SELECT EXISTS(SELECT 1 FROM institutions WHERE LOWER(name) = LOWER(@name) AND LO
 
 -- name: CreateHostel :one
 INSERT INTO hostels (
-    id, name, address, description, city, latitude, longitude,
+    id, name, address, description, latitude, longitude,
     google_place_id, estimated_price_range, neighborhood, neighborhood_id,
     distance_to_gate_km, is_verified_by_admin, photo_urls, slug, amenities
 ) VALUES (
-    @id, @name, @address, @description, @city, @latitude, @longitude,
+    @id, @name, @address, @description, @latitude, @longitude,
     @google_place_id, @estimated_price_range, @neighborhood, @neighborhood_id,
     @distance_to_gate_km, @is_verified_by_admin, @photo_urls, @slug, @amenities
 )
@@ -82,9 +82,9 @@ SELECT * FROM user_credentials WHERE provider_id = @provider_id LIMIT 1;
 
 -- name: CreateNeighborhood :one
 INSERT INTO neighborhoods (
-    id, institution, institution_id, name, city, avg_price_self_con, avg_price_1bed, power_rating_insight
+    id, institution, institution_id, name, city, state, avg_price_self_con, avg_price_1bed, power_rating_insight
 ) VALUES (
-    @id, @institution, @institution_id, @name, @city, @avg_price_self_con, @avg_price_1bed, @power_rating_insight
+    @id, @institution, @institution_id, @name, @city, @state, @avg_price_self_con, @avg_price_1bed, @power_rating_insight
 )
 RETURNING *;
 
