@@ -85,9 +85,9 @@ CREATE INDEX idx_global_search_entity_trgm ON global_search USING GIN (entity gi
 -- +goose Down
 DROP TABLE user_credentials;
 DROP TABLE users;
-DROP TABLE institutions;
 DROP TABLE hostels;
 DROP TABLE neighborhoods;
+DROP TABLE institutions;
 DROP INDEX IF EXISTS idx_global_search_entity_trgm;
 DROP INDEX IF EXISTS idx_global_search_text_trgm;
 DROP TABLE IF EXISTS global_search;
