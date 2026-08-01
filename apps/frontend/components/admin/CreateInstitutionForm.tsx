@@ -8,7 +8,7 @@ import { useForm, Controller } from "react-hook-form";
 import { Field, FieldError, FieldGroup, FieldLabel, FieldTitle } from "../ui/field";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Combobox,
   ComboboxContent,
@@ -17,10 +17,10 @@ import {
   ComboboxItem,
   ComboboxList,
 } from "../ui/combobox";
-import { nigerianCities } from "@/lib/utils";
 import { toast } from "sonner";
 import { createInstitution } from "@/lib/api/institution";
 import { Textarea } from "../ui/textarea";
+import { NigerianState, nigerianStates, nigerianStatesAndCities } from "@/lib/utils";
 
 interface CreateInstitutionFormProps {
   lng: number;
@@ -35,10 +35,14 @@ export default function CreateInstitutionForm({ lng, lat }: CreateInstitutionFor
       acronym: "",
       latitude: 9.967,
       longitude: 8.606,
+      state: "Kwara",
       city: "",
       description: "",
     },
   });
+  const [selectedCities, setSelectedCities] = useState(
+    nigerianStatesAndCities[form.getValues("state") as NigerianState],
+  );
 
   useEffect(() => {
     form.setValue("latitude", lat);
@@ -110,6 +114,48 @@ export default function CreateInstitutionForm({ lng, lat }: CreateInstitutionFor
             </Field>
           )}
         />
+
+        <Controller
+          name="state"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor="state" className="uppercase text-xs font-bold">
+                State
+              </FieldLabel>
+
+              <Combobox id="state" items={nigerianStates}>
+                <ComboboxInput
+                  {...field}
+                  className="input-bg h-12 rounded-md"
+                  placeholder="Select a state"
+                  showClear={true}
+                />
+                <ComboboxContent>
+                  <ComboboxEmpty>No state found.</ComboboxEmpty>
+                  <ComboboxList>
+                    {(item: string) => (
+                      <ComboboxItem
+                        key={item}
+                        value={item}
+                        onClick={() => {
+                          field.onChange(item);
+                          setSelectedCities(
+                            nigerianStatesAndCities[item as NigerianState],
+                          );
+                        }}
+                      >
+                        {item}
+                      </ComboboxItem>
+                    )}
+                  </ComboboxList>
+                </ComboboxContent>
+              </Combobox>
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+
         <Controller
           name="city"
           control={form.control}
@@ -119,7 +165,7 @@ export default function CreateInstitutionForm({ lng, lat }: CreateInstitutionFor
                 City
               </FieldLabel>
 
-              <Combobox id="city" items={nigerianCities}>
+              <Combobox id="city" items={selectedCities}>
                 <ComboboxInput
                   {...field}
                   className="input-bg h-12 rounded-md"
@@ -129,7 +175,7 @@ export default function CreateInstitutionForm({ lng, lat }: CreateInstitutionFor
                 <ComboboxContent>
                   <ComboboxEmpty>No city found.</ComboboxEmpty>
                   <ComboboxList>
-                    {item => (
+                    {(item: string) => (
                       <ComboboxItem
                         key={item}
                         value={item}
@@ -145,6 +191,7 @@ export default function CreateInstitutionForm({ lng, lat }: CreateInstitutionFor
             </Field>
           )}
         />
+
         <div className="flex gap-4 flex-col md:flex-row">
           <Controller
             name="latitude"

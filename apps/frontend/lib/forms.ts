@@ -1,4 +1,5 @@
 import * as z from "zod";
+import { nigerianStates } from "./utils";
 
 const baseAuthSchema = z.object({
   email: z.email("Email is not valid"),
@@ -40,6 +41,7 @@ export const createInstitutionSchema = z.object({
     .number<number>()
     .min(-180, "Longitude cannot be be less than -90 degrees")
     .max(180, "Longitude cannot be greater than 90 degrees"),
+  state: z.enum(nigerianStates),
   city: z
     .string()
     .min(2, "City name must be at least 2 characters")
@@ -55,10 +57,6 @@ export const createHostelListingSchema = z.object({
     .string()
     .min(10, "Description must be at least 10 characters")
     .max(4000, "Description must not exceed 4000 characters"),
-  city: z
-    .string()
-    .min(2, "City name must be at least 2 characters")
-    .max(100, "City name is too long"),
   neighborhood: z
     .string()
     .min(2, "Neigborhood name must be at least 2 characters")
@@ -93,6 +91,7 @@ export type CreateHostelListingData = z.infer<typeof createHostelListingSchema>;
 export const createNeighborhoodSchema = z.object({
   name: z.string().min(3, "Neigborhood name must not be less than 2 characters"),
   institution: z.string().min(3, "Institution name is required"),
+  state: z.enum(nigerianStates),
   city: z.string().min(3, "City is required"),
   institutionId: z.uuid(),
 });
