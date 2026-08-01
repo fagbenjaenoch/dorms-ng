@@ -46,7 +46,7 @@ export default function DesktopNav() {
       <div className="flex flex-col h-full py-6">
         <div className="px-6 mb-10">
           <Link href="/">
-            <BrandIcon className="text-white font-bold" />
+            <BrandIcon className="text-white font-bold" variant="orange" />
           </Link>
         </div>
 
