@@ -14,12 +14,13 @@ import {
   ComboboxItem,
   ComboboxList,
 } from "../ui/combobox";
-import { nigerianCities } from "@/lib/utils";
+import { NigerianState, nigerianStates, nigerianStatesAndCities } from "@/lib/utils";
 import { Button } from "../ui/button";
 import { createNeighborhood } from "@/lib/api/neighborhood";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { fetchAllInstitutions } from "@/lib/api/institution";
+import { useState } from "react";
 
 export default function CreateNeighborhoodForm() {
   const form = useForm({
@@ -28,9 +29,13 @@ export default function CreateNeighborhoodForm() {
       name: "",
       institution: "",
       institutionId: "",
+      state: "Kwara" as NigerianState,
       city: "",
     },
   });
+  const [selectedCities, setSelectedCities] = useState(
+    nigerianStatesAndCities[form.getValues("state") as NigerianState],
+  );
 
   const mutation = useMutation({
     mutationKey: ["createNeighbourhood"],
@@ -56,7 +61,7 @@ export default function CreateNeighborhoodForm() {
   };
 
   return (
-    <form id="neighborhood-form" onSubmit={form.handleSubmit(onSubmit)}>
+    <form id="neighborhood" onSubmit={form.handleSubmit(onSubmit)}>
       <section className="lg:max-w-3xl p-6 sm:p-8 rounded-[2rem] shadow-lg border border-gray-300/50">
         <div className="flex items-center gap-3 mb-8">
           <div className="w-10 h-10 bg-primary-container text-on-primary-container rounded-xl flex items-center justify-center">
@@ -76,7 +81,7 @@ export default function CreateNeighborhoodForm() {
                   className="uppercase text-xs font-bold"
                   aria-invalid={fieldState.invalid}
                 >
-                  Neighborhood Name
+                  Name
                 </FieldLabel>
                 <Input
                   {...field}
@@ -138,6 +143,47 @@ export default function CreateNeighborhoodForm() {
           />
 
           <Controller
+            name="state"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel htmlFor="state" className="uppercase text-xs font-bold">
+                  State
+                </FieldLabel>
+
+                <Combobox id="state" items={nigerianStates}>
+                  <ComboboxInput
+                    {...field}
+                    className="input-bg h-12 rounded-md"
+                    placeholder="Select a state"
+                    showClear={true}
+                  />
+                  <ComboboxContent>
+                    <ComboboxEmpty>No state found.</ComboboxEmpty>
+                    <ComboboxList>
+                      {(item: string) => (
+                        <ComboboxItem
+                          key={item}
+                          value={item}
+                          onClick={() => {
+                            field.onChange(item);
+                            setSelectedCities(
+                              nigerianStatesAndCities[item as NigerianState],
+                            );
+                          }}
+                        >
+                          {item}
+                        </ComboboxItem>
+                      )}
+                    </ComboboxList>
+                  </ComboboxContent>
+                </Combobox>
+                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+              </Field>
+            )}
+          />
+
+          <Controller
             name="city"
             control={form.control}
             render={({ field, fieldState }) => (
@@ -146,7 +192,7 @@ export default function CreateNeighborhoodForm() {
                   City
                 </FieldLabel>
 
-                <Combobox id="city" items={nigerianCities}>
+                <Combobox id="city" items={selectedCities}>
                   <ComboboxInput
                     {...field}
                     className="input-bg h-12 rounded-md"
