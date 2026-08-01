@@ -56,6 +56,7 @@ func (ir *InstitutionRepository) CreateInstitution(ctx context.Context, institut
 	i.Acronym = sql.NullString{String: strings.ToUpper(institution.Acronym), Valid: true}
 	i.Latitude = institution.Latitude
 	i.Longitude = institution.Longitude
+	i.State = institution.State
 	i.City = institution.City
 	i.Slug = utils.GenerateSlug(institution.Acronym)
 	i.Description = sql.NullString{String: institution.Description, Valid: true}
@@ -71,7 +72,7 @@ func (ir *InstitutionRepository) CreateInstitution(ctx context.Context, institut
 		Entity:     ci.Name,
 		SearchText: sql.NullString{String: fmt.Sprintf("%s, %s, %s", ci.Name, ci.City, ci.Acronym.String), Valid: true},
 		Slug:       ci.Slug,
-		Address:    sql.NullString{String: ci.City, Valid: true},
+		Address:    sql.NullString{String: fmt.Sprintf("%s, %s", ci.State, ci.City), Valid: true},
 	}
 
 	_, err = qtx.CreateSearchEntry(ctx, searchEntry)

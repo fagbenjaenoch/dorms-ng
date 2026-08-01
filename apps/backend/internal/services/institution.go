@@ -64,12 +64,14 @@ func (s InstitutionService) CreateInstitution(ctx context.Context, institution d
 		Status:  http.StatusCreated,
 		Message: "Institution created successfully",
 		Payload: dto.Institution{
-			ID:        i.ID,
-			Name:      i.Name,
-			Acronym:   i.Acronym.String,
-			Latitude:  i.Latitude,
-			Longitude: i.Longitude,
-			City:      i.City,
+			ID:          i.ID,
+			Name:        i.Name,
+			Acronym:     i.Acronym.String,
+			Latitude:    i.Latitude,
+			Longitude:   i.Longitude,
+			State:       i.State,
+			City:        i.City,
+			Description: i.Description.String,
 		},
 	}, nil
 }
