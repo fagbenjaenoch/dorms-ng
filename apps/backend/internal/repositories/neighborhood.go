@@ -60,6 +60,7 @@ func (nr *NeighborhoodRepository) CreateNeighborhood(ctx context.Context, neighb
 	n.Institution = neighborhood.Institution
 	n.InstitutionID = neighborhood.InstitutionId
 	n.City = neighborhood.City
+	n.State = neighborhood.State
 
 	cn, err := qtx.CreateNeighborhood(ctx, n)
 	if err != nil {

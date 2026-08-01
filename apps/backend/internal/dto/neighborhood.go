@@ -5,6 +5,7 @@ type CreateNeighborhood struct {
 	Institution   string `json:"institution" validate:"required"`
 	InstitutionId string `json:"institutionId" validate:"required,min=2,max=100"`
 	City          string `json:"city" validate:"required"`
+	State         string `json:"state" validate:"required,min=2,max=100"`
 }
 
 type Neighborhood struct {

@@ -8,12 +8,14 @@ import (
 )
 
 func GetNeighborhoodAddress(neighborhood dto.CreateNeighborhood) string {
-	address := neighborhood.City
+	city := neighborhood.City
 	if strings.ToLower(neighborhood.Name) == "main campus" {
-		address = neighborhood.Institution
+		city = neighborhood.Institution
 	}
 
-	return address
+	state := neighborhood.State
+
+	return fmt.Sprintf("%s, %s State", city, state)
 }
 
 func NormalizeNeighborhoodName(neighborhood dto.CreateNeighborhood) string {
