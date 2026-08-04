@@ -56,6 +56,18 @@ export default function HostelDetailsClient() {
     setIsSaved(!isSaved);
   };
 
+  const handleShareHostel = () => {
+    if (share) {
+      const rawURL = new URL(window.location.href);
+      const cleanURL = rawURL.origin + rawURL.pathname;
+
+      share({
+        title: hostel.name,
+        text: hostel.description,
+        url: cleanURL,
+      });
+    }
+  };
   const photoUrls = hostel.photo_urls.split(", ");
   const photoUrlObjects = useMemo(() => {
     return photoUrls.map((url, index) => ({
@@ -122,13 +134,7 @@ export default function HostelDetailsClient() {
             variant="ghost"
             className="flex items-center gap-2 font-bold hover:text-primary transition-colors"
             onClick={() => {
-              if (share) {
-                share({
-                  title: hostel.name,
-                  text: hostel.description,
-                  url: window.location.href,
-                });
-              }
+              handleShareHostel();
               posthog.capture("hostel_shared", {
                 hostel_slug: slug,
                 hostel_name: hostel.name,
