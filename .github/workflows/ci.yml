@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main, staging, mvp]
+    branches: [main, staging, develop]
   pull_request:
-    branches: [main, staging, mvp]
+    branches: [main, staging, develop]
 
 jobs:
   validate-frontend:
@@ -32,3 +32,70 @@ jobs:
 
       - name: Build
         run: cd apps/frontend && bun run build
+  backend-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.25"
+
+      - name: Install dependencies
+        run: |
+          cd apps/backend
+          go mod download
+
+      - name: Run unit tests with coverage
+        run: |
+          cd apps/backend
+          go test ./... -race -coverprofile=coverage.out -covermode=atomic -tags=!integration
+
+      - name: Check coverage threshold
+        run: |
+          cd apps/backend
+          COVERAGE=$(go tool cover -func=coverage.out | grep total | awk '{print $3}' | sed 's/%//')
+          echo "Coverage: $COVERAGE%"
+          if (( $(echo "$COVERAGE < 60" | bc -l) )); then
+            echo "Coverage below 60%"
+            exit 1
+          fi
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: apps/backend/coverage.out
+
+  integration-test:
+    runs-on: ubuntu-latest
+    # Only run on push to main or manually triggered (optional)
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.25"
+
+      - name: Install dependencies
+        run: |
+          cd apps/backend
+          go mod download
+
+      - name: Run integration tests
+        run: |
+          cd apps/backend
+          go test ./... -race -cover -tags=integration -coverprofile=integration-coverage.out
+
+      - name: Upload integration coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-coverage
+          path: apps/backend/integration-coverage.out
