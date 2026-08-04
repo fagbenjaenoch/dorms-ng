@@ -17,7 +17,7 @@ export default function GlobalError({
 
   return (
     <html>
-      <body>
+      <body style={{ fontFamily: "sans-serif" }}>
         <div className="w-full h-screen flex flex-col gap-4 items-center justify-center">
           <h2 className="text-2xl font-bold">Something went wrong!</h2>
           <Button onClick={() => unstable_retry()}>Try again</Button>
