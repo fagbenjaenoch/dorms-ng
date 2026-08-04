@@ -21,7 +21,7 @@ const DefaultContextTimeout = 10
 func main() {
 	cfg, err := config.LoadConfig()
 	if err != nil {
-		panic("failed to load config " + err.Error())
+		panic("failed to load config: " + err.Error())
 	}
 
 	logger := logger.New(cfg)
