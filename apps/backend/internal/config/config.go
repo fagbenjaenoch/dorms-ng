@@ -1,14 +1,12 @@
 package config
 
 import (
-	"os"
 	"strings"
 
 	"github.com/go-playground/validator/v10"
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/knadh/koanf/providers/env"
 	"github.com/knadh/koanf/v2"
-	"github.com/rs/zerolog"
 )
 
 var globalConfig *Config
@@ -63,25 +61,23 @@ type R2 struct {
 }
 
 func LoadConfig() (*Config, error) {
-	logger := zerolog.New(zerolog.ConsoleWriter{Out: os.Stdout}).With().Timestamp().Logger()
-
 	k := koanf.New(".")
 
 	err := k.Load(env.Provider("APP_", ".", func(s string) string {
 		return strings.ToLower(strings.TrimPrefix(s, "APP_"))
 	}), nil)
 	if err != nil {
-		logger.Fatal().Err(err).Msg("failed to load config")
+		return nil, err
 	}
 
 	var cfg Config
 	if err := k.Unmarshal("", &cfg); err != nil {
-		logger.Fatal().Err(err).Msg("failed to unmarshal config")
+		return nil, err
 	}
 
 	validator := validator.New()
 	if err := validator.Struct(cfg); err != nil {
-		logger.Fatal().Err(err).Msg("failed to validate config")
+		return nil, err
 	}
 
 	globalConfig = &cfg
