@@ -53,6 +53,7 @@ export type Institution = {
   name: string;
   acronym: string;
   city: string;
+  state: string;
   longitude: number;
   latitude: number;
   description: string;

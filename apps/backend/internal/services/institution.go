@@ -107,6 +107,7 @@ func (s InstitutionService) GetInstitution(ctx context.Context, slug string) (dt
 			ID:          i.ID,
 			Name:        i.Name,
 			Acronym:     i.Acronym.String,
+			State:       i.State,
 			City:        i.City,
 			Latitude:    i.Latitude,
 			Longitude:   i.Longitude,
