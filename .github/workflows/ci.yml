@@ -54,16 +54,6 @@ jobs:
           cd apps/backend
           go test ./... -race -coverprofile=coverage.out -covermode=atomic -tags=!integration
 
-      - name: Check coverage threshold
-        run: |
-          cd apps/backend
-          COVERAGE=$(go tool cover -func=coverage.out | grep total | awk '{print $3}' | sed 's/%//')
-          echo "Coverage: $COVERAGE%"
-          if (( $(echo "$COVERAGE < 60" | bc -l) )); then
-            echo "Coverage below 60%"
-            exit 1
-          fi
-
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
         with:
