@@ -13,7 +13,19 @@ tasks:
   test:
     desc: Run tests
     cmds:
-      - go test -v -count=1 ./...
+      - go test ./... -v -count=1
+  test-race:
+    desc: Run unit tests with race checks
+    cmds:
+      - go test ./... -v -count=1 -race -tags=!integration
+  test-race-cover:
+    desc: Run unit tests with race checks and coverage
+    cmds:
+      - go test ./... -v -count=1 -race -cover -tags=!integration
+  test-integration:
+    desc: Run integration tests
+    cmds:
+      - go test ./... -v -count=1 -tags=integration
   build:
     desc: Build the application
     cmds:
