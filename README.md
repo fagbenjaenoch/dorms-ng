@@ -70,7 +70,7 @@ docker-compose up
 ## Project Structure
 
 ```
-hostel-marketplace-app/
+dorms-ng/
 ├── apps/
 │   ├── frontend/          # Next.js application (Bun runtime)
 │   └── backend/           # Go application
