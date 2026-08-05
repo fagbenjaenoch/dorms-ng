@@ -12,7 +12,8 @@ Nigerian students struggle to find verified, safe, and fairly‑priced hostel ac
 
 | Component | Choice | Why | Trade‑Off |
 |-----------|--------|-----|-----------|
-| **Language** | Go (Chi) | Excellent concurrency (goroutines) for handling concurrent booking requests. Fast compilation and low memory footprint. | More verbose than Python or Node.js but the performance and reliability gain justifies it for a transaction‑heavy domain. |
+| **Backend** | Go (Chi) | Excellent concurrency (goroutines) for handling concurrent booking requests. Fast compilation and low memory footprint. | More verbose than Python or Node.js but the performance and reliability gain justifies it for a transaction‑heavy domain. |
+| **Frontend** | Next.js (React) + TypeScript + Bun | SEO is critical for a marketplace because server‑side rendering (SSR) lets hostel listings appear in search results. Image optimization (next/image) is built‑in for listing photos. Also, using Bun means one more runtime to manage in CI. | Next.js is heavier than a pure SPA (e.g., Vite + React) as deployments take longer. |
 | **DB Driver** | `sqlc` | Generates type‑safe Go code from raw SQL. No runtime reflection, no ORM surprises. Full control over complex JOINs. | Loses the dynamic query flexibility of an ORM (e.g., GORM). But for a well‑defined domain like hostels/listings, static queries are a net win for maintainability. |
 | **Database** | PostgreSQL | ACID compliance is non‑negotiable for booking transactions. Supports row‑level security (RLS) for future multi‑tenancy. | Higher operational overhead but we need production‑grade durability. |
 | **Observability** | OpenTelemetry | Vendor‑neutral instrumentation. We can export to New Relic, Datadog, or self‑hosted Prometheus without changing code. | Requires additional infrastructure to collect/visualise. However, we containerise everything with Docker Compose, making local dev mirrors production. |
