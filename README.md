@@ -31,7 +31,7 @@ Nigerian students struggle to find verified, safe, and fairly‑priced hostel ac
 1. Clone the repository
 ```bash
 git clone https://github.com/fagbenjaenoch/dorms-ng.git
-cd hostel-marketplace-app
+cd dorms-ng
 ```
 
 2. Install frontend dependencies with Bun
