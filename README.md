@@ -119,6 +119,12 @@ All HTTP requests and DB queries are instrumented with **OpenTelemetry**.
 - **Traces & Metrics:** Export to New Relic (vendor-agnostic, configurable via env vars).
 - **Analytics and User monitoring:** Handled using posthog
 
+## What I think of implementing
+
+- **Async Job Queue:** Introduce **NATS / RabbitMQ** with a go worker pool to handle email confirmations and SMS notifications asynchronously. Currently these happen in‑request, which adds latency.
+- **OpenAPI / Swagger:** Autogenerate OpenAPI specs from Gin routes and serve a Swagger UI, making API exploration instantly accessible to frontend engineers.
+- **Cache:** Cache frequently requested searches e.g trending hostels to reduce DB traffic and improve overall performance and UX.
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
@@ -128,13 +134,6 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
-
-## What I think of implementing
-
-- **Async Job Queue:** Introduce **NATS / RabbitMQ** with a go worker pool to handle email confirmations and SMS notifications asynchronously. Currently these happen in‑request, which adds latency.
-- **OpenAPI / Swagger:** Autogenerate OpenAPI specs from Gin routes and serve a Swagger UI, making API exploration instantly accessible to frontend engineers.
-- **Cache:** Cache frequently requested searches e.g trending hostels to reduce DB traffic and improve overall performance and UX.
-
 
 ## License
 
