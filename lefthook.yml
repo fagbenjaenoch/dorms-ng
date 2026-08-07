@@ -1,0 +1,87 @@
+pre-commit:
+  parallel: true # Run checks concurrently for speed
+  commands:
+    backend-format:
+      root: "apps/backend"
+      glob: "apps/backend/*.go"
+      run: gofmt -w {staged_files}
+      stage_fixed: true # Automatically stage files that were formatted
+
+    backend-lint:
+      root: "apps/backend"
+      glob: "apps/backend/*.go"
+      run: golangci-lint run --fix {staged_files}
+      stage_fixed: true
+
+    backend-vet:
+      root: "apps/backend"
+      glob: "apps/backend/*.go"
+      run: go vet {staged_files}
+
+    backend-test:
+      root: "apps/backend"
+      glob: "apps/backend/*.go"
+      run: go test ./...
+
+    backend-build:
+      root: "apps/backend"
+      run: go build -o main ./cmd/api/main.go
+      fail_text: "Build failed. Please fix the issues."
+
+    frontend-type-check:
+      root: "apps/frontend"
+      glob: "**/*.{ts,tsx}"
+      run: bun run type-check
+      fail_text: "Type checking failed. Please fix type errors."
+
+    frontend-lint:
+      root: "apps/frontend"
+      glob: "*.{js,jsx,ts,tsx}"
+      run: bunx eslint --fix {staged_files}
+      stage_fixed: true
+      fail_text: "ESLint errors found. Please fix them."
+
+    frontend-format:
+      root: "apps/frontend"
+      glob: "**/*.{json,md,yml,yaml}"
+      run: bun run format {staged_files}
+      stage_fixed: true
+      fail_text: "Formatting failed. Please check your files."
+
+    frontend-test:
+      root: "apps/frontend"
+      glob: "**/*.{js,jsx,ts,tsx}"
+      run: bun test
+      fail_text: "Tests failed. Please fix the issues."
+
+pre-push:
+  commands:
+    backend-test:
+      root: "apps/backend"
+      run: go test ./...
+
+    backend-build:
+      root: "apps/backend"
+      run: go build -o main ./cmd/api/main.go
+      fail_text: "Build failed. Please fix the issues."
+
+    frontend-type-check:
+      root: "apps/frontend"
+      run: bun run type-check
+      fail_text: "Type checking failed. Please fix type errors."
+
+    frontend-lint:
+      root: "apps/frontend"
+      run: bunx eslint --fix
+      stage_fixed: true
+      fail_text: "ESLint errors found. Please fix them."
+
+    frontend-test:
+      root: "apps/frontend"
+      run: bun test
+      fail_text: "Tests failed. Please fix the issues."
+
+    frontend-build:
+      root: "apps/frontend"
+      run: bun run build
+      fail_text: "Build failed. Please fix the issues."
