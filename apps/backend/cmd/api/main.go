@@ -31,9 +31,15 @@ func main() {
 		logger.Err(err).Msg("failed to connect to database")
 		os.Exit(1)
 	}
-	defer reg.Unregister() // unregister observability at the db level
+	defer func() {
+		_ = reg.Unregister() // unregister observability at the db level
+	}()
 
 	srv, err := server.New(cfg, db, &logger)
+	if err != nil {
+		logger.Err(err).Msg("failed to create server")
+		os.Exit(1)
+	}
 
 	obs := observability.NewObservability(srv)
 
