@@ -22,7 +22,8 @@ type Config struct {
 }
 
 type DB struct {
-	URI string `koanf:"uri" validate:"required"`
+	Name string `koanf:"name" validate:"required"`
+	URI  string `koanf:"uri" validate:"required"`
 }
 
 type Primary struct {

@@ -19,7 +19,7 @@ var embedMigration embed.FS
 func new(config *config.Config, logger *zerolog.Logger) (*sql.DB, metric.Registration, error) {
 	db, err := otelsql.Open("pgx", config.DB.URI, otelsql.WithAttributes(
 		semconv.DBSystemNamePostgreSQL,
-		semconv.DBNamespace("dorms-ng"),
+		semconv.DBNamespace(config.DB.Name),
 	),
 	)
 	if err != nil {
@@ -28,7 +28,7 @@ func new(config *config.Config, logger *zerolog.Logger) (*sql.DB, metric.Registr
 
 	reg, err := otelsql.RegisterDBStatsMetrics(db, otelsql.WithAttributes(
 		semconv.DBSystemNamePostgreSQL,
-		semconv.DBNamespace("dorms-ng"),
+		semconv.DBNamespace(config.DB.Name),
 	))
 	if err != nil {
 		return nil, nil, err
