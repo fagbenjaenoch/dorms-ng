@@ -26,13 +26,13 @@ pre-commit:
     backend-build:
       root: "apps/backend"
       run: go build -o main ./cmd/api/main.go
-      fail_text: "Build failed. Please fix the issues."
+      fail_text: "Backend build failed. Please fix the issues."
 
     frontend-type-check:
       root: "apps/frontend"
       glob: "**/*.{ts,tsx}"
       run: bun run type-check
-      fail_text: "Type checking failed. Please fix type errors."
+      fail_text: "Frontend type checking failed. Please fix type errors."
 
     frontend-lint:
       root: "apps/frontend"
@@ -46,29 +46,30 @@ pre-commit:
       glob: "**/*.{json,md,yml,yaml}"
       run: bun run format {staged_files}
       stage_fixed: true
-      fail_text: "Formatting failed. Please check your files."
+      fail_text: "Frontend formatting failed. Please check your files."
 
     frontend-test:
       root: "apps/frontend"
       glob: "**/*.{js,jsx,ts,tsx}"
-      run: bun test
-      fail_text: "Tests failed. Please fix the issues."
+      run: bun run test
+      fail_text: "Frontend tests failed. Please fix the issues."
 
 pre-push:
   commands:
     backend-test:
       root: "apps/backend"
       run: go test ./...
+      fail_text: "Backend tests failed. Please fix the issues."
 
     backend-build:
       root: "apps/backend"
       run: go build -o main ./cmd/api/main.go
-      fail_text: "Build failed. Please fix the issues."
+      fail_text: "Backend build failed. Please fix the issues."
 
     frontend-type-check:
       root: "apps/frontend"
       run: bun run type-check
-      fail_text: "Type checking failed. Please fix type errors."
+      fail_text: "Frontend type checking failed. Please fix type errors."
 
     frontend-lint:
       root: "apps/frontend"
@@ -79,9 +80,9 @@ pre-push:
     frontend-test:
       root: "apps/frontend"
       run: bun test
-      fail_text: "Tests failed. Please fix the issues."
+      fail_text: "Frontend tests failed. Please fix the issues."
 
     frontend-build:
       root: "apps/frontend"
       run: bun run build
-      fail_text: "Build failed. Please fix the issues."
+      fail_text: "Frontend build failed. Please fix the issues."
