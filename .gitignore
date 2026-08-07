@@ -38,3 +38,6 @@ trace_debug.json
 *.db-shm
 *.db-wal
 *.sqbpro
+
+
+**/.husky/_
