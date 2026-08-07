@@ -65,7 +65,7 @@ func SetupTestContainer(t *testing.T) *TestContainerSetup {
 
 	cleanup := func() {
 		db.Close()
-		pgContainer.Terminate(ctx)
+		_ = pgContainer.Terminate(ctx)
 	}
 
 	return &TestContainerSetup{
