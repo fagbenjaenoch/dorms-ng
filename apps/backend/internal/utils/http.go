@@ -26,13 +26,13 @@ func WriteJSON(w http.ResponseWriter, response dto.StructuredResponse) {
 
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte("Internal Server Error"))
+		_, _ = w.Write([]byte("Internal Server Error"))
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(response.Status)
-	w.Write(responseJSON)
+	_, _ = w.Write(responseJSON)
 }
 
 func DecodeJSONBody(w http.ResponseWriter, r *http.Request, body any) error {
