@@ -16,7 +16,7 @@ export default function MapEventListener({ handleClick }: MapEventListenerProps)
     map.on("click", handleClick);
 
     return () => map.off("click", handleClick);
-  }, [map, isLoaded]);
+  }, [map, isLoaded, handleClick]);
 
   return null;
 }
