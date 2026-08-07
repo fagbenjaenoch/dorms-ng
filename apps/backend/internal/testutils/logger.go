@@ -8,7 +8,6 @@ import (
 )
 
 func NewTestLogger(t *testing.T) *zerolog.Logger {
-
 	logger := zerolog.New(os.Stdout).With().Timestamp().Logger()
 	return &logger
 }

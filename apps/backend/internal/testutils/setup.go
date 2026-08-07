@@ -7,8 +7,8 @@ import (
 
 	"github.com/fagbenjaenoch/dorms-ng/internal/config"
 	"github.com/fagbenjaenoch/dorms-ng/internal/database"
-	"github.com/fagbenjaenoch/dorms-ng/internal/logger"
 	"github.com/fagbenjaenoch/dorms-ng/internal/server"
+
 	"github.com/testcontainers/testcontainers-go/modules/postgres"
 )
 
@@ -39,7 +39,7 @@ func SetupTestContainer(t *testing.T) *TestContainerSetup {
 
 	// 2. Build configuration
 	cfg := &config.Config{
-		Primary: config.Primary{Env: "test"},
+		Primary: config.Primary{Env: "production"},
 		Server: config.Server{
 			Port:         "0", // random port
 			ReadTimeout:  5,
@@ -47,19 +47,18 @@ func SetupTestContainer(t *testing.T) *TestContainerSetup {
 			IdleTimeout:  5,
 		},
 		DB: config.DB{URI: connStr},
-		// other required config ...
 	}
 
 	// 3. Initialize database + run migrations
-	log := logger.New(cfg)
-	db, reg, err := database.Initialize(cfg, &log)
+	logger := NewTestLogger(t)
+	db, reg, err := database.Initialize(cfg, logger)
 	if err != nil {
 		t.Fatal(err)
 	}
 	_ = reg
 
 	// 4. Create Server
-	srv, err := server.New(cfg, db, &log)
+	srv, err := server.New(cfg, db, logger)
 	if err != nil {
 		t.Fatal(err)
 	}
