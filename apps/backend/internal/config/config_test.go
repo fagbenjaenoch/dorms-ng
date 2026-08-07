@@ -27,6 +27,7 @@ func TestLoadConfig_Valid(t *testing.T) {
 	os.Setenv("APP_R2.BUCKET", "test-bucket")
 	os.Setenv("APP_R2.ENDPOINT", "https://test.r2.cloudflarestorage.com")
 	os.Setenv("APP_DB.URI", "postgres://user:pass@localhost:5432/db")
+	os.Setenv("APP_DB.NAME", "test-db")
 
 	cfg, err := config.LoadConfig()
 	if err != nil {
