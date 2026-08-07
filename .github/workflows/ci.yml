@@ -60,7 +60,7 @@ jobs:
           name: coverage-report
           path: apps/backend/coverage.out
 
-  integration-test:
+  backend-integration-test:
     runs-on: ubuntu-latest
     # Only run on push to main or manually triggered (optional)
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
