@@ -25,6 +25,7 @@ Nigerian students struggle to find verified, safe, and fairly‑priced hostel ac
 - [Bun](https://bun.sh/) (for frontend)
 - [Go](https://go.dev) (for backend)
 - Docker & Docker Compose (optional, for containerized development)
+- [Lefthook](https://github.com/evilmartians/lefthook) (Git hook manager)
 
 ### Installation
 
