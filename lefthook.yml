@@ -79,7 +79,7 @@ pre-push:
 
     frontend-test:
       root: "apps/frontend"
-      run: bun test
+      run: bun run test
       fail_text: "Frontend tests failed. Please fix the issues."
 
     frontend-build:
