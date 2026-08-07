@@ -19,6 +19,7 @@ type Config struct {
 	Auth          Auth          `koanf:"auth" validate:"required"`
 	R2            R2            `koanf:"r2" validate:"required"`
 	DB            DB            `koanf:"db" validate:"required"`
+	Infisical     Infisical     `koanf:"infisical" validate:"required"`
 }
 
 type DB struct {
@@ -59,6 +60,13 @@ type R2 struct {
 	SecretKey       string `koanf:"secret_key" validate:"required"`
 	Bucket          string `koanf:"bucket" validate:"required"`
 	Endpoint        string `koanf:"endpoint" validate:"required,url"`
+}
+
+type Infisical struct {
+	ClientID       string `koanf:"client_id" validate:"required"`
+	ClientSecret   string `koanf:"client_secret" validate:"required"`
+	ProjectID      string `koanf:"project_id" validate:"required"`
+	NATSSecretPath string `koanf:"nats_secret_path" validate:"required"`
 }
 
 func LoadConfig() (*Config, error) {
