@@ -8,6 +8,7 @@ import (
 
 	"github.com/fagbenjaenoch/dorms-ng/internal/database/models"
 	"github.com/fagbenjaenoch/dorms-ng/internal/dto"
+	"github.com/fagbenjaenoch/dorms-ng/internal/repositories"
 	"github.com/fagbenjaenoch/dorms-ng/internal/testutils"
 )
 
@@ -15,13 +16,10 @@ func TestHostelRepository_Create(t *testing.T) {
 	setup := testutils.SetupTestContainer(t)
 	defer setup.Cleanup()
 
+	logger := testutils.NewTestLogger(t)
+
 	queries := models.New(setup.DB)
-	repo := &HostelRepository{
-		BaseRepository: BaseRepository{
-			Queries: queries,
-			Logger:  setup.Server.Logger,
-		},
-	}
+	repo := repositories.NewHostelRepository(setup.DB, logger)
 
 	institution, err := queries.CreateInstitution(context.Background(), models.CreateInstitutionParams{
 		Name:  "Test University",
