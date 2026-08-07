@@ -16,7 +16,7 @@ import (
 //go:embed migrations/*.sql
 var embedMigration embed.FS
 
-func new(config *config.Config, logger *zerolog.Logger) (*sql.DB, metric.Registration, error) {
+func newDB(config *config.Config, logger *zerolog.Logger) (*sql.DB, metric.Registration, error) {
 	db, err := otelsql.Open("pgx", config.DB.URI, otelsql.WithAttributes(
 		semconv.DBSystemNamePostgreSQL,
 		semconv.DBNamespace(config.DB.Name),
@@ -49,7 +49,7 @@ func Initialize(config *config.Config, logger *zerolog.Logger) (*sql.DB, metric.
 		panic(err)
 	}
 
-	db, reg, err := new(config, logger)
+	db, reg, err := newDB(config, logger)
 	if err != nil {
 		return nil, nil, err
 	}
