@@ -63,7 +63,7 @@ jobs:
   backend-integration-test:
     runs-on: ubuntu-latest
     # Only run on push to main or manually triggered (optional)
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'pull_request' && github.ref == 'refs/heads/main'
 
     steps:
       - name: Checkout
