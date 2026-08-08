@@ -13,7 +13,10 @@ import (
 	"github.com/fagbenjaenoch/dorms-ng/internal/logger"
 	"github.com/fagbenjaenoch/dorms-ng/internal/observability"
 	"github.com/fagbenjaenoch/dorms-ng/internal/routes"
+	"github.com/fagbenjaenoch/dorms-ng/internal/secrets"
 	"github.com/fagbenjaenoch/dorms-ng/internal/server"
+	workerpool "github.com/fagbenjaenoch/dorms-ng/internal/workers"
+	"github.com/nats-io/nats.go/jetstream"
 )
 
 const DefaultContextTimeout = 10
@@ -25,6 +28,12 @@ func main() {
 	}
 
 	logger := logger.New(cfg)
+
+	err = secrets.SetupSecretsManager(cfg)
+	if err != nil {
+		logger.Err(err).Msg("failed to setup secrets manager")
+		os.Exit(1)
+	}
 
 	db, reg, err := database.Initialize(cfg, &logger)
 	if err != nil {
@@ -71,6 +80,36 @@ func main() {
 			logger.Err(err).Msg("failed to start server")
 		}
 	}()
+
+	ctx := context.Background()
+	njs, err := workerpool.SetupNATSJetStream(ctx, &logger, cfg)
+	if err != nil {
+		logger.Err(err).Msg("failed to setup NATS JetStream")
+		os.Exit(1)
+	}
+	searchWorkerConfig := workerpool.Config{
+		Stream:           "SEARCH",
+		Durable:          "search-worker",
+		FilterSubject:    "search.>",
+		Concurrency:      cfg.Workers.Concurrency,
+		FetchBatchSize:   cfg.Workers.FetchBatchSize,
+		FetchMaxWait:     10 * time.Second,
+		MaxAckPending:    cfg.Workers.Concurrency,
+		AckWait:          cfg.Workers.AckWait,
+		MaxRetries:       cfg.Workers.MaxRetries,
+		RetryDelay:       cfg.Workers.RetryDelay,
+		RetryMaxDuration: 30 * time.Second,
+		DLQSubject:       "search_unprocessed",
+	}
+	searchWorkers, err := workerpool.New(ctx, njs, searchWorkerConfig, &logger)
+	if err != nil {
+		logger.Err(err).Msg("failed to setup search workers")
+		os.Exit(1)
+	}
+	_ = searchWorkers.Run(ctx, func(ctx context.Context, msg jetstream.Msg) error {
+		logger.Debug().Msg(string(msg.Data()))
+		return nil
+	})
 
 	// shutdown sequence
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
