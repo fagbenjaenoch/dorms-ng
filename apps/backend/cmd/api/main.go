@@ -81,12 +81,14 @@ func main() {
 		}
 	}()
 
-	ctx := context.Background()
-	njs, err := workerpool.SetupNATSJetStream(ctx, &logger, cfg)
+	workerCtx := context.Background()
+	njs, err := workerpool.SetupNATSJetStream(workerCtx, &logger, cfg)
 	if err != nil {
 		logger.Err(err).Msg("failed to setup NATS JetStream")
 		os.Exit(1)
 	}
+	logger.Info().Msg("NATS JetStream setup successfully")
+
 	searchWorkerConfig := workerpool.Config{
 		Stream:           "SEARCH",
 		Durable:          "search-worker",
@@ -101,15 +103,16 @@ func main() {
 		RetryMaxDuration: 30 * time.Second,
 		DLQSubject:       "search_unprocessed",
 	}
-	searchWorkers, err := workerpool.New(ctx, njs, searchWorkerConfig, &logger)
+	searchWorkers, err := workerpool.New(workerCtx, njs, searchWorkerConfig, &logger)
 	if err != nil {
 		logger.Err(err).Msg("failed to setup search workers")
 		os.Exit(1)
 	}
-	_ = searchWorkers.Run(ctx, func(ctx context.Context, msg jetstream.Msg) error {
+	_ = searchWorkers.Run(workerCtx, func(ctx context.Context, msg jetstream.Msg) error {
 		logger.Debug().Msg(string(msg.Data()))
 		return nil
 	})
+	logger.Info().Str("stream", searchWorkerConfig.Stream).Msg("workers running")
 
 	// shutdown sequence
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
