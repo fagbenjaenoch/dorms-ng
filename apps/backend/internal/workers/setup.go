@@ -40,7 +40,7 @@ func connectNATS(ctx context.Context, logger *zerolog.Logger, config *config.Con
 		return nil, errors.New("failed to retrieve nats credentials: " + err.Error())
 	}
 
-	nc, _ := nats.Connect(nats.DefaultURL,
+	nc, _ := nats.Connect(config.NATS.URL,
 		nats.UserJWTAndSeed(natsUserJWT.SecretValue, natsUserSeed.SecretValue),
 		nats.MaxReconnects(-1),
 		nats.ReconnectWait(2*time.Second),

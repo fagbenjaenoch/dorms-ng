@@ -2,6 +2,7 @@ package config
 
 import (
 	"strings"
+	"time"
 
 	"github.com/go-playground/validator/v10"
 	_ "github.com/joho/godotenv/autoload"
@@ -20,6 +21,8 @@ type Config struct {
 	R2            R2            `koanf:"r2" validate:"required"`
 	DB            DB            `koanf:"db" validate:"required"`
 	Infisical     Infisical     `koanf:"infisical" validate:"required"`
+	NATS          NATS          `koanf:"nats" validate:"required"`
+	Workers       Workers       `koanf:"workers" validate:"required"`
 }
 
 type DB struct {
@@ -67,6 +70,19 @@ type Infisical struct {
 	ClientSecret   string `koanf:"client_secret" validate:"required"`
 	ProjectID      string `koanf:"project_id" validate:"required"`
 	NATSSecretPath string `koanf:"nats_secret_path" validate:"required"`
+}
+
+type NATS struct {
+	URL string `koanf:"url" validate:"required,url"`
+}
+
+type Workers struct {
+	Concurrency    int           `koanf:"concurrency" default:"5"`
+	FetchBatchSize int           `koanf:"fetch_batch_size" default:"5"`
+	AckWait        time.Duration `koanf:"ack_wait" default:"10s"`
+	MaxRetries     int           `koanf:"max_retries" default:"3"`
+	RetryDelay     time.Duration `koanf:"retry_delay" default:"5s"`
+	MaxAckPending  int           `koanf:"max_ack_pending" default:"10"`
 }
 
 func LoadConfig() (*Config, error) {
