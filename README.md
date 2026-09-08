@@ -26,6 +26,8 @@ Nigerian students struggle to find verified, safe, and fairly‑priced hostel ac
 - [Go](https://go.dev) (for backend)
 - Docker & Docker Compose (optional, for containerized development)
 - [Lefthook](https://github.com/evilmartians/lefthook) (Git hook manager)
+- [Goose](https://github.com/pressly/goose) (for database migrations)
+- [Sqlc](https://sqlc.dev/) (for sql binding generation)
 
 ### Installation
 
