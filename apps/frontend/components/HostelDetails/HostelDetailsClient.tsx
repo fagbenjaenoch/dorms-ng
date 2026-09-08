@@ -5,7 +5,15 @@ import { Button } from "@/components/ui/button";
 import { fetchHostel } from "@/lib/api/hostel";
 import useMoneyFormat from "@/lib/hooks/useMoneyFormat";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { BadgeCheck, Clock4, Heart, MapPin, Share2, ShieldUserIcon } from "lucide-react";
+import {
+  BadgeCheck,
+  Clock4,
+  Heart,
+  MapPin,
+  Phone,
+  Share2,
+  ShieldUserIcon,
+} from "lucide-react";
 import { useEffect, useMemo } from "react";
 import { notFound, useParams } from "next/navigation";
 import { useQueryState, parseAsBoolean } from "nuqs";
@@ -21,6 +29,7 @@ import ImageCarousel from "../ImageCarousel";
 import Link from "next/link";
 import Image from "next/image";
 import { BsHeartFill } from "react-icons/bs";
+import { FaWhatsapp } from "react-icons/fa";
 
 export default function HostelDetailsClient() {
   const [fromSearchPage, _] = useQueryState(fromSearchPageParam, parseAsBoolean);
@@ -215,20 +224,37 @@ export default function HostelDetailsClient() {
                 <span className="text-lg font-medium tracking-normal">/ year</span>
               </h3>
             </div>
-            <div className="space-y-4 mb-8">
-              <Button
-                size="xl"
-                variant="secondary"
-                className="w-full py-4 rounded-xl font-bold md:text-lg transition-colors border border-outline-variant/50"
-                onClick={() =>
-                  posthog.capture("hostel_contact_host_clicked", {
-                    hostel_slug: slug,
-                    hostel_name: hostel.name,
-                  })
-                }
-              >
-                Contact Host
-              </Button>
+            <div>
+              <p className="text-sm font-bold uppercase tracking-widest mb-2">Contact</p>
+              <div className="space-y-4 mb-8">
+                <Button
+                  size="icon-lg"
+                  onClick={() => {
+                    window.open(
+                      `https://wa.me/${hostel.host_phone.replace(/^\+/, "")}?text=Hello%2C%20I'm%20a%20student%20at%20%5BUni%5D%20interested%20in%20booking%20a%20room%20at%20%5BH${hostel.name}%5D%20for%20next%20semester.%20Could%20you%20kindly%20let%20me%20know%3A%0A%0A-%20Available%20rooms%3F%0A-%20Pricing%20and%20payment%20schedule%3F%0A-%20Included%20amenities%20%28light%2C%20water%2C%20security%2C%20Wi-Fi%29%3F%0A-%20Any%20additional%20fees%3F%0A-%20Application%20process%3F%0A%0AI%20look%20forward%20to%20your%20response.%20Thanks.`,
+                      "_blank",
+                    );
+                    posthog.capture("hostel_host_phone_clicked", {
+                      hostel_slug: slug,
+                      hostel_name: hostel.name,
+                    });
+                  }}
+                >
+                  <FaWhatsapp size={20} />
+                </Button>
+                <Button
+                  size="icon-lg"
+                  onClick={() => {
+                    window.open(`tel:${hostel.host_phone}`, "_blank");
+                    posthog.capture("hostel_host_phone_clicked", {
+                      hostel_slug: slug,
+                      hostel_name: hostel.name,
+                    });
+                  }}
+                >
+                  <Phone size={20} />
+                </Button>
+              </div>
             </div>
             {hostel.isVerified && (
               <div className="bg-gray-200 rounded-xl p-4 flex items-start gap-4">
