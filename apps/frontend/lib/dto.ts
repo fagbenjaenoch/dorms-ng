@@ -40,6 +40,7 @@ export interface Hostel {
   photo_urls: string;
   slug: string;
   amenities: string[];
+  host_phone: string;
 }
 
 export type Place = {
