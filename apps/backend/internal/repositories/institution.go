@@ -60,6 +60,7 @@ func (ir *InstitutionRepository) CreateInstitution(ctx context.Context, institut
 	i.City = institution.City
 	i.Slug = utils.GenerateSlug(institution.Acronym)
 	i.Description = sql.NullString{String: institution.Description, Valid: true}
+	i.StudentPopulation = sql.NullInt32{Int32: institution.StudentPopulation, Valid: true}
 
 	ci, err := qtx.CreateInstitution(ctx, i)
 	if err != nil {
