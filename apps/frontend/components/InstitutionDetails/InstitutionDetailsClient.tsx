@@ -81,7 +81,7 @@ export default function InstitutionDetailsClient() {
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-10">
               <div className="bg-muted-foreground/10 p-4 lg:p-6 rounded-[2rem] transition-colors duration-300">
                 <p className="text-3xl font-bold text-primary">124+</p>
-                <p className="text-sm font-medium">Affiliated Hostels</p>
+                <p className="text-sm font-medium">Registered Hostels</p>
               </div>
               <div className="bg-muted-foreground/10 p-4 lg:p-6 rounded-[2rem] transition-colors duration-300">
                 <p className="text-3xl font-bold text-secondary">55k+</p>
@@ -120,14 +120,14 @@ export default function InstitutionDetailsClient() {
           </div>
         </div>
       </section>
-      <section className="min-h-125 py-24 px-8 bg-gray-200/80" id="hostels">
+      <section className="min-h-125 py-12 md:py-24 px-8 bg-gray-200/80" id="hostels">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
             <div>
               <h2 className="text-2xl lg:text-4xl font-extrabold tracking-tight mb-2">
                 Hostels near <span className="text-primary">{institution?.acronym}</span>
               </h2>
-              <p className="font-medium text-lg text-muted-foreground">
+              <p className="font-medium md:text-lg text-muted-foreground">
                 Verified student housing within 2km of the campus gate.
               </p>
             </div>
