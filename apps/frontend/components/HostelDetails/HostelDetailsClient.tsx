@@ -226,7 +226,7 @@ export default function HostelDetailsClient() {
             </div>
             <div>
               <p className="text-sm font-bold uppercase tracking-widest mb-2">Contact</p>
-              <div className="space-y-4 mb-8">
+              <div className="space-x-2 mb-8">
                 <Button
                   size="icon-lg"
                   onClick={() => {
