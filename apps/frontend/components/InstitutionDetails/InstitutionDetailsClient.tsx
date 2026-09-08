@@ -87,10 +87,6 @@ export default function InstitutionDetailsClient() {
                 <p className="text-3xl font-bold text-secondary">55k+</p>
                 <p className="text-sm font-medium">Student Population</p>
               </div>
-              <div className="bg-muted-foreground/10 p-4 lg:p-6 rounded-[2rem] transition-colors duration-300">
-                <p className="text-3xl font-bold">4.8</p>
-                <p className="text-sm font-medium">Safety Rating</p>
-              </div>
             </div>
             <div className="flex flex-wrap gap-4">
               <Button
