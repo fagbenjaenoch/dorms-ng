@@ -54,6 +54,9 @@ SELECT hostels.* FROM hostels INNER JOIN neighborhoods ON hostels.neighborhood_i
 -- name: CheckHostelExists :one
 SELECT EXISTS(SELECT 1 FROM hostels WHERE LOWER(name) = LOWER(@name));
 
+-- name: CountHostelsByInstitution :one
+SELECT COUNT(*) as hostel_count FROM hostels h JOIN neighborhoods n ON h.neighborhood_id = n.id WHERE n.institution_id = @institution_id;
+
 
 -- name: CreateUser :one
 INSERT INTO users (

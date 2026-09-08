@@ -115,3 +115,12 @@ func (ir *InstitutionRepository) GetAllInstitutions(ctx context.Context) ([]mode
 
 	return institutions, nil
 }
+
+func (hr *InstitutionRepository) CountHostelsByInstitution(ctx context.Context, institutionID string) (int64, error) {
+	hostelCount, err := hr.BaseRepository.Queries.CountHostelsByInstitution(ctx, institutionID)
+	if err != nil {
+		return 0, err
+	}
+
+	return hostelCount, nil
+}

@@ -21,4 +21,5 @@ type Institution struct {
 	City              string  `json:"city"`
 	Description       string  `json:"description"`
 	StudentPopulation int32   `json:"student_population"`
+	RegisteredHostels int64   `json:"registered_hostels"`
 }

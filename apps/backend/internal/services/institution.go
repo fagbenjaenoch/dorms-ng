@@ -100,6 +100,16 @@ func (s InstitutionService) GetInstitution(ctx context.Context, slug string) (dt
 		}, err
 	}
 
+	registeredHostels, err := s.repo.CountHostelsByInstitution(ctx, i.ID)
+	if err != nil {
+		return dto.StructuredResponse{
+			Success: false,
+			Status:  http.StatusInternalServerError,
+			Message: "failed to count hostels by institution",
+			Payload: nil,
+		}, err
+	}
+
 	return dto.StructuredResponse{
 		Success: true,
 		Status:  http.StatusOK,
@@ -112,6 +122,7 @@ func (s InstitutionService) GetInstitution(ctx context.Context, slug string) (dt
 			City:              i.City,
 			Latitude:          i.Latitude,
 			Longitude:         i.Longitude,
+			RegisteredHostels: registeredHostels,
 			Description:       i.Description.String,
 			StudentPopulation: i.AverageStudentPopulation.Int32,
 		},
