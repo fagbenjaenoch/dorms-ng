@@ -1,8 +1,8 @@
 -- name: CreateInstitution :one
 INSERT INTO institutions (
-    id, name, acronym, latitude, longitude, state, city, slug, description
+    id, name, acronym, latitude, longitude, state, city, slug, description, average_student_population
 ) VALUES (
-    @id, @name, @acronym, @latitude, @longitude, @state, @city, @slug, @description
+    @id, @name, @acronym, @latitude, @longitude, @state, @city, @slug, @description, @student_population
 )
 RETURNING *;
 

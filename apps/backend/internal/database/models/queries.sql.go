@@ -150,23 +150,24 @@ func (q *Queries) CreateHostel(ctx context.Context, arg CreateHostelParams) (Hos
 
 const createInstitution = `-- name: CreateInstitution :one
 INSERT INTO institutions (
-    id, name, acronym, latitude, longitude, state, city, slug, description
+    id, name, acronym, latitude, longitude, state, city, slug, description, average_student_population
 ) VALUES (
-    $1, $2, $3, $4, $5, $6, $7, $8, $9
+    $1, $2, $3, $4, $5, $6, $7, $8, $9, $10
 )
-RETURNING id, name, acronym, description, latitude, longitude, slug, created_at, updated_at, city, state
+RETURNING id, name, acronym, description, latitude, longitude, slug, created_at, updated_at, city, state, average_student_population
 `
 
 type CreateInstitutionParams struct {
-	ID          string         `json:"id"`
-	Name        string         `json:"name"`
-	Acronym     sql.NullString `json:"acronym"`
-	Latitude    float64        `json:"latitude"`
-	Longitude   float64        `json:"longitude"`
-	State       string         `json:"state"`
-	City        string         `json:"city"`
-	Slug        string         `json:"slug"`
-	Description sql.NullString `json:"description"`
+	ID                string         `json:"id"`
+	Name              string         `json:"name"`
+	Acronym           sql.NullString `json:"acronym"`
+	Latitude          float64        `json:"latitude"`
+	Longitude         float64        `json:"longitude"`
+	State             string         `json:"state"`
+	City              string         `json:"city"`
+	Slug              string         `json:"slug"`
+	Description       sql.NullString `json:"description"`
+	StudentPopulation sql.NullInt32  `json:"student_population"`
 }
 
 func (q *Queries) CreateInstitution(ctx context.Context, arg CreateInstitutionParams) (Institution, error) {
@@ -180,6 +181,7 @@ func (q *Queries) CreateInstitution(ctx context.Context, arg CreateInstitutionPa
 		arg.City,
 		arg.Slug,
 		arg.Description,
+		arg.StudentPopulation,
 	)
 	var i Institution
 	err := row.Scan(
@@ -194,6 +196,7 @@ func (q *Queries) CreateInstitution(ctx context.Context, arg CreateInstitutionPa
 		&i.UpdatedAt,
 		&i.City,
 		&i.State,
+		&i.AverageStudentPopulation,
 	)
 	return i, err
 }
@@ -381,7 +384,7 @@ func (q *Queries) CreateUserCredentials(ctx context.Context, arg CreateUserCrede
 }
 
 const getAllInstitutions = `-- name: GetAllInstitutions :many
-SELECT id, name, acronym, description, latitude, longitude, slug, created_at, updated_at, city, state FROM institutions
+SELECT id, name, acronym, description, latitude, longitude, slug, created_at, updated_at, city, state, average_student_population FROM institutions
 `
 
 func (q *Queries) GetAllInstitutions(ctx context.Context) ([]Institution, error) {
@@ -405,6 +408,7 @@ func (q *Queries) GetAllInstitutions(ctx context.Context) ([]Institution, error)
 			&i.UpdatedAt,
 			&i.City,
 			&i.State,
+			&i.AverageStudentPopulation,
 		); err != nil {
 			return nil, err
 		}
@@ -693,7 +697,7 @@ func (q *Queries) GetHostelsByNeighborhood(ctx context.Context, arg GetHostelsBy
 }
 
 const getInstitutionById = `-- name: GetInstitutionById :one
-SELECT id, name, acronym, description, latitude, longitude, slug, created_at, updated_at, city, state FROM institutions WHERE id = $1 LIMIT 1
+SELECT id, name, acronym, description, latitude, longitude, slug, created_at, updated_at, city, state, average_student_population FROM institutions WHERE id = $1 LIMIT 1
 `
 
 func (q *Queries) GetInstitutionById(ctx context.Context, id string) (Institution, error) {
@@ -711,12 +715,13 @@ func (q *Queries) GetInstitutionById(ctx context.Context, id string) (Institutio
 		&i.UpdatedAt,
 		&i.City,
 		&i.State,
+		&i.AverageStudentPopulation,
 	)
 	return i, err
 }
 
 const getInstitutionBySlug = `-- name: GetInstitutionBySlug :one
-SELECT id, name, acronym, description, latitude, longitude, slug, created_at, updated_at, city, state FROM institutions WHERE slug = $1 LIMIT 1
+SELECT id, name, acronym, description, latitude, longitude, slug, created_at, updated_at, city, state, average_student_population FROM institutions WHERE slug = $1 LIMIT 1
 `
 
 func (q *Queries) GetInstitutionBySlug(ctx context.Context, slug string) (Institution, error) {
@@ -734,6 +739,7 @@ func (q *Queries) GetInstitutionBySlug(ctx context.Context, slug string) (Instit
 		&i.UpdatedAt,
 		&i.City,
 		&i.State,
+		&i.AverageStudentPopulation,
 	)
 	return i, err
 }
@@ -921,7 +927,7 @@ func (q *Queries) GetUserCredentialByProviderId(ctx context.Context, providerID 
 }
 
 const listInstitutions = `-- name: ListInstitutions :many
-SELECT id, name, acronym, description, latitude, longitude, slug, created_at, updated_at, city, state FROM institutions ORDER BY name
+SELECT id, name, acronym, description, latitude, longitude, slug, created_at, updated_at, city, state, average_student_population FROM institutions ORDER BY name
 `
 
 func (q *Queries) ListInstitutions(ctx context.Context) ([]Institution, error) {
@@ -945,6 +951,7 @@ func (q *Queries) ListInstitutions(ctx context.Context) ([]Institution, error) {
 			&i.UpdatedAt,
 			&i.City,
 			&i.State,
+			&i.AverageStudentPopulation,
 		); err != nil {
 			return nil, err
 		}
