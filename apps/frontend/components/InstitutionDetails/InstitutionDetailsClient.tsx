@@ -82,8 +82,14 @@ export default function InstitutionDetailsClient() {
             </p>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-10">
               <div className="bg-muted-foreground/10 p-4 lg:p-6 rounded-[2rem] transition-colors duration-300">
-                <p className="text-3xl font-bold text-primary">124+</p>
-                <p className="text-sm font-medium">Registered Hostels</p>
+                <p className="text-3xl font-bold text-primary">
+                  {institution?.registered_hostels
+                    ? numberFormatter.format(institution.registered_hostels)
+                    : "0"}
+                </p>
+                <p className="text-sm font-medium">
+                  Registered Hostel {institution?.registered_hostels > 1 && "s"}
+                </p>
               </div>
               <div className="bg-muted-foreground/10 p-4 lg:p-6 rounded-[2rem] transition-colors duration-300">
                 <p className="text-3xl font-bold text-secondary">
