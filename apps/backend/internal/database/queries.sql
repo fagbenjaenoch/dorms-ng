@@ -26,11 +26,13 @@ SELECT EXISTS(SELECT 1 FROM institutions WHERE LOWER(name) = LOWER(@name) AND LO
 INSERT INTO hostels (
     id, name, address, description, latitude, longitude,
     google_place_id, estimated_price_range, neighborhood, neighborhood_id,
-    distance_to_gate_km, is_verified_by_admin, photo_urls, slug, amenities
+    distance_to_gate_km, is_verified_by_admin, photo_urls, slug, amenities,
+    host_phone, host_email
 ) VALUES (
     @id, @name, @address, @description, @latitude, @longitude,
     @google_place_id, @estimated_price_range, @neighborhood, @neighborhood_id,
-    @distance_to_gate_km, @is_verified_by_admin, @photo_urls, @slug, @amenities
+    @distance_to_gate_km, @is_verified_by_admin, @photo_urls, @slug, @amenities,
+    @host_phone, @host_email
 )
 RETURNING *;
 
