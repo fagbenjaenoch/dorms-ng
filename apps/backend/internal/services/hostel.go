@@ -77,6 +77,7 @@ func (s HostelService) CreateHostel(ctx context.Context, hostel dto.CreateHostel
 			EstimatedPriceRange: h.EstimatedPriceRange.Float64,
 			IsVerified:          h.IsVerifiedByAdmin.Bool,
 			Amenities:           utils.NullRawMessageToStrings(h.Amenities),
+			HostPhone:           h.HostPhone.String,
 		},
 	}, nil
 }

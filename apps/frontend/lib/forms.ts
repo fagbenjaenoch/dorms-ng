@@ -1,5 +1,6 @@
 import * as z from "zod";
 import { nigerianStates } from "./utils";
+import { parsePhoneNumberFromString } from "libphonenumber-js";
 
 const baseAuthSchema = z.object({
   email: z.email("Email is not valid"),
@@ -84,6 +85,15 @@ export const createHostelListingSchema = z.object({
       }),
     )
     .min(1, "Amenities are required"),
+  host_phone: z.string().refine(
+    val => {
+      const phoneNumber = parsePhoneNumberFromString(val);
+      return phoneNumber ? phoneNumber.isValid() : false;
+    },
+    {
+      message: "Invalid phone number format",
+    },
+  ),
 });
 
 export type CreateHostelListingData = z.infer<typeof createHostelListingSchema>;

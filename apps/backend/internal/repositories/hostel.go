@@ -60,6 +60,7 @@ func (hr *HostelRepository) CreateHostel(ctx context.Context, hostel dto.CreateH
 	h.PhotoUrls = sql.NullString{String: strings.Join(hostel.PhotoURLs, ", "), Valid: true}
 	h.Description = sql.NullString{String: hostel.Description, Valid: true}
 	h.Slug = utils.GenerateSlug(hostel.Name, fmt.Sprintf("%d", time.Now().Unix()))
+	h.HostPhone = sql.NullString{String: hostel.HostPhone, Valid: true}
 
 	amenities, err := utils.StringsToNullRawMessage(hostel.Amenities)
 	if err != nil {

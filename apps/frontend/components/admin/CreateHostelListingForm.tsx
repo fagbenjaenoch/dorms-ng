@@ -28,6 +28,7 @@ import {
   Camera,
   UploadIcon,
   Home,
+  Contact2,
 } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { Tag, TagInput } from "emblor";
@@ -71,6 +72,7 @@ export default function CreateHostelListingForm() {
       longitude: defaultLngLat.lng,
       distanceKm: 0,
       amenities: [],
+      host_phone: "+2348000000000",
     },
   });
   const [marker, setMarker] = useState(defaultLngLat);
@@ -637,6 +639,42 @@ export default function CreateHostelListingForm() {
                   direction="row"
                   variant="primary"
                   shape="pill"
+                />
+                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+              </Field>
+            )}
+          />
+        </div>
+      </section>
+
+      <section className="p-6 sm:p-8 rounded-[2rem] shadow-lg border border-gray-300/50">
+        <div className="flex items-center gap-3 mb-8">
+          <div className="w-10 h-10 bg-primary-container text-on-primary-container rounded-xl flex items-center justify-center">
+            <Contact2 size={24} />
+          </div>
+          <h2 className="text-2xl font-bold tracking-tight">Contact</h2>
+        </div>
+
+        <div>
+          <Controller
+            name="host_phone"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel
+                  htmlFor="host_phone"
+                  className="uppercase text-xs font-bold"
+                  aria-invalid={fieldState.invalid}
+                >
+                  Host Phone
+                </FieldLabel>
+                <Input
+                  {...field}
+                  id="host_phone"
+                  aria-invalid={fieldState.invalid}
+                  placeholder="e.g +234 800 0000 000"
+                  className="input-bg"
+                  autoComplete="off"
                 />
                 {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>

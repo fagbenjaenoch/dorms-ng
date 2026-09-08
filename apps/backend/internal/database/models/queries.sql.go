@@ -71,11 +71,13 @@ const createHostel = `-- name: CreateHostel :one
 INSERT INTO hostels (
     id, name, address, description, latitude, longitude,
     google_place_id, estimated_price_range, neighborhood, neighborhood_id,
-    distance_to_gate_km, is_verified_by_admin, photo_urls, slug, amenities
+    distance_to_gate_km, is_verified_by_admin, photo_urls, slug, amenities,
+    host_phone, host_email
 ) VALUES (
     $1, $2, $3, $4, $5, $6,
     $7, $8, $9, $10,
-    $11, $12, $13, $14, $15
+    $11, $12, $13, $14, $15,
+    $16, $17
 )
 RETURNING id, name, address, description, city, neighborhood, neighborhood_id, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, photo_urls, slug, created_at, updated_at, amenities, host_phone, host_email
 `
@@ -96,6 +98,8 @@ type CreateHostelParams struct {
 	PhotoUrls           sql.NullString        `json:"photo_urls"`
 	Slug                string                `json:"slug"`
 	Amenities           pqtype.NullRawMessage `json:"amenities"`
+	HostPhone           sql.NullString        `json:"host_phone"`
+	HostEmail           sql.NullString        `json:"host_email"`
 }
 
 func (q *Queries) CreateHostel(ctx context.Context, arg CreateHostelParams) (Hostel, error) {
@@ -115,6 +119,8 @@ func (q *Queries) CreateHostel(ctx context.Context, arg CreateHostelParams) (Hos
 		arg.PhotoUrls,
 		arg.Slug,
 		arg.Amenities,
+		arg.HostPhone,
+		arg.HostEmail,
 	)
 	var i Hostel
 	err := row.Scan(
