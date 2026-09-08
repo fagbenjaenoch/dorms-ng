@@ -38,6 +38,7 @@ export default function CreateInstitutionForm({ lng, lat }: CreateInstitutionFor
       state: "Kwara",
       city: "",
       description: "",
+      student_population: 0,
     },
   });
   const [selectedCities, setSelectedCities] = useState(
@@ -63,6 +64,7 @@ export default function CreateInstitutionForm({ lng, lat }: CreateInstitutionFor
 
   const onSubmit = async (data: CreateInstitutionData) => {
     await mutation.mutateAsync(data);
+    form.reset();
   };
   return (
     <form
@@ -257,6 +259,30 @@ export default function CreateInstitutionForm({ lng, lat }: CreateInstitutionFor
                 rows={10}
               />
 
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+
+        <Controller
+          name="student_population"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel
+                htmlFor="student_population"
+                className="uppercase text-xs font-bold"
+              >
+                Average Student Population
+              </FieldLabel>
+              <Input
+                {...field}
+                id="student_population"
+                aria-invalid={fieldState.invalid}
+                placeholder="15,000"
+                className="input-bg"
+                type="number"
+              />
               {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
             </Field>
           )}

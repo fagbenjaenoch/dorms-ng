@@ -48,6 +48,9 @@ export const createInstitutionSchema = z.object({
     .min(2, "City name must be at least 2 characters")
     .max(100, "City name is too long"),
   description: z.string().min(10, "Description is too short"),
+  student_population: z.coerce
+    .number<number>()
+    .min(0, "Student population cannot be negative"),
 });
 
 export type CreateInstitutionData = z.infer<typeof createInstitutionSchema>;
