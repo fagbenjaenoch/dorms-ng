@@ -19,7 +19,7 @@ import { notFound, useParams } from "next/navigation";
 import { useQueryState, parseAsBoolean } from "nuqs";
 import { FaPersonWalking } from "react-icons/fa6";
 import BackToSearchPageButton from "../BackToSearchPage";
-import { fromSearchPageParam } from "@/lib/utils";
+import { fromSearchPageParam, generateWhatsappURL } from "@/lib/utils";
 import { useShare } from "@/lib/hooks/useShare";
 import { useSaveHostel } from "@/lib/hooks/useSaveHostel";
 import { useState } from "react";
@@ -231,7 +231,17 @@ export default function HostelDetailsClient() {
                   size="icon-lg"
                   onClick={() => {
                     window.open(
-                      `https://wa.me/${hostel.host_phone.replace(/^\+/, "")}?text=Hello%2C%20I'm%20a%20student%20at%20%5BUni%5D%20interested%20in%20booking%20a%20room%20at%20%5BH${hostel.name}%5D%20for%20next%20semester.%20Could%20you%20kindly%20let%20me%20know%3A%0A%0A-%20Available%20rooms%3F%0A-%20Pricing%20and%20payment%20schedule%3F%0A-%20Included%20amenities%20%28light%2C%20water%2C%20security%2C%20Wi-Fi%29%3F%0A-%20Any%20additional%20fees%3F%0A-%20Application%20process%3F%0A%0AI%20look%20forward%20to%20your%20response.%20Thanks.`,
+                      generateWhatsappURL(
+                        hostel.host_phone,
+                        `Hello, I'm a student interested in booking a room at ${hostel.name} for next semester. Could you kindly let me know:
+
+                        - Available rooms?
+                        - Pricing and payment schedule?
+                        - Any additional fees?
+                        - Application process?
+
+                        I look forward to your response. Thanks.`,
+                      ),
                       "_blank",
                     );
                     posthog.capture("hostel_host_phone_clicked", {

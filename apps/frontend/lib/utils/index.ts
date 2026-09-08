@@ -95,3 +95,7 @@ export const defaultFilters = {
   page: 1,
   limit: 10,
 };
+
+export const generateWhatsappURL = (phone: string, message: string) => {
+  return `https://wa.me/${phone.replace(/^\+/, "")}?text=${encodeURIComponent(message)}`;
+};
