@@ -25,6 +25,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Map, MapControls, MapMarker, MapRef, MarkerContent } from "../ui/map";
+import useNumberFormat from "@/lib/hooks/useNumberFormat";
 
 const items = [
   { label: "Sort by", value: null },
@@ -37,6 +38,7 @@ export default function InstitutionDetailsClient() {
   slug = slug as string;
 
   const mapRef = useRef<MapRef>(null);
+  const numberFormatter = useNumberFormat();
 
   const [areaFilters, setAreaFilters] = useQueryStates(areaFilterParsers, {});
   const [hostelFilters, setHostelFilters] = useQueryStates(hostelFilterParsers, {
@@ -84,7 +86,11 @@ export default function InstitutionDetailsClient() {
                 <p className="text-sm font-medium">Registered Hostels</p>
               </div>
               <div className="bg-muted-foreground/10 p-4 lg:p-6 rounded-[2rem] transition-colors duration-300">
-                <p className="text-3xl font-bold text-secondary">55k+</p>
+                <p className="text-3xl font-bold text-secondary">
+                  {institution?.student_population
+                    ? numberFormatter.format(institution.student_population) + "+"
+                    : "15k+"}
+                </p>
                 <p className="text-sm font-medium">Student Population</p>
               </div>
             </div>
