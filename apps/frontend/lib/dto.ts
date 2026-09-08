@@ -58,6 +58,7 @@ export type Institution = {
   longitude: number;
   latitude: number;
   description: string;
+  student_population: number;
 };
 
 export type Neighborhood = {
