@@ -8,7 +8,7 @@ type CreateInstitution struct {
 	State             string  `json:"state" validate:"required,min=2,max=100"`
 	City              string  `json:"city" validate:"required,min=2,max=100"`
 	Description       string  `json:"description" validate:"required"`
-	StudentPopulation string  `json:"student_population" validate:"required"`
+	StudentPopulation int32   `json:"student_population" validate:"required"`
 }
 
 type Institution struct {
@@ -20,5 +20,5 @@ type Institution struct {
 	State             string  `json:"state"`
 	City              string  `json:"city"`
 	Description       string  `json:"description"`
-	StudentPopulation string  `json:"student_population"`
+	StudentPopulation int32   `json:"student_population"`
 }
