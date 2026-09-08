@@ -37,7 +37,7 @@ export default function LandingSearchResult({
     >
       <div className="flex items-center gap-4">
         {EntityTypeToIcon[searchResult.entity_type]}
-        <div className="flex flex-col">
+        <div className="flex flex-col text-sm md:text-base">
           <span className="font-semibold">{searchResult.entity}</span>
           <span className="text-muted-foreground line-clamp-2">
             {searchResult.address}
