@@ -14,6 +14,7 @@ type Querier interface {
 	CheckInstitutionExists(ctx context.Context, arg CheckInstitutionExistsParams) (bool, error)
 	CheckNeighborhoodExists(ctx context.Context, arg CheckNeighborhoodExistsParams) (bool, error)
 	CheckUserExists(ctx context.Context, email string) (bool, error)
+	CountHostelsByInstitution(ctx context.Context, institutionID string) (int64, error)
 	CreateHostel(ctx context.Context, arg CreateHostelParams) (Hostel, error)
 	CreateInstitution(ctx context.Context, arg CreateInstitutionParams) (Institution, error)
 	CreateNeighborhood(ctx context.Context, arg CreateNeighborhoodParams) (Neighborhood, error)

@@ -67,6 +67,17 @@ func (q *Queries) CheckUserExists(ctx context.Context, email string) (bool, erro
 	return exists, err
 }
 
+const countHostelsByInstitution = `-- name: CountHostelsByInstitution :one
+SELECT COUNT(*) as hostel_count FROM hostels h JOIN neighborhoods n ON h.neighborhood_id = n.id WHERE n.institution_id = $1
+`
+
+func (q *Queries) CountHostelsByInstitution(ctx context.Context, institutionID string) (int64, error) {
+	row := q.db.QueryRowContext(ctx, countHostelsByInstitution, institutionID)
+	var hostel_count int64
+	err := row.Scan(&hostel_count)
+	return hostel_count, err
+}
+
 const createHostel = `-- name: CreateHostel :one
 INSERT INTO hostels (
     id, name, address, description, latitude, longitude,
