@@ -40,6 +40,8 @@ type Hostel struct {
 	CreatedAt           time.Time             `json:"created_at"`
 	UpdatedAt           time.Time             `json:"updated_at"`
 	Amenities           pqtype.NullRawMessage `json:"amenities"`
+	HostPhone           sql.NullString        `json:"host_phone"`
+	HostEmail           sql.NullString        `json:"host_email"`
 }
 
 type Institution struct {
