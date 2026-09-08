@@ -88,7 +88,7 @@ export default function InstitutionDetailsClient() {
                     : "0"}
                 </p>
                 <p className="text-sm font-medium">
-                  Registered Hostel {institution?.registered_hostels > 1 && "s"}
+                  Registered Hostel{institution?.registered_hostels > 1 && "s"}
                 </p>
               </div>
               <div className="bg-muted-foreground/10 p-4 lg:p-6 rounded-[2rem] transition-colors duration-300">
