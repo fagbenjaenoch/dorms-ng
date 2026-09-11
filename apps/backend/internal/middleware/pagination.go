@@ -13,7 +13,6 @@ type PaginationParams struct {
 }
 
 const maxLimit = 20
-const maxPriceLimit = 5000000
 
 type PaginationKeyType string
 

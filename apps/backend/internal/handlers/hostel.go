@@ -79,6 +79,7 @@ func (h *HostelHandler) SearchHostels(w http.ResponseWriter, r *http.Request) {
 		Str("sortBy", hostelFilters.SortBy).
 		Int("minPrice", hostelFilters.MinPrice).
 		Int("maxPrice", hostelFilters.MaxPrice).
+		Bool("isVerified", hostelFilters.IsVerified).
 		Msg("searching hostels")
 
 	res, err := h.service.SearchHostels(r.Context(), typ, id, hostelFilters, pagination)
