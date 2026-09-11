@@ -17,7 +17,7 @@ export const hostelFilterParsers = {
   sortBy: parseAsStringLiteral(sortByValues).withDefault(defaultFilters.sortBy),
   minPrice: parseAsInteger.withDefault(defaultFilters.minPrice),
   maxPrice: parseAsInteger.withDefault(defaultFilters.maxPrice),
-  isVerified: parseAsBoolean.withDefault(false),
+  isVerified: parseAsBoolean.withDefault(defaultFilters.isVerified),
 };
 export const hostelFilterSerializer = createSerializer(hostelFilterParsers);
 

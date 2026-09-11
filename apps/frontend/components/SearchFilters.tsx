@@ -17,10 +17,11 @@ import { useCallback, useState } from "react";
 import useMoneyFormat from "@/lib/hooks/useMoneyFormat";
 import { useQueryStates } from "nuqs";
 import { hostelFilterParsers, SortByValue } from "@/lib/api/filter";
+import { defaultFilters } from "@/lib/utils";
 
-const defaultPriceRange = [200_000, 300_000];
 const maxPrice = 5_000_000;
 const minPrice = 0;
+const defaultPriceRange = [defaultFilters.minPrice, defaultFilters.maxPrice];
 
 interface DraftFilters {
   sortBy: SortByValue;
@@ -38,10 +39,10 @@ export default function SearchFilters() {
     history: "push",
   });
   const [draftFilters, setDraftFilters] = useState<DraftFilters>({
-    sortBy: (appliedFilters.sortBy as SortByValue) ?? ("price-asc" as const),
-    minPrice: appliedFilters.minPrice ?? null,
-    maxPrice: appliedFilters.maxPrice ?? null,
-    isVerified: appliedFilters.isVerified ?? false,
+    sortBy: appliedFilters.sortBy as SortByValue,
+    minPrice: appliedFilters.minPrice,
+    maxPrice: appliedFilters.maxPrice,
+    isVerified: appliedFilters.isVerified,
   });
 
   const handleSortByChange = useCallback(
@@ -89,7 +90,7 @@ export default function SearchFilters() {
       sortBy: "price-asc",
       minPrice: null,
       maxPrice: null,
-      isVerified: false,
+      isVerified: true,
     });
     setMinMax(defaultPriceRange);
     setIsDirty(false);
