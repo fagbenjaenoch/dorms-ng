@@ -199,10 +199,7 @@ export default function HostelDetailsClient() {
             </div>
           </div>
           <section>
-            <h2 className="text-xl md:text-3xl font-bold text-on-surface mb-6">
-              About this <span className="text-primary">hostel</span>
-            </h2>
-            <div className="prose prose-lg font-body">{hostel.description}</div>
+            <p className="prose prose-lg font-body">{hostel.description}</p>
           </section>
 
           <hr className="border-t border-outline-variant/20" />
