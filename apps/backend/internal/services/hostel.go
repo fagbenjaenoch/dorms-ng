@@ -118,6 +118,7 @@ func (s HostelService) GetHostel(ctx context.Context, slug string) (dto.Structur
 			PhotoURLs:           h.PhotoUrls.String,
 			EstimatedPriceRange: h.EstimatedPriceRange.Float64,
 			Amenities:           utils.NullRawMessageToStrings(h.Amenities),
+			IsVerified:          h.IsVerifiedByAdmin.Bool,
 		},
 	}, nil
 }
