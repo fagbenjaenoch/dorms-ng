@@ -178,7 +178,7 @@ export default function SearchFilters() {
                 onValueChange={value => handlePriceRangeChange(value as number[])}
                 min={minPrice}
                 max={maxPrice}
-                step={100}
+                step={1000}
               />
             </div>
           </div>
