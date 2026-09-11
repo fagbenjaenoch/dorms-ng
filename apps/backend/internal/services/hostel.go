@@ -134,6 +134,7 @@ func (s HostelService) SearchHostels(ctx context.Context, searchType, id string,
 			Offset:        int32(paginationParams.Offset),
 			MinPrice:      sql.NullFloat64{Float64: float64(filters.MinPrice), Valid: true},
 			MaxPrice:      sql.NullFloat64{Float64: float64(filters.MaxPrice), Valid: true},
+			IsVerified:    sql.NullBool{Bool: filters.IsVerified, Valid: true},
 			InstitutionID: id,
 		})
 		if err != nil {
@@ -150,6 +151,7 @@ func (s HostelService) SearchHostels(ctx context.Context, searchType, id string,
 			Offset:         int32(paginationParams.Offset),
 			MinPrice:       sql.NullFloat64{Float64: float64(filters.MinPrice), Valid: true},
 			MaxPrice:       sql.NullFloat64{Float64: float64(filters.MaxPrice), Valid: true},
+			IsVerified:     sql.NullBool{Bool: filters.IsVerified, Valid: true},
 			NeighborhoodID: sql.NullString{String: id, Valid: true},
 		})
 		if err != nil {

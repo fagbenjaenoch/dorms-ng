@@ -584,7 +584,7 @@ func (q *Queries) GetHostelsByCity(ctx context.Context, city sql.NullString) ([]
 }
 
 const getHostelsByInstitution = `-- name: GetHostelsByInstitution :many
-SELECT hostels.id, hostels.name, hostels.address, hostels.description, hostels.city, hostels.neighborhood, hostels.neighborhood_id, hostels.latitude, hostels.longitude, hostels.google_place_id, hostels.estimated_price_range, hostels.distance_to_gate_km, hostels.is_verified_by_admin, hostels.photo_urls, hostels.slug, hostels.created_at, hostels.updated_at, hostels.amenities, hostels.host_phone, hostels.host_email FROM hostels INNER JOIN neighborhoods ON hostels.neighborhood_id = neighborhoods.id WHERE neighborhoods.institution_id = $3 AND hostels.estimated_price_range >= $4 AND hostels.estimated_price_range <= $5 LIMIT $1 OFFSET $2
+SELECT hostels.id, hostels.name, hostels.address, hostels.description, hostels.city, hostels.neighborhood, hostels.neighborhood_id, hostels.latitude, hostels.longitude, hostels.google_place_id, hostels.estimated_price_range, hostels.distance_to_gate_km, hostels.is_verified_by_admin, hostels.photo_urls, hostels.slug, hostels.created_at, hostels.updated_at, hostels.amenities, hostels.host_phone, hostels.host_email FROM hostels INNER JOIN neighborhoods ON hostels.neighborhood_id = neighborhoods.id WHERE neighborhoods.institution_id = $3 AND hostels.estimated_price_range >= $4 AND hostels.estimated_price_range <= $5 AND is_verified_by_admin = $6 LIMIT $1 OFFSET $2
 `
 
 type GetHostelsByInstitutionParams struct {
@@ -593,6 +593,7 @@ type GetHostelsByInstitutionParams struct {
 	InstitutionID string          `json:"institution_id"`
 	MinPrice      sql.NullFloat64 `json:"min_price"`
 	MaxPrice      sql.NullFloat64 `json:"max_price"`
+	IsVerified    sql.NullBool    `json:"is_verified"`
 }
 
 func (q *Queries) GetHostelsByInstitution(ctx context.Context, arg GetHostelsByInstitutionParams) ([]Hostel, error) {
@@ -602,6 +603,7 @@ func (q *Queries) GetHostelsByInstitution(ctx context.Context, arg GetHostelsByI
 		arg.InstitutionID,
 		arg.MinPrice,
 		arg.MaxPrice,
+		arg.IsVerified,
 	)
 	if err != nil {
 		return nil, err
@@ -646,7 +648,7 @@ func (q *Queries) GetHostelsByInstitution(ctx context.Context, arg GetHostelsByI
 }
 
 const getHostelsByNeighborhood = `-- name: GetHostelsByNeighborhood :many
-SELECT id, name, address, description, city, neighborhood, neighborhood_id, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, photo_urls, slug, created_at, updated_at, amenities, host_phone, host_email FROM hostels WHERE neighborhood_id = $3 AND estimated_price_range <= $4 AND estimated_price_range >= $5 ORDER BY name LIMIT $1 OFFSET $2
+SELECT id, name, address, description, city, neighborhood, neighborhood_id, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, photo_urls, slug, created_at, updated_at, amenities, host_phone, host_email FROM hostels WHERE neighborhood_id = $3 AND estimated_price_range <= $4 AND estimated_price_range >= $5 AND is_verified_by_admin = $6 ORDER BY name LIMIT $1 OFFSET $2
 `
 
 type GetHostelsByNeighborhoodParams struct {
@@ -655,6 +657,7 @@ type GetHostelsByNeighborhoodParams struct {
 	NeighborhoodID sql.NullString  `json:"neighborhood_id"`
 	MaxPrice       sql.NullFloat64 `json:"max_price"`
 	MinPrice       sql.NullFloat64 `json:"min_price"`
+	IsVerified     sql.NullBool    `json:"is_verified"`
 }
 
 func (q *Queries) GetHostelsByNeighborhood(ctx context.Context, arg GetHostelsByNeighborhoodParams) ([]Hostel, error) {
@@ -664,6 +667,7 @@ func (q *Queries) GetHostelsByNeighborhood(ctx context.Context, arg GetHostelsBy
 		arg.NeighborhoodID,
 		arg.MaxPrice,
 		arg.MinPrice,
+		arg.IsVerified,
 	)
 	if err != nil {
 		return nil, err
