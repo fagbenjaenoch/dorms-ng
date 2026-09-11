@@ -12,6 +12,7 @@ import {
   MapPin,
   Phone,
   Share2,
+  ShieldAlert,
   ShieldUserIcon,
 } from "lucide-react";
 import { useEffect, useMemo } from "react";
@@ -97,9 +98,9 @@ export default function HostelDetailsClient() {
       hostel_slug: slug,
       hostel_name: hostel.name,
       hostel_price: formattedPrice,
-      is_verified: hostel.isVerified,
+      is_verified: hostel.is_verified,
     });
-  }, [slug, hostel.name, formattedPrice, hostel.isVerified]);
+  }, [slug, hostel.name, formattedPrice, hostel.is_verified]);
 
   return (
     <main className="max-w-7xl mx-auto py-10 sm:py-20 px-4 min-h-screen sm:px-6 lg:px-8">
@@ -108,12 +109,6 @@ export default function HostelDetailsClient() {
         <div>
           <h1 className="text-3xl md:text-5xl font-extrabold tracking-tighter text-on-surface flex items-center gap-3">
             {hostel.name}
-            {hostel.isVerified && (
-              <span className="inline-flex gap-1 items-center bg-primary-light text-primary text-sm font-bold px-3 py-1 rounded-full uppercase tracking-widest mt-2 md:mt-0">
-                <BadgeCheck size={15} />
-                Verified
-              </span>
-            )}
           </h1>
           <p className="text-sm lg:text-base flex items-center gap-1 mt-2 font-medium text-muted-foreground">
             <MapPin className="text-primary shrink-0 hidden lg:inline-flex" size={13} />
@@ -263,14 +258,24 @@ export default function HostelDetailsClient() {
                 </Button>
               </div>
             </div>
-            {hostel.isVerified && (
+            {hostel.is_verified ? (
               <div className="bg-gray-200 rounded-xl p-4 flex items-start gap-4">
                 <ShieldUserIcon size={20} className="text-primary shrink-0" />
                 <div>
                   <p className="font-bold">Verified by Admin</p>
                   <p className="text-sm mt-1">
-                    This property has been physically inspected for safety and quality
-                    standards.
+                    This property has been inspected and it's details can be trusted.
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div className="bg-gray-200 rounded-xl p-4 flex items-start gap-4">
+                <ShieldAlert size={20} className="text-amber-500 shrink-0" />
+                <div>
+                  <p className="font-bold">Not fully verified by Admin</p>
+                  <p className="text-sm mt-1">
+                    This property has not been inspected so kindly confirm from the host
+                    if it's details are still valid.
                   </p>
                 </div>
               </div>

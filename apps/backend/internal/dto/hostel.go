@@ -25,7 +25,7 @@ type Hostel struct {
 	Longitude           float64  `json:"longitude"`
 	PhotoURLs           string   `json:"photo_urls"`
 	Slug                string   `json:"slug"`
-	IsVerified          bool     `json:"isVerified"`
+	IsVerified          bool     `json:"is_verified"`
 	Amenities           []string `json:"amenities"`
 	HostPhone           string   `json:"host_phone"`
 }

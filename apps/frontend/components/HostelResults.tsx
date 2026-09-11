@@ -58,7 +58,7 @@ export default function HostelResults({ areaName, showInsight }: HostelResultPro
                   estimatedPriceRange,
                   photo_urls,
                   slug,
-                  isVerified,
+                  is_verified: isVerified,
                   amenities,
                 },
                 i,
