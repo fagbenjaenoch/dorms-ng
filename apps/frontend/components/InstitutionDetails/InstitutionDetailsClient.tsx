@@ -24,7 +24,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { Map, MapControls, MapMarker, MapRef, MarkerContent } from "../ui/map";
+import {
+  Map,
+  MapControls,
+  MapMarker,
+  MapRef,
+  MarkerContent,
+  MarkerLabel,
+} from "../ui/map";
 import useNumberFormat from "@/lib/hooks/useNumberFormat";
 
 const items = [
@@ -231,6 +238,7 @@ export default function InstitutionDetailsClient() {
                         className="cursor-move fill-red-500 stroke-white"
                         size={28}
                       />
+                      <MarkerLabel position="bottom">{institution.name}</MarkerLabel>
                     </MarkerContent>
                   </MapMarker>
                 </Map>
