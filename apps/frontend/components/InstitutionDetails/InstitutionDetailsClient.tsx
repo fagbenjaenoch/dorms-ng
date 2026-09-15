@@ -186,11 +186,15 @@ export default function InstitutionDetailsClient() {
                 <PiMapPinArea size={20} />
                 <h2 className="text-3xl font-bold tracking-tight">Location</h2>
               </div>
-              <p className="mb-8 leading-relaxed">
-                {institution.description.length > 0
-                  ? institution.description
-                  : "Institution Detail"}
-              </p>
+              <div className="mb-8">
+                {institution.description.length > 0 ? (
+                  <>
+                    <p className="leading-relaxed">{institution.description}</p>
+                  </>
+                ) : (
+                  "Institution Detail"
+                )}
+              </div>
               <div className="space-y-4">
                 <div className="flex items-start gap-4 p-4 rounded-2xl bg-gray-200">
                   <div className="bg-primary p-2 py-3 rounded-xl">

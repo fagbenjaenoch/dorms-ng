@@ -1,5 +1,6 @@
 import { STRING_LITERAL_DROP_BUNDLE } from "next/dist/shared/lib/constants";
 import { CreateInstitutionData } from "./forms";
+import { Amenity } from "./types";
 
 export type APIResponse<T> = {
   success: boolean;
@@ -39,7 +40,7 @@ export interface Hostel {
   is_verified: boolean;
   photo_urls: string;
   slug: string;
-  amenities: string[];
+  amenities: Amenity[];
   host_phone: string;
 }
 

@@ -14,11 +14,15 @@ import {
   Share2,
   ShieldAlert,
   ShieldUserIcon,
+  Wifi,
+  Lightbulb,
+  IconNode,
+  LucideIcon,
 } from "lucide-react";
 import { useEffect, useMemo } from "react";
 import { notFound, useParams } from "next/navigation";
 import { useQueryState, parseAsBoolean } from "nuqs";
-import { FaPersonWalking } from "react-icons/fa6";
+import { FaFaucetDrip, FaPersonWalking } from "react-icons/fa6";
 import BackToSearchPageButton from "../BackToSearchPage";
 import { fromSearchPageParam, generateWhatsappURL } from "@/lib/utils";
 import { useShare } from "@/lib/hooks/useShare";
@@ -30,7 +34,16 @@ import ImageCarousel from "../ImageCarousel";
 import Link from "next/link";
 import Image from "next/image";
 import { BsHeartFill } from "react-icons/bs";
-import { FaWhatsapp } from "react-icons/fa";
+import { FaChair, FaWhatsapp } from "react-icons/fa";
+import { IconType } from "react-icons/lib";
+import { Amenity } from "@/lib/types";
+
+const AmenityToIcon: Record<Amenity, IconType | LucideIcon> = {
+  light: Lightbulb,
+  water: FaFaucetDrip,
+  "common room": FaChair,
+  wifi: Wifi,
+};
 
 export default function HostelDetailsClient() {
   const [fromSearchPage, _] = useQueryState(fromSearchPageParam, parseAsBoolean);
@@ -195,6 +208,23 @@ export default function HostelDetailsClient() {
           </div>
           <section>
             <p className="prose prose-lg font-body">{hostel.description}</p>
+          </section>
+
+          <hr className="border-t border-outline-variant/20" />
+          <section>
+            <h2 className="text-xl md:text-3xl font-bold text-on-surface mb-6">
+              What you'll get
+            </h2>
+            <ul className="list-style-none space-y-4 text-gray-700">
+              {hostel.amenities.map(a => {
+                const Icon = AmenityToIcon[a];
+                return (
+                  <li key={a} className="capitalize flex gap-2">
+                    <Icon size={20} /> {a}
+                  </li>
+                );
+              })}
+            </ul>
           </section>
 
           <hr className="border-t border-outline-variant/20" />
