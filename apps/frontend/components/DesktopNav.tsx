@@ -20,14 +20,7 @@ export default function DesktopNav() {
           ))}
         </div>
 
-        <div className="flex items-center gap-2">
-          <Button variant="link" className="text-base">
-            <Link href="/auth/signin">Sign In</Link>
-          </Button>
-          <Button className="text-base py-2.5 h-auto px-6" size="lg">
-            <Link href="/auth/signup">Sign Up</Link>
-          </Button>
-        </div>
+        <div></div>
       </div>
     </div>
   );
