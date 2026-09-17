@@ -91,7 +91,7 @@ INSERT INTO hostels (
     $11, $12, $13, $14, $15,
     $16, $17
 )
-RETURNING id, name, address, description, city, neighborhood, neighborhood_id, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, photo_urls, slug, created_at, updated_at, amenities, host_phone, host_email
+RETURNING id, name, address, description, city, neighborhood, neighborhood_id, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, photo_urls, slug, created_at, updated_at, amenities, host_phone, host_email, hostel_type
 `
 
 type CreateHostelParams struct {
@@ -156,6 +156,7 @@ func (q *Queries) CreateHostel(ctx context.Context, arg CreateHostelParams) (Hos
 		&i.Amenities,
 		&i.HostPhone,
 		&i.HostEmail,
+		&i.HostelType,
 	)
 	return i, err
 }
@@ -473,7 +474,7 @@ func (q *Queries) GetAllNeighborhoods(ctx context.Context) ([]Neighborhood, erro
 }
 
 const getHostel = `-- name: GetHostel :one
-SELECT id, name, address, description, city, neighborhood, neighborhood_id, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, photo_urls, slug, created_at, updated_at, amenities, host_phone, host_email FROM hostels WHERE id = $1 LIMIT 1
+SELECT id, name, address, description, city, neighborhood, neighborhood_id, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, photo_urls, slug, created_at, updated_at, amenities, host_phone, host_email, hostel_type FROM hostels WHERE id = $1 LIMIT 1
 `
 
 func (q *Queries) GetHostel(ctx context.Context, id string) (Hostel, error) {
@@ -500,12 +501,13 @@ func (q *Queries) GetHostel(ctx context.Context, id string) (Hostel, error) {
 		&i.Amenities,
 		&i.HostPhone,
 		&i.HostEmail,
+		&i.HostelType,
 	)
 	return i, err
 }
 
 const getHostelBySlug = `-- name: GetHostelBySlug :one
-SELECT id, name, address, description, city, neighborhood, neighborhood_id, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, photo_urls, slug, created_at, updated_at, amenities, host_phone, host_email FROM hostels WHERE slug = $1 LIMIT 1
+SELECT id, name, address, description, city, neighborhood, neighborhood_id, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, photo_urls, slug, created_at, updated_at, amenities, host_phone, host_email, hostel_type FROM hostels WHERE slug = $1 LIMIT 1
 `
 
 func (q *Queries) GetHostelBySlug(ctx context.Context, slug string) (Hostel, error) {
@@ -532,12 +534,13 @@ func (q *Queries) GetHostelBySlug(ctx context.Context, slug string) (Hostel, err
 		&i.Amenities,
 		&i.HostPhone,
 		&i.HostEmail,
+		&i.HostelType,
 	)
 	return i, err
 }
 
 const getHostelsByCity = `-- name: GetHostelsByCity :many
-SELECT id, name, address, description, city, neighborhood, neighborhood_id, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, photo_urls, slug, created_at, updated_at, amenities, host_phone, host_email FROM hostels WHERE city = $1 ORDER BY name
+SELECT id, name, address, description, city, neighborhood, neighborhood_id, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, photo_urls, slug, created_at, updated_at, amenities, host_phone, host_email, hostel_type FROM hostels WHERE city = $1 ORDER BY name
 `
 
 func (q *Queries) GetHostelsByCity(ctx context.Context, city sql.NullString) ([]Hostel, error) {
@@ -570,6 +573,7 @@ func (q *Queries) GetHostelsByCity(ctx context.Context, city sql.NullString) ([]
 			&i.Amenities,
 			&i.HostPhone,
 			&i.HostEmail,
+			&i.HostelType,
 		); err != nil {
 			return nil, err
 		}
@@ -585,7 +589,7 @@ func (q *Queries) GetHostelsByCity(ctx context.Context, city sql.NullString) ([]
 }
 
 const getHostelsByInstitution = `-- name: GetHostelsByInstitution :many
-SELECT hostels.id, hostels.name, hostels.address, hostels.description, hostels.city, hostels.neighborhood, hostels.neighborhood_id, hostels.latitude, hostels.longitude, hostels.google_place_id, hostels.estimated_price_range, hostels.distance_to_gate_km, hostels.is_verified_by_admin, hostels.photo_urls, hostels.slug, hostels.created_at, hostels.updated_at, hostels.amenities, hostels.host_phone, hostels.host_email FROM hostels INNER JOIN neighborhoods ON hostels.neighborhood_id = neighborhoods.id WHERE neighborhoods.institution_id = $3 AND hostels.estimated_price_range >= $4 AND hostels.estimated_price_range <= $5 AND is_verified_by_admin = $6 LIMIT $1 OFFSET $2
+SELECT hostels.id, hostels.name, hostels.address, hostels.description, hostels.city, hostels.neighborhood, hostels.neighborhood_id, hostels.latitude, hostels.longitude, hostels.google_place_id, hostels.estimated_price_range, hostels.distance_to_gate_km, hostels.is_verified_by_admin, hostels.photo_urls, hostels.slug, hostels.created_at, hostels.updated_at, hostels.amenities, hostels.host_phone, hostels.host_email, hostels.hostel_type FROM hostels INNER JOIN neighborhoods ON hostels.neighborhood_id = neighborhoods.id WHERE neighborhoods.institution_id = $3 AND hostels.estimated_price_range >= $4 AND hostels.estimated_price_range <= $5 AND is_verified_by_admin = $6 LIMIT $1 OFFSET $2
 `
 
 type GetHostelsByInstitutionParams struct {
@@ -634,6 +638,7 @@ func (q *Queries) GetHostelsByInstitution(ctx context.Context, arg GetHostelsByI
 			&i.Amenities,
 			&i.HostPhone,
 			&i.HostEmail,
+			&i.HostelType,
 		); err != nil {
 			return nil, err
 		}
@@ -649,7 +654,7 @@ func (q *Queries) GetHostelsByInstitution(ctx context.Context, arg GetHostelsByI
 }
 
 const getHostelsByNeighborhood = `-- name: GetHostelsByNeighborhood :many
-SELECT id, name, address, description, city, neighborhood, neighborhood_id, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, photo_urls, slug, created_at, updated_at, amenities, host_phone, host_email FROM hostels WHERE neighborhood_id = $3 AND estimated_price_range <= $4 AND estimated_price_range >= $5 AND is_verified_by_admin = $6 ORDER BY name LIMIT $1 OFFSET $2
+SELECT id, name, address, description, city, neighborhood, neighborhood_id, latitude, longitude, google_place_id, estimated_price_range, distance_to_gate_km, is_verified_by_admin, photo_urls, slug, created_at, updated_at, amenities, host_phone, host_email, hostel_type FROM hostels WHERE neighborhood_id = $3 AND estimated_price_range <= $4 AND estimated_price_range >= $5 AND is_verified_by_admin = $6 ORDER BY name LIMIT $1 OFFSET $2
 `
 
 type GetHostelsByNeighborhoodParams struct {
@@ -698,6 +703,7 @@ func (q *Queries) GetHostelsByNeighborhood(ctx context.Context, arg GetHostelsBy
 			&i.Amenities,
 			&i.HostPhone,
 			&i.HostEmail,
+			&i.HostelType,
 		); err != nil {
 			return nil, err
 		}

@@ -42,6 +42,7 @@ type Hostel struct {
 	Amenities           pqtype.NullRawMessage `json:"amenities"`
 	HostPhone           sql.NullString        `json:"host_phone"`
 	HostEmail           sql.NullString        `json:"host_email"`
+	HostelType          sql.NullString        `json:"hostel_type"`
 }
 
 type Institution struct {
