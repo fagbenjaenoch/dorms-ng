@@ -54,7 +54,7 @@ export default function LandingSearchDropdown() {
           </div>
         </section>
       )}
-      <section>
+      {/*<section>
         <h3 className="text-sm text-muted-foreground font-bold uppercase tracking-widest text-outline mb-4">
           Trending Institutions
         </h3>
@@ -153,7 +153,7 @@ export default function LandingSearchDropdown() {
             <TrendingItem name={item} key={i} />
           ))}
         </div>
-      </section>
+      </section>*/}
     </div>
   );
 }
