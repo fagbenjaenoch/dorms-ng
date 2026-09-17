@@ -1,6 +1,7 @@
 import * as z from "zod";
 import { nigerianStates } from "./utils";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
+import { HostelTypes } from "./types";
 
 const baseAuthSchema = z.object({
   email: z.email("Email is not valid"),
@@ -97,6 +98,7 @@ export const createHostelListingSchema = z.object({
       message: "Invalid phone number format",
     },
   ),
+  occupancy_type: z.enum(HostelTypes),
 });
 
 export type CreateHostelListingData = z.infer<typeof createHostelListingSchema>;

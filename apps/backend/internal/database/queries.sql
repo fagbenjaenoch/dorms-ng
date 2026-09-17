@@ -27,12 +27,12 @@ INSERT INTO hostels (
     id, name, address, description, latitude, longitude,
     google_place_id, estimated_price_range, neighborhood, neighborhood_id,
     distance_to_gate_km, is_verified_by_admin, photo_urls, slug, amenities,
-    host_phone, host_email
+    host_phone, host_email, occupancy_type
 ) VALUES (
     @id, @name, @address, @description, @latitude, @longitude,
     @google_place_id, @estimated_price_range, @neighborhood, @neighborhood_id,
     @distance_to_gate_km, @is_verified_by_admin, @photo_urls, @slug, @amenities,
-    @host_phone, @host_email
+    @host_phone, @host_email, @occupancy_type
 )
 RETURNING *;
 

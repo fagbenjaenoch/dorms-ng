@@ -52,6 +52,26 @@ import { fetchAllNeighborhoods } from "@/lib/api/neighborhood";
 import { Neighborhood } from "@/lib/dto";
 import { useDropzone } from "react-dropzone";
 import ImageTile from "./ImageTile";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import {
+  FemaleHostelType,
+  HostelType,
+  MaleHostelType,
+  MixedHostelType,
+} from "@/lib/types";
+
+const HostelTypeItems = [
+  { label: "Male only", value: MaleHostelType },
+  { label: "Female only", value: FemaleHostelType },
+  { label: "Mixed", value: MixedHostelType },
+];
 
 export default function CreateHostelListingForm() {
   const mapRef = useRef<MapRef>(null);
@@ -72,7 +92,8 @@ export default function CreateHostelListingForm() {
       longitude: defaultLngLat.lng,
       distanceKm: 0,
       amenities: [],
-      host_phone: "+2348000000000",
+      host_phone: "",
+      occupancy_type: "mixed",
     },
   });
   const [marker, setMarker] = useState(defaultLngLat);
@@ -303,6 +324,43 @@ export default function CreateHostelListingForm() {
                     rows={3}
                   />
 
+                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                </Field>
+              )}
+            />
+            <Controller
+              name="occupancy_type"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel
+                    htmlFor="hostel_type"
+                    className="uppercase text-xs font-bold"
+                  >
+                    Hostel Type
+                  </FieldLabel>
+
+                  <Select items={HostelTypeItems}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Hostel Type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        {HostelTypeItems.map(item => (
+                          <SelectItem
+                            key={item.value}
+                            value={item.value}
+                            onClick={() => {
+                              field.onChange(item.value);
+                              form.setValue("occupancy_type", item.value as HostelType);
+                            }}
+                          >
+                            {item.label}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
                   {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                 </Field>
               )}
