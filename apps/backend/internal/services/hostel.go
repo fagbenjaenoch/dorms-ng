@@ -78,6 +78,7 @@ func (s HostelService) CreateHostel(ctx context.Context, hostel dto.CreateHostel
 			IsVerified:          h.IsVerifiedByAdmin.Bool,
 			Amenities:           utils.NullRawMessageToStrings(h.Amenities),
 			HostPhone:           h.HostPhone.String,
+			OccupancyType:       h.OccupancyType.String,
 		},
 	}, nil
 }
@@ -119,6 +120,8 @@ func (s HostelService) GetHostel(ctx context.Context, slug string) (dto.Structur
 			EstimatedPriceRange: h.EstimatedPriceRange.Float64,
 			Amenities:           utils.NullRawMessageToStrings(h.Amenities),
 			IsVerified:          h.IsVerifiedByAdmin.Bool,
+			OccupancyType:       h.OccupancyType.String,
+			HostPhone:           h.HostPhone.String,
 		},
 	}, nil
 }
