@@ -17,6 +17,15 @@ export default function LandingSearchResult({
 }: LandingSearchResultProps) {
   const { addSearch } = useRecentSearches();
 
+  const onClick = () => {
+    addSearch(searchTerm);
+    posthog.capture("search_result_clicked", {
+      search_term: searchTerm,
+      result_type: searchResult.entity_type,
+      result_name: searchResult.entity,
+    });
+  };
+
   return (
     <Link
       className="group cursor-pointer hover:bg-gray-500/10 p-2 md:p-4 rounded-md flex items-center gap-2"
@@ -25,14 +34,7 @@ export default function LandingSearchResult({
           ? `/search?${searchQueryParam}=${searchResult.entity}`
           : `/${searchResult.entity_type}s/${searchResult.slug}`
       }
-      onClick={() => {
-        addSearch(searchTerm);
-        posthog.capture("search_result_clicked", {
-          search_term: searchTerm,
-          result_type: searchResult.entity_type,
-          result_name: searchResult.entity,
-        });
-      }}
+      onClick={onClick}
       key={searchResult.entity_id}
     >
       <div className="flex items-center gap-4">
