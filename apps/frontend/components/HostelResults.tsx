@@ -68,7 +68,7 @@ export default function HostelResults({ areaName, showInsight }: HostelResultPro
                   name={name}
                   location={address}
                   price={estimatedPriceRange}
-                  imageUrl={photo_urls.split(", ")?.[0]}
+                  imageUrl={photo_urls[0]}
                   slug={slug}
                   isVerified={isVerified}
                   amenities={amenities}

@@ -91,7 +91,7 @@ export default function HostelDetailsClient() {
       });
     }
   };
-  const photoUrls = hostel.photo_urls.split(", ");
+  const photoUrls = hostel.photo_urls;
   const photoUrlObjects = useMemo(() => {
     return photoUrls.map((url, index) => ({
       url: process.env.NEXT_PUBLIC_R2_URL + url,

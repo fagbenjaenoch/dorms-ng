@@ -23,7 +23,7 @@ type Hostel struct {
 	EstimatedPriceRange float64  `json:"estimatedPriceRange"`
 	Latitude            float64  `json:"latitude"`
 	Longitude           float64  `json:"longitude"`
-	PhotoURLs           string   `json:"photo_urls"`
+	PhotoURLs           []string `json:"photo_urls"`
 	Slug                string   `json:"slug"`
 	IsVerified          bool     `json:"is_verified"`
 	Amenities           []string `json:"amenities"`
