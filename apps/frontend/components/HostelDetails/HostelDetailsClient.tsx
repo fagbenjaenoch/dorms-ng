@@ -121,7 +121,7 @@ export default function HostelDetailsClient() {
       <div className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-3xl md:text-5xl font-extrabold tracking-tighter text-on-surface flex items-center gap-3">
-            {hostel.name}
+            {hostel.name} Hostel
           </h1>
           <p className="text-sm lg:text-base flex items-center gap-1 mt-2 font-medium text-muted-foreground">
             <MapPin className="text-primary shrink-0 hidden lg:inline-flex" size={13} />
