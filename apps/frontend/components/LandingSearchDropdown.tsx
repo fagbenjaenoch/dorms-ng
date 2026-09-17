@@ -42,7 +42,7 @@ export default function LandingSearchDropdown() {
 
   return (
     <div className="absolute top-full left-0 w-full mt-4 rounded-xl shadow-2xl bg-white border overflow-hidden z-30 p-6 flex flex-col gap-8">
-      {recentSearches.length > 0 && (
+      {recentSearches.length > 0 ? (
         <section>
           <h3 className="text-sm text-muted-foreground font-bold uppercase tracking-widest text-outline mb-4">
             Recent Searches
@@ -53,6 +53,8 @@ export default function LandingSearchDropdown() {
             ))}
           </div>
         </section>
+      ) : (
+        <p>You don't have any recent searches.</p>
       )}
       {/*<section>
         <h3 className="text-sm text-muted-foreground font-bold uppercase tracking-widest text-outline mb-4">
