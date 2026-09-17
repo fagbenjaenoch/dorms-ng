@@ -35,7 +35,7 @@ type Hostel struct {
 	EstimatedPriceRange sql.NullFloat64       `json:"estimated_price_range"`
 	DistanceToGateKm    sql.NullFloat64       `json:"distance_to_gate_km"`
 	IsVerifiedByAdmin   sql.NullBool          `json:"is_verified_by_admin"`
-	PhotoUrls           sql.NullString        `json:"photo_urls"`
+	PhotoUrls           []string              `json:"photo_urls"`
 	Slug                string                `json:"slug"`
 	CreatedAt           time.Time             `json:"created_at"`
 	UpdatedAt           time.Time             `json:"updated_at"`

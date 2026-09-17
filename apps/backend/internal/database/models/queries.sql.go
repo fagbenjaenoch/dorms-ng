@@ -9,6 +9,7 @@ import (
 	"context"
 	"database/sql"
 
+	"github.com/lib/pq"
 	"github.com/sqlc-dev/pqtype"
 )
 
@@ -106,7 +107,7 @@ type CreateHostelParams struct {
 	NeighborhoodID      sql.NullString        `json:"neighborhood_id"`
 	DistanceToGateKm    sql.NullFloat64       `json:"distance_to_gate_km"`
 	IsVerifiedByAdmin   sql.NullBool          `json:"is_verified_by_admin"`
-	PhotoUrls           sql.NullString        `json:"photo_urls"`
+	PhotoUrls           []string              `json:"photo_urls"`
 	Slug                string                `json:"slug"`
 	Amenities           pqtype.NullRawMessage `json:"amenities"`
 	HostPhone           sql.NullString        `json:"host_phone"`
@@ -127,7 +128,7 @@ func (q *Queries) CreateHostel(ctx context.Context, arg CreateHostelParams) (Hos
 		arg.NeighborhoodID,
 		arg.DistanceToGateKm,
 		arg.IsVerifiedByAdmin,
-		arg.PhotoUrls,
+		pq.Array(arg.PhotoUrls),
 		arg.Slug,
 		arg.Amenities,
 		arg.HostPhone,
@@ -148,7 +149,7 @@ func (q *Queries) CreateHostel(ctx context.Context, arg CreateHostelParams) (Hos
 		&i.EstimatedPriceRange,
 		&i.DistanceToGateKm,
 		&i.IsVerifiedByAdmin,
-		&i.PhotoUrls,
+		pq.Array(&i.PhotoUrls),
 		&i.Slug,
 		&i.CreatedAt,
 		&i.UpdatedAt,
@@ -492,7 +493,7 @@ func (q *Queries) GetHostel(ctx context.Context, id string) (Hostel, error) {
 		&i.EstimatedPriceRange,
 		&i.DistanceToGateKm,
 		&i.IsVerifiedByAdmin,
-		&i.PhotoUrls,
+		pq.Array(&i.PhotoUrls),
 		&i.Slug,
 		&i.CreatedAt,
 		&i.UpdatedAt,
@@ -524,7 +525,7 @@ func (q *Queries) GetHostelBySlug(ctx context.Context, slug string) (Hostel, err
 		&i.EstimatedPriceRange,
 		&i.DistanceToGateKm,
 		&i.IsVerifiedByAdmin,
-		&i.PhotoUrls,
+		pq.Array(&i.PhotoUrls),
 		&i.Slug,
 		&i.CreatedAt,
 		&i.UpdatedAt,
@@ -562,7 +563,7 @@ func (q *Queries) GetHostelsByCity(ctx context.Context, city sql.NullString) ([]
 			&i.EstimatedPriceRange,
 			&i.DistanceToGateKm,
 			&i.IsVerifiedByAdmin,
-			&i.PhotoUrls,
+			pq.Array(&i.PhotoUrls),
 			&i.Slug,
 			&i.CreatedAt,
 			&i.UpdatedAt,
@@ -626,7 +627,7 @@ func (q *Queries) GetHostelsByInstitution(ctx context.Context, arg GetHostelsByI
 			&i.EstimatedPriceRange,
 			&i.DistanceToGateKm,
 			&i.IsVerifiedByAdmin,
-			&i.PhotoUrls,
+			pq.Array(&i.PhotoUrls),
 			&i.Slug,
 			&i.CreatedAt,
 			&i.UpdatedAt,
@@ -690,7 +691,7 @@ func (q *Queries) GetHostelsByNeighborhood(ctx context.Context, arg GetHostelsBy
 			&i.EstimatedPriceRange,
 			&i.DistanceToGateKm,
 			&i.IsVerifiedByAdmin,
-			&i.PhotoUrls,
+			pq.Array(&i.PhotoUrls),
 			&i.Slug,
 			&i.CreatedAt,
 			&i.UpdatedAt,
