@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { generateErrorMailLink } from "@/lib/utils/error";
 
 export default function GlobalError({
   error,
@@ -24,7 +25,11 @@ export default function GlobalError({
           <p>
             Please{" "}
             <Link
-              href={`mailto:fagbenjaenoch73@gmail.com?subject=Error%20on%20Hostel%20Marketplace%20App&body=Please%20include%20a%20description%20of%20what%20you%20were%20doing%20when%20the%20error%20occurred`}
+              href={generateErrorMailLink({
+                recipient: process.env.NEXT_PUBLIC_SUPPORT_MAIL!,
+                subject: `Error on ${process.env.NEXT_PUBLIC_APP_NAME!}`,
+                body: `[Please include a description of what you were doing when the error occurred]`,
+              })}
               className="text-primary underline"
             >
               contact
