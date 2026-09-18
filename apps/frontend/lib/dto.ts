@@ -42,6 +42,7 @@ export interface Hostel {
   slug: string;
   amenities: Amenity[];
   host_phone: string;
+  occupancy_type: string;
 }
 
 export type Place = {
