@@ -11,3 +11,9 @@ export const MixedHostelType = "mixed";
 export const HostelTypes = [MaleHostelType, FemaleHostelType, MixedHostelType] as const;
 
 export type HostelType = (typeof HostelTypes)[number];
+
+export const HostelTypeItems = [
+  { label: "Male only", value: MaleHostelType },
+  { label: "Female only", value: FemaleHostelType },
+  { label: "Mixed", value: MixedHostelType },
+];

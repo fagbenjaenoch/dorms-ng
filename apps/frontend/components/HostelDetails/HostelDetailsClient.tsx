@@ -34,15 +34,22 @@ import ImageCarousel from "../ImageCarousel";
 import Link from "next/link";
 import Image from "next/image";
 import { BsHeartFill } from "react-icons/bs";
-import { FaChair, FaWhatsapp } from "react-icons/fa";
+import { FaChair, FaFemale, FaMale, FaWhatsapp } from "react-icons/fa";
 import { IconType } from "react-icons/lib";
-import { Amenity } from "@/lib/types";
+import { Amenity, HostelTypeItems } from "@/lib/types";
+import { BiMaleFemale } from "react-icons/bi";
 
 const AmenityToIcon: Record<Amenity, IconType | LucideIcon> = {
   light: Lightbulb,
   water: FaFaucetDrip,
   "common room": FaChair,
   wifi: Wifi,
+};
+
+const OccupancyTypeToIcon: Record<string, IconType | LucideIcon> = {
+  male: FaMale,
+  female: FaFemale,
+  mixed: BiMaleFemale,
 };
 
 export default function HostelDetailsClient() {
@@ -115,18 +122,33 @@ export default function HostelDetailsClient() {
     });
   }, [slug, hostel.name, formattedPrice, hostel.is_verified]);
 
+  const OccupantTypeIcon = hostel.occupancy_type.length
+    ? OccupancyTypeToIcon[hostel.occupancy_type]
+    : BiMaleFemale;
+
   return (
     <main className="max-w-7xl mx-auto py-10 sm:py-20 px-4 min-h-screen sm:px-6 lg:px-8">
       <div className="mb-4">{fromSearchPage && <BackToSearchPageButton />}</div>
       <div className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-3xl md:text-5xl font-extrabold tracking-tighter text-on-surface flex items-center gap-3">
-            {hostel.name} Hostel
+          <h1 className="text-3xl md:text-5xl font-extrabold tracking-tighter flex items-center gap-3">
+            {hostel.name}
           </h1>
-          <p className="text-sm lg:text-base flex items-center gap-1 mt-2 font-medium text-muted-foreground">
-            <MapPin className="text-primary shrink-0 hidden lg:inline-flex" size={13} />
-            {hostel.address}
-          </p>
+          <div className="inline-flex gap-2 items-center mt-2 divide-x divide-gray-300">
+            <p className="text-sm lg:text-base flex items-center gap-1 font-medium text-muted-foreground pr-2 min-w-32">
+              <MapPin className="text-primary shrink-0 hidden lg:inline-flex" size={13} />
+              {hostel.address}
+            </p>
+            <div className="text-sm lg:text-base flex items-center gap-1 font-medium text-muted-foreground">
+              <OccupantTypeIcon size={14} className="text-primary" />
+              <p className="capitalize">
+                {hostel.occupancy_type.length > 0
+                  ? HostelTypeItems.find(item => item.value === hostel.occupancy_type)
+                      ?.label
+                  : "N/A"}
+              </p>
+            </div>
+          </div>
         </div>
         <div className="flex gap-4">
           <Link
@@ -186,26 +208,6 @@ export default function HostelDetailsClient() {
 
       <div className="flex flex-col lg:flex-row gap-12">
         <div className="lg:w-2/3 space-y-12">
-          <div className="bg-white rounded-2xl p-6 shadow-xs border border-gray-300 flex flex-wrap gap-8 text-sm lg:text-lg">
-            <div className="flex items-center gap-4 ">
-              <div className="bg-primary p-2 py-3 rounded-xl">
-                <FaPersonWalking size={18} className="text-primary-light" />
-              </div>
-              <div>
-                <p className="text-gray-600 font-bold uppercase">Distance to Campus</p>
-                <p className="font-bold">0.8km to Main Gate</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="bg-secondary p-2 py-3 rounded-xl">
-                <Clock4 size={20} className="text-white" />
-              </div>
-              <div>
-                <p className="text-gray-600 font-bold uppercase">Commute Time</p>
-                <p className="font-bold">10 mins walk</p>
-              </div>
-            </div>
-          </div>
           <section>
             <p className="prose prose-lg font-body">{hostel.description}</p>
           </section>

@@ -63,15 +63,10 @@ import {
 import {
   FemaleHostelType,
   HostelType,
+  HostelTypeItems,
   MaleHostelType,
   MixedHostelType,
 } from "@/lib/types";
-
-const HostelTypeItems = [
-  { label: "Male only", value: MaleHostelType },
-  { label: "Female only", value: FemaleHostelType },
-  { label: "Mixed", value: MixedHostelType },
-];
 
 export default function CreateHostelListingForm() {
   const mapRef = useRef<MapRef>(null);
