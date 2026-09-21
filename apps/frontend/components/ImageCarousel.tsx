@@ -1,10 +1,11 @@
 import Image from "next/image";
+
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselPrevious,
   CarouselNext,
+  CarouselPrevious,
 } from "./ui/carousel";
 
 interface ImageCarouselProps {

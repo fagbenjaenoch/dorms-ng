@@ -1,21 +1,23 @@
 "use client";
 
-import posthog from "posthog-js";
-import { SignupData, signupSchema } from "@/lib/forms";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
-import { Field, FieldError, FieldGroup, FieldLabel } from "./ui/field";
-import { Button } from "./ui/button";
-import Link from "next/link";
-import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
-import { APIResponse, BaseAuthPayload } from "@/lib/dto";
 import { KeyRound, MailIcon } from "lucide-react";
-import { InputGroup, InputGroupInput, InputGroupAddon } from "./ui/input-group";
-import { BsPerson } from "react-icons/bs";
-import { Checkbox } from "./ui/checkbox";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import posthog from "posthog-js";
 import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { BsPerson } from "react-icons/bs";
+import { toast } from "sonner";
+
+import { APIResponse, BaseAuthPayload } from "@/lib/dto";
+import { SignupData, signupSchema } from "@/lib/forms";
+
+import { Button } from "./ui/button";
+import { Checkbox } from "./ui/checkbox";
+import { Field, FieldError, FieldGroup, FieldLabel } from "./ui/field";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "./ui/input-group";
 
 export default function SignupForm() {
   const router = useRouter();
@@ -39,7 +41,7 @@ export default function SignupForm() {
         });
         if (!res.ok) throw new Error("could not signup");
 
-        return res.json() as any as APIResponse<BaseAuthPayload>;
+        return res.json() as unknown as APIResponse<BaseAuthPayload>;
       } catch (err) {
         toast.error("could not login");
         console.error(err);

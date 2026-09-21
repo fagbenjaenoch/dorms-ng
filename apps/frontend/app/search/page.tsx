@@ -1,5 +1,11 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
+import { MapPin } from "lucide-react";
+import { useQueryStates } from "nuqs";
+import { Suspense, useState } from "react";
+import { FaMagnifyingGlass } from "react-icons/fa6";
+
 import QueryErrorBoundary from "@/components/error/QueryErrorBoundary";
 import HostelResults from "@/components/HostelResults";
 import HostelResultsError from "@/components/HostelResultsError";
@@ -7,21 +13,13 @@ import LocationSearch from "@/components/LocationSearch";
 import SearchFilters from "@/components/SearchFilters";
 import Footer from "@/components/ui/Footer";
 import PropertyCardSkeleton from "@/components/ui/PropertyCardSkeleton";
-import { areaFilterParsers, AreaType, hostelFilterParsers } from "@/lib/api/filter";
+import { areaFilterParsers, AreaType } from "@/lib/api/filter";
 import { placeSearch } from "@/lib/api/search";
 import { APIResponse, Place } from "@/lib/dto";
 import { useClickOutside } from "@/lib/hooks/useClickOutside";
 import useDebounce from "@/lib/hooks/useDebounce";
-import { useQuery } from "@tanstack/react-query";
-import { MapPin } from "lucide-react";
-import { useQueryStates } from "nuqs";
-import { Suspense, useState } from "react";
-import { FaMagnifyingGlass } from "react-icons/fa6";
 
 export default function SearchPage() {
-  const [hostelFilters, setHostelFilters] = useQueryStates(hostelFilterParsers, {
-    history: "push",
-  });
   const [areaFilters, setAreaFilters] = useQueryStates(areaFilterParsers, {
     history: "push",
   });
@@ -31,7 +29,10 @@ export default function SearchPage() {
 
   const ref = useClickOutside<HTMLInputElement>(() => setShowDropdown(false));
 
-  const debounceSearchTerm = useDebounce(areaFilters.searchTerm, 300);
+  const debounceSearchTerm = useDebounce(
+    areaFilters.searchTerm ? areaFilters.searchTerm : "",
+    300,
+  );
 
   const query = useQuery<APIResponse<Place[]>>({
     queryKey: ["placeSearch", debounceSearchTerm],
@@ -64,7 +65,7 @@ export default function SearchPage() {
     setShowDropdown(false);
   };
 
-  const showDropdownOnClick = (e: React.MouseEvent<HTMLInputElement>) => {
+  const showDropdownOnClick = (_e: React.MouseEvent<HTMLInputElement>) => {
     setShowDropdown(true);
   };
 

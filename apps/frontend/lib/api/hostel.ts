@@ -48,7 +48,7 @@ export async function createHostelListing(
     throw new Error(response.message);
   }
 
-  return response as any as APIResponse<CreateHostelListingData>;
+  return response as unknown as APIResponse<CreateHostelListingData>;
 }
 
 export async function fetchHostel(slug: string): Promise<APIResponse<Hostel> | null> {
@@ -62,7 +62,7 @@ export async function fetchHostel(slug: string): Promise<APIResponse<Hostel> | n
       throw new Error("Failed to fetch hostel");
     }
 
-    return response.json() as any as APIResponse<Hostel>;
+    return response.json() as unknown as APIResponse<Hostel>;
   } catch (error) {
     console.error(error);
     return null;
@@ -103,8 +103,8 @@ export async function fetchHostelsByArea({
       throw new Error("Failed to fetch hostels by area");
     }
 
-    return response.json() as any as APIResponse<Hostel[]>;
+    return response.json() as unknown as APIResponse<Hostel[]>;
   } catch (error) {
-    throw new Error("Failed to fetch hostels by area");
+    throw new Error("Failed to fetch hostels by area", { cause: error });
   }
 }

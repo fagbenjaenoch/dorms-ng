@@ -1,15 +1,10 @@
-import {
-  ChevronRight,
-  GraduationCapIcon,
-  History,
-  MapPin,
-  TrendingUp,
-} from "lucide-react";
-import { Button } from "./ui/button";
-import Link from "next/link";
-import useRecentSearches from "@/lib/hooks/useRecentSearches";
+import { History } from "lucide-react";
 import { useQueryState } from "nuqs";
+
+import useRecentSearches from "@/lib/hooks/useRecentSearches";
 import { searchQueryParam } from "@/lib/utils";
+
+import { Button } from "./ui/button";
 
 function HistoryItem({ name }: { name: string }) {
   const [_, setSearchTerm] = useQueryState(searchQueryParam);
@@ -25,17 +20,17 @@ function HistoryItem({ name }: { name: string }) {
   );
 }
 
-function TrendingItem({ name }: { name: string }) {
-  return (
-    <Button
-      variant="ghost"
-      className="flex items-center gap-2 px-4 py-2 rounded-xl transition-colors font-medium border bg-primary-light text-primary hover:bg-primary-light/70"
-    >
-      <TrendingUp />
-      {name}
-    </Button>
-  );
-}
+// function TrendingItem({ name }: { name: string }) {
+//   return (
+//     <Button
+//       variant="ghost"
+//       className="flex items-center gap-2 px-4 py-2 rounded-xl transition-colors font-medium border bg-primary-light text-primary hover:bg-primary-light/70"
+//     >
+//       <TrendingUp />
+//       {name}
+//     </Button>
+//   );
+// }
 
 export default function LandingSearchDropdown() {
   const { recentSearches } = useRecentSearches();

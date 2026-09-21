@@ -1,7 +1,9 @@
 import Link from "next/link";
+
+import { navLinks } from "@/lib/utils";
+
 import BrandIcon from "./ui/BrandIcon";
 import { Button } from "./ui/button";
-import { navLinks } from "@/lib/utils";
 
 export default function DesktopNav() {
   return (

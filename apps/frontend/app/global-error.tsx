@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useEffect } from "react";
+
+import { Button } from "@/components/ui/button";
 import { generateErrorMailLink } from "@/lib/utils/error";
 
 export default function GlobalError({

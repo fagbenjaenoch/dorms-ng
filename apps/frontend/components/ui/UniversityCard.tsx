@@ -1,8 +1,8 @@
 "use client";
 
-import posthog from "posthog-js";
 import Image from "next/image";
 import Link from "next/link";
+import posthog from "posthog-js";
 import { HTMLAttributes } from "react";
 
 interface UniversityCardProps {

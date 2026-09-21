@@ -1,6 +1,29 @@
 "use client";
 
-import posthog from "posthog-js";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { Tag, TagInput } from "emblor";
+import {
+  Camera,
+  Contact2,
+  Home,
+  Info,
+  Link2,
+  MapIcon,
+  MapPin,
+  Save,
+  ShieldCheck,
+  Sparkles,
+  Star,
+  StarHalf,
+  UploadIcon,
+} from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useDropzone } from "react-dropzone";
+import { Controller, useForm } from "react-hook-form";
+import { BiSolidBadgeCheck } from "react-icons/bi";
+import { toast } from "sonner";
+
 import {
   Combobox,
   ComboboxContent,
@@ -12,26 +35,15 @@ import {
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { createHostelListing } from "@/lib/api/hostel";
+import { fetchAllNeighborhoods } from "@/lib/api/neighborhood";
+import { Neighborhood } from "@/lib/dto";
 import { CreateHostelListingData, createHostelListingSchema } from "@/lib/forms";
+import { HostelType, HostelTypeItems } from "@/lib/types";
 import { cn, defaultLngLat, LngLat, UploadFile } from "@/lib/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Info,
-  Sparkles,
-  Link2,
-  Star,
-  StarHalf,
-  MapPin,
-  MapIcon,
-  Save,
-  ShieldCheck,
-  Camera,
-  UploadIcon,
-  Home,
-  Contact2,
-} from "lucide-react";
-import { Controller, useForm } from "react-hook-form";
-import { Tag, TagInput } from "emblor";
+
+import MapEventListener from "../MapEventListener";
+import { Button } from "../ui/button";
 import {
   Map,
   MapControls,
@@ -40,18 +52,6 @@ import {
   MarkerContent,
   MarkerLabel,
 } from "../ui/map";
-import MapEventListener from "../MapEventListener";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { BiSolidBadgeCheck } from "react-icons/bi";
-import { Button } from "../ui/button";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { toast } from "sonner";
-import { Switch } from "../ui/switch";
-import { createHostelListing } from "@/lib/api/hostel";
-import { fetchAllNeighborhoods } from "@/lib/api/neighborhood";
-import { Neighborhood } from "@/lib/dto";
-import { useDropzone } from "react-dropzone";
-import ImageTile from "./ImageTile";
 import {
   Select,
   SelectContent,
@@ -60,13 +60,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import {
-  FemaleHostelType,
-  HostelType,
-  HostelTypeItems,
-  MaleHostelType,
-  MixedHostelType,
-} from "@/lib/types";
+import { Switch } from "../ui/switch";
+import ImageTile from "./ImageTile";
 
 export default function CreateHostelListingForm() {
   const mapRef = useRef<MapRef>(null);
@@ -103,7 +98,7 @@ export default function CreateHostelListingForm() {
   const mutation = useMutation({
     mutationKey: ["createHostelListing"],
     mutationFn: (data: CreateHostelListingData) => createHostelListing(data, photos),
-    onSuccess: (_, variables) => {
+    onSuccess: (_, _variables) => {
       toast.success("Hostel listing created successfully");
       form.reset();
       setPhotos(null);
@@ -122,7 +117,7 @@ export default function CreateHostelListingForm() {
 
   const neighborhoods = neighborhoodsQuery.data?.payload;
 
-  //@ts-ignore can't figure out the type
+  //@ts-expect-error can't figure out the type
   const handleMapClick = e => {
     setMarker({ lng: e.lngLat.lng, lat: e.lngLat.lat });
 

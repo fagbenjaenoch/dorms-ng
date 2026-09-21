@@ -1,7 +1,8 @@
 import { Bell, Settings } from "lucide-react";
+import Image from "next/image";
+
 import { Button } from "../ui/button";
 import Search from "./Search";
-import Image from "next/image";
 
 interface DashboardHeaderProps {
   title: string;

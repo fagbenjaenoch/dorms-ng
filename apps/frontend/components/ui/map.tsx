@@ -1,10 +1,14 @@
 "use client";
+/* eslint-disable */
 
-import MapLibreGL, { type PopupOptions, type MarkerOptions } from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
+
+import { Loader2, Locate, Maximize, Minus, Plus, X } from "lucide-react";
+import MapLibreGL, { type MarkerOptions, type PopupOptions } from "maplibre-gl";
 import {
   createContext,
   forwardRef,
+  type ReactNode,
   useCallback,
   useContext,
   useEffect,
@@ -13,10 +17,8 @@ import {
   useMemo,
   useRef,
   useState,
-  type ReactNode,
 } from "react";
 import { createPortal } from "react-dom";
-import { X, Minus, Plus, Locate, Maximize, Loader2 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -263,7 +265,6 @@ const Map = forwardRef<MapRef, MapProps>(function Map(
       setIsStyleLoaded(false);
       setMapInstance(null);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Sync controlled viewport to map
@@ -429,8 +430,6 @@ function MapMarker({
     markerInstance.on("dragend", handleDragEnd);
 
     return markerInstance;
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -441,8 +440,6 @@ function MapMarker({
     return () => {
       marker.remove();
     };
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map]);
 
   if (marker.getLngLat().lng !== longitude || marker.getLngLat().lat !== latitude) {
@@ -542,7 +539,6 @@ function MarkerPopup({
       .setDOMContent(container);
 
     return popupInstance;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -554,7 +550,6 @@ function MarkerPopup({
     return () => {
       marker.setPopup(null);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map]);
 
   if (popup.isOpen()) {
@@ -608,7 +603,6 @@ function MarkerTooltip({ children, className, ...popupOptions }: MarkerTooltipPr
     }).setMaxWidth("none");
 
     return tooltipInstance;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -629,7 +623,6 @@ function MarkerTooltip({ children, className, ...popupOptions }: MarkerTooltipPr
       marker.getElement()?.removeEventListener("mouseleave", handleMouseLeave);
       tooltip.remove();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map]);
 
   if (tooltip.isOpen()) {
@@ -940,7 +933,6 @@ function MapPopup({
       .setLngLat([longitude, latitude]);
 
     return popupInstance;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -959,7 +951,6 @@ function MapPopup({
         popup.remove();
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map]);
 
   if (popup.isOpen()) {
@@ -1072,7 +1063,6 @@ function MapRoute({
         // ignore
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoaded, map]);
 
   // When coordinates change, update the source data
@@ -1267,7 +1257,6 @@ function MapClusterLayer<
         // ignore
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoaded, map, sourceId]);
 
   // Update source data when data prop changes (only for non-URL data)
@@ -1431,16 +1420,16 @@ function MapClusterLayer<
 
 export {
   Map,
-  useMap,
+  MapClusterLayer,
+  MapControls,
   MapMarker,
+  MapPopup,
+  MapRoute,
   MarkerContent,
+  MarkerLabel,
   MarkerPopup,
   MarkerTooltip,
-  MarkerLabel,
-  MapPopup,
-  MapControls,
-  MapRoute,
-  MapClusterLayer,
+  useMap,
 };
 
 export type { MapRef, MapViewport };

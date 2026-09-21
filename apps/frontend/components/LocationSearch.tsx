@@ -1,8 +1,9 @@
 "use client";
 
 import { SearchIcon, X } from "lucide-react";
-import { InputGroup, InputGroupAddon, InputGroupInput } from "./ui/input-group";
+
 import { Button } from "./ui/button";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "./ui/input-group";
 import { Spinner } from "./ui/spinner";
 
 interface LocationSearchProps {

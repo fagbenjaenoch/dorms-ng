@@ -1,6 +1,7 @@
-import { BiArrowBack } from "react-icons/bi";
-import { Button } from "./ui/button";
 import { useRouter } from "next/navigation";
+import { BiArrowBack } from "react-icons/bi";
+
+import { Button } from "./ui/button";
 
 export default function BackToSearchPageButton() {
   const router = useRouter();

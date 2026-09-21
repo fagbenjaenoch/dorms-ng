@@ -1,8 +1,10 @@
-import { Button } from "@/components/ui/button";
-import Layout from "../Layout";
 import Link from "next/link";
 import { FaGoogle } from "react-icons/fa6";
+
 import SignupForm from "@/components/SignupForm";
+import { Button } from "@/components/ui/button";
+
+import Layout from "../Layout";
 
 export const metadata = {
   title: "Sign Up",

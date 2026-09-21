@@ -1,13 +1,15 @@
 "use client";
 
-import PropertyCard from "./ui/PropertyCard";
-import { fetchHostelsByArea } from "@/lib/api/hostel";
-import { APIResponse, Hostel } from "@/lib/dto";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useQueryStates } from "nuqs";
-import { paginationSerializerObject } from "@/lib/api/pagination";
-import { areaFilterParsers, hostelFilterParsers } from "@/lib/api/filter";
 import { useEffect } from "react";
+
+import { areaFilterParsers, hostelFilterParsers } from "@/lib/api/filter";
+import { fetchHostelsByArea } from "@/lib/api/hostel";
+import { paginationSerializerObject } from "@/lib/api/pagination";
+import { APIResponse, Hostel } from "@/lib/dto";
+
+import PropertyCard from "./ui/PropertyCard";
 
 interface HostelResultProps {
   areaName: string;
@@ -15,16 +17,16 @@ interface HostelResultProps {
 }
 
 export default function HostelResults({ areaName, showInsight }: HostelResultProps) {
-  const [paginationFilters, setPaginationFilters] = useQueryStates(
+  const [paginationFilters, _setPaginationFilters] = useQueryStates(
     paginationSerializerObject,
     {
       history: "push",
     },
   );
-  const [hostelFilters, setHostelFilters] = useQueryStates(hostelFilterParsers, {
+  const [hostelFilters, _setHostelFilters] = useQueryStates(hostelFilterParsers, {
     history: "push",
   });
-  const [areaFilters, setAreaFilters] = useQueryStates(areaFilterParsers, {
+  const [areaFilters, _setAreaFilters] = useQueryStates(areaFilterParsers, {
     history: "push",
   });
   const hostelQuery = useSuspenseQuery<APIResponse<Hostel[]>>({

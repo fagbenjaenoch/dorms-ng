@@ -1,10 +1,11 @@
+import { ChevronRight } from "lucide-react";
+import Link from "next/link";
+import posthog from "posthog-js";
+
 import { SearchResult } from "@/lib/dto";
 import useRecentSearches from "@/lib/hooks/useRecentSearches";
 import { searchQueryParam } from "@/lib/utils";
 import { EntityTypeToIcon } from "@/lib/utils/search";
-import { ChevronRight } from "lucide-react";
-import Link from "next/link";
-import posthog from "posthog-js";
 
 interface LandingSearchResultProps {
   searchResult: SearchResult;

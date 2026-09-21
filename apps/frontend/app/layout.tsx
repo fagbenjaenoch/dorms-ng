@@ -1,13 +1,15 @@
-import type { Metadata } from "next";
-import { DM_Sans, Inter, Geist } from "next/font/google";
 import "./globals.css";
-import { cn } from "@/lib/utils";
-import { Toaster } from "@/components/ui/sonner";
-import QueryProvider from "./QueryProvider";
+
+import type { Metadata } from "next";
+import { DM_Sans, Geist, Inter } from "next/font/google";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { Suspense } from "react";
-import { PostHogProvider } from "@posthog/next";
+
+import { Toaster } from "@/components/ui/sonner";
+import { cn } from "@/lib/utils";
+
 import { PHProvider } from "./providers/posthog";
+import QueryProvider from "./QueryProvider";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 

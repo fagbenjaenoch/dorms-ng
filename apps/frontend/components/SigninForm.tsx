@@ -1,17 +1,19 @@
 "use client";
 
-import posthog from "posthog-js";
-import { LoginData, loginSchema } from "@/lib/forms";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm } from "react-hook-form";
-import { Field, FieldError, FieldGroup, FieldLabel } from "./ui/field";
-import { Button } from "./ui/button";
-import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
-import { SigninPayload, APIResponse } from "@/lib/dto";
-import { InputGroup, InputGroupAddon, InputGroupInput } from "./ui/input-group";
 import { KeyRound, MailIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import posthog from "posthog-js";
+import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+import { APIResponse, SigninPayload } from "@/lib/dto";
+import { LoginData, loginSchema } from "@/lib/forms";
+
+import { Button } from "./ui/button";
+import { Field, FieldError, FieldGroup, FieldLabel } from "./ui/field";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "./ui/input-group";
 
 export default function SigninForm() {
   const router = useRouter();
@@ -24,19 +26,19 @@ export default function SigninForm() {
   });
 
   const mutation = useMutation({
-    mutationKey: ["signup"],
+    mutationKey: ["signin"],
     mutationFn: async (user: LoginData) => {
       try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/login`, {
           method: "POST",
           body: JSON.stringify(user),
         });
-        let responseObj = (await res.json()) as APIResponse<SigninPayload>;
+        const responseObj = (await res.json()) as APIResponse<SigninPayload>;
         if (!res.ok) throw new Error(responseObj.message);
 
         return responseObj;
-      } catch (err: any) {
-        toast.error(err.toString());
+      } catch (err: unknown) {
+        toast.error("Failed to sign in. Please try again later.");
         console.error(err);
       }
     },

@@ -1,14 +1,15 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
+import { SearchIcon, X } from "lucide-react";
+import Link from "next/link";
+import { useQueryState } from "nuqs";
+
 import { search } from "@/lib/api/search";
 import { APIResponse, SearchResult } from "@/lib/dto";
 import useDebounce from "@/lib/hooks/useDebounce";
 import { searchQueryParam } from "@/lib/utils";
 import { EntityTypeToIcon } from "@/lib/utils/search";
-import { useQuery } from "@tanstack/react-query";
-import { SearchIcon, X } from "lucide-react";
-import Link from "next/link";
-import { useQueryState } from "nuqs";
 
 export default function Search() {
   const [searchTerm, setSearchTerm] = useQueryState(searchQueryParam, {

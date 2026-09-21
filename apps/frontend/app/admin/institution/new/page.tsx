@@ -2,8 +2,11 @@
 
 import { CheckCircle2, MapPin } from "lucide-react";
 import { useRef, useState } from "react";
+import { BiSolidBadgeCheck } from "react-icons/bi";
+
 import CreateInstitutionForm from "@/components/admin/CreateInstitutionForm";
 import DashboardHeader from "@/components/admin/DashboardHeader";
+import MapEventListener from "@/components/MapEventListener";
 import {
   Map,
   MapControls,
@@ -12,9 +15,7 @@ import {
   MarkerContent,
   MarkerLabel,
 } from "@/components/ui/map";
-import MapEventListener from "@/components/MapEventListener";
 import { defaultLngLat, LngLat } from "@/lib/utils";
-import { BiSolidBadgeCheck } from "react-icons/bi";
 
 export default function CreateInstitution() {
   const mapRef = useRef<MapRef>(null);
@@ -24,7 +25,7 @@ export default function CreateInstitution() {
     setMarker({ lng: lngLat.lng, lat: lngLat.lat });
   };
 
-  //@ts-ignore can't figure out the type
+  //@ts-expect-error can't figure out the type
   const handleMapClick = e => {
     setMarker({ lng: e.lngLat.lng, lat: e.lngLat.lat });
 

@@ -6,7 +6,7 @@ export async function search(
   { signal }: { signal: AbortSignal },
 ): Promise<APIResponse<SearchResult[]>> {
   try {
-    let path = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/search?${searchQueryParam}=${query}`;
+    const path = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/search?${searchQueryParam}=${query}`;
 
     const res = await fetch(path, {
       method: "GET",
@@ -14,9 +14,9 @@ export async function search(
     });
 
     if (!res.json) throw new Error("could not search item");
-    return res.json();
+    return res.json() as unknown as APIResponse<SearchResult[]>;
   } catch (err) {
-    throw new Error("could not search item");
+    throw new Error("could not search item", { cause: err });
   }
 }
 
@@ -25,7 +25,7 @@ export async function placeSearch(
   { signal }: { signal: AbortSignal },
 ): Promise<APIResponse<Place[]>> {
   try {
-    let path = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/search/places?${searchQueryParam}=${query}`;
+    const path = `${process.env.NEXT_PUBLIC_API_URL}/api/v1/search/places?${searchQueryParam}=${query}`;
 
     const res = await fetch(path, {
       method: "GET",
@@ -33,8 +33,8 @@ export async function placeSearch(
     });
 
     if (!res.json) throw new Error("could not search place");
-    return res.json();
+    return res.json() as unknown as APIResponse<Place[]>;
   } catch (err) {
-    throw new Error("could not search place");
+    throw new Error("could not search place", { cause: err });
   }
 }

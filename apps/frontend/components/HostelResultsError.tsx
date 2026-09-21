@@ -1,14 +1,13 @@
-import { FaRedo } from "react-icons/fa";
-import { Button } from "./ui/button";
 import { BsHouseSlashFill } from "react-icons/bs";
+import { FaRedo } from "react-icons/fa";
+
+import { Button } from "./ui/button";
 
 interface HostelResultsErrorProps {
-  error: Error;
   resetErrorBoundary: () => void;
 }
 
 export default function HostelResultsError({
-  error,
   resetErrorBoundary,
 }: HostelResultsErrorProps) {
   return (

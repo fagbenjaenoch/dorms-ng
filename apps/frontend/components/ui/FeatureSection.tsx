@@ -1,8 +1,9 @@
-import { FaBolt } from "react-icons/fa6";
-import SectionHeading from "./SectionHeader";
-import FeatureCard from "./FeatureCard";
-import { RiVerifiedBadgeLine } from "react-icons/ri";
 import { BiWallet } from "react-icons/bi";
+import { FaBolt } from "react-icons/fa6";
+import { RiVerifiedBadgeLine } from "react-icons/ri";
+
+import FeatureCard from "./FeatureCard";
+import SectionHeading from "./SectionHeader";
 
 export default function FeatureSection() {
   return (

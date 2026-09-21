@@ -1,5 +1,6 @@
+import { describe, expect, test } from "bun:test";
+
 import { generateErrorMailLink } from "@/lib/utils/error";
-import { test, expect, describe } from "bun:test";
 
 describe("generateErrorMailLink", () => {
   test("should return a valid mailto link", () => {
