@@ -10,11 +10,12 @@ import Footer from "@/components/ui/Footer";
 import { GoVerified } from "react-icons/go";
 import Image from "next/image";
 import Link from "next/link";
-import { SearchIcon, ShieldCheckIcon } from "lucide-react";
+import { DollarSign, SearchIcon, ShieldCheckIcon } from "lucide-react";
 import { RoughNotation } from "react-rough-notation";
 import SectionHeading from "@/components/ui/SectionHeader";
 import FeatureCard from "@/components/ui/FeatureCard";
 import { MdTune } from "react-icons/md";
+import { FaNairaSign } from "react-icons/fa6";
 
 export default function Home() {
   return (
@@ -44,13 +45,10 @@ export default function Home() {
               inspected it. What you see is exactly what you get.
             </p>
             <LandingSearch />
-            <Link
-              className="text-primary underline text-sm flex items-center gap-1"
-              href="/"
-            >
-              <ShieldCheckIcon size={13} className="inline-block" /> See how verification
-              works
-            </Link>
+
+            <p className="text-muted-foreground text-sm flex gap-1 items-center">
+              100% free for students
+            </p>
           </div>
           <div className="lg:inline-block overflow-hidden rounded-2xl max-w-xl pointer-events-none">
             <Image
@@ -59,7 +57,7 @@ export default function Home() {
               height={450}
               className="w-100 hidden md:block"
               alt="Students hanging out"
-              loading="lazy"
+              priority
             />
           </div>
         </div>
