@@ -1,6 +1,6 @@
 # dorms.ng
 
-A secure, hostel marketplace for Nigerian students built for observability and scale.
+A secure, hostel marketplace for Nigerian students built with observability and scale in mind.
 
 ## The Problem
 Nigerian students struggle to find verified, safe, and fairly‑priced hostel accommodation near their campuses. Listings are scattered across unregulated WhatsApp groups, social media, and offline agents leading to scams, price gouging, and wasted time.
