@@ -1,6 +1,7 @@
+import { act, renderHook } from "@testing-library/react";
+import { describe, expect, it } from "bun:test";
+
 import useRecentSearches from "@/lib/hooks/useRecentSearches";
-import { renderHook, act } from "@testing-library/react";
-import { describe, it, expect } from "bun:test";
 
 describe("useRecentSearches", () => {
   it("should return empty array with no recent searches", () => {

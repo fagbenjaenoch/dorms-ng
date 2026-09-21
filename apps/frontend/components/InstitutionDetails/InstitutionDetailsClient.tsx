@@ -1,29 +1,23 @@
 "use client";
 
-import posthog from "posthog-js";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { BusIcon, Compass, GraduationCap, MapIcon, MapPin } from "lucide-react";
-import { Button } from "../ui/button";
+import { notFound, useParams } from "next/navigation";
+import { useQueryStates } from "nuqs";
+import posthog from "posthog-js";
+import { Suspense, useEffect, useRef } from "react";
 import { FaPersonWalking } from "react-icons/fa6";
 import { PiMapPinArea } from "react-icons/pi";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { notFound, useParams } from "next/navigation";
+
+import { areaFilterParsers, hostelFilterParsers } from "@/lib/api/filter";
 import { fetchInstitution } from "@/lib/api/institution";
+import useNumberFormat from "@/lib/hooks/useNumberFormat";
 import { scrollTo } from "@/lib/utils";
-import { Suspense, useEffect, useRef } from "react";
+
 import QueryErrorBoundary from "../error/QueryErrorBoundary";
 import HostelResults from "../HostelResults";
 import HostelResultsError from "../HostelResultsError";
-import PropertyCardSkeleton from "../ui/PropertyCardSkeleton";
-import { areaFilterParsers, hostelFilterParsers } from "@/lib/api/filter";
-import { useQueryStates } from "nuqs";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
+import { Button } from "../ui/button";
 import {
   Map,
   MapControls,
@@ -32,7 +26,15 @@ import {
   MarkerContent,
   MarkerLabel,
 } from "../ui/map";
-import useNumberFormat from "@/lib/hooks/useNumberFormat";
+import PropertyCardSkeleton from "../ui/PropertyCardSkeleton";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 const items = [
   { label: "Sort by", value: null },
@@ -47,8 +49,10 @@ export default function InstitutionDetailsClient() {
   const mapRef = useRef<MapRef>(null);
   const numberFormatter = useNumberFormat();
 
-  const [areaFilters, setAreaFilters] = useQueryStates(areaFilterParsers, {});
-  const [hostelFilters, setHostelFilters] = useQueryStates(hostelFilterParsers, {
+  const [_areaFilters, setAreaFilters] = useQueryStates(areaFilterParsers, {
+    history: "push",
+  });
+  const [_hostelFilters, setHostelFilters] = useQueryStates(hostelFilterParsers, {
     history: "push",
   });
   const institutionQuery = useSuspenseQuery({

@@ -1,4 +1,15 @@
 import { LucideListFilter } from "lucide-react";
+import { useQueryStates } from "nuqs";
+import { useCallback, useState } from "react";
+
+import { hostelFilterParsers, SortByValue } from "@/lib/api/filter";
+import useMoneyFormat from "@/lib/hooks/useMoneyFormat";
+import { defaultFilters } from "@/lib/utils";
+
+import { Button } from "./ui/button";
+import { Checkbox } from "./ui/checkbox";
+import { Field, FieldLabel } from "./ui/field";
+import { Label } from "./ui/label";
 import {
   Sheet,
   SheetClose,
@@ -8,16 +19,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "./ui/sheet";
-import { Button } from "./ui/button";
-import { Label } from "./ui/label";
-import { Field, FieldLabel } from "./ui/field";
-import { Checkbox } from "./ui/checkbox";
 import { Slider } from "./ui/slider";
-import { useCallback, useState } from "react";
-import useMoneyFormat from "@/lib/hooks/useMoneyFormat";
-import { useQueryStates } from "nuqs";
-import { hostelFilterParsers, SortByValue } from "@/lib/api/filter";
-import { defaultFilters } from "@/lib/utils";
 
 const maxPrice = 5_000_000;
 const minPrice = 0;

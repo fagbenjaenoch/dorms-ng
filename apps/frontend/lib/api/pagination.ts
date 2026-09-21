@@ -1,4 +1,5 @@
 import { createSerializer, parseAsInteger } from "nuqs";
+
 import { defaultFilters } from "../utils";
 
 export interface PaginationOptions {

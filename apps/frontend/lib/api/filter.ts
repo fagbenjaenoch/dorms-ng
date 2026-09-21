@@ -1,10 +1,11 @@
 import {
-  parseAsStringLiteral,
-  parseAsInteger,
-  parseAsBoolean,
-  parseAsString,
   createSerializer,
+  parseAsBoolean,
+  parseAsInteger,
+  parseAsString,
+  parseAsStringLiteral,
 } from "nuqs";
+
 import { defaultFilters } from "../utils";
 
 export const sortByValues = ["price-asc", "price-desc"] as const;

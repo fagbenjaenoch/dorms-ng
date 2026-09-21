@@ -1,23 +1,21 @@
 "use client";
 
-import posthog from "posthog-js";
-import { Button } from "./ui/button";
-import useDebounce from "@/lib/hooks/useDebounce";
 import { useQuery } from "@tanstack/react-query";
-import { ChevronRight, Search, X } from "lucide-react";
-import { searchQueryParam } from "@/lib/utils";
+import { Search, X } from "lucide-react";
 import { useQueryState } from "nuqs";
-import { APIResponse, SearchResult } from "@/lib/dto";
-import Link from "next/link";
-import { search } from "@/lib/api/search";
-import { EntityTypeToIcon } from "@/lib/utils/search";
-import { InputGroup, InputGroupAddon, InputGroupInput } from "./ui/input-group";
-import LandingSearchDropdown from "./LandingSearchDropdown";
 import { useState } from "react";
+
+import { search } from "@/lib/api/search";
+import { APIResponse, SearchResult } from "@/lib/dto";
 import { useClickOutside } from "@/lib/hooks/useClickOutside";
-import useRecentSearches from "@/lib/hooks/useRecentSearches";
-import { Spinner } from "./ui/spinner";
+import useDebounce from "@/lib/hooks/useDebounce";
+import { searchQueryParam } from "@/lib/utils";
+
+import LandingSearchDropdown from "./LandingSearchDropdown";
+import { Button } from "./ui/button";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "./ui/input-group";
 import LandingSearchResult from "./ui/LandingSearchResult";
+import { Spinner } from "./ui/spinner";
 
 export default function LandingSearch() {
   const [showDropdown, setShowDropdown] = useState(false);

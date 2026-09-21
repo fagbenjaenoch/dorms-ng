@@ -15,7 +15,7 @@ export async function createNeighborhood(data: CreateNeighborhoodData) {
     throw new Error(response.message);
   }
 
-  return response as any as APIResponse<CreateNeighborhoodData>;
+  return response as APIResponse<CreateNeighborhoodData>;
 }
 
 export async function fetchAllNeighborhoods() {
@@ -28,7 +28,7 @@ export async function fetchAllNeighborhoods() {
       throw new Error("Failed to fetch institutions");
     }
 
-    return response.json() as any as APIResponse<Neighborhood[]>;
+    return response.json() as unknown as APIResponse<Neighborhood[]>;
   } catch (error) {
     console.error(error);
     return null;

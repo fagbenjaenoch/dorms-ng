@@ -1,11 +1,13 @@
 "use client";
 
-import { RxHamburgerMenu } from "react-icons/rx";
-import BrandIcon from "@/components/ui/BrandIcon";
+import Link from "next/link";
 import { useState } from "react";
 import { FaX } from "react-icons/fa6";
-import Link from "next/link";
+import { RxHamburgerMenu } from "react-icons/rx";
+
+import BrandIcon from "@/components/ui/BrandIcon";
 import { navLinks } from "@/lib/utils";
+
 import { Button } from "./ui/button";
 
 export default function MobileNav() {

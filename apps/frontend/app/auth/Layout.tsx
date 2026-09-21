@@ -1,5 +1,6 @@
-import BrandIcon from "@/components/ui/BrandIcon";
 import Link from "next/link";
+
+import BrandIcon from "@/components/ui/BrandIcon";
 
 export default function Layout({
   children,

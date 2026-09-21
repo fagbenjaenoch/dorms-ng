@@ -1,15 +1,16 @@
-import { useEffect } from "react";
-import { useMap } from "./ui/map";
 import { MapEventType } from "maplibre-gl";
+import { useEffect } from "react";
+
+import { useMap } from "./ui/map";
 
 interface MapEventListenerProps {
-  handleClick: (e: MapEventType & Object) => void;
+  handleClick: (e: MapEventType & object) => void;
 }
 
 export default function MapEventListener({ handleClick }: MapEventListenerProps) {
   const { map, isLoaded } = useMap();
 
-  //@ts-ignore don't understand what is going on here
+  //@ts-expect-error don't understand what is going on here
   useEffect(() => {
     if (!map || !isLoaded) return;
 

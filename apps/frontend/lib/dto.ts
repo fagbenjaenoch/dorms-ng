@@ -1,4 +1,3 @@
-import { STRING_LITERAL_DROP_BUNDLE } from "next/dist/shared/lib/constants";
 import { CreateInstitutionData } from "./forms";
 import { Amenity } from "./types";
 

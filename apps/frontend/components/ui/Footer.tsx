@@ -1,9 +1,11 @@
-import { getCurrentYear } from "@/lib/utils";
-import BrandIcon from "./BrandIcon";
+import { MessageSquareTextIcon } from "lucide-react";
 import Link from "next/link";
 import { FaGlobeAfrica } from "react-icons/fa";
-import { MessageSquareTextIcon } from "lucide-react";
 import { FaAt } from "react-icons/fa6";
+
+import { getCurrentYear } from "@/lib/utils";
+
+import BrandIcon from "./BrandIcon";
 
 const footerData = {
   "For Students": [

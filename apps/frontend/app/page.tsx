@@ -1,21 +1,20 @@
 "use client";
 
-import MobileNav from "@/components/MobileNav";
+import { SearchIcon } from "lucide-react";
+import Image from "next/image";
+import { GoVerified } from "react-icons/go";
+import { MdTune } from "react-icons/md";
+import { RoughNotation } from "react-rough-notation";
+
+import CtaSection from "@/components/CtaSection";
 import DesktopNav from "@/components/DesktopNav";
 import LandingSearch from "@/components/LandingSearch";
-import FeatureSection from "@/components/ui/FeatureSection";
+import MobileNav from "@/components/MobileNav";
 import PopularUniversities from "@/components/PopularUniversities";
-import CtaSection from "@/components/CtaSection";
-import Footer from "@/components/ui/Footer";
-import { GoVerified } from "react-icons/go";
-import Image from "next/image";
-import Link from "next/link";
-import { DollarSign, SearchIcon, ShieldCheckIcon } from "lucide-react";
-import { RoughNotation } from "react-rough-notation";
-import SectionHeading from "@/components/ui/SectionHeader";
 import FeatureCard from "@/components/ui/FeatureCard";
-import { MdTune } from "react-icons/md";
-import { FaNairaSign } from "react-icons/fa6";
+import FeatureSection from "@/components/ui/FeatureSection";
+import Footer from "@/components/ui/Footer";
+import SectionHeading from "@/components/ui/SectionHeader";
 
 export default function Home() {
   return (

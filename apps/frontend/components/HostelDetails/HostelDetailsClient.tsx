@@ -1,43 +1,41 @@
 "use client";
 
-import posthog from "posthog-js";
-import { Button } from "@/components/ui/button";
-import { fetchHostel } from "@/lib/api/hostel";
-import useMoneyFormat from "@/lib/hooks/useMoneyFormat";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import {
-  BadgeCheck,
-  Clock4,
   Heart,
+  Lightbulb,
+  LucideIcon,
   MapPin,
   Phone,
   Share2,
   ShieldAlert,
   ShieldUserIcon,
   Wifi,
-  Lightbulb,
-  IconNode,
-  LucideIcon,
 } from "lucide-react";
-import { useEffect, useMemo } from "react";
-import { notFound, useParams } from "next/navigation";
-import { useQueryState, parseAsBoolean } from "nuqs";
-import { FaFaucetDrip, FaPersonWalking } from "react-icons/fa6";
-import BackToSearchPageButton from "../BackToSearchPage";
-import { fromSearchPageParam, generateWhatsappURL } from "@/lib/utils";
-import { useShare } from "@/lib/hooks/useShare";
-import { useSaveHostel } from "@/lib/hooks/useSaveHostel";
-import { useState } from "react";
-import { toast } from "sonner";
-
-import ImageCarousel from "../ImageCarousel";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
+import { notFound, useParams } from "next/navigation";
+import { parseAsBoolean, useQueryState } from "nuqs";
+import posthog from "posthog-js";
+import { useEffect, useMemo } from "react";
+import { useState } from "react";
+import { BiMaleFemale } from "react-icons/bi";
 import { BsHeartFill } from "react-icons/bs";
 import { FaChair, FaFemale, FaMale, FaWhatsapp } from "react-icons/fa";
+import { FaFaucetDrip } from "react-icons/fa6";
 import { IconType } from "react-icons/lib";
+import { toast } from "sonner";
+
+import { Button } from "@/components/ui/button";
+import { fetchHostel } from "@/lib/api/hostel";
+import useMoneyFormat from "@/lib/hooks/useMoneyFormat";
+import { useSaveHostel } from "@/lib/hooks/useSaveHostel";
+import { useShare } from "@/lib/hooks/useShare";
 import { Amenity, HostelTypeItems } from "@/lib/types";
-import { BiMaleFemale } from "react-icons/bi";
+import { fromSearchPageParam, generateWhatsappURL } from "@/lib/utils";
+
+import BackToSearchPageButton from "../BackToSearchPage";
+import ImageCarousel from "../ImageCarousel";
 
 const AmenityToIcon: Record<Amenity, IconType | LucideIcon> = {
   light: Lightbulb,
@@ -57,7 +55,6 @@ export default function HostelDetailsClient() {
   const { share } = useShare();
 
   const { savedHostels, saveHostel, removeHostel } = useSaveHostel();
-  const [isSaved, setIsSaved] = useState(false);
 
   let { slug } = useParams();
   slug = slug as string;
@@ -74,6 +71,7 @@ export default function HostelDetailsClient() {
   const { payload: hostel } = res;
   const isHostelSaved =
     savedHostels.find(hostel => hostel._id === hostel._id) !== undefined;
+  const [isSaved, setIsSaved] = useState(isHostelSaved);
 
   const handleSaveHostel = () => {
     if (isSaved) {
@@ -108,10 +106,6 @@ export default function HostelDetailsClient() {
 
   const ngnFormatter = useMoneyFormat();
   const formattedPrice = ngnFormatter.format(hostel.estimatedPriceRange);
-
-  useEffect(() => {
-    setIsSaved(isHostelSaved);
-  }, [isHostelSaved]);
 
   useEffect(() => {
     posthog.capture("hostel_details_viewed", {
@@ -184,6 +178,7 @@ export default function HostelDetailsClient() {
             Share
           </Button>
           <Button
+            key={hostel._id}
             variant="ghost"
             className="flex items-center gap-2 font-bold text-secondary hover:text-secondary transition-colors"
             onClick={() => {

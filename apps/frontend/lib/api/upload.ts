@@ -35,7 +35,7 @@ export async function uploadPhoto({
     throw new Error("Failed to get presigned URL");
   }
 
-  const presignedUrlRes = (await presignedUrlReq.json()) as any as APIResponse<{
+  const presignedUrlRes = (await presignedUrlReq.json()) as APIResponse<{
     upload_url: string;
     key: string;
   }>;

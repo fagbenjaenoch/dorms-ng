@@ -1,15 +1,15 @@
 "use client";
 
-import posthog from "posthog-js";
-import { Button } from "./button";
-import { BiSolidBadgeCheck } from "react-icons/bi";
-import { PiShieldCheckeredFill } from "react-icons/pi";
-import { FaBolt } from "react-icons/fa6";
 import { MapPin } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import posthog from "posthog-js";
+import { BiSolidBadgeCheck } from "react-icons/bi";
+
 import useMoneyFormat from "@/lib/hooks/useMoneyFormat";
 import { fromSearchPageParam } from "@/lib/utils";
+
+import { Button } from "./button";
 
 interface PropertyCardProps {
   price: number;

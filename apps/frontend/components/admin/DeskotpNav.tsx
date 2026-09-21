@@ -1,19 +1,22 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import {
-  LayoutDashboard,
-  GraduationCap,
-  MapPin,
   Building2,
   CalendarDays,
-  Plus,
+  GraduationCap,
   HelpCircle,
+  LayoutDashboard,
   LogOut,
+  LucideIcon,
+  MapPin,
+  Plus,
 } from "lucide-react";
+import Link from "next/link";
+
+import { cn } from "@/lib/utils";
+
 import BrandIcon from "../ui/BrandIcon";
 import { Button } from "../ui/button";
-import Link from "next/link";
 
 const SidebarItem = ({
   icon: Icon,
@@ -21,7 +24,7 @@ const SidebarItem = ({
   active = false,
   onClick,
 }: {
-  icon: any;
+  icon: LucideIcon;
   label: string;
   active?: boolean;
   onClick?: () => void;

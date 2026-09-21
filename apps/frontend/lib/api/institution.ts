@@ -15,7 +15,7 @@ export async function createInstitution(data: CreateInstitutionData) {
     throw new Error(response.message);
   }
 
-  return response as any as APIResponse<CreateInstitutionPayload>;
+  return response as APIResponse<CreateInstitutionPayload>;
 }
 
 export async function fetchInstitution(slug: string) {
@@ -29,7 +29,7 @@ export async function fetchInstitution(slug: string) {
       throw new Error("Failed to fetch institution");
     }
 
-    return response.json() as any as APIResponse<Institution>;
+    return response.json() as unknown as APIResponse<Institution>;
   } catch (error) {
     console.error(error);
     return null;
@@ -46,7 +46,7 @@ export async function fetchAllInstitutions() {
       throw new Error("Failed to fetch institutions");
     }
 
-    return response.json() as any as APIResponse<Institution[]>;
+    return response.json() as unknown as APIResponse<Institution[]>;
   } catch (error) {
     console.error(error);
     return null;

@@ -1,7 +1,8 @@
-import * as z from "zod";
-import { nigerianStates } from "./utils";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
+import * as z from "zod";
+
 import { HostelTypes } from "./types";
+import { nigerianStates } from "./utils";
 
 const baseAuthSchema = z.object({
   email: z.email("Email is not valid"),
