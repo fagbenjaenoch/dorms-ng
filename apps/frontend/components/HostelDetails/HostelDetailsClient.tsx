@@ -120,6 +120,20 @@ export default function HostelDetailsClient() {
     ? OccupancyTypeToIcon[hostel.occupancy_type]
     : BiMaleFemale;
 
+  const generateMessage = () => {
+    return generateWhatsappURL(
+      hostel.host_phone,
+      `Hello, I'm a student interested in booking a room at ${hostel.name} for next semester. Could you kindly let me know:
+
+        - Available rooms?
+        - Pricing and payment schedule?
+        - Any additional fees?
+        - Application process?
+
+      I look forward to your response. Thanks.`,
+    );
+  };
+
   return (
     <main className="max-w-7xl mx-auto py-10 sm:py-20 px-4 min-h-screen sm:px-6 lg:px-8">
       <div className="mb-4">{fromSearchPage && <BackToSearchPageButton />}</div>
@@ -249,20 +263,7 @@ export default function HostelDetailsClient() {
                 <Button
                   size="icon-lg"
                   onClick={() => {
-                    window.open(
-                      generateWhatsappURL(
-                        hostel.host_phone,
-                        `Hello, I'm a student interested in booking a room at ${hostel.name} for next semester. Could you kindly let me know:
-
-                        - Available rooms?
-                        - Pricing and payment schedule?
-                        - Any additional fees?
-                        - Application process?
-
-                        I look forward to your response. Thanks.`,
-                      ),
-                      "_blank",
-                    );
+                    window.open(generateMessage(), "_blank");
                     posthog.capture("hostel_host_phone_clicked", {
                       hostel_slug: slug,
                       hostel_name: hostel.name,
