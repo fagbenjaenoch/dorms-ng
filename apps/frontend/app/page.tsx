@@ -1,5 +1,3 @@
-"use client";
-
 import { SearchIcon } from "lucide-react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
@@ -16,9 +14,7 @@ import FeatureSection from "@/components/ui/FeatureSection";
 import Footer from "@/components/ui/Footer";
 import SectionHeading from "@/components/ui/SectionHeader";
 
-const DynamicMobileNav = dynamic(() => import("@/components/MobileNav"), {
-  ssr: false,
-});
+const DynamicMobileNav = dynamic(() => import("@/components/MobileNav"));
 
 export default function Home() {
   return (
