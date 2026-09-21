@@ -1,6 +1,7 @@
 "use client";
 
 import { SearchIcon } from "lucide-react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import { GoVerified } from "react-icons/go";
 import { MdTune } from "react-icons/md";
@@ -9,19 +10,22 @@ import { RoughNotation } from "react-rough-notation";
 import CtaSection from "@/components/CtaSection";
 import DesktopNav from "@/components/DesktopNav";
 import LandingSearch from "@/components/LandingSearch";
-import MobileNav from "@/components/MobileNav";
 import PopularUniversities from "@/components/PopularUniversities";
 import FeatureCard from "@/components/ui/FeatureCard";
 import FeatureSection from "@/components/ui/FeatureSection";
 import Footer from "@/components/ui/Footer";
 import SectionHeading from "@/components/ui/SectionHeader";
 
+const DynamicMobileNav = dynamic(() => import("@/components/MobileNav"), {
+  ssr: false,
+});
+
 export default function Home() {
   return (
     <div className="bg-zinc-50 text-gray-900 overflow-hidden">
       <nav>
         <DesktopNav />
-        <MobileNav />
+        <DynamicMobileNav />
       </nav>
 
       <section className="min-h-screen">
