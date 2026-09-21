@@ -91,7 +91,7 @@ export default function HostelDetailsClient() {
 
       share({
         title: hostel.name,
-        text: hostel.description,
+        text: `Check out this hostel`,
         url: cleanURL,
       });
     }
